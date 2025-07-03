@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
 import chatBg from "@/images/bg-chat.png";
@@ -9,8 +7,6 @@ import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 
 const AICommunityAnalyst = () => {
-	const [message, setMessage] = useState("");
-
 	const quickQuestions = [
 		"Explain health score",
 		"Why the alerts?",
@@ -40,13 +36,6 @@ const AICommunityAnalyst = () => {
 			timestamp: "4 minutes ago"
 		}
 	];
-
-	const handleSendMessage = () => {
-		if (message.trim()) {
-			console.log("Sending message:", message);
-			setMessage("");
-		}
-	};
 
 	const handleQuickQuestion = (question: string) => {
 		console.log("Quick question:", question);
@@ -134,7 +123,7 @@ const AICommunityAnalyst = () => {
 				))}
 				<div className="w-full flex justify-end">
 					<div className="bg-[#FAFFD9] rounded-xl p-4 w-[90%]">
-						<p className="text-sm text-[#373737] text-right">Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard</p>
+						<p className="text-sm text-[#373737] text-right">{`Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard`}</p>
 						<p className="text-xs text-[#373737] mt-1 text-right opacity-50">4 minutes ago</p>
 					</div>
 				</div>

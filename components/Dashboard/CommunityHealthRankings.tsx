@@ -1,53 +1,14 @@
+import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";
 import QuestionIcon from "@/icons/QuestionIcon";
-import {
-	AreaChart,
-	Area,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
-
-const data = [
-	{ value: 5 },
-	{ value: 10 },
-	{ value: 8 },
-	{ value: 12 },
-	{ value: 9 },
-	{ value: 15 },
-	{ value: 11 },
-];
-
-const SmallGradientChart = ({ color = "green" }: { color?: "green" | "red" }) => {
-	const gradientId = `gradient-${color}`;
-
-	return (
-		<ResponsiveContainer width={80} height={40}>
-			<AreaChart data={data}>
-				<defs>
-					<linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-						<stop offset="0%" stopColor={color === "green" ? "#00B552" : "#FF4A4D"} stopOpacity={0.6} />
-						<stop offset="100%" stopColor={color === "green" ? "#00B552" : "#FF4A4D"} stopOpacity={0} />
-					</linearGradient>
-				</defs>
-				<Tooltip content={() => null} />
-				<Area
-					type="monotone"
-					dataKey="value"
-					stroke={color === "green" ? "#00B552" : "#FF4A4D"}
-					fill={`url(#${gradientId})`}
-					strokeWidth={2}
-				/>
-				<XAxis hide />
-				<YAxis hide />
-			</AreaChart>
-		</ResponsiveContainer>
-	);
-};
+import SmallGradientChart from "./SmallGradientChart";
+import ArrowUp from "@/icons/ArrowUp";
+import ArrowDown from "@/icons/ArrowDown";
 
 const CommunityHealthRankings = () => {
+	const router = useRouter();
+
 	const projects: {
 		rank: number;
 		name: string;
@@ -60,6 +21,7 @@ const CommunityHealthRankings = () => {
 		marketCap: string;
 		priceChange: string;
 		chartColor: "green" | "red";
+		chartData: { value: number }[];
 	}[] = [
 			{
 				rank: 1,
@@ -72,7 +34,8 @@ const CommunityHealthRankings = () => {
 				riskFlags: "Low risk",
 				marketCap: "$2.08T",
 				priceChange: "-5.54%",
-				chartColor: "red"
+				chartColor: "red",
+				chartData: [{ value: 5 }, { value: 4 }, { value: 6 }, { value: 3 }, { value: 5 }]
 			},
 			{
 				rank: 2,
@@ -85,7 +48,8 @@ const CommunityHealthRankings = () => {
 				riskFlags: "Low risk",
 				marketCap: "$303B",
 				priceChange: "+6.54%",
-				chartColor: "green"
+				chartColor: "green",
+				chartData: [{ value: 8 }, { value: 10 }, { value: 9 }, { value: 12 }, { value: 11 }]
 			},
 			{
 				rank: 3,
@@ -98,7 +62,8 @@ const CommunityHealthRankings = () => {
 				riskFlags: "Medium risk",
 				marketCap: "$155B",
 				priceChange: "-5.54%",
-				chartColor: "red"
+				chartColor: "red",
+				chartData: [{ value: 4 }, { value: 5 }, { value: 3 }, { value: 6 }, { value: 4 }]
 			},
 			{
 				rank: 4,
@@ -111,7 +76,8 @@ const CommunityHealthRankings = () => {
 				riskFlags: "Medium risk",
 				marketCap: "$90B",
 				priceChange: "+5.54%",
-				chartColor: "red"
+				chartColor: "red",
+				chartData: [{ value: 6 }, { value: 7 }, { value: 5 }, { value: 6 }, { value: 5 }]
 			},
 			{
 				rank: 5,
@@ -124,7 +90,8 @@ const CommunityHealthRankings = () => {
 				riskFlags: "Medium risk",
 				marketCap: "$25B",
 				priceChange: "+5.54%",
-				chartColor: "green"
+				chartColor: "green",
+				chartData: [{ value: 7 }, { value: 9 }, { value: 8 }, { value: 10 }, { value: 9 }]
 			}
 		];
 
@@ -141,7 +108,7 @@ const CommunityHealthRankings = () => {
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
 					<Select defaultValue="all-category">
-						<SelectTrigger className="w-[150px] bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
 							<SelectValue placeholder="All Category" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
@@ -167,7 +134,7 @@ const CommunityHealthRankings = () => {
 					</Select>
 
 					<Select defaultValue="all-score">
-						<SelectTrigger className="w-[150px] bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
 							<SelectValue placeholder="All Score" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
@@ -193,7 +160,7 @@ const CommunityHealthRankings = () => {
 					</Select>
 
 					<Select defaultValue="all-size">
-						<SelectTrigger className="w-[150px] bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
 							<SelectValue placeholder="All Size" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
@@ -267,6 +234,7 @@ const CommunityHealthRankings = () => {
 								<TableRow
 									key={project.rank}
 									className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+									onClick={() => router.push("/community-detail")}
 								>
 									<TableCell className="font-medium text-[#4B4A4A] text-xs border-b border-b-[#F3F3F3]">{project.rank}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3]">
@@ -284,21 +252,21 @@ const CommunityHealthRankings = () => {
 									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.activeUsers}</TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.engagementRate}</TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">
-										<span className={project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}>
-											{project.growthRate.startsWith('+') ? '▲' : '▼'}{project.growthRate}
-										</span>
+										<div className={`flex items-center ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
+											{project.growthRate.startsWith('+') ? <ArrowUp /> : <ArrowDown />}{project.growthRate}
+										</div>
 									</TableCell>
 									<TableCell className="text-sm font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.riskFlags}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3]">
 										<div className="flex items-center gap-3">
 											<p className="text-sm font-medium">{project.marketCap}</p>
-											<p className={`text-xs ${project.priceChange.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
-												{project.priceChange}
+											<p className={`flex items-center ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
+												{project.growthRate.startsWith('+') ? <ArrowUp /> : <ArrowDown />}{project.priceChange}
 											</p>
 										</div>
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3]">
-										<SmallGradientChart color={project.chartColor} />
+										<SmallGradientChart color={project.chartColor} data={project.chartData} />
 									</TableCell>
 								</TableRow>
 							))}

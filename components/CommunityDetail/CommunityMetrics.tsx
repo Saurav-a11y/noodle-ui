@@ -1,5 +1,3 @@
-import { TrendingUp, AlertTriangle } from "lucide-react";
-import { Card } from "../ui/Card";
 import QuestionIcon from "@/icons/QuestionIcon";
 import AuthenticEngagementIcon from "@/icons/AuthenticEngagementIcon";
 import CommunityGrowthIcon from "@/icons/CommunityGrowthIcon";
