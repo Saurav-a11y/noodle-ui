@@ -1,0 +1,20 @@
+#For CodeBuild
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+  build:
+    commands:
+      - echo build phase
+      - npm install
+      - npm run build
+      - ls -al
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist
+  enable-symlinks: yes
