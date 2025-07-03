@@ -1,14 +1,19 @@
 import { Search } from "lucide-react";
 import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+	const router = useRouter();
+
 	return (
 		<header className="bg-white shadow-md sticky top-0 z-50">
 			<div className="container mx-auto px-6 py-2">
 				<div className="flex items-center justify-between">
 					{/* Logo */}
-					<NoodlesLogo />
+					<span className="cursor-pointer" onClick={() => router.push("/dashboard")}>
+						<NoodlesLogo />
+					</span>
 
 					{/* Search Bar */}
 					<div className="flex-1 max-w-md mx-8">
