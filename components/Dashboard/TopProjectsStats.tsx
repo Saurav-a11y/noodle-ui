@@ -1,8 +1,8 @@
-import { HelpCircle } from "lucide-react";
-import { Card } from "../ui/Card";
+import { useRouter } from "next/navigation";
 import QuestionIcon from "@/icons/QuestionIcon";
 
 const TopProjectsStats = () => {
+	const router = useRouter();
 	const topGainingProjects = [
 		{ rank: 1, name: "BONK", symbol: "😊", growth: "14%" },
 		{ rank: 2, name: "Dogecoin", symbol: "🐕", growth: "12%" },
@@ -29,7 +29,7 @@ const TopProjectsStats = () => {
 				</div>
 				<div className="space-y-3 text-[#4B4A4A]">
 					{topGainingProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between">
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm">
@@ -51,7 +51,7 @@ const TopProjectsStats = () => {
 				</div>
 				<div className="space-y-3">
 					{mostTalkedProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between">
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm">
