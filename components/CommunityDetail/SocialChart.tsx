@@ -27,7 +27,7 @@ const SocialChart = () => {
 
 	return (
 		<div className="p-6 rounded-xl bg-white text-[#1E1B39]">
-			<p className="text-xl font-semibold mb-4">
+			<p className="text-xl font-semibold mb-4 font-noto">
 				Social Activity vs On-Chain Behavior Correlation
 			</p>
 
@@ -36,7 +36,7 @@ const SocialChart = () => {
 					{platforms.map((platform) => (
 						<button
 							key={platform.name}
-							className={`px-3 py-1.5 rounded text-sm font-medium ${platform.active
+							className={`px-3 py-1.5 rounded text-sm font-reddit font-medium ${platform.active
 								? "bg-[#DDF346]"
 								: "border border-[#DDF346]"
 								}`}
@@ -49,7 +49,7 @@ const SocialChart = () => {
 					{timeframes.map((timeframe) => (
 						<button
 							key={timeframe.name}
-							className={`px-3 py-1.5 rounded cursor-pointer text-xs font-medium ${timeframe.active
+							className={`px-3 py-1.5 rounded cursor-pointer text-xs font-medium font-reddit ${timeframe.active
 								? "bg-[#DDF346]"
 								: ""
 								}`}

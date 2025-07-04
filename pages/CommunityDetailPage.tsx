@@ -41,18 +41,18 @@ const CommunityDetailPage = () => {
 											😊
 										</div>
 										<div className="text-[#4B4A4A]">
-											<h1 className="text-xl font-semibold">BONK Community</h1>
+											<h1 className="text-xl font-semibold font-noto">BONK Community</h1>
 											<div className="flex items-center gap-2 text-sm text-gray-600">
-												<span className="opacity-50 text-xs font-medium">$BONK</span>
+												<span className="opacity-50 text-xs font-medium font-noto">$BONK</span>
 												<span>•</span>
-												<span className="text-xs font-medium">$0.1703</span>
+												<span className="text-xs font-medium font-noto">$0.1703</span>
 												<span>•</span>
-												<span className="text-xs font-medium text-red-500">▼ 5.54%</span>
+												<span className="text-xs font-medium text-red-500 font-noto">▼ 5.54%</span>
 											</div>
 										</div>
 									</div>
 									<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg">
-										<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949]">
+										<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] font-noto">
 											<HeartIcon />
 											Add to Watchlist
 										</button>

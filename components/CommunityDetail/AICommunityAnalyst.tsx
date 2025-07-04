@@ -51,8 +51,8 @@ const AICommunityAnalyst = () => {
 						<NoodlesMiniLogo />
 					</div>
 					<div className="relative z-20">
-						<p className="text-lg font-bold">AI Community Analyst</p>
-						<p className="text-xs">Your intelligent crypto research companion</p>
+						<p className="text-lg font-bold font-noto">AI Community Analyst</p>
+						<p className="text-xs font-reddit">Your intelligent crypto research companion</p>
 					</div>
 				</div>
 			</div>
@@ -64,13 +64,13 @@ const AICommunityAnalyst = () => {
 						<span className="text-white font-bold">😊</span>
 					</div>
 					<div className="space-y-1">
-						<p className="text-xl font-semibold">BONK Community</p>
+						<p className="text-xl font-semibold font-noto">BONK Community</p>
 						<div className="flex items-center gap-2 text-xs">
-							<span className="font-medium">$BONK</span>
+							<span className="font-medium font-noto">$BONK</span>
 							<span>•</span>
-							<span className="font-medium">$0.1703</span>
+							<span className="font-medium font-noto">$0.1703</span>
 							<span>•</span>
-							<span className="text-red-500 font-medium">▼ 5.54%</span>
+							<span className="text-red-500 font-medium font-noto">▼ 5.54%</span>
 						</div>
 					</div>
 				</div>
@@ -78,14 +78,14 @@ const AICommunityAnalyst = () => {
 
 			{/* Quick Questions */}
 			<div className="p-4 border-b border-b-[#E9E9E9]">
-				<p className="text-sm font-medium text-[#373737] mb-3">Quick Questions:</p>
+				<p className="text-sm font-medium text-[#373737] mb-3 font-noto">Quick Questions:</p>
 				<div className="flex flex-wrap gap-2">
 					{quickQuestions.map((question, index) => (
 						<Button
 							key={index}
 							variant="outline"
 							size="sm"
-							className="text-xs h-7 px-2 rounded-full border-[#37373733]"
+							className="text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit"
 							onClick={() => handleQuickQuestion(question)}
 						>
 							{question}
@@ -101,8 +101,8 @@ const AICommunityAnalyst = () => {
 						{chat.type === "assistant" && (
 							<div className="w-full flex justify-start">
 								<div className="bg-[#FBFBFB] rounded-xl p-4 w-[90%]">
-									<p className="text-sm text-gray-800">{chat.message}</p>
-									<p className="text-xs text-gray-500 mt-1">{chat.timestamp}</p>
+									<p className="text-sm text-gray-800 font-reddit">{chat.message}</p>
+									<p className="text-xs text-gray-500 mt-1 font-reddit">{chat.timestamp}</p>
 								</div>
 							</div>
 						)}
@@ -112,10 +112,10 @@ const AICommunityAnalyst = () => {
 								<div className="border-l border-l-5 border-[#DDF346] rounded-xl p-4 bg-[#FBFBFB] w-[90%]">
 									<div className="flex items-center gap-2 mb-2">
 										<LightIcon />
-										<span className="text-sm font-medium text-[#30B500]">Real-time Insight</span>
+										<span className="text-sm font-medium text-[#30B500] font-noto">Real-time Insight</span>
 									</div>
-									<p className="text-sm text-[#373737]">{chat.message}</p>
-									<p className="text-xs text-[#373737] mt-1 opacity-50">{chat.timestamp}</p>
+									<p className="text-sm text-[#373737] font-reddit">{chat.message}</p>
+									<p className="text-xs text-[#373737] mt-1 opacity-50 font-reddit">{chat.timestamp}</p>
 								</div>
 							</div>
 						)}
@@ -123,8 +123,8 @@ const AICommunityAnalyst = () => {
 				))}
 				<div className="w-full flex justify-end">
 					<div className="bg-[#FAFFD9] rounded-xl p-4 w-[90%]">
-						<p className="text-sm text-[#373737] text-right">{`Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard`}</p>
-						<p className="text-xs text-[#373737] mt-1 text-right opacity-50">4 minutes ago</p>
+						<p className="text-sm text-[#373737] text-right font-reddit">{`Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard`}</p>
+						<p className="text-xs text-[#373737] mt-1 text-right opacity-50 font-reddit">4 minutes ago</p>
 					</div>
 				</div>
 			</div>
@@ -137,7 +137,7 @@ const AICommunityAnalyst = () => {
 					<textarea
 						rows={1}
 						placeholder="Ask me anything about BONK’s community data"
-						className="flex-1 mx-2 bg-transparent resize-none placeholder-gray-400 text-sm focus:outline-none max-h-[5rem] overflow-y-auto"
+						className="flex-1 mx-2 bg-transparent resize-none placeholder-gray-400 text-sm focus:outline-none max-h-[5rem] overflow-y-auto font-reddit"
 						style={{ lineHeight: "1rem" }}
 						onInput={(e) => {
 							const el = e.currentTarget;

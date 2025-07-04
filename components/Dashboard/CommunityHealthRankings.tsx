@@ -99,7 +99,7 @@ const CommunityHealthRankings = () => {
 		<div>
 			<div className="flex items-center justify-between mb-6">
 				<div className="flex items-center gap-2">
-					<h3 className="text-3xl font-medium">Community Health Rankings</h3>
+					<h3 className="text-3xl font-medium font-space">Community Health Rankings</h3>
 					<QuestionIcon />
 				</div>
 			</div>
@@ -108,25 +108,25 @@ const CommunityHealthRankings = () => {
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
 					<Select defaultValue="all-category">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Category" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
 							<SelectItem
 								value="all-category"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								All Category
 							</SelectItem>
 							<SelectItem
 								value="defi"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors  font-reddit"
 							>
 								DeFi
 							</SelectItem>
 							<SelectItem
 								value="layer1"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors  font-reddit"
 							>
 								Layer 1
 							</SelectItem>
@@ -134,25 +134,25 @@ const CommunityHealthRankings = () => {
 					</Select>
 
 					<Select defaultValue="all-score">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Score" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
 							<SelectItem
 								value="all-score"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								All Score
 							</SelectItem>
 							<SelectItem
 								value="high"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								High (80+)
 							</SelectItem>
 							<SelectItem
 								value="medium"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								Medium (60-79)
 							</SelectItem>
@@ -160,25 +160,25 @@ const CommunityHealthRankings = () => {
 					</Select>
 
 					<Select defaultValue="all-size">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Size" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
 							<SelectItem
 								value="all-size"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								All Size
 							</SelectItem>
 							<SelectItem
 								value="large"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								Large Cap
 							</SelectItem>
 							<SelectItem
 								value="mid"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
 							>
 								Mid Cap
 							</SelectItem>
@@ -191,41 +191,41 @@ const CommunityHealthRankings = () => {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-12 text-[#4B4A4A] border-b border-b-[#C9C9C9]">#</TableHead>
+								<TableHead className="w-12 text-[#4B4A4A] border-b border-b-[#C9C9C9] font-noto">#</TableHead>
 								<TableHead className="border-b border-b-[#C9C9C9]">
-									<p className="text-xs text-[#4B4A4A]">Project</p>
+									<p className="text-xs text-[#4B4A4A] font-noto">Project</p>
 								</TableHead>
 								<TableHead className="text-center  border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A]">Community Health Score</p>
+										<p className="text-xs text-[#4B4A4A] font-noto">Community Health Score</p>
 										<QuestionIcon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center  border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A]">Active Users</p>
+										<p className="text-xs text-[#4B4A4A] font-noto">Active Users</p>
 										<QuestionIcon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A]">Engagement Rate</p>
+										<p className="text-xs text-[#4B4A4A] font-noto">Engagement Rate</p>
 										<QuestionIcon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A]">Growth Rate</p>
+										<p className="text-xs text-[#4B4A4A] font-noto">Growth Rate</p>
 										<QuestionIcon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A]">Risk Flags</p>
+										<p className="text-xs text-[#4B4A4A] font-noto">Risk Flags</p>
 										<QuestionIcon />
 									</div>
 								</TableHead>
-								<TableHead className="border-b border-b-[#C9C9C9]"><p className="text-xs text-[#4B4A4A]">Market Cap</p></TableHead>
+								<TableHead className="border-b border-b-[#C9C9C9]"><p className="text-xs text-[#4B4A4A] font-noto">Market Cap</p></TableHead>
 								<TableHead className="w-20 border-b border-b-[#C9C9C9]"></TableHead>
 							</TableRow>
 						</TableHeader>
@@ -236,31 +236,31 @@ const CommunityHealthRankings = () => {
 									className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
 									onClick={() => router.push("/community-detail")}
 								>
-									<TableCell className="font-medium text-[#4B4A4A] text-xs border-b border-b-[#F3F3F3]">{project.rank}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] text-xs border-b border-b-[#F3F3F3] font-noto">{project.rank}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3]">
 										<div className="flex items-center gap-3">
-											<div className="w-8 h-8 rounded-full flex items-center justify-center">
+											<div className="w-8 h-8 rounded-full flex items-center justify-center font-noto">
 												{project.symbol}
 											</div>
 											<div className="text-[#4B4A4A]">
-												<p className="font-medium text-sm">{project.name}</p>
-												<div className="text-[10px] font-medium opacity-50">{project.name.slice(0, 3).toUpperCase()}</div>
+												<p className="font-medium text-sm font-noto">{project.name}</p>
+												<div className="text-[10px] font-medium opacity-50 font-noto">{project.name.slice(0, 3).toUpperCase()}</div>
 											</div>
 										</div>
 									</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.healthScore}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.activeUsers}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.engagementRate}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">
-										<div className={`flex items-center ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
+									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.healthScore}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.activeUsers}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.engagementRate}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">
+										<div className={`flex items-center font-noto ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
 											{project.growthRate.startsWith('+') ? <ArrowUp /> : <ArrowDown />}{project.growthRate}
 										</div>
 									</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3]">{project.riskFlags}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.riskFlags}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3]">
 										<div className="flex items-center gap-3">
-											<p className="text-sm font-medium">{project.marketCap}</p>
-											<p className={`flex items-center ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
+											<p className="text-sm font-medium font-noto">{project.marketCap}</p>
+											<p className={`flex items-center font-noto ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
 												{project.growthRate.startsWith('+') ? <ArrowUp /> : <ArrowDown />}{project.priceChange}
 											</p>
 										</div>
