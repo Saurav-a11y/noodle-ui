@@ -90,10 +90,10 @@ const ActivityTimeline = () => {
 	return (
 		<div className="p-6 rounded-xl bg-white text-[#1E1B39]">
 			<div className="mb-4">
-				<p className="text-lg font-semibold">
+				<p className="text-lg font-semibold font-reddit">
 					Founder & Team Activity Analysis
 				</p>
-				<p className="text-sm">Cross-Platform Activity Timeline</p>
+				<p className="text-sm font-reddit">Cross-Platform Activity Timeline</p>
 			</div>
 			<div className="border border-[#E9E9E9] rounded-xl p-6">
 				<div className="flex flex-col gap-3 xl:flex-row xl:items-center justify-end xl:justify-between mb-4 w-full">
@@ -107,7 +107,7 @@ const ActivityTimeline = () => {
 									onClick={() => toggleLabel(label.name)}
 								>
 									<span className="w-6 h-1 rounded-full" style={{ backgroundColor: label.color }}></span>
-									<p className="text-xs">{label.name}</p>
+									<p className="text-xs font-reddit">{label.name}</p>
 								</div>
 							);
 						})}
@@ -117,7 +117,7 @@ const ActivityTimeline = () => {
 							<button
 								key={timeframe}
 								onClick={() => setSelectedTimeframe(timeframe)}
-								className={`px-3 py-1.5 rounded cursor-pointer text-xs font-medium ${selectedTimeframe === timeframe ? "bg-[#DDF346]" : ""
+								className={`px-3 py-1.5 rounded cursor-pointer text-xs font-reddit font-medium ${selectedTimeframe === timeframe ? "bg-[#DDF346]" : ""
 									}`}
 							>
 								{timeframe}
@@ -149,8 +149,8 @@ const ActivityTimeline = () => {
 				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 					{getTotals(chartData[selectedTimeframe]).map((total, index) => (
 						<div key={index} className="text-center border border-[#E9E9E9] rounded-xl p-4">
-							<p className="text-sm">{total.label}</p>
-							<p className={`text-2xl font-bold`}>{total.value}</p>
+							<p className="text-sm font-reddit">{total.label}</p>
+							<p className={`text-2xl font-bold font-noto`}>{total.value}</p>
 						</div>
 					))}
 				</div>
