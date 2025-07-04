@@ -1,0 +1,90 @@
+.custom-marker {
+    position: absolute;
+    transition: transform 0.2s, z-index 0.1s;
+
+    .marker-container {
+        border-radius: 50%;
+        overflow: hidden;
+        width: 20px; // Smaller size
+        height: 20px; // Smaller size
+        border: 1px solid white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+            transform: scale(1.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .marker-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &:hover {
+        z-index: 100 !important; // Always show hovered marker on top
+    }
+}
+
+.tweet-group-marker {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    .group-marker-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .marker-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+    }
+
+    .tweet-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #1DA1F2;
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid white;
+    }
+}
+
+.table-member-list {
+
+    // @media (min-width: 1024px) {
+    //   min-height: 689px;
+    // }
+    &-loading {
+        table {
+            min-height: 616px;
+        }
+    }
+}
+
+.table-news-list {
+    &-loading {
+        table {
+            min-height: 700px;
+        }
+    }
+}

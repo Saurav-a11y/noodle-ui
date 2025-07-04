@@ -1,0 +1,37 @@
+@keyframes goUp1 {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        height: var(--tma-dialog-height);
+        opacity: 1;
+    }
+}
+
+@keyframes goDown1 {
+    from {
+        height: var(--tma-dialog-height);
+        opacity: 1;
+    }
+
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}
+
+.slide-up {
+    animation: goUp1 0.3s ease forwards;
+}
+
+.slide-down {
+    animation: goDown1 0.3s ease forwards;
+}
+
+.dialog-common-content {
+    .close-btn {
+        display: none;
+    }
+}
