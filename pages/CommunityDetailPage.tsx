@@ -1,4 +1,5 @@
 'use client';
+import { useRef, useState, useEffect } from "react";
 import ActivityTimeline from "@/components/CommunityDetail/ActivityTimeline";
 import AICommunityAnalyst from "@/components/CommunityDetail/AICommunityAnalyst";
 import CommunityMetrics from "@/components/CommunityDetail/CommunityMetrics";
@@ -12,28 +13,81 @@ import HeartIcon from "@/icons/HeartIcon";
 import Image from "next/image";
 
 const CommunityDetailPage = () => {
+	const [isChatVisible, setChatVisible] = useState(true);
+	const layoutFrameRef = useRef<number | null>(null);
+	const leftPanelSizeRef = useRef(0);
+	const [isContentCentered, setContentCentered] = useState(true);
+
+
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout;
+		if (layoutFrameRef.current === null) {
+			// Initial mount, set immediately
+			setContentCentered(leftPanelSizeRef.current === 0);
+		} else {
+			timeoutId = setTimeout(() => {
+				setContentCentered(leftPanelSizeRef.current === 0);
+			}, 100);
+		}
+		return () => {
+			if (timeoutId) clearTimeout(timeoutId);
+		};
+	}, [leftPanelSizeRef.current]);
+
+
 	return (
 		<div className="h-screen">
-			<ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-80px)]">
+			<ResizablePanelGroup
+				direction="horizontal"
+				className="min-h-[calc(100vh-80px)]"
+				onLayout={(sizes) => {
+					if (layoutFrameRef.current) {
+						cancelAnimationFrame(layoutFrameRef.current);
+					}
+					layoutFrameRef.current = requestAnimationFrame(() => {
+						const [leftSize] = sizes;
+						leftPanelSizeRef.current = leftSize;
+						setChatVisible(leftSize > 0); // Hiển thị lại nếu user kéo ra
+						setContentCentered(leftSize === 0);
+					});
+				}}
+			>
 				{/* Left Panel - AI Chat */}
-				<ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+				<ResizablePanel
+					id="left"
+					defaultSize={isChatVisible ? 25 : 0}
+					collapsedSize={0}
+					minSize={0}
+					maxSize={40}
+					collapsible
+				>
 					<div className="h-screen p-4 border-r border-gray-200 bg-white">
-						<AICommunityAnalyst />
+
+						{isChatVisible && (
+							<div className="h-full">
+								<AICommunityAnalyst handleCloseChat={() => setChatVisible(false)} />
+							</div>
+						)}
 					</div>
 				</ResizablePanel>
 
 				{/* Resizable Handle */}
-				<ResizableHandle withHandle />
+				<ResizableHandle withHandle className="w-3 cursor-col-resize transition" />
 
 				{/* Right Panel - Dashboard */}
-				<ResizablePanel defaultSize={75} minSize={60}>
+				<ResizablePanel
+					id="right"
+					key={isChatVisible ? 'right-visible' : 'right-full'}
+					defaultSize={isChatVisible ? 75 : 100}
+					minSize={60}
+				>
 					<div className="h-full overflow-auto relative bg-[#F9F9F9]">
 						<Header />
 						<div className="absolute top-0 right-0">
 							<Image src={bgDetailPage} alt="Background detail page" />
 						</div>
 						<div className="relative bg-transparent mt-10">
-							<div className="mx-auto px-6 py-8 space-y-4">
+							<div className={`${isContentCentered ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
 								{/* Project Header */}
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-4">

@@ -5,8 +5,9 @@ import chatBg from "@/images/bg-chat.png";
 import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
+import MiniMumIcon from "@/icons/MinimunIcon";
 
-const AICommunityAnalyst = () => {
+const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 	const quickQuestions = [
 		"Explain health score",
 		"Why the alerts?",
@@ -42,9 +43,9 @@ const AICommunityAnalyst = () => {
 	};
 
 	return (
-		<div className="h-full flex flex-col bg-white drop-shadow-xl rounded-xl">
+		<div className="h-full flex flex-col bg-white drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
-			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden">
+			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
 				<Image src={chatBg} alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
@@ -55,6 +56,12 @@ const AICommunityAnalyst = () => {
 						<p className="text-xs font-reddit">Your intelligent crypto research companion</p>
 					</div>
 				</div>
+				<span className="absolute top-2 right-2 cursor-pointer z-20" onClick={() => {
+					handleCloseChat()
+					console.log("Close chat clicked");
+				}}>
+					<MiniMumIcon />
+				</span>
 			</div>
 
 			{/* Project Info */}
