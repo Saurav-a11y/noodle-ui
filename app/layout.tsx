@@ -1,24 +1,6 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Display, Reddit_Sans, Space_Grotesk } from "next/font/google";
 import "../styles/globals.css";
-
-export const notoSansDisplay = Noto_Sans_Display({
-  subsets: ['latin'],
-  variable: '--font-noto',
-  display: 'swap',
-})
-
-export const redditSans = Reddit_Sans({
-  subsets: ['latin'],
-  variable: '--font-reddit',
-  display: 'swap',
-})
-
-export const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space',
-  display: 'swap',
-})
+import { notoSansDisplay, redditSans, spaceGrotesk } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${notoSansDisplay.variable} ${redditSans.variable} ${spaceGrotesk.variable}`}>
-      <body className="antialiased font-sans">
+      <body className="antialiased">
         {children}
       </body>
     </html>
