@@ -7,6 +7,9 @@ import RedditIcon from "@/icons/RedditIcon";
 import LightIcon from "@/icons/LightIcon";
 import YoutubeIcon from "@/icons/YoutubeIcon";
 import { useState } from "react";
+import RotateIcon from "@/icons/RotateIcon";
+import ChatIcon from "@/icons/ChatIcon";
+import HeartIcon from "@/icons/HeartIcon";
 
 const LiveActivity = () => {
 	const tabs = ["All Activity", "Twitter", "Reddit", "GitHub", "Youtube"];
@@ -62,7 +65,7 @@ const LiveActivity = () => {
 				<QuestionIcon />
 			</div>
 
-			<div className="flex items-center gap-2 mb-4 border-b border-[#C5C5C5]">
+			<div className="flex items-center gap-2 mb-4 border-b border-[#C5C5C5] overflow-scroll">
 				{tabs.map((tab) => (
 					<button
 						key={tab}
@@ -76,15 +79,19 @@ const LiveActivity = () => {
 			</div>
 
 			<div className={`grid ${activeTab === "All Activity" ? "grid-cols-2" : "grid-cols-1"} gap-6`}>
-				<div className={`${activeTab === "All Activity" ? "col-span-1" : "col-span-full"} space-y-5`}>
+				<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 					{(activeTab === "All Activity" || activeTab === "Twitter") && (
 						<div className="bg-[#F6F6F6] p-4 rounded-xl">
-							<div className="flex items-center justify-between mb-4 space-x-2">
+							<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 								<div className="flex items-center gap-2">
 									<XIcon width={24} height={24} fill="#000" />
 									<p className="font-semibold font-noto">Latest Twitter Activity</p>
-									<span className="ml-3 text-xs text-[#373737] font-reddit"><b>2.3K</b> mentions today</span>
+									<span className="ml-3 text-xs text-[#373737] font-reddit hidden md:block"><b>2.3K</b> mentions today</span>
 								</div>
+								<button className="text-xs bg-white px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block">View all on Twitter</button>
+							</div>
+							<div className="flex items-center block md:hidden justify-between mb-4">
+								<span className="text-xs text-[#373737] font-reddi"><b>2.3K</b> mentions today</span>
 								<button className="text-xs bg-white px-2 py-1.5 rounded cursor-pointer font-reddit">View all on Twitter</button>
 							</div>
 							<div className="space-y-4">
@@ -112,8 +119,8 @@ const LiveActivity = () => {
 										<hr className="text-[#C5C5C5]" />
 										<div className="flex items-center gap-4 text-xs font-medium font-noto">
 											<div className="flex items-center gap-1"><Heart className="w-4 h-4" />{tweet.engagement.likes}</div>
-											<div className="flex items-center gap-1"><RotateCcw className="w-4 h-4" />{tweet.engagement.retweets}</div>
-											<div className="flex items-center gap-1"><MessageCircle className="w-4 h-4" />{tweet.engagement.replies}</div>
+											<div className="flex items-center gap-1"><RotateIcon />{tweet.engagement.retweets}</div>
+											<div className="flex items-center gap-1"><ChatIcon className="w-4 h-4" />{tweet.engagement.replies}</div>
 											<span className="text-xs ml-auto font-reddit text-[#373737]"><span className="opacity-50">Engagement:</span> <b>{tweet.engagement.rate}</b></span>
 										</div>
 									</div>
@@ -134,12 +141,16 @@ const LiveActivity = () => {
 
 					{(activeTab === "All Activity" || activeTab === "GitHub") && (
 						<div className="bg-[#F6F6F6] p-4 rounded-xl">
-							<div className="flex items-center justify-between mb-4 space-x-2">
+							<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 								<div className="flex items-center gap-2">
 									<GithubIcon width={24} height={24} />
 									<p className="font-semibold font-noto">GitHub Development Activity</p>
-									<span className="ml-3 text-xs text-[#373737] font-reddit"><b>12</b> commits this month</span>
+									<span className="ml-3 text-xs text-[#373737] font-reddit hidden md:block"><b>12</b> commits this month</span>
 								</div>
+								<button className="text-xs bg-white px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block">View Repository</button>
+							</div>
+							<div className="flex items-center justify-between block md:hidden mb-4">
+								<span className="ml-3 text-xs text-[#373737] font-reddit"><b>12</b> commits this month</span>
 								<button className="text-xs bg-white px-2 py-1.5 rounded cursor-pointer font-reddit">View Repository</button>
 							</div>
 							{githubActivity.map((item, i) => (
@@ -171,15 +182,19 @@ const LiveActivity = () => {
 					)}
 				</div>
 
-				<div className={`${activeTab === "All Activity" ? "col-span-1" : "col-span-full"} space-y-5`}>
+				<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 					{(activeTab === "All Activity" || activeTab === "Reddit") && (
 						<div className="bg-[#F6F6F6] p-4 rounded-xl">
-							<div className="flex items-center justify-between mb-4 space-x-2">
+							<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 								<div className="flex items-center gap-2">
 									<RedditIcon width={24} height={24} fill="#000" />
 									<p className="font-semibold font-noto">Latest Reddit Discussions</p>
-									<span className="ml-3 text-xs text-[#373737] font-reddit"><b>156</b> posts today</span>
+									<span className="ml-3 text-xs text-[#373737] font-reddit hidden md:block"><b>156</b> posts today</span>
 								</div>
+								<button className="text-xs bg-white px-2 py-1.5 rounded font-reddit hidden md:block">View all on Reddit</button>
+							</div>
+							<div className="flex items-center justify-between mb-4">
+								<span className="ml-3 text-xs text-[#373737] font-reddit"><b>156</b> posts today</span>
 								<button className="text-xs bg-white px-2 py-1.5 rounded font-reddit">View all on Reddit</button>
 							</div>
 							{redditActivity.map((post, i) => (
@@ -209,11 +224,11 @@ const LiveActivity = () => {
 										<hr className="text-[#C5C5C5]" />
 										<div className="flex items-center gap-4 text-sm font-noto text-[#4B4A4A]">
 											<div className="flex items-center gap-1 font-medium text-xs">
-												<RotateCcw className="w-4 h-4" />
+												<Heart className="w-4 h-4" />
 												{post.engagement.upvotes}
 											</div>
 											<div className="flex items-center gap-1 font-medium text-xs">
-												<MessageCircle className="w-4 h-4" />
+												<ChatIcon />
 												{post.engagement.comments}
 											</div>
 											<span className="ml-auto font-reddit text-sm text-[#373737]"><span className="opacity-50 text-xs">Sentiment:</span> <b>{post.sentiment}</b></span>
@@ -226,46 +241,71 @@ const LiveActivity = () => {
 
 					{(activeTab === "All Activity" || activeTab === "Youtube") && (
 						<div className="bg-[#F6F6F6] p-4 rounded-xl">
-							<div className="flex items-center justify-between mb-4 space-x-2">
+							<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 								<div className="flex items-center gap-2">
 									<YoutubeIcon width={24} height={24} fill="#000" />
 									<p className="font-semibold font-noto">YouTube Community Content</p>
-									<span className="ml-3 text-xs text-[#373737] font-reddit"><b>18</b> videos this week</span>
+									<span className="ml-3 text-xs text-[#373737] font-reddit hidden md:block"><b>18</b> videos this week</span>
 								</div>
+								<button className="text-xs bg-white text-[#373737] px-2 py-1.5 rounded font-reddit hidden md:block">View Channel</button>
+							</div>
+							<div className="flex items-center justify-between mb-4">
+								<span className="ml-3 text-xs text-[#373737] font-reddit"><b>18</b> videos this week</span>
 								<button className="text-xs bg-white text-[#373737] px-2 py-1.5 rounded font-reddit">View Channel</button>
 							</div>
 							{youtubeActivity.map((video, i) => (
 								<div key={i} className="bg-white rounded-xl p-5">
-									<div className="space-y-4">
+									<div className="space-y-2 md:space-y-4">
 										<div className="flex items-start gap-3">
 											<div className="w-[100px] h-[50px] bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold">
 												{/* {youtube.user[1].toUpperCase()} */}
 											</div>
 											<div className="flex-1">
 												<div className="mb-1 space-y-1">
-													<span className="font-semibold font-noto text-[#373737]">{video.title}</span>
-													<div className="flex items-center gap-2 text-[#4B4A4A] font-noto">
+													<span className="font-semibold font-noto text-[#373737] line-clamp-2">{video.title}</span>
+													<div className="flex items-center gap-2 text-[#4B4A4A] font-noto hidden md:block">
 														<span className="text-xs opacity-50">{video.channel}</span>
 														<span>•</span>
 														<span className="text-xs font-medium">{video.views}</span>
 														<span>•</span>
 														<span className="text-xs font-medium"> {video.time}</span>
 													</div>
-													<div className="flex items-center gap-4 text-xs font-noto text-[#4B4A4A]">
+													<div className="flex items-center gap-4 text-xs font-noto text-[#4B4A4A] hidden md:block">
 														<div className="flex items-center gap-1">
 															<Heart className="w-4 h-4" />
 															{video.engagement.likes}
 														</div>
 														<div className="flex items-center gap-1">
-															<RotateCcw className="w-4 h-4" />
+															<RotateIcon />
 															{video.engagement.shares}
 														</div>
 														<div className="flex items-center gap-1">
-															<MessageCircle className="w-4 h-4" />
+															<ChatIcon />
 															{video.engagement.comments}
 														</div>
 													</div>
 												</div>
+											</div>
+										</div>
+										<div className="flex items-center gap-2 text-[#4B4A4A] font-noto block md:hidden">
+											<span className="text-xs opacity-50">{video.channel}</span>
+											<span>•</span>
+											<span className="text-xs font-medium">{video.views}</span>
+											<span>•</span>
+											<span className="text-xs font-medium"> {video.time}</span>
+										</div>
+										<div className="flex items-center gap-4 text-xs font-noto text-[#4B4A4A] block md:hidden">
+											<div className="flex items-center gap-1">
+												<Heart className="w-4 h-4" />
+												{video.engagement.likes}
+											</div>
+											<div className="flex items-center gap-1">
+												<RotateCcw className="w-4 h-4" />
+												{video.engagement.shares}
+											</div>
+											<div className="flex items-center gap-1">
+												<MessageCircle className="w-4 h-4" />
+												{video.engagement.comments}
 											</div>
 										</div>
 									</div>

@@ -16,7 +16,7 @@ const Header = () => {
 					</span>
 
 					{/* Search Bar */}
-					<div className="flex-1 max-w-md mx-8">
+					<div className="flex-1 max-w-md mx-8 hidden md:block">
 						<div className="relative">
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-full">
 								<div className="relative rounded-full bg-[#f9f9f9]">
@@ -34,6 +34,19 @@ const Header = () => {
 					<button className="px-4.5 py-2.5 rounded-full font-medium text-sm transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer text-[#494949] font-space">
 						Launch App
 					</button>
+				</div>
+				<div className="flex-1 mt-4 w-full block md:hidden">
+					<div className="relative">
+						<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-full">
+							<div className="relative rounded-full bg-[#f9f9f9]">
+								<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+								<Input
+									placeholder="Search projects, tokens, or founders"
+									className="pl-10 py-2 w-full bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit"
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</header>
