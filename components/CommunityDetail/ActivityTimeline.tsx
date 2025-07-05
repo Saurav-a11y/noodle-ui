@@ -97,7 +97,7 @@ const ActivityTimeline = () => {
 			</div>
 			<div className="border border-[#E9E9E9] rounded-xl p-6">
 				<div className="flex flex-col gap-3 xl:flex-row xl:items-center justify-end xl:justify-between mb-4 w-full">
-					<div className="flex items-center gap-4">
+					<div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
 						{labels.map((label) => {
 							const isSelected = visibleLabels.includes(label.name);
 							return (
@@ -146,7 +146,7 @@ const ActivityTimeline = () => {
 						)}
 					</LineChart>
 				</ResponsiveContainer>
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4">
 					{getTotals(chartData[selectedTimeframe]).map((total, index) => (
 						<div key={index} className="text-center border border-[#E9E9E9] rounded-xl p-4">
 							<p className="text-sm font-reddit">{total.label}</p>

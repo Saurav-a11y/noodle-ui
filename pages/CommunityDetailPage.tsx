@@ -17,7 +17,18 @@ const CommunityDetailPage = () => {
 	const layoutFrameRef = useRef<number | null>(null);
 	const leftPanelSizeRef = useRef(0);
 	const [isContentCentered, setContentCentered] = useState(true);
+	const [isMobile, setIsMobile] = useState(false);
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const handleResize = () => {
+				setIsMobile(window.innerWidth < 768);
+			};
+			handleResize();
+			window.addEventListener('resize', handleResize);
+			return () => window.removeEventListener('resize', handleResize);
+		}
+	}, []);
 
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;
@@ -34,6 +45,11 @@ const CommunityDetailPage = () => {
 		};
 	}, [leftPanelSizeRef.current]);
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setChatVisible(window.innerWidth >= 768); // Ẩn nếu < md (mobile)
+		}
+	}, []);
 
 	return (
 		<div className="h-screen">
@@ -55,10 +71,11 @@ const CommunityDetailPage = () => {
 				{/* Left Panel - AI Chat */}
 				<ResizablePanel
 					id="left"
-					defaultSize={isChatVisible ? 25 : 0}
+					key={isMobile && isChatVisible ? 'left-full' : 'left-default'}
+					defaultSize={isMobile && isChatVisible ? 100 : isChatVisible ? 25 : 0}
 					collapsedSize={0}
 					minSize={0}
-					maxSize={40}
+					maxSize={isMobile ? 100 : 40}
 					collapsible
 				>
 					<div className="h-screen p-4 border-r border-gray-200 bg-white">
@@ -86,7 +103,7 @@ const CommunityDetailPage = () => {
 						<div className="absolute top-0 right-0">
 							<Image src={bgDetailPage} alt="Background detail page" />
 						</div>
-						<div className="relative bg-transparent mt-10">
+						<div className="relative bg-transparent md:mt-10">
 							<div className={`${isContentCentered ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
 								{/* Project Header */}
 								<div className="flex items-center justify-between">
@@ -108,18 +125,18 @@ const CommunityDetailPage = () => {
 									<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg">
 										<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] font-noto">
 											<HeartIcon />
-											Add to Watchlist
+											<span className="hidden md:block">Add to Watchlist</span>
 										</button>
 									</div>
 								</div>
 								<div className="grid grid-cols-4 gap-8">
-									<div className="col-span-1 space-y-6">
+									<div className="col-span-4 md:col-span-1 space-y-6">
 										{/* Metrics Grid */}
 										<CommunityMetrics />
 										{/* Basic Information */}
 										<ProjectInfo />
 									</div>
-									<div className="col-span-3 space-y-5">
+									<div className="col-span-4 md:col-span-3 space-y-5">
 										<SocialChart />
 										<ActivityTimeline />
 										<div className="mt-10">

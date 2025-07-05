@@ -13,7 +13,7 @@ const HomePage = () => {
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-full">
 				<Image src={bgDetailPage} alt="Background detail page" />
 			</div>
-			<div className="container mx-auto px-6 mt-20 relative bg-transparent space-y-14 mb-10">
+			<div className="container mx-auto px-6 mt-10 md:mt-20 relative bg-transparent space-y-14 mb-10">
 				<TopProjectsStats />
 				<CommunityHealthRankings />
 			</div>
