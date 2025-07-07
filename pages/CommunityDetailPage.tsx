@@ -42,7 +42,6 @@ const CommunityDetailPage = () => {
 		}
 	}, []);
 
-	console.log('!isMobile && isChatVisible', !isMobile, isChatVisible)
 	return (
 		<div className="h-screen">
 			{(!isMobile && !isChatVisible) && (
@@ -102,7 +101,7 @@ const CommunityDetailPage = () => {
 						maxSize={40}
 						collapsible
 					>
-						<div className="h-screen p-4 border-r border-gray-200 bg-white">
+						<div className="h-screen p-4 border-r border-gray-200 bg-white dark:bg-[#0B0B0B]">
 							<div className="h-full">
 								<AICommunityAnalyst handleCloseChat={handleCloseChat} />
 							</div>
@@ -112,7 +111,7 @@ const CommunityDetailPage = () => {
 
 				{/* Resizable Handle */}
 				{!isMobile && isChatVisible && (
-					<ResizableHandle withHandle className="w-3 cursor-col-resize transition" />
+					<ResizableHandle withHandle className="w-2 dark:bg-[#0B0B0B] cursor-col-resize transition" />
 				)}
 
 				{/* Right Panel - Dashboard */}
@@ -122,7 +121,7 @@ const CommunityDetailPage = () => {
 					defaultSize={isChatVisible ? 75 : 100}
 					minSize={60}
 				>
-					<div className="h-full overflow-auto relative bg-[#F9F9F9]">
+					<div className="h-full overflow-auto relative bg-[#F9F9F9] dark:bg-[#0B0B0B]">
 						<Header />
 						<div className="absolute top-0 right-0">
 							<Image src={bgDetailPage} alt="Background detail page" />
@@ -132,22 +131,22 @@ const CommunityDetailPage = () => {
 								{/* Project Header */}
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-4">
-										<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+										<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl">
 											<Image src={bonk} alt="Avatar" />
 										</div>
-										<div className="text-[#4B4A4A]">
+										<div className="text-[#4B4A4A] dark:text-[#FFF]">
 											<h1 className="text-xl font-semibold font-noto">BONK Community</h1>
-											<div className="flex items-center gap-2 text-sm text-gray-600">
-												<span className="opacity-50 text-xs font-medium font-noto">$BONK</span>
+											<div className="flex items-center gap-2 text-sm">
+												<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">$BONK</span>
 												<span>•</span>
-												<span className="text-xs font-medium font-noto">$0.1703</span>
+												<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">$0.1703</span>
 												<span>•</span>
 												<span className="text-xs font-medium text-red-500 font-noto">▼ 5.54%</span>
 											</div>
 										</div>
 									</div>
 									<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg">
-										<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] font-noto hover:bg-[#F6F6F6] transition-colors duration-200">
+										<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] text-[#FFF] font-noto hover:bg-[#F6F6F6] dark:hover:bg-[#313131] transition-colors duration-200">
 											<HeartIcon />
 											<span className="hidden md:block">Add to Watchlist</span>
 										</button>

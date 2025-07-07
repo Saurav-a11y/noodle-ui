@@ -88,14 +88,14 @@ const ActivityTimeline = () => {
 	const timeframes: Array<keyof typeof chartData> = ["7D", "1M", "3M", "6M", "1Y"];
 
 	return (
-		<div className="p-6 rounded-xl bg-white text-[#1E1B39]">
+		<div className="p-6 rounded-xl bg-white dark:bg-[#1A1A1A] dark:text-white text-[#1E1B39]">
 			<div className="mb-4">
 				<p className="text-lg font-semibold font-reddit">
 					Founder & Team Activity Analysis
 				</p>
 				<p className="text-sm font-reddit">Cross-Platform Activity Timeline</p>
 			</div>
-			<div className="border border-[#E9E9E9] rounded-xl p-6">
+			<div className="border border-[#E9E9E9] dark:border-[#B1B1B1] rounded-xl p-6">
 				<div className="flex flex-col gap-3 xl:flex-row xl:items-center justify-end xl:justify-between mb-4 w-full">
 					<div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
 						{labels.map((label) => {
@@ -103,7 +103,7 @@ const ActivityTimeline = () => {
 							return (
 								<div
 									key={label.name}
-									className={`px-3 py-1.5 rounded flex items-center gap-2 cursor-pointer ${isSelected ? "bg-[#F9F9F9]" : ""}`}
+									className={`px-3 py-1.5 rounded flex items-center gap-2 cursor-pointer ${isSelected ? "bg-[#F9F9F9] dark:bg-[#222]" : ""}`}
 									onClick={() => toggleLabel(label.name)}
 								>
 									<span className="w-6 h-1 rounded-full" style={{ backgroundColor: label.color }}></span>
@@ -112,12 +112,12 @@ const ActivityTimeline = () => {
 							);
 						})}
 					</div>
-					<div className="flex items-center justify-end w-fit gap-1 bg-[#F9F9F9] p-1.5 rounded">
+					<div className="flex items-center justify-end w-fit gap-1 bg-[#F9F9F9] dark:bg-[#222] p-1.5 rounded">
 						{timeframes.map((timeframe) => (
 							<button
 								key={timeframe}
 								onClick={() => setSelectedTimeframe(timeframe)}
-								className={`px-3 py-1.5 rounded cursor-pointer text-xs font-reddit font-medium ${selectedTimeframe === timeframe ? "bg-[#DDF346]" : ""
+								className={`px-2 py-1 rounded cursor-pointer text-xs font-reddit font-medium ${selectedTimeframe === timeframe ? "bg-[#DDF346] dark:text-[#222]" : ""
 									}`}
 							>
 								{timeframe}
@@ -148,7 +148,7 @@ const ActivityTimeline = () => {
 				</ResponsiveContainer>
 				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4">
 					{getTotals(chartData[selectedTimeframe]).map((total, index) => (
-						<div key={index} className="text-center border border-[#E9E9E9] rounded-xl p-4">
+						<div key={index} className="text-center border border-[#E9E9E9] dark:border-[#B1B1B1] rounded-xl p-4">
 							<p className="text-sm font-reddit">{total.label}</p>
 							<p className={`text-2xl font-bold font-noto`}>{total.value}</p>
 						</div>

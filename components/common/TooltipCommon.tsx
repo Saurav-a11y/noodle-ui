@@ -9,7 +9,7 @@ const TooltipCommon = ({ content = contentTooltip }) => {
             <TooltipTrigger>
                 <QuestionIcon />
             </TooltipTrigger>
-            <TooltipContent className="max-w-md">
+            <TooltipContent className="p-2 max-w-md dark:bg-[#1A1A1A] dark:text-white">
                 <p>{content}</p>
             </TooltipContent>
         </Tooltip>

@@ -73,7 +73,7 @@ export default function ModalCommon({
 	const header = (
 		<div
 			className={cn(
-				'relative',
+				'relative dark:text-white',
 				{
 					'py-4': isMiniApp,
 					'flex justify-end': !title,
@@ -171,7 +171,7 @@ export default function ModalCommon({
 					>
 						{hiddenComponent}
 						{header}
-						<div className={cn('rounded-[20px]', classNameChildren)}>{children}</div>
+						<div className={cn('rounded-[20px] dark:bg-[#1A1A1A]', classNameChildren)}>{children}</div>
 					</DialogContent>
 				</Dialog>
 			)}

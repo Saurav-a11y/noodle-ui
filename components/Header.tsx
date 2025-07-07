@@ -1,18 +1,20 @@
 import { Search } from "lucide-react";
 import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
+import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
 import { useRouter } from "next/navigation";
+import useThemekMode from '@/lib/useThemkMode';
 
 const Header = () => {
 	const router = useRouter();
-
+	const { isDark } = useThemekMode();
 	return (
 		<header className="bg-white dark:bg-[#0B0B0B] shadow-md sticky top-0 z-50">
 			<div className="container mx-auto px-6 py-2">
 				<div className="flex items-center justify-between">
 					{/* Logo */}
 					<span className="cursor-pointer" onClick={() => router.push("/dashboard")}>
-						<NoodlesLogo />
+						{isDark ? <DarkNoodlesLogo /> : <NoodlesLogo />}
 					</span>
 
 					{/* Search Bar */}

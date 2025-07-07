@@ -111,29 +111,29 @@ const CommunityHealthRankings = () => {
 				</div>
 			</div>
 
-			<div className="p-5 bg-white rounded-xl shadow-xl">
+			<div className="p-5 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
 					<Select defaultValue="all-category">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] dark:bg-[#2D2D2D] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Category" />
 						</SelectTrigger>
-						<SelectContent className="bg-white border-none shadow-lg">
+						<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
 							<SelectItem
 								value="all-category"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								All Category
 							</SelectItem>
 							<SelectItem
 								value="defi"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors  font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								DeFi
 							</SelectItem>
 							<SelectItem
 								value="layer1"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors  font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								Layer 1
 							</SelectItem>
@@ -141,25 +141,25 @@ const CommunityHealthRankings = () => {
 					</Select>
 
 					<Select defaultValue="all-score">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Score" />
 						</SelectTrigger>
-						<SelectContent className="bg-white border-none shadow-lg">
+						<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
 							<SelectItem
 								value="all-score"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								All Score
 							</SelectItem>
 							<SelectItem
 								value="high"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								High (80+)
 							</SelectItem>
 							<SelectItem
 								value="medium"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								Medium (60-79)
 							</SelectItem>
@@ -167,25 +167,25 @@ const CommunityHealthRankings = () => {
 					</Select>
 
 					<Select defaultValue="all-size">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Size" />
 						</SelectTrigger>
-						<SelectContent className="bg-white border-none shadow-lg">
+						<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
 							<SelectItem
 								value="all-size"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								All Size
 							</SelectItem>
 							<SelectItem
 								value="large"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								Large Cap
 							</SelectItem>
 							<SelectItem
 								value="mid"
-								className="hover:bg-[#F9F9F9] cursor-pointer transition-colors font-reddit"
+								className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
 							>
 								Mid Cap
 							</SelectItem>
@@ -196,83 +196,83 @@ const CommunityHealthRankings = () => {
 				{/* Table */}
 				<div className="overflow-x-auto">
 					<Table>
-						<TableHeader>
+						<TableHeader className="dark:bg-[#2A2A2A]">
 							<TableRow>
-								<TableHead className="w-12 text-[#4B4A4A] border-b border-b-[#C9C9C9] font-noto">#</TableHead>
-								<TableHead className="border-b border-b-[#C9C9C9]">
-									<p className="text-xs text-[#4B4A4A] font-noto">Project</p>
+								<TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg">#</TableHead>
+								<TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+									<p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Project</p>
 								</TableHead>
-								<TableHead className="text-center  border-b border-b-[#C9C9C9]">
-									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A] font-noto">Community Health Score</p>
+								<TableHead className="text-center  border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
+										<p className="text-xs font-noto">Community Health Score</p>
 										<TooltipCommon />
 									</div>
 								</TableHead>
-								<TableHead className="text-center  border-b border-b-[#C9C9C9]">
-									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A] font-noto">Active Users</p>
+								<TableHead className="text-center  border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
+										<p className="text-xs font-noto">Active Users</p>
 										<TooltipCommon />
 									</div>
 								</TableHead>
-								<TableHead className="text-center border-b border-b-[#C9C9C9]">
-									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A] font-noto">Engagement Rate</p>
+								<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
+										<p className="text-xs font-noto">Engagement Rate</p>
 										<TooltipCommon />
 									</div>
 								</TableHead>
-								<TableHead className="text-center border-b border-b-[#C9C9C9]">
-									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A] font-noto">Growth Rate</p>
+								<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
+										<p className="text-xs font-noto">Growth Rate</p>
 										<TooltipCommon />
 									</div>
 								</TableHead>
-								<TableHead className="text-center border-b border-b-[#C9C9C9]">
-									<div className="flex items-center gap-1">
-										<p className="text-xs text-[#4B4A4A] font-noto">Risk Flags</p>
+								<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
+										<p className="text-xs font-noto">Risk Flags</p>
 										<TooltipCommon />
 									</div>
 								</TableHead>
-								<TableHead className="border-b border-b-[#C9C9C9]"><p className="text-xs text-[#4B4A4A] font-noto">Market Cap</p></TableHead>
-								<TableHead className="w-20 border-b border-b-[#C9C9C9]"></TableHead>
+								<TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]"><p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Market Cap</p></TableHead>
+								<TableHead className="w-20 border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] dark:rounded-tr-lg"></TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{projects.map((project) => (
 								<TableRow
 									key={project.rank}
-									className="hover:bg-[#F9F9F9] cursor-pointer transition-colors"
+									className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors"
 									onClick={() => router.push("/community-detail")}
 								>
-									<TableCell className="font-medium text-[#4B4A4A] text-xs border-b border-b-[#F3F3F3] font-noto">{project.rank}</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3]">
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project.rank}</TableCell>
+									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<div className="flex items-center gap-3">
 											<div className="w-8 h-8 rounded-full flex items-center justify-center font-noto">
 												<Image src={project.symbol} alt="Symbol" />
 											</div>
-											<div className="text-[#4B4A4A]">
+											<div className="text-[#4B4A4A] dark:text-[#FFF]">
 												<p className="font-medium text-sm font-noto">{project.name}</p>
 												<div className="text-[10px] font-medium opacity-50 font-noto">{project.name.slice(0, 3).toUpperCase()}</div>
 											</div>
 										</div>
 									</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.healthScore}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.activeUsers}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.engagementRate}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project.healthScore}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project.activeUsers}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project.engagementRate}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
 										<div className={`flex items-center font-noto ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
 											{project.growthRate.startsWith('+') ? <ArrowUp /> : <ArrowDown />}{project.growthRate}
 										</div>
 									</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] border-b border-b-[#F3F3F3] font-noto">{project.riskFlags}</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3]">
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project.riskFlags}</TableCell>
+									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<div className="flex items-center gap-3">
-											<p className="text-sm font-medium font-noto">{project.marketCap}</p>
+											<p className="text-sm font-medium font-noto text-[#4B4A4A] dark:text-[#FFF]">{project.marketCap}</p>
 											<p className={`flex items-center font-noto ${project.growthRate.startsWith('+') ? 'text-[#00B552]' : 'text-[#FF4A4D]'}`}>
 												{project.growthRate.startsWith('+') ? <ArrowUp /> : <ArrowDown />}{project.priceChange}
 											</p>
 										</div>
 									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3]">
+									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<SmallGradientChart color={project.chartColor} data={project.chartData} />
 									</TableCell>
 								</TableRow>

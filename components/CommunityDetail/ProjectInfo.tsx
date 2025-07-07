@@ -12,19 +12,19 @@ const ProjectInfo = () => {
 
 	return (
 		<div>
-			<h3 className="text-sm font-medium mb-2.5 font-noto">Basic Information</h3>
+			<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>
 
-			<div className="space-y-5 mb-6 text-[#373737]">
-				<div className="flex items-center justify-between">
+			<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
+				<div className="flex justify-between gap-3">
 					<p className="text-sm font-medium opacity-50 font-noto">Website</p>
-					<div className="flex items-center justify-end gap-4 flex-1">
+					<div className="flex flex-wrap items-center justify-end gap-4 flex-1">
 						<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit">
-							<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-full font-medium text-sm cursor-pointer text-[#494949] font-reddit">
+							<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
 								bonkcoin.com
 							</button>
 						</div>
 						<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit">
-							<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-full font-medium text-sm cursor-pointer text-[#494949] font-reddit">
+							<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
 								White paper
 							</button>
 						</div>
@@ -33,7 +33,7 @@ const ProjectInfo = () => {
 				<div className="flex items-center justify-between">
 					<p className="text-sm font-medium opacity-50 font-noto">Explorers</p>
 					<div className="flex items-center justify-end gap-4 flex-1">
-						<button className="flex items-center gap-2 bg-[#DDF346] px-4.5 py-2.5 rounded-full font-medium text-sm cursor-pointer font-reddit">
+						<button className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-sm cursor-pointer font-reddit">
 							solscan.io
 						</button>
 					</div>
@@ -57,11 +57,15 @@ const ProjectInfo = () => {
 					<p className="text-sm font-medium opacity-50 font-noto">Community</p>
 					<div className="flex items-center justify-end gap-4 flex-1">
 						<div className="flex items-center gap-4">
-							<div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
-								<XIcon fill="#fff" />
+							<div className="bg-black dark:bg-white w-6 h-6 rounded-full flex items-center justify-center text-[#FFF] dark:text-black">
+								<XIcon />
 							</div>
-							<DiscordIcon />
-							<TelegramIcon />
+							<span className="dark:text-[#FFF]">
+								<DiscordIcon />
+							</span>
+							<span className="dark:text-[#FFF]">
+								<TelegramIcon />
+							</span>
 						</div>
 					</div>
 				</div>

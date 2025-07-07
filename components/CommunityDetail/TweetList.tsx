@@ -48,11 +48,11 @@ function TweetList({ tweets, isParseUTC, symbol }: any) {
 								errImg='https://static.vecteezy.com/system/resources/previews/020/911/750/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'
 							/>
 							<div>
-								<p className='text-sm flex gap-1 items-center'>
+								<p className='text-sm flex gap-1 items-center dark:text-white'>
 									{tweet?.name}{' '}
 									{tweet?.verified && <IconifyIcon icon='tabler:rosette-discount-check-filled' className='size-4 text-[#00C2FF]' />}
 								</p>
-								<p className='text-sm opacity-75'>@{tweet?.username}</p>
+								<p className='text-sm opacity-75 dark:text-white'>@{tweet?.username}</p>
 							</div>
 							{tweet?.data_type && (
 								<div className='bg-gray-500 px-2 py-1 text-white text-xs rounded-full mb-auto capitalize ml-2'>{tweet?.data_type}</div>
@@ -73,14 +73,14 @@ function TweetList({ tweets, isParseUTC, symbol }: any) {
 
 					<div className='text-sm dark:text-[#ffffff] mb-4 break-all custom_tweet' dangerouslySetInnerHTML={{ __html: tweet?.text }}></div>
 					<div className='flex flex-wrap gap-2 items-center justify-between'>
-						<p className='text-xs opacity-75'>
+						<p className='text-xs opacity-75 dark:text-white'>
 							{formattedDate(tweet.created_at, 'HH:mm - MMM dd yyyy', isParseUTC)} ·{' '}
 							<Link href={`https://x.com/${tweet?.username}/status/${tweet?.id}`} target='_blank' className='text-[#1d9bf0]'>
 								Link Twitter
 							</Link>
 						</p>
 						{/* Commented stats section */}
-						<div className='flex flex-wrap items-center gap-x-2 gap-y-1'>
+						<div className='flex flex-wrap items-center gap-x-2 gap-y-1 dark:text-white'>
 							<div className='flex items-center gap-1 text-sm'>
 								<HeartIcon fill='#FF5959' />{' '}
 								<span className='opacity-80'>{formatNumberWithDecimal(tweet?.like_count, 0)}</span>
