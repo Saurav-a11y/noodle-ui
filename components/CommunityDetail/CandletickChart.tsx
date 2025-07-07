@@ -8,13 +8,15 @@
 // import { getPriceHistory, resetPriceHistory } from '@/store/community/communitySlice';
 // import { format, parseISO } from 'date-fns';
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
-import { forEach, map } from 'lodash';
+import { forEach, isEmpty, map } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import '../../styles/chartStyles.scss';
 // import TweetList from './TweetList';
 // import formatNumberWithDecimal from '@/lib/format';
-// import ModalCommon from './ModalCommon';
+import ModalCommon from './ModalCommon';
 import { priceHistoryToken, tweets } from './fakeData';
+import TweetList from './TweetList';
+import { formattedDate } from '@/lib/format';
 
 // const COMMUNITIES_STATUS = {
 // 	LISTED: 'listed',
@@ -70,7 +72,7 @@ const barsInTimeFrame = {
 };
 
 const CandlestickChart = ({
-	// symbol,
+	symbol,
 	// status 
 }: {
 	symbol?: string;
@@ -107,8 +109,8 @@ const CandlestickChart = ({
 		);
 	};
 
-	// const [activeHourTweets, setActiveHourTweets] = useState<TweetInfo[]>([]);
-	// const [isShowModalTweet, setIsShowModalTweet] = useState(false);
+	const [activeHourTweets, setActiveHourTweets] = useState<TweetInfo[]>([]);
+	const [isShowModalTweet, setIsShowModalTweet] = useState(false);
 
 	// const formattedDate = (date: string, regex = 'HH:mm - MMM dd yyyy') => {
 	// 	const parsedDate = parseISO(date);
@@ -360,10 +362,10 @@ const CandlestickChart = ({
 			// Thêm sự kiện khi click vào marker
 			groupMarkerElement.addEventListener('click', (event) => {
 				event.stopPropagation();
-				// if (isAccessible) {
-				// 	setActiveHourTweets(tweetsInInterval);
-				// 	setIsShowModalTweet(true);
-				// }
+				if (isAccessible) {
+					setActiveHourTweets(tweetsInInterval);
+					setIsShowModalTweet(true);
+				}
 				// else {
 				// 	if (premiumRef.current) {
 				// 		premiumRef.current.checkPremiumStatus(); // Gọi hàm qua ref
@@ -495,12 +497,12 @@ const CandlestickChart = ({
 		};
 	}, [chartInstance]);
 
-	// const renderTweetTitle = (list: TweetInfo[]) => {
-	// 	if (isEmpty(list)) return 'No tweet';
-	// 	const count = list.length;
-	// 	const time = formattedDate(list[0].created_at || '', count > 1 ? 'HH:00 - MMM dd yyyy' : undefined);
-	// 	return `${count} ${count === 1 ? 'tweet' : 'tweets'} posted at ${time}`;
-	// };
+	const renderTweetTitle = (list: TweetInfo[]) => {
+		if (isEmpty(list)) return 'No tweet';
+		const count = list.length;
+		const time = formattedDate(list[0].created_at || '', count > 1 ? 'HH:00 - MMM dd yyyy' : undefined);
+		return `${count} ${count === 1 ? 'tweet' : 'tweets'} posted at ${time}`;
+	};
 
 	const handleTimeFrameChange = (timeFrame: '1D' | '3D' | '7D' | '1M') => {
 		if (!chartInstance) return;
@@ -534,7 +536,7 @@ const CandlestickChart = ({
 					{platformsState.map((platform) => (
 						<button
 							key={platform.name}
-							className={`px-3 py-1.5 rounded text-xs font-reddit cursor-pointer font-medium ${platform.active
+							className={`px-3 py-1.5 rounded text-xs font-reddit cursor-pointer font-medium transition-colors hover:bg-[#F4F4F5] ${platform.active
 								? "bg-[#DDF346]"
 								: "border border-[#DDF346]"
 								}`}
@@ -549,7 +551,7 @@ const CandlestickChart = ({
 						<button
 							key={timeFrame}
 							onClick={() => handleTimeFrameChange(timeFrame as any)}
-							className={`px-3 py-1.5 rounded text-xs font-reddit font-medium ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md' : ''
+							className={`px-3 py-1.5 rounded cursor-pointer text-xs font-reddit font-medium transition-colors hover:bg-[#F4F4F5] ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md' : ''
 								}`}
 						>
 							{timeFrame}
@@ -609,7 +611,7 @@ const CandlestickChart = ({
 				/>
 			</div>
 			{/* <PremiumFeatureLink ref={premiumRef} showLink={false} /> */}
-			{/* <ModalCommon
+			<ModalCommon
 				open={isShowModalTweet}
 				onOpenChange={setIsShowModalTweet}
 				title={renderTweetTitle(activeHourTweets)}
@@ -617,7 +619,7 @@ const CandlestickChart = ({
 				classNameContent='sm:w-full w-[96vw] max-w-screen-sm'
 			>
 				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={symbol} />
-			</ModalCommon> */}
+			</ModalCommon>
 		</div>
 	);
 };

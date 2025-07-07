@@ -20,7 +20,7 @@ const SocialChart = () => {
 						</p>
 					))}
 					<div className="border-l mr-2 h-4 border-[#E8E8E8]" />
-					<span className="cursor-pointer">
+					<span className="cursor-pointer hover:bg-[#F4F4F5] px-2 py-0.5 rounded-md">
 						<Calendar />
 					</span>
 				</div>

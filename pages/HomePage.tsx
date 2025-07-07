@@ -8,7 +8,7 @@ import bgDetailPage from "@/images/bg-detail-page.png";
 
 const HomePage = () => {
 	return (
-		<div className="h-screen relative bg-[#F9F9F9] overflow-auto">
+		<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto">
 			<Header />
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-full">
 				<Image src={bgDetailPage} alt="Background detail page" />

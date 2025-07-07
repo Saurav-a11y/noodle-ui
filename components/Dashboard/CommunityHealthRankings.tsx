@@ -1,7 +1,6 @@
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";
-import QuestionIcon from "@/icons/QuestionIcon";
 import SmallGradientChart from "./SmallGradientChart";
 import ArrowUp from "@/icons/ArrowUp";
 import ArrowDown from "@/icons/ArrowDown";
@@ -12,6 +11,7 @@ import btc from '../../images/tokens/bitcoin.png'
 import eth from '../../images/tokens/eth.png'
 import tether from '../../images/tokens/tether.png'
 import bnb from '../../images/tokens/bnb.png'
+import TooltipCommon from "../common/TooltipCommon";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
@@ -105,9 +105,9 @@ const CommunityHealthRankings = () => {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-6">
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2 dark:text-[#FFFFFF]">
 					<h3 className="text-3xl font-medium font-space">Community Health Rankings</h3>
-					<QuestionIcon />
+					<TooltipCommon />
 				</div>
 			</div>
 
@@ -115,7 +115,7 @@ const CommunityHealthRankings = () => {
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
 					<Select defaultValue="all-category">
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
+						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] dark:bg-[#2D2D2D] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] cursor-pointer font-reddit">
 							<SelectValue placeholder="All Category" />
 						</SelectTrigger>
 						<SelectContent className="bg-white border-none shadow-lg">
@@ -205,31 +205,31 @@ const CommunityHealthRankings = () => {
 								<TableHead className="text-center  border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
 										<p className="text-xs text-[#4B4A4A] font-noto">Community Health Score</p>
-										<QuestionIcon />
+										<TooltipCommon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center  border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
 										<p className="text-xs text-[#4B4A4A] font-noto">Active Users</p>
-										<QuestionIcon />
+										<TooltipCommon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
 										<p className="text-xs text-[#4B4A4A] font-noto">Engagement Rate</p>
-										<QuestionIcon />
+										<TooltipCommon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
 										<p className="text-xs text-[#4B4A4A] font-noto">Growth Rate</p>
-										<QuestionIcon />
+										<TooltipCommon />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9]">
 									<div className="flex items-center gap-1">
 										<p className="text-xs text-[#4B4A4A] font-noto">Risk Flags</p>
-										<QuestionIcon />
+										<TooltipCommon />
 									</div>
 								</TableHead>
 								<TableHead className="border-b border-b-[#C9C9C9]"><p className="text-xs text-[#4B4A4A] font-noto">Market Cap</p></TableHead>
