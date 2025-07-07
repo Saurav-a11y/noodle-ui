@@ -1,8 +1,8 @@
-import QuestionIcon from "@/icons/QuestionIcon";
 import AuthenticEngagementIcon from "@/icons/AuthenticEngagementIcon";
 import CommunityGrowthIcon from "@/icons/CommunityGrowthIcon";
 import RecentActivityDropIcon from "@/icons/RecentActivityDropIcon";
 import WhaleActivityIcon from "@/icons/WhaleActivityIcon";
+import TooltipCommon from "../common/TooltipCommon";
 
 const CommunityMetrics = () => {
 	const healthMetrics = [
@@ -112,7 +112,7 @@ const CommunityMetrics = () => {
 				<div className="bg-white rounded-xl p-4 mb-4">
 					<div className="mb-1.5 flex items-center gap-2">
 						<p className="text-sm font-reddit font-medium">Community Health Score</p>
-						<QuestionIcon />
+						<TooltipCommon />
 					</div>
 					<div className="flex items-center gap-2">
 						<span className="text-3xl font-semibold font-noto">78</span>
@@ -128,7 +128,7 @@ const CommunityMetrics = () => {
 							</div>
 							<div className="flex items-center gap-2">
 								<p className="text-xs font-reddit">{metric.title}</p>
-								<QuestionIcon />
+								<TooltipCommon />
 							</div>
 							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.value}</p>
 						</div>
@@ -140,7 +140,7 @@ const CommunityMetrics = () => {
 			<div className="text-[#1E1B39">
 				<div className="mb-4 flex items-center gap-2">
 					<p className="text-sm font-noto font-meidum">Core Community Metrics</p>
-					<QuestionIcon />
+					<TooltipCommon />
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -148,7 +148,7 @@ const CommunityMetrics = () => {
 						<div key={index} className="bg-white rounded-xl p-4 space-y-1">
 							<div className="flex items-center gap-2">
 								<p className="text-xs font-reddit">{metric.title}</p>
-								<QuestionIcon />
+								<TooltipCommon />
 							</div>
 							<p className="text-xl font-semibold font-noto">{metric.value}</p>
 							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
@@ -161,7 +161,7 @@ const CommunityMetrics = () => {
 			<div className="text-[#1E1B39">
 				<div className="mb-4 flex items-center gap-2">
 					<p className="text-sm font-noto font-meidum">Cross-Platform Source Analytics</p>
-					<QuestionIcon />
+					<TooltipCommon />
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -169,7 +169,7 @@ const CommunityMetrics = () => {
 						<div key={index} className="bg-white rounded-xl p-4 space-y-1">
 							<div className="flex items-center gap-2">
 								<p className="text-xs font-reddit">{metric.title}</p>
-								<QuestionIcon />
+								<TooltipCommon />
 							</div>
 							<p className="text-xl font-semibold font-noto">{metric.value}</p>
 							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>

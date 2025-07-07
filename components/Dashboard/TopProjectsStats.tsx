@@ -1,5 +1,4 @@
 import { useRouter } from "next/navigation";
-import QuestionIcon from "@/icons/QuestionIcon";
 import Image from "next/image";
 import bonk from '../../images/tokens/bonk.png'
 import doge from '../../images/tokens/doge.png'
@@ -10,6 +9,7 @@ import btc from '../../images/tokens/bitcoin.png'
 import sol from '../../images/tokens/solana.png'
 import tether from '../../images/tokens/tether.png'
 import bnb from '../../images/tokens/bnb.png'
+import TooltipCommon from "../common/TooltipCommon";
 
 const TopProjectsStats = () => {
 	const router = useRouter();
@@ -32,14 +32,14 @@ const TopProjectsStats = () => {
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-[#1E1B39]">
 			{/* Top Gaining Projects */}
-			<div className="p-5 bg-white rounded-xl shadow-xl">
-				<div className="flex items-center gap-2 mb-3">
+			<div className="bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
+				<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
 					<h3 className="font-reddit">Top Gaining Project (Growth Rate - 7d)</h3>
-					<QuestionIcon />
+					<TooltipCommon />
 				</div>
-				<div className="space-y-3 text-[#4B4A4A]">
+				<div className="text-[#4B4A4A] dark:text-white pb-3">
 					{topGainingProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/community-detail")}>
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] rounded-lg transition" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">
@@ -54,14 +54,14 @@ const TopProjectsStats = () => {
 			</div>
 
 			{/* Most Talked About Projects */}
-			<div className="p-5 bg-white rounded-xl shadow-xl">
-				<div className="flex items-center gap-2 mb-3">
+			<div className="bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
+				<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
 					<h3 className="font-reddit">Most Talked About Project (7D)</h3>
-					<QuestionIcon />
+					<TooltipCommon />
 				</div>
-				<div className="space-y-3">
+				<div className="pb-3">
 					{mostTalkedProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/community-detail")}>
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer dark:text-white px-5 py-2 hover:bg-[#F9F9F9] rounded-lg transition" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">
@@ -76,20 +76,20 @@ const TopProjectsStats = () => {
 			</div>
 
 			{/* Summary Stats */}
-			<div className="space-y-6">
-				<div className="p-4 bg-white rounded-xl shadow-xl">
+			<div className="flex gap-4 flex-col">
+				<div className="p-4 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl dark:text-white flex-1">
 					<div className="flex items-center gap-2 mb-2">
 						<h3 className="font-reddit">Number of Tracked Projects</h3>
-						<QuestionIcon />
+						<TooltipCommon />
 					</div>
 					<div className="text-4xl font-bold font-noto">740</div>
 					<div className="text-sm text-[#00B552] font-medium mt-1 font-noto">▲ +14 (+2.8%)</div>
 				</div>
 
-				<div className="p-4 bg-white rounded-xl shadow-xl">
+				<div className="p-4 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl dark:text-white flex-1">
 					<div className="flex items-center gap-2 mb-2">
 						<h3 className="font-reddit">Total Active Users (7D)</h3>
-						<QuestionIcon />
+						<TooltipCommon />
 					</div>
 					<div className="text-4xl font-bold font-noto">133M</div>
 					<div className="text-sm text-[#00B552] font-medium mt-1 font-noto">▲ +214 (+12%)</div>

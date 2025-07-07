@@ -124,7 +124,7 @@ const CommunityDetailPage = () => {
 										</div>
 									</div>
 									<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg">
-										<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] font-noto">
+										<button className="flex items-center gap-2 bg-white px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] font-noto hover:bg-[#F6F6F6] transition-colors duration-200">
 											<HeartIcon />
 											<span className="hidden md:block">Add to Watchlist</span>
 										</button>
