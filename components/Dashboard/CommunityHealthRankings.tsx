@@ -5,6 +5,13 @@ import QuestionIcon from "@/icons/QuestionIcon";
 import SmallGradientChart from "./SmallGradientChart";
 import ArrowUp from "@/icons/ArrowUp";
 import ArrowDown from "@/icons/ArrowDown";
+import Image from "next/image";
+import doge from '../../images/tokens/doge.png'
+import type { StaticImageData } from "next/image";
+import btc from '../../images/tokens/bitcoin.png'
+import eth from '../../images/tokens/eth.png'
+import tether from '../../images/tokens/tether.png'
+import bnb from '../../images/tokens/bnb.png'
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
@@ -12,7 +19,7 @@ const CommunityHealthRankings = () => {
 	const projects: {
 		rank: number;
 		name: string;
-		symbol: string;
+		symbol: StaticImageData;
 		healthScore: number;
 		activeUsers: string;
 		engagementRate: string;
@@ -26,7 +33,7 @@ const CommunityHealthRankings = () => {
 			{
 				rank: 1,
 				name: "Bitcoin",
-				symbol: "₿",
+				symbol: btc,
 				healthScore: 97,
 				activeUsers: "2M",
 				engagementRate: "9%",
@@ -40,7 +47,7 @@ const CommunityHealthRankings = () => {
 			{
 				rank: 2,
 				name: "Ethereum",
-				symbol: "⟠",
+				symbol: eth,
 				healthScore: 94,
 				activeUsers: "1.5M",
 				engagementRate: "8.7%",
@@ -54,7 +61,7 @@ const CommunityHealthRankings = () => {
 			{
 				rank: 3,
 				name: "Tether",
-				symbol: "💎",
+				symbol: tether,
 				healthScore: 88,
 				activeUsers: "800K",
 				engagementRate: "7.5%",
@@ -68,7 +75,7 @@ const CommunityHealthRankings = () => {
 			{
 				rank: 4,
 				name: "BNB",
-				symbol: "🟡",
+				symbol: bnb,
 				healthScore: 85,
 				activeUsers: "600K",
 				engagementRate: "7.2%",
@@ -82,7 +89,7 @@ const CommunityHealthRankings = () => {
 			{
 				rank: 5,
 				name: "Dogecoin",
-				symbol: "🐕",
+				symbol: doge,
 				healthScore: 75,
 				activeUsers: "400K",
 				engagementRate: "7.5%",
@@ -240,7 +247,7 @@ const CommunityHealthRankings = () => {
 									<TableCell className="border-b border-b-[#F3F3F3]">
 										<div className="flex items-center gap-3">
 											<div className="w-8 h-8 rounded-full flex items-center justify-center font-noto">
-												{project.symbol}
+												<Image src={project.symbol} alt="Symbol" />
 											</div>
 											<div className="text-[#4B4A4A]">
 												<p className="font-medium text-sm font-noto">{project.name}</p>
