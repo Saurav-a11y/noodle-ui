@@ -1,5 +1,4 @@
 import IconifyIcon from '@/components/common/IconifyIcon';
-import { Avatar } from '@radix-ui/themes';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import ReportTweetModal from './ReportTweetModal';
@@ -33,7 +32,9 @@ interface TweetInfo {
 	verified?: boolean;
 }
 
-function TweetList({ tweets, isParseUTC, symbol }: any) {
+function TweetList({ tweets, isParseUTC,
+	// symbol 
+}: any) {
 	const [openReport, setOpenReport] = useState({ open: false, tweet: {} as any });
 	return (
 		<div className='max-h-[75vh] overflow-y-auto hidden-scrollbar pb-2 font-noto'>
