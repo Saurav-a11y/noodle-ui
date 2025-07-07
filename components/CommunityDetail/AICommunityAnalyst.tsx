@@ -6,6 +6,7 @@ import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
+import bonk from '../../images/tokens/bonk.png'
 
 const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 	const quickQuestions = [
@@ -68,7 +69,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 			<div className="p-4 border-b border-b-[#E9E9E9] text-[#4B4A4A]">
 				<div className="flex items-center gap-3">
 					<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-						<span className="text-white font-bold">😊</span>
+						<Image src={bonk} alt="Avatar" />
 					</div>
 					<div className="space-y-1">
 						<p className="text-xl font-semibold font-noto">BONK Community</p>

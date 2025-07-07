@@ -1,22 +1,32 @@
 import { useRouter } from "next/navigation";
 import QuestionIcon from "@/icons/QuestionIcon";
+import Image from "next/image";
+import bonk from '../../images/tokens/bonk.png'
+import doge from '../../images/tokens/doge.png'
+import xpr from '../../images/tokens/xpr.png'
+import link from '../../images/tokens/link.png'
+import ic from '../../images/tokens/ic.png'
+import btc from '../../images/tokens/bitcoin.png'
+import sol from '../../images/tokens/solana.png'
+import tether from '../../images/tokens/tether.png'
+import bnb from '../../images/tokens/bnb.png'
 
 const TopProjectsStats = () => {
 	const router = useRouter();
 	const topGainingProjects = [
-		{ rank: 1, name: "BONK", symbol: "😊", growth: "14%" },
-		{ rank: 2, name: "Dogecoin", symbol: "🐕", growth: "12%" },
-		{ rank: 3, name: "XRP", symbol: "💧", growth: "8%" },
-		{ rank: 4, name: "Chainlink", symbol: "🔗", growth: "6%" },
-		{ rank: 5, name: "Internet Computer", symbol: "∞", growth: "2%" }
+		{ rank: 1, name: "BONK", symbol: bonk, growth: "14%" },
+		{ rank: 2, name: "Dogecoin", symbol: doge, growth: "12%" },
+		{ rank: 3, name: "XRP", symbol: xpr, growth: "8%" },
+		{ rank: 4, name: "Chainlink", symbol: link, growth: "6%" },
+		{ rank: 5, name: "Internet Computer", symbol: ic, growth: "2%" }
 	];
 
 	const mostTalkedProjects = [
-		{ rank: 1, name: "Bitcoin", symbol: "₿", mentions: "9.3K" },
-		{ rank: 2, name: "Solana", symbol: "◉", mentions: "7.2K" },
-		{ rank: 3, name: "BONK", symbol: "😊", mentions: "4.1K" },
-		{ rank: 4, name: "Tether", symbol: "💎", mentions: "2K" },
-		{ rank: 5, name: "BNB", symbol: "🟡", mentions: "900M" }
+		{ rank: 1, name: "Bitcoin", symbol: btc, mentions: "9.3K" },
+		{ rank: 2, name: "Solana", symbol: sol, mentions: "7.2K" },
+		{ rank: 3, name: "BONK", symbol: bonk, mentions: "4.1K" },
+		{ rank: 4, name: "Tether", symbol: tether, mentions: "2K" },
+		{ rank: 5, name: "BNB", symbol: bnb, mentions: "900M" }
 	];
 
 	return (
@@ -32,8 +42,8 @@ const TopProjectsStats = () => {
 						<div key={project.rank} className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
-								<div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm">
-									{project.symbol}
+								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">
+									<Image src={project.symbol} alt="Symbol" />
 								</div>
 								<span className="text-sm font-medium">{project.name}</span>
 							</div>
@@ -54,8 +64,8 @@ const TopProjectsStats = () => {
 						<div key={project.rank} className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
-								<div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm">
-									{project.symbol}
+								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">
+									<Image src={project.symbol} alt="Symbol" />
 								</div>
 								<span className="text-sm font-medium">{project.name}</span>
 							</div>
