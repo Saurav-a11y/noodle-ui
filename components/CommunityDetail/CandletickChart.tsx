@@ -8,7 +8,7 @@
 // import { format, parseISO } from 'date-fns';
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
 import { forEach, isEmpty, map } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import '../../styles/chartStyles.scss';
 // import TweetList from './TweetList';
 // import formatNumberWithDecimal from '@/lib/format';
@@ -126,7 +126,7 @@ const CandlestickChart = ({
 	// 	);
 	// };
 
-	const applyMultipleMarkerStyle = (element: HTMLElement) => {
+	const applyMultipleMarkerStyle = useCallback((element: HTMLElement) => {
 		Object.assign(element.style, {
 			backgroundColor: isDark ? '#1A1A1A' : '#ffffff',
 			border: '1px solid #B1B1B1',
@@ -135,7 +135,7 @@ const CandlestickChart = ({
 			alignItems: 'center',
 			justifyContent: 'center',
 		});
-	};
+	}, [isDark]);
 
 	// useEffect(() => {
 	// 	dispatch(
@@ -455,7 +455,7 @@ const CandlestickChart = ({
 			chart.timeScale().unsubscribeVisibleTimeRangeChange(updateMarkerPositions);
 			chart.timeScale().unsubscribeVisibleLogicalRangeChange(updateMarkerPositions);
 		};
-	}, [chartInstance, selectedTimeFrame]);
+	}, [chartInstance, selectedTimeFrame, isDark, applyMultipleMarkerStyle]);
 
 	useEffect(() => {
 		if (!chartInstance) return;

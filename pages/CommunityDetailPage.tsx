@@ -146,7 +146,7 @@ const CommunityDetailPage = () => {
 										</div>
 									</div>
 									<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg">
-										<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] text-[#FFF] font-noto hover:bg-[#F6F6F6] dark:hover:bg-[#313131] transition-colors duration-200">
+										<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] dark:text-[#FFF] font-noto hover:bg-[#F6F6F6] dark:hover:bg-[#313131] transition-colors duration-200">
 											<HeartIcon />
 											<span className="hidden md:block">Add to Watchlist</span>
 										</button>
