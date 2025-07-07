@@ -39,7 +39,7 @@ const TopProjectsStats = () => {
 				</div>
 				<div className="text-[#4B4A4A] dark:text-white pb-3">
 					{topGainingProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] rounded-lg transition" onClick={() => router.push("/community-detail")}>
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#313131] rounded-lg transition" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">
@@ -61,7 +61,7 @@ const TopProjectsStats = () => {
 				</div>
 				<div className="pb-3">
 					{mostTalkedProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between cursor-pointer dark:text-white px-5 py-2 hover:bg-[#F9F9F9] rounded-lg transition" onClick={() => router.push("/community-detail")}>
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer dark:text-white px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#313131] rounded-lg transition" onClick={() => router.push("/community-detail")}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">

@@ -109,24 +109,24 @@ const CommunityMetrics = () => {
 		<div className="space-y-5 mb-8">
 			{/* Community Health Score */}
 			<div className="text-[#1E1B39">
-				<div className="bg-white rounded-xl p-4 mb-4">
-					<div className="mb-1.5 flex items-center gap-2">
+				<div className="bg-white rounded-xl p-4 mb-4 dark:bg-[#1A1A1A]">
+					<div className="mb-1.5 flex items-center gap-2 dark:text-[#FFF]">
 						<p className="text-sm font-reddit font-medium">Community Health Score</p>
 						<TooltipCommon />
 					</div>
 					<div className="flex items-center gap-2">
-						<span className="text-3xl font-semibold font-noto">78</span>
+						<span className="text-3xl font-semibold font-noto dark:text-[#FFF]">78</span>
 						<span className="text-red-500 text-xs font-medium font-noto">▼ 5 from last week</span>
 					</div>
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 					{healthMetrics.map((metric, index) => (
-						<div key={index} className="bg-white rounded-xl p-4 space-y-1">
+						<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
 							<div>
 								{typeof metric.icon === 'string' ? metric.icon : metric.icon}
 							</div>
-							<div className="flex items-center gap-2">
+							<div className="flex items-center gap-2 dark:text-[#FFF]">
 								<p className="text-xs font-reddit">{metric.title}</p>
 								<TooltipCommon />
 							</div>
@@ -138,19 +138,19 @@ const CommunityMetrics = () => {
 
 			{/* Core Community Metrics */}
 			<div className="text-[#1E1B39">
-				<div className="mb-4 flex items-center gap-2">
+				<div className="mb-4 flex items-center gap-2 dark:text-[#FFF]">
 					<p className="text-sm font-noto font-meidum">Core Community Metrics</p>
 					<TooltipCommon />
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 					{coreMetrics.map((metric, index) => (
-						<div key={index} className="bg-white rounded-xl p-4 space-y-1">
-							<div className="flex items-center gap-2">
+						<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
+							<div className="flex items-center gap-2 dark:text-[#FFF]">
 								<p className="text-xs font-reddit">{metric.title}</p>
 								<TooltipCommon />
 							</div>
-							<p className="text-xl font-semibold font-noto">{metric.value}</p>
+							<p className="text-xl font-semibold font-noto dark:text-[#FFF]">{metric.value}</p>
 							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
 						</div>
 					))}
@@ -159,19 +159,19 @@ const CommunityMetrics = () => {
 
 			{/* Cross-Platform Source Analytics */}
 			<div className="text-[#1E1B39">
-				<div className="mb-4 flex items-center gap-2">
+				<div className="mb-4 flex items-center gap-2 dark:text-[#FFF]">
 					<p className="text-sm font-noto font-meidum">Cross-Platform Source Analytics</p>
 					<TooltipCommon />
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 					{sourceMetrics.map((metric, index) => (
-						<div key={index} className="bg-white rounded-xl p-4 space-y-1">
-							<div className="flex items-center gap-2">
+						<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
+							<div className="flex items-center gap-2 dark:text-[#FFF]">
 								<p className="text-xs font-reddit">{metric.title}</p>
 								<TooltipCommon />
 							</div>
-							<p className="text-xl font-semibold font-noto">{metric.value}</p>
+							<p className="text-xl font-semibold font-noto dark:text-[#FFF]">{metric.value}</p>
 							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
 						</div>
 					))}

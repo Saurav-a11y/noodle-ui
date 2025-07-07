@@ -4,7 +4,6 @@
 // import PremiumFeatureLink, { PremiumFeatureLinkRef } from '@/components/common/PremiumFeatureLink';
 // import { useAppDispatch, useAppSelector } from '@/hooks';
 // import useAuthenticate from '@/hooks/useAuthenticate';
-// import useThemekMode from '@/hooks/useThemekMode';
 // import { getPriceHistory, resetPriceHistory } from '@/store/community/communitySlice';
 // import { format, parseISO } from 'date-fns';
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
@@ -17,6 +16,7 @@ import ModalCommon from './ModalCommon';
 import { priceHistoryToken, tweets } from './fakeData';
 import TweetList from './TweetList';
 import { formattedDate } from '@/lib/format';
+import useThemekMode from '@/lib/useThemkMode';
 
 // const COMMUNITIES_STATUS = {
 // 	LISTED: 'listed',
@@ -84,7 +84,7 @@ const CandlestickChart = ({
 	// const {
 	// 	priceHistory: { data: priceHistoryToken, isLoading, tweets },
 	// } = useAppSelector((state) => state.community);
-	// const { isDark } = useThemekMode();
+	const { isDark } = useThemekMode();
 	// const { myProfile } = useAuthenticate();
 
 	// const premiumRef = useRef<PremiumFeatureLinkRef>(null);
@@ -128,7 +128,7 @@ const CandlestickChart = ({
 
 	const applyMultipleMarkerStyle = (element: HTMLElement) => {
 		Object.assign(element.style, {
-			backgroundColor: '#ffffff',
+			backgroundColor: isDark ? '#1A1A1A' : '#ffffff',
 			border: '1px solid #B1B1B1',
 			boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
 			display: 'flex',
@@ -161,8 +161,8 @@ const CandlestickChart = ({
 				background: { type: ColorType.Solid, color: '#ffffff' },
 			},
 			grid: {
-				vertLines: { color: '#E8E8E8' },
-				horzLines: { color: '#E8E8E8', visible: true },
+				vertLines: { color: isDark ? '#e9e9e9' : '#E8E8E8' },
+				horzLines: { color: isDark ? '#e9e9e9' : '#E8E8E8', visible: true },
 			},
 			width: chartContainerRef.current.clientWidth,
 			height: 500,
@@ -204,8 +204,8 @@ const CandlestickChart = ({
 		const chartWidth = chart.timeScale().width();
 		chart.applyOptions({
 			layout: {
-				// background: { color: 'transparent' }, // Màu nền
-				textColor: '#000000', // Màu chữ
+				background: { color: isDark ? '#100F11' : '#fff' }, // Màu nền
+				textColor: isDark ? '#ffffff' : '#000000',
 			},
 			timeScale: {
 				rightOffset: 15, // Thêm padding bên phải
@@ -229,7 +229,7 @@ const CandlestickChart = ({
 		return () => {
 			chart.remove();
 		};
-	}, [selectedTimeFrame]);
+	}, [selectedTimeFrame, isDark]);
 
 	// Cập nhật vị trí markers khi zoom/pan
 	useEffect(() => {
@@ -337,7 +337,7 @@ const CandlestickChart = ({
 				countBadge.style.position = 'absolute';
 				countBadge.style.top = '-11px';
 				countBadge.style.right = '-8px';
-				countBadge.style.backgroundColor = '#000000';
+				countBadge.style.backgroundColor = isDark ? '#ffffff' : '#000000';
 				countBadge.textContent = `+${tweetsInInterval.length.toString()}`;
 				countBadge.style.fontSize = '10px';
 				countBadge.style.fontWeight = 'bold';
@@ -350,7 +350,7 @@ const CandlestickChart = ({
 				countBadge.style.alignItems = 'center';
 				countBadge.style.justifyContent = 'center';
 				countBadge.style.border = '1px solid #B1B1B1';
-				countBadge.style.color = '#ffffff';
+				countBadge.style.color = isDark ? '#000000' : '#ffffff';
 				countBadge.style.boxSizing = 'border-box';
 				countBadge.style.whiteSpace = 'nowrap';
 
@@ -536,9 +536,9 @@ const CandlestickChart = ({
 					{platformsState.map((platform) => (
 						<button
 							key={platform.name}
-							className={`px-3 py-1.5 rounded text-xs font-reddit cursor-pointer font-medium transition-colors hover:bg-[#F4F4F5] ${platform.active
-								? "bg-[#DDF346]"
-								: "border border-[#DDF346]"
+							className={`px-3 py-1.5 rounded text-xs font-reddit cursor-pointer font-medium transition-colors ${platform.active
+								? "bg-[#DDF346] text-[#222]"
+								: "border border-[#DDF346] hover:bg-[#F4F4F5] dark:hover:bg-[#313131]"
 								}`}
 							onClick={() => handlePlatformClick(platform.name)}
 						>
@@ -546,12 +546,12 @@ const CandlestickChart = ({
 						</button>
 					))}
 				</div>
-				<div className='flex items-center bg-[#F9F9F9] p-1.5 rounded'>
+				<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
 					{['1D', '3D', '7D', '1M'].map((timeFrame) => (
 						<button
 							key={timeFrame}
 							onClick={() => handleTimeFrameChange(timeFrame as any)}
-							className={`px-3 py-1.5 rounded cursor-pointer text-xs font-reddit font-medium transition-colors hover:bg-[#F4F4F5] ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md' : ''
+							className={`px-2.5 py-1 rounded cursor-pointer text-xs font-reddit font-medium transition-colors ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md text-[#222]' : 'hover:bg-[#F4F4F5] dark:hover:bg-[#313131]'
 								}`}
 						>
 							{timeFrame}

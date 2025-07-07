@@ -48,7 +48,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 	};
 
 	return (
-		<div className="h-full flex flex-col bg-white drop-shadow-xl rounded-xl overflow-hidden">
+		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
 				<Image src={chatBg} alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
@@ -70,7 +70,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 			</div>
 
 			{/* Project Info */}
-			<div className="p-4 border-b border-b-[#E9E9E9] text-[#4B4A4A]">
+			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1] text-[#4B4A4A] dark:text-white">
 				<div className="flex items-center gap-3">
 					<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
 						<Image src={bonk} alt="Avatar" />
@@ -89,15 +89,15 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 			</div>
 
 			{/* Quick Questions */}
-			<div className="p-4 border-b border-b-[#E9E9E9]">
-				<p className="text-sm font-medium text-[#373737] mb-3 font-noto">Quick Questions:</p>
+			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1]">
+				<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
 				<div className="flex flex-wrap gap-2">
 					{quickQuestions.map((question, index) => (
 						<Button
 							key={index}
 							variant="outline"
 							size="sm"
-							className={`text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selectedQuestion === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'
+							className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selectedQuestion === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'
 								}`}
 							onClick={() => handleQuickQuestion(question)}
 						>
@@ -143,7 +143,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 			</div>
 
 			{/* Input Area */}
-			<div className="p-4 border-t border-t-[#E9E9E9]">
+			<div className="p-4 border-t border-t-[#E9E9E9] dark:border-t-[#B1B1B1]">
 				<div className="flex items-center justify-between w-full max-w-xl px-3 py-2 border border-[#E9E9E9] rounded-full bg-white">
 					{/* Left Icon */}
 					<StarIcon />
