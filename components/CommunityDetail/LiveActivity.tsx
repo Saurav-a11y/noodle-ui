@@ -9,7 +9,6 @@ import YoutubeIcon from "@/icons/YoutubeIcon";
 import { useState } from "react";
 import RotateIcon from "@/icons/RotateIcon";
 import ChatIcon from "@/icons/ChatIcon";
-import HeartIcon from "@/icons/HeartIcon";
 
 const LiveActivity = () => {
 	const tabs = ["All Activity", "Twitter", "Reddit", "GitHub", "Youtube"];
