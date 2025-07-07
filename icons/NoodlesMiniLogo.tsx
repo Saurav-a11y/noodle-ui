@@ -1,5 +1,5 @@
-const NoodlesMiniLogo = (props: React.SVGProps<SVGSVGElement>) => (
-	<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+const NoodlesMiniLogo = ({ size = 60, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
+	<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 60 60" fill="none">
 		<circle cx="30" cy="30" r="30" fill="#373737" />
 		<circle cx="31.5" cy="28.5" r="28.5" fill="white" />
 		<rect width="4.72824" height="16.274" rx="2.36412" transform="matrix(-1 0 0 1 36.918 36.7227)" fill="#4A4545" />

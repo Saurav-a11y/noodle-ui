@@ -6,6 +6,9 @@ import ReportTweetModal from './ReportTweetModal';
 import ImgWithOnError from './ImgWithOnError';
 import { Button } from '../ui/Button';
 import formatNumberWithDecimal, { formattedDate } from '@/lib/format';
+import HeartIcon from '@/icons/HeartIcon';
+import ChatIcon from '@/icons/ChatIcon';
+import RotateIcon from '@/icons/RotateIcon';
 
 interface TweetInfo {
 	symbol: string;
@@ -33,16 +36,16 @@ interface TweetInfo {
 function TweetList({ tweets, isParseUTC, symbol }: any) {
 	const [openReport, setOpenReport] = useState({ open: false, tweet: {} as any });
 	return (
-		<div className='max-h-[75vh] overflow-y-auto hidden-scrollbar pb-2'>
+		<div className='max-h-[75vh] overflow-y-auto hidden-scrollbar pb-2 font-noto'>
 			{tweets?.map((tweet: TweetInfo, index: number) => (
-				<div key={index} className={`border dark:border-gray-500 rounded-xl p-4 ${index !== tweets?.length - 1 ? 'mb-4' : ''}`}>
-					<div className='flex items-start justify-between gap-2'>
+				<div key={index} className={`border border-[#E4E4E4] p-4 rounded-xl ${index !== tweets?.length - 1 ? 'mb-4' : ''}`}>
+					<div className='flex items-start justify-between gap-2 mb-3'>
 						<div className='flex gap-2 items-center'>
 							<ImgWithOnError
-								src={tweet?.profile_image_url || '/avatar.png'}
+								src={tweet?.profile_image_url || 'https://static.vecteezy.com/system/resources/previews/020/911/750/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'}
 								alt='avt'
-								className='bg-gray-500 size-8 !rounded-full block'
-								errImg='/avatar.png'
+								className='size-10 !rounded-full block'
+								errImg='https://static.vecteezy.com/system/resources/previews/020/911/750/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png'
 							/>
 							<div>
 								<p className='text-sm flex gap-1 items-center'>
@@ -52,7 +55,7 @@ function TweetList({ tweets, isParseUTC, symbol }: any) {
 								<p className='text-sm opacity-75'>@{tweet?.username}</p>
 							</div>
 							{tweet?.data_type && (
-								<div className='bg-gray-500 px-2 py-1 text-white text-xs rounded-full mb-auto capitalize'>{tweet?.data_type}</div>
+								<div className='bg-gray-500 px-2 py-1 text-white text-xs rounded-full mb-auto capitalize ml-2'>{tweet?.data_type}</div>
 							)}
 							{tweet?.classification && (
 								<div className='bg-[#775bdd] px-2 py-1 text-white text-xs rounded-full mb-auto capitalize'>{tweet?.classification}</div>
@@ -61,7 +64,7 @@ function TweetList({ tweets, isParseUTC, symbol }: any) {
 						<Button
 							size='sm'
 							variant='outline'
-							className={'rounded-full shrink-0 dark:bg-black2 border dark:border-grayPrimary'}
+							className={'rounded-full shrink-0 dark:bg-black2 border border-[#E4E4E4] dark:border-grayPrimary font-reddit text-xs cursor-pointer'}
 							onClick={() => setOpenReport({ open: true, tweet })}
 						>
 							Report
@@ -79,15 +82,15 @@ function TweetList({ tweets, isParseUTC, symbol }: any) {
 						{/* Commented stats section */}
 						<div className='flex flex-wrap items-center gap-x-2 gap-y-1'>
 							<div className='flex items-center gap-1 text-sm'>
-								<IconifyIcon icon='flat-color-icons:like' />{' '}
+								<HeartIcon fill='#FF5959' />{' '}
 								<span className='opacity-80'>{formatNumberWithDecimal(tweet?.like_count, 0)}</span>
 							</div>
 							<div className='flex items-center gap-1 text-sm'>
-								<IconifyIcon icon='mdi:comment-outline' className='text-blue-400' />{' '}
+								<ChatIcon />{' '}
 								<span className='opacity-80'>{formatNumberWithDecimal(tweet?.reply_count, 0)}</span>
 							</div>
 							<div className='flex items-center gap-1 text-sm'>
-								<IconifyIcon icon='garden:arrow-retweet-stroke-12' className='text-gray-500 dark:text-gray-300' />{' '}
+								<RotateIcon />{' '}
 								<span className='opacity-80'>{formatNumberWithDecimal(tweet?.retweet_count, 0)}</span>
 							</div>
 						</div>

@@ -12,13 +12,18 @@ import bgDetailPage from "@/images/bg-detail-page.png";
 import HeartIcon from "@/icons/HeartIcon";
 import Image from "next/image";
 import bonk from '../images/tokens/bonk.png'
+import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 
 const CommunityDetailPage = () => {
 	const [isChatVisible, setChatVisible] = useState(true);
 	const layoutFrameRef = useRef<number | null>(null);
 	const leftPanelSizeRef = useRef(0);
-	const [isContentCentered, setContentCentered] = useState(true);
 	const [isMobile, setIsMobile] = useState(false);
+	const suppressLayoutUpdateRef = useRef(false);
+	const handleCloseChat = () => {
+		suppressLayoutUpdateRef.current = true;
+		setChatVisible(false);
+	};
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -32,28 +37,38 @@ const CommunityDetailPage = () => {
 	}, []);
 
 	useEffect(() => {
-		let timeoutId: NodeJS.Timeout;
-		if (layoutFrameRef.current === null) {
-			// Initial mount, set immediately
-			setContentCentered(leftPanelSizeRef.current === 0);
-		} else {
-			timeoutId = setTimeout(() => {
-				setContentCentered(leftPanelSizeRef.current === 0);
-			}, 100);
-		}
-		return () => {
-			if (timeoutId) clearTimeout(timeoutId);
-		};
-	}, []);
-
-	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			setChatVisible(window.innerWidth >= 768); // Ẩn nếu < md (mobile)
 		}
 	}, []);
 
+	console.log('!isMobile && isChatVisible', !isMobile, isChatVisible)
 	return (
 		<div className="h-screen">
+			{(!isMobile && !isChatVisible) && (
+				<button
+					onClick={() => setChatVisible(true)}
+					className="fixed bottom-4 left-4 bg-[#84EA07] text-white rounded-full shadow-lg z-90 cursor-pointer"
+				>
+					<NoodlesMiniLogo size={50} />
+				</button>
+			)}
+
+			{isMobile && !isChatVisible && (
+				<button
+					onClick={() => setChatVisible(true)}
+					className="fixed bottom-4 right-4 bg-[#84EA07] text-white rounded-full shadow-lg z-50 cursor-pointer"
+				>
+					<NoodlesMiniLogo size={50} />
+				</button>
+			)}
+
+			{isMobile && isChatVisible && (
+				<div className="fixed inset-0 z-90 bg-white p-4">
+					<AICommunityAnalyst handleCloseChat={handleCloseChat} />
+				</div>
+			)}
+
 			<ResizablePanelGroup
 				direction="horizontal"
 				className="min-h-[calc(100vh-80px)]"
@@ -62,35 +77,43 @@ const CommunityDetailPage = () => {
 						cancelAnimationFrame(layoutFrameRef.current);
 					}
 					layoutFrameRef.current = requestAnimationFrame(() => {
+						if (suppressLayoutUpdateRef.current) {
+							suppressLayoutUpdateRef.current = false;
+							return;
+						}
 						const [leftSize] = sizes;
 						leftPanelSizeRef.current = leftSize;
-						setChatVisible(leftSize > 0); // Hiển thị lại nếu user kéo ra
-						setContentCentered(leftSize === 0);
+						if (leftSize === 0) {
+							setChatVisible(false);
+						} else {
+							setChatVisible(true);
+						}
 					});
 				}}
 			>
 				{/* Left Panel - AI Chat */}
-				<ResizablePanel
-					id="left"
-					key={isMobile && isChatVisible ? 'left-full' : 'left-default'}
-					defaultSize={isMobile && isChatVisible ? 100 : isChatVisible ? 25 : 0}
-					collapsedSize={0}
-					minSize={0}
-					maxSize={isMobile ? 100 : 40}
-					collapsible
-				>
-					<div className="h-screen p-4 border-r border-gray-200 bg-white">
-
-						{isChatVisible && (
+				{!isMobile && isChatVisible && (
+					<ResizablePanel
+						id="left"
+						key="left-panel"
+						defaultSize={25}
+						collapsedSize={25}
+						minSize={25}
+						maxSize={40}
+						collapsible
+					>
+						<div className="h-screen p-4 border-r border-gray-200 bg-white">
 							<div className="h-full">
-								<AICommunityAnalyst handleCloseChat={() => setChatVisible(false)} />
+								<AICommunityAnalyst handleCloseChat={handleCloseChat} />
 							</div>
-						)}
-					</div>
-				</ResizablePanel>
+						</div>
+					</ResizablePanel>
+				)}
 
 				{/* Resizable Handle */}
-				<ResizableHandle withHandle className="w-3 cursor-col-resize transition" />
+				{!isMobile && isChatVisible && (
+					<ResizableHandle withHandle className="w-3 cursor-col-resize transition" />
+				)}
 
 				{/* Right Panel - Dashboard */}
 				<ResizablePanel
@@ -105,7 +128,7 @@ const CommunityDetailPage = () => {
 							<Image src={bgDetailPage} alt="Background detail page" />
 						</div>
 						<div className="relative bg-transparent md:mt-10">
-							<div className={`${isContentCentered ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
+							<div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
 								{/* Project Header */}
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-4">

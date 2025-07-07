@@ -62,7 +62,7 @@ export default function ModalCommon({
 
 	const titleComponent = (
 		<div
-			className={cn('font-bold', {
+			className={cn('text-lg font-bold font-reddit', {
 				'text-center': isCenterTitle,
 			})}
 		>

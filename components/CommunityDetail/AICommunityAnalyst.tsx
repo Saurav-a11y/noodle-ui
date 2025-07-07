@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "../ui/Button";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
@@ -9,6 +10,8 @@ import MiniMumIcon from "@/icons/MinimunIcon";
 import bonk from '../../images/tokens/bonk.png'
 
 const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
+	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
+
 	const quickQuestions = [
 		"Explain health score",
 		"Why the alerts?",
@@ -40,6 +43,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 	];
 
 	const handleQuickQuestion = (question: string) => {
+		setSelectedQuestion(question);
 		console.log("Quick question:", question);
 	};
 
@@ -93,7 +97,8 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
 							key={index}
 							variant="outline"
 							size="sm"
-							className="text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit"
+							className={`text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selectedQuestion === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'
+								}`}
 							onClick={() => handleQuickQuestion(question)}
 						>
 							{question}
