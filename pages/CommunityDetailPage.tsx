@@ -44,7 +44,7 @@ const CommunityDetailPage = () => {
 		return () => {
 			if (timeoutId) clearTimeout(timeoutId);
 		};
-	}, [leftPanelSizeRef.current]);
+	}, []);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
