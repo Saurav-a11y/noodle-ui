@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";

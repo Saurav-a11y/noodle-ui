@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { notoSansDisplay, redditSans, spaceGrotesk } from "./fonts";
-import { TooltipProvider } from "@/components/ui/Tooltip";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${notoSansDisplay.variable} ${redditSans.variable} ${spaceGrotesk.variable}`}>
       <body className="antialiased">
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
+        {children}
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import bonk from '../../images/tokens/bonk.png'
