@@ -9,7 +9,7 @@ import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
 import bonk from '../../images/tokens/bonk.png'
 
-const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat: any }) => {
+const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
 	const quickQuestions = [

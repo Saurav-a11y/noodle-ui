@@ -108,7 +108,7 @@ const CommunityHealthRankings = () => {
 			<div className="flex items-center justify-between mb-6">
 				<div className="flex items-center gap-2 dark:text-[#FFFFFF]">
 					<h3 className="text-3xl font-medium font-space">Community Health Rankings</h3>
-					<TooltipCommon />
+					<TooltipCommon content="A live leaderboard that ranks crypto projects based on their overall community health score. It helps you quickly identify which projects have strong, active, and authentic communities." />
 				</div>
 			</div>
 
@@ -206,31 +206,31 @@ const CommunityHealthRankings = () => {
 								<TableHead className="text-center  border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
 									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
 										<p className="text-xs font-noto">Community Health Score</p>
-										<TooltipCommon />
+										<TooltipCommon content="A score from 0 to 100 that represents the overall health of a project’s community. It’s calculated using growth, engagement, authenticity, and activity consistency." />
 									</div>
 								</TableHead>
 								<TableHead className="text-center  border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
 									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
 										<p className="text-xs font-noto">Active Users</p>
-										<TooltipCommon />
+										<TooltipCommon content="Represents the number of unique users who interacted with the project during a specific time range. Higher numbers indicate a more active and engaged community." />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
 									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
 										<p className="text-xs font-noto">Engagement Rate</p>
-										<TooltipCommon />
+										<TooltipCommon content="Measures how many users are actively participating (likes, comments, shares) relative to the total audience. It reflects the quality and loyalty of community interactions." />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
 									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
 										<p className="text-xs font-noto">Growth Rate</p>
-										<TooltipCommon />
+										<TooltipCommon content="Shows how fast the project’s community or activity is increasing over time. A steady or rising growth rate often signals momentum or renewed interest." />
 									</div>
 								</TableHead>
 								<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
 									<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
 										<p className="text-xs font-noto">Risk Flags</p>
-										<TooltipCommon />
+										<TooltipCommon content="Indicates any warning signals such as sudden drops in activity, negative sentiment, or whale sell-offs. Helps identify potential community or project risks." />
 									</div>
 								</TableHead>
 								<TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]"><p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Market Cap</p></TableHead>
