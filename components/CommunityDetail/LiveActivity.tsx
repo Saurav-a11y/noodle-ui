@@ -61,7 +61,7 @@ const LiveActivity = () => {
 		<div className="text-[#1E1B39] dark:text-white">
 			<div className="flex items-center gap-2 mb-3">
 				<h3 className="text-xl font-semibold font-noto">Live Community Data Sources</h3>
-				<TooltipCommon />
+				<TooltipCommon content="Real-time data pulled from Twitter, Reddit, GitHub, YouTube, and blockchain activity. Powers all insights shown on this dashboard." />
 			</div>
 
 			<div className="flex items-center gap-2 mb-4 border-b border-[#C5C5C5] overflow-scroll">

@@ -36,7 +36,7 @@ const TopProjectsStats = () => {
 			<div className="bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
 				<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
 					<h3 className="font-reddit">Top Gaining Project (Growth Rate - 7d)</h3>
-					<TooltipCommon />
+					<TooltipCommon content="Displays the top 5 projects with the highest growth in community activity over the past 7 days. These projects are gaining traction in terms of mentions, engagement, and visibility." />
 				</div>
 				<div className="text-[#4B4A4A] dark:text-white pb-3">
 					{topGainingProjects.map((project) => (
@@ -58,7 +58,7 @@ const TopProjectsStats = () => {
 			<div className="bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
 				<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
 					<h3 className="font-reddit">Most Talked About Project (7D)</h3>
-					<TooltipCommon />
+					<TooltipCommon content="Highlights the most mentioned projects across major platforms during the last 7 days. High mention volume often indicates rising interest and trending discussions." />
 				</div>
 				<div className="pb-3">
 					{mostTalkedProjects.map((project) => (
@@ -81,7 +81,7 @@ const TopProjectsStats = () => {
 				<div className="p-4 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl dark:text-white flex-1">
 					<div className="flex items-center gap-2 mb-2">
 						<h3 className="font-reddit">Number of Tracked Projects</h3>
-						<TooltipCommon />
+						<TooltipCommon content="The total number of crypto projects being monitored for community signals and on-chain metrics. Only projects with enough consistent data are included." />
 					</div>
 					<div className="text-4xl font-bold font-noto">740</div>
 					<div className="text-sm text-[#00B552] font-medium mt-1 font-noto">▲ +14 (+2.8%)</div>
@@ -90,7 +90,7 @@ const TopProjectsStats = () => {
 				<div className="p-4 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl dark:text-white flex-1">
 					<div className="flex items-center gap-2 mb-2">
 						<h3 className="font-reddit">Total Active Users (7D)</h3>
-						<TooltipCommon />
+						<TooltipCommon content="Total number of unique users who engaged with tracked projects in the past 7 days. Includes social interactions, token activity, and contributions." />
 					</div>
 					<div className="text-4xl font-bold font-noto">133M</div>
 					<div className="text-sm text-[#00B552] font-medium mt-1 font-noto">▲ +214 (+12%)</div>
