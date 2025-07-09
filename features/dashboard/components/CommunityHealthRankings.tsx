@@ -13,11 +13,31 @@ import { formatNumberShort, formatPercent } from "@/lib/format";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
-	const { data: communityHealthRankingsData, isLoading: isGettingCommunityHealthRanks } = useCommunityHealthRanks();
-	const communityHealthRankings = _get(communityHealthRankingsData, 'data.community_health_rankings', []);
-	const filterCategory = _get(communityHealthRankingsData, 'metadata.filters.category', []);
-	const filterScore = _get(communityHealthRankingsData, 'metadata.filters.score_range', []);
-	const filterSize = _get(communityHealthRankingsData, 'metadata.filters.size', []);
+	const { data, isLoading } = useCommunityHealthRanks();
+
+	const rankings = _get(data, 'data.community_health_rankings', []);
+	const filterCategory = _get(data, 'metadata.filters.category', []);
+	const filterScore = _get(data, 'metadata.filters.score_range', []);
+	const filterSize = _get(data, 'metadata.filters.size', []);
+
+	const renderSelect = (data: string[]) => (
+		<Select defaultValue={data[0]}>
+			<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
+				<SelectValue placeholder='All' />
+			</SelectTrigger>
+			<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
+				{_map(data, (item) => (
+					<SelectItem
+						key={item}
+						value={item}
+						className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
+					>
+						{item}
+					</SelectItem>
+				))}
+			</SelectContent>
+		</Select>
+	);
 
 	return (
 		<div>
@@ -31,60 +51,14 @@ const CommunityHealthRankings = () => {
 			<div className="p-5 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
-					<Select defaultValue={filterCategory[0]}>
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
-							<SelectValue placeholder='All' />
-						</SelectTrigger>
-						<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
-							{_map(filterCategory, (category) => (
-								<SelectItem
-									key={category}
-									value={category}
-									className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
-								>
-									{category}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-
-					<Select defaultValue={filterScore[0]}>
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
-							<SelectValue placeholder='All' />
-						</SelectTrigger>
-						<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
-							{_map(filterScore, (score) => (
-								<SelectItem
-									key={score}
-									value={score}
-									className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
-								>
-									{score}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-
-					<Select defaultValue={filterSize[0]}>
-						<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
-							<SelectValue placeholder='All' />
-						</SelectTrigger>
-						<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
-							{_map(filterSize, (size) => (
-								<SelectItem
-									key={size}
-									value={size}
-									className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors font-reddit dark:text-white"
-								>
-									{size}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+					{renderSelect(filterCategory)}
+					{renderSelect(filterScore)}
+					{renderSelect(filterSize)}
 				</div>
 
 				{/* Table */}
 				<div className="overflow-x-auto">
+
 					<Table>
 						<TableHeader className="dark:bg-[#2A2A2A]">
 							<TableRow>
@@ -127,46 +101,56 @@ const CommunityHealthRankings = () => {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{_map(communityHealthRankings, (project) => (
-								<TableRow
-									key={project?.rank}
-									className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors"
-									onClick={() => router.push(`/community-detail/${project?.symbol}`)}
-								>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.rank}</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-										<div className="flex items-center gap-3">
-											<div className="w-8 h-8 flex items-center justify-center font-noto">
-												<Image src={project?.medium_logo_url} alt="Symbol" width={64} height={64} className="rounded-full" />
+							{isLoading
+								? Array.from({ length: 5 }).map((_, i) => (
+									<TableRow key={i} className="animate-pulse">
+										{Array.from({ length: 9 }).map((_, j) => (
+											<TableCell key={j} className="py-4 h-[73px] border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+												<div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-full" />
+											</TableCell>
+										))}
+									</TableRow>
+								))
+								: _map(rankings, (project) => (
+									<TableRow
+										key={project?.rank}
+										className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors"
+										onClick={() => router.push(`/community-detail/${project?.symbol}`)}
+									>
+										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.rank}</TableCell>
+										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<div className="flex items-center gap-3">
+												<div className="w-8 h-8 flex items-center justify-center font-noto">
+													<Image src={project?.medium_logo_url} alt="Symbol" width={64} height={64} className="rounded-full" />
+												</div>
+												<div className="text-[#4B4A4A] dark:text-[#FFF]">
+													<p className="font-medium text-sm font-noto">{project?.name}</p>
+													<div className="text-[10px] font-medium opacity-50 font-noto">{project?.symbol}</div>
+												</div>
 											</div>
-											<div className="text-[#4B4A4A] dark:text-[#FFF]">
-												<p className="font-medium text-sm font-noto">{project?.name}</p>
-												<div className="text-[10px] font-medium opacity-50 font-noto">{project?.symbol}</div>
+										</TableCell>
+										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{project?.health_score}</p></TableCell>
+										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(project?.active_users)}</p></TableCell>
+										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{project?.engagement_rate_percent}%</p></TableCell>
+										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
+											<div className={`text-center font-noto`}>
+												{formatPercent(project?.growth_rate_percent)}
 											</div>
-										</div>
-									</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.health_score}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{formatNumberShort(project?.active_users)}</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.engagement_rate_percent}%</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
-										<div className={`flex items-center font-noto`}>
-											{formatPercent(project?.growth_rate_percent)}
-										</div>
-									</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.risk_flag}</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-										<div className="flex items-center gap-3">
-											<p className="text-sm font-medium font-noto text-[#4B4A4A] dark:text-[#FFF]">{project?.market_cap?.display}</p>
-											<div className={`flex items-center font-noto`}>
-												{formatPercent(project?.market_cap?.change_percent)}
+										</TableCell>
+										<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.risk_flag}</TableCell>
+										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<div className="flex items-center gap-3">
+												<p className="text-sm font-medium font-noto text-[#4B4A4A] dark:text-[#FFF]">{project?.market_cap?.display}</p>
+												<div className={`flex items-center font-noto`}>
+													{formatPercent(project?.market_cap?.change_percent)}
+												</div>
 											</div>
-										</div>
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-										<SmallGradientChart color={project?.market_cap?.change_percent > 0 ? 'green' : 'red'} data={project?.market_cap?.trend_chart} />
-									</TableCell>
-								</TableRow>
-							))}
+										</TableCell>
+										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<SmallGradientChart color={project?.market_cap?.change_percent > 0 ? 'green' : 'red'} data={project?.market_cap?.trend_chart} />
+										</TableCell>
+									</TableRow>
+								))}
 						</TableBody>
 					</Table>
 				</div>
