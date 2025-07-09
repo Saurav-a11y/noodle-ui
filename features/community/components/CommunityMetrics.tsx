@@ -2,7 +2,7 @@ import AuthenticEngagementIcon from "@/icons/AuthenticEngagementIcon";
 import CommunityGrowthIcon from "@/icons/CommunityGrowthIcon";
 import RecentActivityDropIcon from "@/icons/RecentActivityDropIcon";
 import WhaleActivityIcon from "@/icons/WhaleActivityIcon";
-import TooltipCommon from "../common/TooltipCommon";
+import TooltipCommon from "../../../components/common/TooltipCommon";
 
 const CommunityMetrics = () => {
 	const healthMetrics = [

@@ -1,7 +1,7 @@
 'use client';
 
-import CommunityHealthRankings from "@/components/Dashboard/CommunityHealthRankings";
-import TopProjectsStats from "@/components/Dashboard/TopProjectsStats";
+import CommunityHealthRankings from "@/features/dashboard/components/CommunityHealthRankings";
+import TopProjectsStats from "@/features/dashboard/components/TopProjectsStats";
 import Header from "@/components/Header";
 import Image from "next/image";
 import bgDetailPage from "@/images/bg-detail-page.png";

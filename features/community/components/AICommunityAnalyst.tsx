@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../ui/Button";
+import { Button } from "@/components/ui/Button";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
 import chatBg from "@/images/bg-chat.png";
@@ -7,7 +7,7 @@ import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
-import bonk from '../../images/tokens/bonk.png'
+import bonk from '@/images/tokens/bonk.png'
 
 const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);

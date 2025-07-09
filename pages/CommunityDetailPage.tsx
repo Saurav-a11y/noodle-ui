@@ -1,11 +1,11 @@
 'use client';
 import { useState, useEffect } from "react";
-import ActivityTimeline from "@/components/CommunityDetail/ActivityTimeline";
-import AICommunityAnalyst from "@/components/CommunityDetail/AICommunityAnalyst";
-import CommunityMetrics from "@/components/CommunityDetail/CommunityMetrics";
-import LiveActivity from "@/components/CommunityDetail/LiveActivity";
-import ProjectInfo from "@/components/CommunityDetail/ProjectInfo";
-import SocialChart from "@/components/CommunityDetail/SocialChart";
+import ActivityTimeline from "@/features/community/components/ActivityTimeline";
+import AICommunityAnalyst from "@/features/community/components/AICommunityAnalyst";
+import CommunityMetrics from "@/features/community/components/CommunityMetrics";
+import LiveActivity from "@/features/community/components/LiveActivity";
+import ProjectInfo from "@/features/community/components/ProjectInfo";
+import SocialChart from "@/features/community/components/SocialChart";
 import Header from "@/components/Header";
 import bgDetailPage from "@/images/bg-detail-page.png";
 import HeartIcon from "@/icons/HeartIcon";

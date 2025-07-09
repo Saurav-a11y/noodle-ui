@@ -1,16 +1,16 @@
 'use client'
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import bonk from '../../images/tokens/bonk.png'
-import doge from '../../images/tokens/doge.png'
-import xpr from '../../images/tokens/xpr.png'
-import link from '../../images/tokens/link.png'
-import ic from '../../images/tokens/ic.png'
-import btc from '../../images/tokens/bitcoin.png'
-import sol from '../../images/tokens/solana.png'
-import tether from '../../images/tokens/tether.png'
-import bnb from '../../images/tokens/bnb.png'
-import TooltipCommon from "../common/TooltipCommon";
+import bonk from '@/images/tokens/bonk.png'
+import doge from '@/images/tokens/doge.png'
+import xpr from '@/images/tokens/xpr.png'
+import link from '@/images/tokens/link.png'
+import ic from '@/images/tokens/ic.png'
+import btc from '@/images/tokens/bitcoin.png'
+import sol from '@/images/tokens/solana.png'
+import tether from '@/images/tokens/tether.png'
+import bnb from '@/images/tokens/bnb.png'
+import TooltipCommon from "@/components/common/TooltipCommon";
 
 const TopProjectsStats = () => {
 	const router = useRouter();
@@ -40,7 +40,7 @@ const TopProjectsStats = () => {
 				</div>
 				<div className="text-[#4B4A4A] dark:text-white pb-3">
 					{topGainingProjects.map((project) => (
-						<div key={project.rank} className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#313131] rounded-lg transition" onClick={() => router.push("/community-detail")}>
+						<div key={project.rank} className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#313131] rounded-lg transition" onClick={() => router.push(`/community-detail/${project.name}`)}>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{project.rank}</span>
 								<div className="w-8 h-8 rounded-full flex items-center justify-center text-sm">

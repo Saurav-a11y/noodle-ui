@@ -9,7 +9,7 @@
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
 import { forEach, isEmpty, map } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import '../../styles/chartStyles.scss';
+import '@/styles/chartStyles.scss';
 // import TweetList from './TweetList';
 // import formatNumberWithDecimal from '@/lib/format';
 import ModalCommon from './ModalCommon';

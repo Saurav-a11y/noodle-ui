@@ -8,7 +8,7 @@ import YoutubeIcon from "@/icons/YoutubeIcon";
 import { useState } from "react";
 import RotateIcon from "@/icons/RotateIcon";
 import ChatIcon from "@/icons/ChatIcon";
-import TooltipCommon from "../common/TooltipCommon";
+import TooltipCommon from "../../../components/common/TooltipCommon";
 
 const LiveActivity = () => {
 	const tabs = ["All Activity", "Twitter", "Reddit", "GitHub", "Youtube"];

@@ -1,18 +1,18 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";
-import SmallGradientChart from "./SmallGradientChart";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import ArrowUp from "@/icons/ArrowUp";
 import ArrowDown from "@/icons/ArrowDown";
 import Image from "next/image";
-import doge from '../../images/tokens/doge.png'
 import type { StaticImageData } from "next/image";
-import btc from '../../images/tokens/bitcoin.png'
-import eth from '../../images/tokens/eth.png'
-import tether from '../../images/tokens/tether.png'
-import bnb from '../../images/tokens/bnb.png'
-import TooltipCommon from "../common/TooltipCommon";
+import doge from '@/images/tokens/doge.png'
+import btc from '@/images/tokens/bitcoin.png'
+import eth from '@/images/tokens/eth.png'
+import tether from '@/images/tokens/tether.png'
+import bnb from '@/images/tokens/bnb.png'
+import TooltipCommon from "@/components/common/TooltipCommon";
+import SmallGradientChart from "./SmallGradientChart";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();

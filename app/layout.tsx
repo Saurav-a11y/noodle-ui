@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ReactQueryProvider from '@/lib/react-query-provider';
 import "../styles/globals.css";
 import { notoSansDisplay, redditSans, spaceGrotesk } from "./fonts";
 
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${notoSansDisplay.variable} ${redditSans.variable} ${spaceGrotesk.variable}`}>
       <body className="antialiased">
-        {children}
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
       </body>
     </html>
   );
