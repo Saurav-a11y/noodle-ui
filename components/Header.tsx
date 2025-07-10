@@ -1,11 +1,9 @@
 'use client'
-import { ArrowDown01, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
 import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
-import { useRouter } from "next/navigation";
 import useThemekMode from '@/lib/useThemkMode';
-import ArrowDown from "@/icons/ArrowDown";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "./ui/NavigationMenu";
 import Link from "next/link";
 import CryptoIcon from "@/icons/CryptoIcon";
@@ -21,7 +19,6 @@ const marketItems = [
 ];
 
 const Header = () => {
-	const router = useRouter();
 	const { isDark } = useThemekMode();
 	return (
 		<header className="bg-white dark:bg-[#0B0B0B] shadow-md sticky top-0 z-50">
