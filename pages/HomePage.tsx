@@ -27,6 +27,7 @@ import IconSection4_3 from "@/icons/IconSection4_3";
 import IconSection4_4 from "@/icons/IconSection4_4";
 import PlayBlackIcon from "@/icons/PlayBlackIcon";
 import IconSection1_1 from "@/icons/IconSection1_1";
+import { useState } from "react";
 
 interface FeatureCardProps {
 	title: string;
@@ -85,8 +86,8 @@ const section5 = [
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, image }) => {
 	return (
-		<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-xl h-full">
-			<div className="bg-white dark:bg-[#1A1A1A] rounded-xl p-8 shadow-xl hover:shadow-xl transition-all duration-300 hover:scale-105 relative overflow-hidden group cursor-pointer h-full">
+		<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-xl h-full hover:shadow-xl transition-all duration-300 hover:scale-105 relative overflow-hidden group">
+			<div className="bg-white dark:bg-[#1A1A1A] rounded-xl p-8 shadow-xl cursor-pointer h-full">
 				{/* Icon container */}
 				<div className="relative mb-6">
 					<div className="rounded-xl flex items-center justify-end">
@@ -110,13 +111,14 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, image }) 
 };
 
 const HomePage = () => {
+	const [isMarketOpen, setIsMarketOpen] = useState(false);
 	return (
 		<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto font-space">
 			<Header />
 			<div className="absolute top-27 md:top-3 w-full flex justify-center">
 				<Image src={bgDetailPage} alt="Background detail page" width={1080} height={1080} />
 			</div>
-			<div className="mt-0 md:mt-14 relative text-black dark:text-white">
+			<div className={`mt-0 md:mt-14 relative text-black dark:text-white ${isMarketOpen ? 'blur-sm pointer-events-none' : ''}`}>
 				{/* Section 1 */}
 				<div className="relative">
 					<div className="space-y-6 px-6 md:px-0 py-20 container mx-auto">

@@ -161,8 +161,8 @@ const CandlestickChart = ({
 				background: { type: ColorType.Solid, color: '#ffffff' },
 			},
 			grid: {
-				vertLines: { color: isDark ? '#e9e9e9' : '#E8E8E8' },
-				horzLines: { color: isDark ? '#e9e9e9' : '#E8E8E8', visible: true },
+				vertLines: { color: isDark ? '#1A1A1A' : '#E8E8E8' },
+				horzLines: { color: isDark ? '#1A1A1A' : '#E8E8E8', visible: true },
 			},
 			width: chartContainerRef.current.clientWidth,
 			height: 500,

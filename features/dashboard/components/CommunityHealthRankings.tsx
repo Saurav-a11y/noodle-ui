@@ -39,7 +39,7 @@ const CommunityHealthRankings = () => {
 
 	const renderSelect = (data: string[], key: string) => (
 		<Select value={filters[key]} onValueChange={(val) => handleFilterChange(key, val)}>
-			<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
+			<SelectTrigger className="w-[150px] h-8 bg-[#1A1A1A] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
 				<SelectValue placeholder='All' />
 			</SelectTrigger>
 			<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
@@ -129,14 +129,12 @@ const CommunityHealthRankings = () => {
 
 	return (
 		<div>
-			<div className="flex items-center justify-between mb-6">
-				<div className="flex items-center gap-2 dark:text-[#FFFFFF]">
-					<h3 className="text-3xl font-medium font-space">Community Health Rankings</h3>
-					<TooltipCommon content="A live leaderboard that ranks crypto projects based on their overall community health score. It helps you quickly identify which projects have strong, active, and authentic communities." />
-				</div>
+			<div className="flex items-center gap-2 dark:text-[#FFFFFF] mb-6">
+				<h3 className="text-3xl font-medium font-space">Community Health Rankings</h3>
+				<TooltipCommon content="A live leaderboard that ranks crypto projects based on their overall community health score. It helps you quickly identify which projects have strong, active, and authentic communities." />
 			</div>
 
-			<div className="p-5 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
+			<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
 					{renderSelect(filterCategory, 'category')}
@@ -148,7 +146,7 @@ const CommunityHealthRankings = () => {
 				<div className="overflow-x-auto">
 
 					<Table>
-						<TableHeader className="dark:bg-[#2A2A2A]">
+						<TableHeader className="dark:bg-[#1A1A1A]">
 							<TableRow>
 								<TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg">#</TableHead>
 								<TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
@@ -202,8 +200,8 @@ const CommunityHealthRankings = () => {
 								: _map(rankings, (project) => (
 									<TableRow
 										key={project?.rank}
-										className="hover:bg-[#F9F9F9] dark:hover:bg-[#313131] cursor-pointer transition-colors"
-										onClick={() => router.push(`/community-detail/${project?.symbol}`)}
+										className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
+										onClick={() => router.push(`/community/${project?.symbol}`)}
 									>
 										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.rank}</TableCell>
 										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
