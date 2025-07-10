@@ -98,7 +98,6 @@ const TopProjectsStats = () => {
 	const trackedProjects = _get(overviewStatsData, 'data.tracked_projects', {})
 	const totalActiveUsers7d = _get(overviewStatsData, 'data.total_active_users_7d', {})
 
-	console.log("🚀 ~ TopProjectsStats ~ overviewStats:", overviewStatsData)
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-[#1E1B39]">
 			{/* Top Gaining Projects */}

@@ -5,23 +5,40 @@ import _map from 'lodash/map';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import Image from "next/image";
-
 import TooltipCommon from "@/components/common/TooltipCommon";
 import SmallGradientChart from "./SmallGradientChart";
 import { useCommunityHealthRanks } from "../hooks/useCommunityHealthRanks";
 import { formatNumberShort, formatPercent } from "@/lib/format";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import defaultIcon from "@/images/icon-section-6_2.png";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
-	const { data, isLoading } = useCommunityHealthRanks();
+	const [filters, setFilters] = useState({
+		page: 1,
+		limit: 10,
+		category: 'All',
+		score_range: 'All',
+		size: 'All',
+	});
+	const { data, isLoading } = useCommunityHealthRanks(filters);
 
 	const rankings = _get(data, 'data.community_health_rankings', []);
 	const filterCategory = _get(data, 'metadata.filters.category', []);
 	const filterScore = _get(data, 'metadata.filters.score_range', []);
 	const filterSize = _get(data, 'metadata.filters.size', []);
 
-	const renderSelect = (data: string[]) => (
-		<Select defaultValue={data[0]}>
+	const handleFilterChange = (key: string, value: string) => {
+		setFilters((prev) => ({ ...prev, [key]: value, page: 1 }));
+	};
+
+	const handlePageChange = (page: number) => {
+		setFilters((prev) => ({ ...prev, page }));
+	};
+
+	const renderSelect = (data: string[], key: string) => (
+		<Select value={filters[key]} onValueChange={(val) => handleFilterChange(key, val)}>
 			<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
 				<SelectValue placeholder='All' />
 			</SelectTrigger>
@@ -39,6 +56,77 @@ const CommunityHealthRankings = () => {
 		</Select>
 	);
 
+	const renderPageButton = (page: number, current_page: number) => (
+		<div key={page} className={`p-[1px] transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] rounded cursor-pointer`}>
+			<button
+				className={`px-3 py-1 h-full rounded text-sm font-medium cursor-pointer font-reddit ${page === current_page
+					? 'transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] text-[#494949] font-medium border-transparent'
+					: 'bg-white dark:bg-[#1A1A1A] text-[#494949] dark:text-white'
+					}`}
+				onClick={() => handlePageChange(page)}
+			>
+				{page}
+			</button>
+		</div>
+	);
+
+	const renderPagination = () => {
+		const { current_page = 1, total_pages = 1 } = _get(data, 'metadata.pagination', {});
+		if (total_pages <= 1) return null;
+
+		const pages: any[] = [];
+
+		// Prev button
+		pages.push(
+			<div key="prev" className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded cursor-pointer">
+				<button
+					disabled={current_page === 1}
+					onClick={() => handlePageChange(current_page - 1)}
+					className="relative bg-[#f9f9f9] dark:bg-[#1A1A1A] dark:text-[#FFFFFF] cursor-pointer rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
+					<ChevronLeft className="w-4" />
+				</button>
+			</div>
+		);
+
+		// Always show first page
+		pages.push(renderPageButton(1, current_page));
+
+		if (current_page > 3) {
+			pages.push(<span key="dots-left" className="text-white px-2">...</span>);
+		}
+
+		const start = Math.max(2, current_page - 1);
+		const end = Math.min(total_pages - 1, current_page + 1);
+
+		for (let i = start; i <= end; i++) {
+			if (i !== 1 && i !== total_pages) {
+				pages.push(renderPageButton(i, current_page));
+			}
+		}
+
+		if (current_page < total_pages - 2) {
+			pages.push(<span key="dots-right" className="text-white px-2 flex items-end">...</span>);
+		}
+
+		if (total_pages > 1) {
+			pages.push(renderPageButton(total_pages, current_page));
+		}
+
+		// Next button
+		pages.push(
+			<div key="next" className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded cursor-pointer">
+				<button
+					disabled={current_page === total_pages}
+					onClick={() => handlePageChange(current_page + 1)}
+					className="relative bg-[#f9f9f9] dark:bg-[#1A1A1A] cursor-pointer dark:text-[#FFFFFF] rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
+					<ChevronRight className="w-4" />
+				</button>
+			</div>
+		);
+
+		return <div className="flex justify-end mt-6 gap-2">{pages}</div>;
+	};
+
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-6">
@@ -51,9 +139,9 @@ const CommunityHealthRankings = () => {
 			<div className="p-5 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-xl">
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
-					{renderSelect(filterCategory)}
-					{renderSelect(filterScore)}
-					{renderSelect(filterSize)}
+					{renderSelect(filterCategory, 'category')}
+					{renderSelect(filterScore, 'score_range')}
+					{renderSelect(filterSize, 'size')}
 				</div>
 
 				{/* Table */}
@@ -121,7 +209,7 @@ const CommunityHealthRankings = () => {
 										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 											<div className="flex items-center gap-3">
 												<div className="w-8 h-8 flex items-center justify-center font-noto">
-													<Image src={project?.medium_logo_url} alt="Symbol" width={64} height={64} className="rounded-full" />
+													<Image src={_get(project, 'medium_logo_url', defaultIcon)} alt="Symbol" width={64} height={64} className="rounded-full" />
 												</div>
 												<div className="text-[#4B4A4A] dark:text-[#FFF]">
 													<p className="font-medium text-sm font-noto">{project?.name}</p>
@@ -141,7 +229,7 @@ const CommunityHealthRankings = () => {
 										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 											<div className="flex items-center gap-3">
 												<p className="text-sm font-medium font-noto text-[#4B4A4A] dark:text-[#FFF]">{project?.market_cap?.display}</p>
-												<div className={`flex items-center font-noto`}>
+												<div className={`flex items-center font-noto text-[#4B4A4A] dark:text-white`}>
 													{formatPercent(project?.market_cap?.change_percent)}
 												</div>
 											</div>
@@ -154,6 +242,8 @@ const CommunityHealthRankings = () => {
 						</TableBody>
 					</Table>
 				</div>
+				{/* Pagination */}
+				{renderPagination()}
 			</div>
 		</div>
 	);

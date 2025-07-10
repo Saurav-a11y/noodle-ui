@@ -1,5 +1,3 @@
-'use client';
-
 import CommunityHealthRankings from "@/features/dashboard/components/CommunityHealthRankings";
 import TopProjectsStats from "@/features/dashboard/components/TopProjectsStats";
 import Header from "@/components/Header";

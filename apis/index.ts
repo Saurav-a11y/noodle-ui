@@ -1,4 +1,12 @@
-const BASE_URL = 'http://localhost:3000/noodle';
+const BASE_URL = 'https://data-api.agentos.cloud/noodle';
+
+export type CommunityHealthRankParams = {
+    limit?: number;
+    page?: number;
+    category?: string;
+    score_range?: string;
+    size?: string;
+};
 
 export const fetchTopGainingProject = async () => {
     const res = await fetch(`${BASE_URL}/top-gaining-project`);
@@ -18,8 +26,18 @@ export const fetchOverviewStats = async () => {
     return res.json();
 };
 
-export const fetchCommunityHealthRanks = async () => {
-    const res = await fetch(`${BASE_URL}/community-health-ranks`);
+export const fetchCommunityHealthRanks = async (params: CommunityHealthRankParams = {}) => {
+    const query = new URLSearchParams();
+
+    if (params.limit) query.append('limit', String(params.limit));
+    if (params.page) query.append('page', String(params.page));
+    if (params.category && params.category !== 'All') query.append('category', params.category);
+    if (params.score_range && params.score_range !== 'All') query.append('score_range', params.score_range);
+    if (params.size && params.size !== 'All') query.append('size', params.size);
+
+    const url = `${BASE_URL}/community-health-ranks?${query.toString()}`;
+
+    const res = await fetch(url);
     if (!res.ok) throw new Error('Failed to fetch community health ranks');
     return res.json();
 };

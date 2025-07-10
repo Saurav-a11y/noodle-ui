@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchCommunityHealthRanks } from '@/apis';
+import { CommunityHealthRankParams, fetchCommunityHealthRanks } from '@/apis';
 
-export const useCommunityHealthRanks = () =>
+export const useCommunityHealthRanks = (params: CommunityHealthRankParams = {}) =>
     useQuery({
-        queryKey: ['communityHealthRanks'],
-        queryFn: fetchCommunityHealthRanks,
+        queryKey: ['communityHealthRanks', params],
+        queryFn: () => fetchCommunityHealthRanks(params),
         staleTime: 1000 * 60 * 5,
     });
