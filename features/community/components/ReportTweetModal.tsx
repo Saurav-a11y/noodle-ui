@@ -3,7 +3,7 @@
 // import { isSuccessResponse } from '@/types/common/response-dto';
 import React, { useState } from 'react';
 // import toast from 'react-hot-toast';
-import { Button } from '../ui/Button';
+import { Button } from '../../../components/ui/Button';
 import ModalCommon from './ModalCommon';
 
 interface ReportTweetModalProps {

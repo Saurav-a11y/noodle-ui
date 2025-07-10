@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import ReportTweetModal from './ReportTweetModal';
 import ImgWithOnError from './ImgWithOnError';
-import { Button } from '../ui/Button';
+import { Button } from '../../../components/ui/Button';
 import formatNumberWithDecimal, { formattedDate } from '@/lib/format';
 import HeartIcon from '@/icons/HeartIcon';
 import ChatIcon from '@/icons/ChatIcon';

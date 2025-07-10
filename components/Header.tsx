@@ -1,3 +1,4 @@
+'use client'
 import { Search } from "lucide-react";
 import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";

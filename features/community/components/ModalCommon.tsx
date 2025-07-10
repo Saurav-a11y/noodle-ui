@@ -1,9 +1,9 @@
 import { VisuallyHidden } from '@radix-ui/themes';
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import '../../styles/modalCommonStyles.scss';
+import '@/styles/modalCommonStyles.scss';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '../ui/Dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '../../../components/ui/Dialog';
 
 export function isIOS() {
 	return /iPhone|iPad|iPod/i.test(navigator.userAgent);
