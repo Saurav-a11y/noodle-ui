@@ -95,7 +95,7 @@ const ActivityTimeline = () => {
 				</p>
 				<p className="text-sm font-reddit">Cross-Platform Activity Timeline</p>
 			</div>
-			<div className="border border-[#E9E9E9] dark:border-[#B1B1B1] rounded-xl p-6">
+			<div className="border border-[#E9E9E9] dark:border-none bg-white dark:bg-black rounded-xl p-6">
 				<div className="flex flex-col gap-3 xl:flex-row xl:items-center justify-end xl:justify-between mb-4 w-full">
 					<div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
 						{labels.map((label) => {
@@ -146,9 +146,9 @@ const ActivityTimeline = () => {
 						)}
 					</LineChart>
 				</ResponsiveContainer>
-				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4">
+				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4 mt-4">
 					{getTotals(chartData[selectedTimeframe]).map((total, index) => (
-						<div key={index} className="text-center border border-[#E9E9E9] dark:border-[#B1B1B1] rounded-xl p-4">
+						<div key={index} className="text-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
 							<p className="text-sm font-reddit">{total.label}</p>
 							<p className={`text-2xl font-bold font-noto`}>{total.value}</p>
 						</div>
