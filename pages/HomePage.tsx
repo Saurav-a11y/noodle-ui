@@ -1,5 +1,5 @@
 'use client';
-import { motion, easeOut, useScroll, useTransform } from 'framer-motion';
+import { motion, easeOut } from 'framer-motion';
 import Header from "@/components/Header";
 import Image from "next/image";
 import bgDetailPage from "@/images/bg-detail-page.png";
@@ -128,8 +128,6 @@ const skewFadeVariant = {
 };
 
 const HomePage = () => {
-	const { scrollYProgress } = useScroll();
-	const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
 	return (
 		<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto font-space">
 			<Header />
