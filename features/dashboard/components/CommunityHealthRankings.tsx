@@ -39,7 +39,7 @@ const CommunityHealthRankings = () => {
 
 	const renderSelect = (data: string[], key: string) => (
 		<Select value={filters[key]} onValueChange={(val) => handleFilterChange(key, val)}>
-			<SelectTrigger className="w-[150px] h-8 bg-[#1A1A1A] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#2D2D2D] dark:border-[#4A4A4A] cursor-pointer font-reddit">
+			<SelectTrigger className="w-[150px] h-8 bg-[#F8F8F8] border-[#E4E4E4] rounded-full text-xs text-[#4B4A4A] dark:text-[#FFF] dark:opacity-50 dark:bg-[#1A1A1A] dark:border-[#4A4A4A] cursor-pointer font-reddit">
 				<SelectValue placeholder='All' />
 			</SelectTrigger>
 			<SelectContent className="bg-white dark:bg-[#1A1A1A] border-none shadow-lg">
@@ -59,7 +59,7 @@ const CommunityHealthRankings = () => {
 	const renderPageButton = (page: number, current_page: number) => (
 		<div key={page} className={`p-[1px] transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] rounded cursor-pointer`}>
 			<button
-				className={`px-3 py-1 h-full rounded text-sm font-medium cursor-pointer font-reddit ${page === current_page
+				className={`min-w-[34.05px] px-3 py-1 h-full rounded text-sm font-medium cursor-pointer font-reddit ${page === current_page
 					? 'transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] text-[#494949] font-medium border-transparent'
 					: 'bg-white dark:bg-[#1A1A1A] text-[#494949] dark:text-white'
 					}`}
@@ -82,7 +82,7 @@ const CommunityHealthRankings = () => {
 				<button
 					disabled={current_page === 1}
 					onClick={() => handlePageChange(current_page - 1)}
-					className="relative bg-[#f9f9f9] dark:bg-[#1A1A1A] dark:text-[#FFFFFF] cursor-pointer rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
+					className="relative bg-white dark:bg-[#1A1A1A] dark:text-[#FFFFFF] cursor-pointer rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
 					<ChevronLeft className="w-4" />
 				</button>
 			</div>
@@ -105,7 +105,7 @@ const CommunityHealthRankings = () => {
 		}
 
 		if (current_page < total_pages - 2) {
-			pages.push(<span key="dots-right" className="text-white px-2 flex items-end">...</span>);
+			pages.push(<span key="dots-right" className="text-black dark:text-white px-2 flex items-end">...</span>);
 		}
 
 		if (total_pages > 1) {
@@ -118,7 +118,7 @@ const CommunityHealthRankings = () => {
 				<button
 					disabled={current_page === total_pages}
 					onClick={() => handlePageChange(current_page + 1)}
-					className="relative bg-[#f9f9f9] dark:bg-[#1A1A1A] cursor-pointer dark:text-[#FFFFFF] rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
+					className="relative bg-white dark:bg-[#1A1A1A] cursor-pointer dark:text-[#FFFFFF] rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
 					<ChevronRight className="w-4" />
 				</button>
 			</div>
