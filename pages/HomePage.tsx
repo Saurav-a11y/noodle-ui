@@ -20,6 +20,10 @@ import IconSection4_3 from "@/icons/IconSection4_3";
 import IconSection4_4 from "@/icons/IconSection4_4";
 import PlayBlackIcon from "@/icons/PlayBlackIcon";
 import IconSection1_1 from "@/icons/IconSection1_1";
+import BackgroundSection1 from '@/icons/BackgroundSection1';
+import BackgroundSection2 from '@/icons/BackgroundSection2';
+import BackgroundSection3 from '@/icons/BackgroundSection3';
+import IconSection3_7 from '@/icons/IconSection3_7';
 
 interface FeatureCardProps {
 	title: string;
@@ -95,7 +99,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, image }) 
 						{description}
 					</p>
 				</div>
-				<Image src="/images/bg-section-3.png" alt="Background section 2" width={240} height={240} className="w-full absolute bottom-0 right-0" />
+				<div className='absolute bottom-0'>
+					<BackgroundSection3 />
+				</div>
 			</div>
 		</div>
 	);
@@ -180,7 +186,9 @@ const HomePage = () => {
 								<IconSection1_1 />
 							</div>
 						</div>
-						<Image src="/images/bg-section-1.png" alt="Background Section 1" width={1930} height={1219} className="absolute bottom-0" />
+						<div className="absolute bottom-0 w-full flex justify-center">
+							<BackgroundSection1 />
+						</div>
 					</div>
 				</motion.div>
 				{/* Section 2 */}
@@ -222,7 +230,9 @@ const HomePage = () => {
 										</div>
 										<p className="text-2xl font-semibold mb-2">{item.title}</p>
 										<p>{item.content}</p>
-										<Image src="/images/bg-section-2.png" alt="Background section 2" width={240} height={240} className="absolute bottom-0 right-0" />
+										<div className='absolute bottom-0 right-0'>
+											<BackgroundSection2 />
+										</div>
 									</div>
 								</div>
 							))}
@@ -238,7 +248,9 @@ const HomePage = () => {
 					viewport={{ once: true, amount: 0.3 }}
 				>
 					<div className="bg-[#F5F5F5] dark:bg-[#1A1A1A] relative">
-						<Image src="/images/icon-section-3.png" alt="Background section 3_1" width={818} height={827} className="absolute top-45 right-0" />
+						<div className="absolute top-45 right-0">
+							<IconSection3_7 />
+						</div>
 						<div className="space-y-6 px-6 md:px-0 py-20 container mx-auto">
 							<motion.div
 								variants={skewFadeVariant}

@@ -1,5 +1,5 @@
-const BackgroundSection_1 = ({ width, height, fill = "none", ...props }: React.SVGProps<SVGSVGElement> & { width?: number; height?: number; fill?: string }) => (
-	<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="842" viewBox="0 0 1920 842" fill="none">
+const BackgroundSection1 = ({ width, height, fill = "none", ...props }: React.SVGProps<SVGSVGElement> & { width?: number; height?: number; fill?: string }) => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="1512" height="842" viewBox="0 0 1512 842" fill="none">
 		<g style={{ mixBlendMode: 'hard-light' }} opacity="0.1">
 			<path d="M1638.81 440.54C1636.43 444.312 1637.46 449.605 1641.14 452.498C1644.78 455.364 1649.88 454.506 1652.5 450.583C1655.08 446.663 1654.01 441.312 1650.05 438.64C1646.15 436.022 1641.21 436.861 1638.84 440.537L1638.81 440.54Z" fill="url(#paint0_linear_2782_35948)" />
 			<path d="M1654.45 469.03C1657.38 464.882 1656.82 459.127 1653.14 456.235C1649.53 453.396 1644.62 454.262 1642 458.185C1639.34 462.178 1639.84 467.752 1643.14 470.877C1646.41 473.974 1651.52 473.178 1654.45 469.03Z" fill="url(#paint1_linear_2782_35948)" />
@@ -5477,4 +5477,4 @@ const BackgroundSection_1 = ({ width, height, fill = "none", ...props }: React.S
 	</svg>
 );
 
-export default BackgroundSection_1;
+export default BackgroundSection1;
