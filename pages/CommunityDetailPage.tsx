@@ -7,7 +7,6 @@ import LiveActivity from "@/features/community/components/LiveActivity";
 import ProjectInfo from "@/features/community/components/ProjectInfo";
 import SocialChart from "@/features/community/components/SocialChart";
 import Header from "@/components/Header";
-import bgDetailPage from "@/images/bg-detail-page.png";
 import HeartIcon from "@/icons/HeartIcon";
 import Image from "next/image";
 import bonk from '../images/tokens/bonk.png'
@@ -105,7 +104,7 @@ const CommunityDetailPage = () => {
 			<div className="h-full w-full overflow-auto relative bg-[#F9F9F9] dark:bg-[#0B0B0B]">
 				<Header />
 				<div className="absolute top-0 right-0">
-					<Image src={bgDetailPage} alt="Background detail page" />
+					<Image src="/images/bg-detail-page.png" alt="Background detail page" />
 				</div>
 				<div className="relative bg-transparent md:mt-10">
 					<div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>

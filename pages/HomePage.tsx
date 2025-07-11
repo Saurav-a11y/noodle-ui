@@ -2,13 +2,6 @@
 import { motion, easeOut } from 'framer-motion';
 import Header from "@/components/Header";
 import Image from "next/image";
-import bgDetailPage from "@/images/bg-detail-page.png";
-import bgSection1 from "@/images/bg-section-1.png";
-import bgSection2 from "@/images/bg-section-2.png";
-import bgSection3 from "@/images/bg-section-3.png";
-import icSection32 from "@/images/icon-section-3.png";
-import icSection61 from "@/images/icon-section-6_1.png";
-import icSection62 from "@/images/icon-section-6_2.png";
 import PlayIcon from "@/icons/PlayIcon";
 import IconSection2_1 from "@/icons/IconSection2_1";
 import IconSection2_2 from "@/icons/IconSection2_2";
@@ -102,7 +95,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, image }) 
 						{description}
 					</p>
 				</div>
-				<Image src={bgSection3} alt="Background section 2" width={240} height={240} className="w-full absolute bottom-0 right-0" />
+				<Image src="/images/bg-section-3.png" alt="Background section 2" width={240} height={240} className="w-full absolute bottom-0 right-0" />
 			</div>
 		</div>
 	);
@@ -132,7 +125,7 @@ const HomePage = () => {
 		<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto font-space">
 			<Header />
 			<div className="absolute top-27 md:top-3 w-full flex justify-center">
-				<Image src={bgDetailPage} alt="Background detail page" width={1080} height={1080} />
+				<Image src="/images/bg-detail-page.png" alt="Background detail page" width={1080} height={1080} />
 			</div>
 			<div className={`mt-0 md:mt-14 relative text-black dark:text-white`}>
 				{/* Section 1 */}
@@ -187,7 +180,7 @@ const HomePage = () => {
 								<IconSection1_1 />
 							</div>
 						</div>
-						<Image src={bgSection1} alt="Background Section 1" width={1930} height={1219} className="absolute bottom-0" />
+						<Image src="/images/bg-section-1.png" alt="Background Section 1" width={1930} height={1219} className="absolute bottom-0" />
 					</div>
 				</motion.div>
 				{/* Section 2 */}
@@ -229,7 +222,7 @@ const HomePage = () => {
 										</div>
 										<p className="text-2xl font-semibold mb-2">{item.title}</p>
 										<p>{item.content}</p>
-										<Image src={bgSection2} alt="Background section 2" width={240} height={240} className="absolute bottom-0 right-0" />
+										<Image src="/images/bg-section-2.png" alt="Background section 2" width={240} height={240} className="absolute bottom-0 right-0" />
 									</div>
 								</div>
 							))}
@@ -245,7 +238,7 @@ const HomePage = () => {
 					viewport={{ once: true, amount: 0.3 }}
 				>
 					<div className="bg-[#F5F5F5] dark:bg-[#1A1A1A] relative">
-						<Image src={icSection32} alt="Background section 3_1" width={818} height={827} className="absolute top-45 right-0" />
+						<Image src="/images/icon-section-3.png" alt="Background section 3_1" width={818} height={827} className="absolute top-45 right-0" />
 						<div className="space-y-6 px-6 md:px-0 py-20 container mx-auto">
 							<motion.div
 								variants={skewFadeVariant}
@@ -368,8 +361,8 @@ const HomePage = () => {
 					<div className="relative">
 						<div className="opacity-30 bg-gradient-to-r from-[#DDF346] to-[#84EA07] w-full absolute h-full z-10">
 						</div>
-						<Image src={icSection61} alt="Icon Section 61" width={290} height={266} className="absolute bottom-0 right-0 z-20 w-30 md:w-[290px] md:h-[266px]" />
-						<Image src={icSection62} alt="Icon Section 62" width={312} height={252} className="absolute w-50 md:w-[312px] md:h-[252px]" />
+						<Image src="/images/icon-section-6_1.png" alt="Icon Section 61" width={290} height={266} className="absolute bottom-0 right-0 z-20 w-30 md:w-[290px] md:h-[266px]" />
+						<Image src="/images/icon-section-6_2.png" alt="Icon Section 62" width={312} height={252} className="absolute w-50 md:w-[312px] md:h-[252px]" />
 						<div className="space-y-6 px-6 md:px-0 py-20 container mx-auto relative z-20">
 							<motion.div
 								variants={skewFadeVariant}
