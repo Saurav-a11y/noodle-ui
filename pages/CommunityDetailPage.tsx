@@ -102,8 +102,8 @@ const CommunityDetailPage = () => {
 
 			<div className="h-full w-full overflow-auto relative bg-[#F9F9F9] dark:bg-[#0B0B0B]">
 				<Header />
-				<div className="absolute top-0 right-0">
-					<Image src="/images/bg-detail-page.png" alt="Background detail page" />
+				<div className="absolute top-27 md:top-3 w-full flex justify-center">
+					<Image src="/images/bg-detail-page.png" alt="Background detail page" width={1080} height={1080} />
 				</div>
 				<div className="relative bg-transparent md:mt-10">
 					<div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
@@ -111,7 +111,7 @@ const CommunityDetailPage = () => {
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-4">
 								<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl">
-									<Image src="/images/token/bonk.png" alt="Avatar" />
+									<Image src="/images/tokens/bonk.png" alt="Avatar" width={40} height={40} />
 								</div>
 								<div className="text-[#4B4A4A] dark:text-[#FFF]">
 									<h1 className="text-xl font-semibold font-noto">BONK Community</h1>
