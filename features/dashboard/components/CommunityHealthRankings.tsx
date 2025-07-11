@@ -11,7 +11,6 @@ import { useCommunityHealthRanks } from "../hooks/useCommunityHealthRanks";
 import { formatNumberShort, formatPercent } from "@/lib/format";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import defaultIcon from "@/images/icon-section-6_2.png";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
@@ -207,7 +206,7 @@ const CommunityHealthRankings = () => {
 										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 											<div className="flex items-center gap-3">
 												<div className="w-8 h-8 flex items-center justify-center font-noto">
-													<Image src={_get(project, 'medium_logo_url', defaultIcon)} alt="Symbol" width={64} height={64} className="rounded-full" />
+													<Image src={_get(project, 'medium_logo_url', '/images/icon-section-6_2.png')} alt="Symbol" width={64} height={64} className="rounded-full" />
 												</div>
 												<div className="text-[#4B4A4A] dark:text-[#FFF]">
 													<p className="font-medium text-sm font-noto">{project?.name}</p>

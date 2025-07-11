@@ -9,7 +9,6 @@ import SocialChart from "@/features/community/components/SocialChart";
 import Header from "@/components/Header";
 import HeartIcon from "@/icons/HeartIcon";
 import Image from "next/image";
-import bonk from '../images/tokens/bonk.png'
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 
 const CommunityDetailPage = () => {
@@ -112,7 +111,7 @@ const CommunityDetailPage = () => {
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-4">
 								<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl">
-									<Image src={bonk} alt="Avatar" />
+									<Image src="/images/token/bonk.png" alt="Avatar" />
 								</div>
 								<div className="text-[#4B4A4A] dark:text-[#FFF]">
 									<h1 className="text-xl font-semibold font-noto">BONK Community</h1>
