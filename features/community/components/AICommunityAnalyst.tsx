@@ -2,12 +2,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
-import chatBg from "@/images/bg-chat.png";
 import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
-import bonk from '@/images/tokens/bonk.png'
 
 const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
@@ -51,7 +49,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
-				<Image src={chatBg} alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
+				<Image src="/images/bg-chat.png" alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
 						<NoodlesMiniLogo />
@@ -73,7 +71,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1] text-[#4B4A4A] dark:text-white">
 				<div className="flex items-center gap-3">
 					<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-						<Image src={bonk} alt="Avatar" />
+						<Image src="/images/tokens/bonk.png" alt="Avatar" />
 					</div>
 					<div className="space-y-1">
 						<p className="text-xl font-semibold font-noto">BONK Community</p>
