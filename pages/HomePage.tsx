@@ -1,7 +1,6 @@
 'use client';
 import { motion, easeOut } from 'framer-motion';
 import Header from "@/components/Header";
-import Image from "next/image";
 import PlayIcon from "@/icons/PlayIcon";
 import IconSection2_1 from "@/icons/IconSection2_1";
 import IconSection2_2 from "@/icons/IconSection2_2";
@@ -24,6 +23,9 @@ import BackgroundSection1 from '@/icons/BackgroundSection1';
 import BackgroundSection2 from '@/icons/BackgroundSection2';
 import BackgroundSection3 from '@/icons/BackgroundSection3';
 import IconSection3_7 from '@/icons/IconSection3_7';
+import IconSection61 from '@/icons/IconSection61';
+import IconSection62 from '@/icons/IconSection62';
+import BackgroundPage from '@/icons/BackgroundPage';
 
 interface FeatureCardProps {
 	title: string;
@@ -131,7 +133,9 @@ const HomePage = () => {
 		<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto font-space">
 			<Header />
 			<div className="absolute top-27 md:top-3 w-full flex justify-center">
-				<Image src="/images/bg-detail-page.png" alt="Background detail page" width={1080} height={1080} />
+				<div className='container w-full'>
+					<BackgroundPage />
+				</div>
 			</div>
 			<div className={`mt-0 md:mt-14 relative text-black dark:text-white`}>
 				{/* Section 1 */}
@@ -373,8 +377,12 @@ const HomePage = () => {
 					<div className="relative">
 						<div className="opacity-30 bg-gradient-to-r from-[#DDF346] to-[#84EA07] w-full absolute h-full z-10">
 						</div>
-						<Image src="/images/icon-section-6_1.png" alt="Icon Section 61" width={290} height={266} className="absolute bottom-0 right-0 z-20 w-30 md:w-[290px] md:h-[266px]" />
-						<Image src="/images/icon-section-6_2.png" alt="Icon Section 62" width={312} height={252} className="absolute w-50 md:w-[312px] md:h-[252px]" />
+						<div className="absolute bottom-0 right-0 z-20 w-30 md:w-[290px] md:h-[266px]">
+							<IconSection62 />
+						</div>
+						<div className="absolute w-50 md:w-[312px] md:h-[252px]">
+							<IconSection61 />
+						</div>
 						<div className="space-y-6 px-6 md:px-0 py-20 container mx-auto relative z-20">
 							<motion.div
 								variants={skewFadeVariant}
