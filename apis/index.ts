@@ -8,6 +8,13 @@ export type CommunityHealthRankParams = {
     size?: string;
 };
 
+export type FetchPriceHistoryParams = {
+    symbol: string;
+    startTime?: number;
+    endTime?: number;
+    interval?: string;
+}
+
 export const fetchTopGainingProject = async () => {
     const res = await fetch(`${BASE_URL}/top-gaining-project`);
     if (!res.ok) throw new Error('Failed to fetch top gaining projects');
@@ -39,5 +46,30 @@ export const fetchCommunityHealthRanks = async (params: CommunityHealthRankParam
 
     const res = await fetch(url);
     if (!res.ok) throw new Error('Failed to fetch community health ranks');
+    return res.json();
+};
+
+export const fetchCommunityOverview = async ({ communityId }: { communityId: string }) => {
+    const res = await fetch(`${BASE_URL}/community-overview?communityId=${encodeURIComponent(communityId)}`);
+    if (!res.ok) throw new Error('Failed to fetch community overview');
+    return res.json();
+};
+
+export const fetchPriceHistory = async ({
+    symbol,
+    startTime,
+    endTime,
+    interval,
+}: FetchPriceHistoryParams) => {
+    const query = new URLSearchParams({
+        symbol,
+        ...(startTime && { startTime: String(startTime) }),
+        ...(endTime && { endTime: String(endTime) }),
+        ...(interval && { interval }),
+    });
+
+    const res = await fetch(`https://data-api.agentos.cloud/api/v2/crypto-token/price-history?${query}`);
+
+    if (!res.ok) throw new Error('Failed to fetch price history');
     return res.json();
 };
