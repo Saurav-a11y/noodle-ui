@@ -5,7 +5,7 @@
 // import { useAppDispatch, useAppSelector } from '@/hooks';
 // import useAuthenticate from '@/hooks/useAuthenticate';
 // import { getPriceHistory, resetPriceHistory } from '@/store/community/communitySlice';
-import { format, getTime, parseISO, subDays, subMonths, subWeeks } from 'date-fns';
+import { getTime, subMonths } from 'date-fns';
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
 import { forEach, isEmpty, map } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';

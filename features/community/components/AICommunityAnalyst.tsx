@@ -7,8 +7,23 @@ import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { useParams } from "next/navigation";
+import { useCommunityOverview } from "../hooks/useCommunityOverview";
+import BackgroundChat from "@/icons/BackgroundChat";
 
-const AICommunityAnalyst = ({ handleCloseChat, communityOverview }: { handleCloseChat?: any, communityOverview: any }) => {
+const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
+	const params = useParams();
+	const communityId = params?.slug as string;
+	const { data } = useCommunityOverview(communityId);
+
+	const communityOverview = {
+		projectName: data?.data?.project?.name,
+		logo: data?.data?.project?.medium_logo_url,
+		base_currency: data?.data?.project?.base_currency,
+		price_usd: data?.data?.project?.price_usd,
+		price_change_percent: data?.data?.project?.price_change_percent,
+		symbol: data?.data?.project?.symbol,
+	}
 	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
 	const quickQuestions = [
@@ -50,9 +65,9 @@ const AICommunityAnalyst = ({ handleCloseChat, communityOverview }: { handleClos
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
-				{communityOverview?.logo && (
-					<Image src={communityOverview?.logo || ""} alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
-				)}
+				<div className="w-full h-[90px] absolute top-0 left-12">
+					<BackgroundChat />
+				</div>
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
 						<NoodlesMiniLogo />

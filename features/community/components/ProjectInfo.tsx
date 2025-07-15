@@ -1,16 +1,25 @@
+'use client';
+
 import DropdownCommon from "@/components/common/DropdownCommon";
 import DiscordIcon from "@/icons/DiscordIcon";
 import PhantomIcon from "@/icons/PhantomIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import XIcon from "@/icons/XIcon";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useCommunityOverview } from "../hooks/useCommunityOverview";
 
 const shortenAddress = (address: string): string => {
 	if (!address || address.length < 10) return address;
 	return `${address.slice(0, 4)}...${address.slice(-4)}`;
 }
 
-const ProjectInfo = ({ basicInformation }) => {
+const ProjectInfo = () => {
+	const params = useParams();
+	const communityId = params?.slug as string;
+	const { data } = useCommunityOverview(communityId);
+	const basicInformation = { ...data?.data?.project?.links }
+
 	return (
 		<div>
 			<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>

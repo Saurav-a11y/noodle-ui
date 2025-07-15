@@ -1,11 +1,23 @@
+'use client'
+
 import AuthenticEngagementIcon from "@/icons/AuthenticEngagementIcon";
 import CommunityGrowthIcon from "@/icons/CommunityGrowthIcon";
 import RecentActivityDropIcon from "@/icons/RecentActivityDropIcon";
 import WhaleActivityIcon from "@/icons/WhaleActivityIcon";
 import TooltipCommon from "../../../components/common/TooltipCommon";
 import { formatNumberShort } from "@/lib/format";
+import { useCommunityOverview } from "../hooks/useCommunityOverview";
+import { useParams } from "next/navigation";
 
-const CommunityMetrics = ({ communityHealthScore, communityMetrics, crossPlatformAnalytics }) => {
+const CommunityMetrics = () => {
+	const params = useParams();
+	const communityId = params?.slug as string;
+	const { data } = useCommunityOverview(communityId);
+
+	const communityHealthScore = { ...data?.data?.project?.health_score, ...data?.data?.project?.badges }
+	const communityMetrics = { ...data?.data?.project?.core_metrics }
+	const crossPlatformAnalytics = { ...data?.data?.project?.cross_platform_analytics }
+
 	const healthMetrics = [
 		{
 			title: "Authentic Engagement",
