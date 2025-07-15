@@ -5,18 +5,20 @@
 // import { useAppDispatch, useAppSelector } from '@/hooks';
 // import useAuthenticate from '@/hooks/useAuthenticate';
 // import { getPriceHistory, resetPriceHistory } from '@/store/community/communitySlice';
-// import { format, parseISO } from 'date-fns';
+import { format, getTime, parseISO, subDays, subMonths, subWeeks } from 'date-fns';
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
 import { forEach, isEmpty, map } from 'lodash';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import '@/styles/chartStyles.scss';
 // import TweetList from './TweetList';
 // import formatNumberWithDecimal from '@/lib/format';
 import ModalCommon from './ModalCommon';
-import { priceHistoryToken, tweets } from './fakeData';
+import { tweets } from './fakeData';
 import TweetList from './TweetList';
 import { formattedDate } from '@/lib/format';
 import useThemekMode from '@/lib/useThemkMode';
+import { usePriceHistory } from '../hooks/usePriceHistory';
+import { useParams } from 'next/navigation';
 
 // const COMMUNITIES_STATUS = {
 // 	LISTED: 'listed',
@@ -78,15 +80,24 @@ const CandlestickChart = ({
 	symbol?: string;
 	// status?: string 
 }) => {
-	// const now = new Date();
 	// const dispatch = useAppDispatch();
-	// const currentTimestamp = Math.floor(Date.now());
 	// const {
 	// 	priceHistory: { data: priceHistoryToken, isLoading, tweets },
 	// } = useAppSelector((state) => state.community);
+	const params = useParams();
+	const communityId = params?.slug as string;
 	const { isDark } = useThemekMode();
-	// const { myProfile } = useAuthenticate();
+	const now = useMemo(() => new Date(), []);
+	const startTime = useMemo(() => getTime(subMonths(now, 1)), [now]);
+	const endTime = useMemo(() => getTime(now), [now]);
 
+	const { data: priceHistoryToken, isLoading, error } = usePriceHistory({
+		symbol: communityId,
+		startTime,
+		endTime,
+		interval: '1M',
+	});
+	console.log("🚀 ~ data:", priceHistoryToken)
 	// const premiumRef = useRef<PremiumFeatureLinkRef>(null);
 
 	// ✅ State lưu thời gian từ
@@ -229,7 +240,7 @@ const CandlestickChart = ({
 		return () => {
 			chart.remove();
 		};
-	}, [selectedTimeFrame, isDark]);
+	}, [selectedTimeFrame, isDark, priceHistoryToken]);
 
 	// Cập nhật vị trí markers khi zoom/pan
 	useEffect(() => {
@@ -526,7 +537,7 @@ const CandlestickChart = ({
 			barSpacing: newBarSpacing,
 		});
 
-		chart.timeScale().scrollToRealTime(); // scroll tới cuối cùng
+		chart.timeScale().scrollToRealTime();
 	};
 
 	return (

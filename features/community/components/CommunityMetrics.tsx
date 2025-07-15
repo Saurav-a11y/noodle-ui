@@ -6,8 +6,6 @@ import TooltipCommon from "../../../components/common/TooltipCommon";
 import { formatNumberShort } from "@/lib/format";
 
 const CommunityMetrics = ({ communityHealthScore, communityMetrics, crossPlatformAnalytics }) => {
-	console.log("🚀 ~ CommunityMetrics ~ communityHealthScore:", communityHealthScore)
-
 	const healthMetrics = [
 		{
 			title: "Authentic Engagement",
@@ -81,14 +79,14 @@ const CommunityMetrics = ({ communityHealthScore, communityMetrics, crossPlatfor
 		{
 			title: "Twitter Mentions",
 			value: formatNumberShort(crossPlatformAnalytics?.twitter_mentions?.value),
-			change: `${crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.twitter_mentions?.change_percent} ${crossPlatformAnalytics?.twitter_mentions?.comparison}`,
+			change: `${crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.twitter_mentions?.change_percent}% ${crossPlatformAnalytics?.twitter_mentions?.comparison}`,
 			color: crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? '#00B552' : '#FF0000',
 			content: 'Shows the number of unique wallets currently holding the project’s token. Growth in holders typically reflects trust and adoption.'
 		},
 		{
 			title: "Reddit Posts",
 			value: formatNumberShort(crossPlatformAnalytics?.reddit_posts?.value),
-			change: `${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? '+' : ''}${crossPlatformAnalytics?.reddit_posts?.change_percent} ${crossPlatformAnalytics?.reddit_posts?.comparison}`,
+			change: `${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? '+' : ''}${crossPlatformAnalytics?.reddit_posts?.change_percent}% ${crossPlatformAnalytics?.reddit_posts?.comparison}`,
 			color: '#FF0000',
 			content: 'Counts how many Reddit posts discussed the project in the past 24 hours. Reflects discussion volume in crypto’s most active forums.'
 		},
