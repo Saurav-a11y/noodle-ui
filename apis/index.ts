@@ -41,3 +41,9 @@ export const fetchCommunityHealthRanks = async (params: CommunityHealthRankParam
     if (!res.ok) throw new Error('Failed to fetch community health ranks');
     return res.json();
 };
+
+export const fetchCommunityOverview = async ({ communityId }: { communityId: string }) => {
+    const res = await fetch(`${BASE_URL}/community-overview?communityId=${encodeURIComponent(communityId)}`);
+    if (!res.ok) throw new Error('Failed to fetch community overview');
+    return res.json();
+};

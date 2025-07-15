@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect } from "react";
+import { useParams } from 'next/navigation';
+
 import ActivityTimeline from "@/features/community/components/ActivityTimeline";
 import AICommunityAnalyst from "@/features/community/components/AICommunityAnalyst";
 import CommunityMetrics from "@/features/community/components/CommunityMetrics";
@@ -11,8 +13,26 @@ import HeartIcon from "@/icons/HeartIcon";
 import Image from "next/image";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import BackgroundPage from "@/icons/BackgroundPage";
+import { useCommunityOverview } from "@/features/community/hooks/useCommunityOverview";
+import { formatCurrency, formatPercent } from "@/lib/format";
 
 const CommunityDetailPage = () => {
+	const params = useParams();
+	const communityId = params?.slug as string;
+	const { data, isLoading, error } = useCommunityOverview(communityId);
+
+	const communityOverview = {
+		projectName: data?.data?.project?.name,
+		logo: data?.data?.project?.medium_logo_url,
+		base_currency: data?.data?.project?.base_currency,
+		price_usd: data?.data?.project?.price_usd,
+		price_change_percent: data?.data?.project?.price_change_percent,
+		symbol: data?.data?.project?.symbol,
+	}
+
+	const communityData = {
+
+	}
 	const [isChatVisible, setChatVisible] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const [chatWidth, setChatWidth] = useState(26); // phần trăm
@@ -76,7 +96,7 @@ const CommunityDetailPage = () => {
 
 			{isMobile && isChatVisible && (
 				<div className="fixed inset-0 z-90 bg-white p-4">
-					<AICommunityAnalyst handleCloseChat={handleCloseChat} />
+					<AICommunityAnalyst handleCloseChat={handleCloseChat} communityOverview={communityOverview} />
 				</div>
 			)}
 
@@ -88,7 +108,7 @@ const CommunityDetailPage = () => {
 					>
 						{isChatVisible && (
 							<div className="h-full p-4">
-								<AICommunityAnalyst handleCloseChat={handleCloseChat} />
+								<AICommunityAnalyst handleCloseChat={handleCloseChat} communityOverview={communityOverview} />
 							</div>
 						)}
 					</div>
@@ -114,16 +134,18 @@ const CommunityDetailPage = () => {
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-4">
 								<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl">
-									<Image src="/images/tokens/bonk.png" alt="Avatar" width={40} height={40} />
+									{communityOverview?.logo && (
+										<Image src={communityOverview?.logo} alt="Avatar" width={40} height={40} className="rounded-full" />
+									)}
 								</div>
 								<div className="text-[#4B4A4A] dark:text-[#FFF]">
-									<h1 className="text-xl font-semibold font-noto">BONK Community</h1>
+									<h1 className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</h1>
 									<div className="flex items-center gap-2 text-sm">
-										<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">$BONK</span>
+										<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">${communityOverview?.base_currency}</span>
 										<span>•</span>
-										<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">$0.1703</span>
+										<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">{formatCurrency(communityOverview?.price_usd)}</span>
 										<span>•</span>
-										<span className="text-xs font-medium text-red-500 font-noto">▼ 5.54%</span>
+										<span className="text-xs font-medium text-red-500 font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
 									</div>
 								</div>
 							</div>

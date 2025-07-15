@@ -6,8 +6,9 @@ import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
+import { formatCurrency, formatPercent } from "@/lib/format";
 
-const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
+const AICommunityAnalyst = ({ handleCloseChat, communityOverview }: { handleCloseChat?: any, communityOverview: any }) => {
 	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
 	const quickQuestions = [
@@ -49,7 +50,9 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
-				<Image src="/images/bg-chat.png" alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
+				{communityOverview?.logo && (
+					<Image src={communityOverview?.logo || ""} alt="Background" className="w-full h-full absolute top-0 left-0" width={320} height={320} />
+				)}
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
 						<NoodlesMiniLogo />
@@ -71,16 +74,18 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1] text-[#4B4A4A] dark:text-white">
 				<div className="flex items-center gap-3">
 					<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-						<Image src="/images/tokens/bonk.png" alt="Avatar" />
+						{communityOverview?.logo && (
+							<Image src={communityOverview?.logo || ""} alt="Avatar" width={40} height={40} className="rounded-full" />
+						)}
 					</div>
 					<div className="space-y-1">
-						<p className="text-xl font-semibold font-noto">BONK Community</p>
+						<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>
 						<div className="flex items-center gap-2 text-xs">
-							<span className="font-medium font-noto">$BONK</span>
+							<span className="font-medium font-noto">${communityOverview?.base_currency}</span>
 							<span>•</span>
-							<span className="font-medium font-noto">$0.1703</span>
+							<span className="font-medium font-noto">{formatCurrency(communityOverview?.price_usd)}</span>
 							<span>•</span>
-							<span className="text-red-500 font-medium font-noto">▼ 5.54%</span>
+							<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
 						</div>
 					</div>
 				</div>
