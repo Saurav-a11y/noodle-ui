@@ -166,3 +166,29 @@ export const formatPercent = (value: number) => {
         </p>
     );
 };
+
+export function getChangeDisplay({
+    change,
+    changePercent,
+    unit = '',
+    changeDescription,
+}: {
+    change?: number;
+    changePercent?: number;
+    unit?: string;
+    changeDescription?: string;
+}) {
+    const isUp = Number(change) > 0 || Number(changePercent) > 0;
+    const isDown = Number(change) < 0 || Number(changePercent) < 0;
+
+    const arrow = isUp ? '▲' : isDown ? '▼' : '';
+    const color = isUp ? '#00B552' : isDown ? '#FF0000' : '#000';
+
+    const formattedChange = change !== undefined ? formatNumberShort(change) : null;
+    const formattedPercent = changePercent !== undefined ? `(${changePercent > 0 ? '+' : ''}${changePercent}${unit})` : null;
+    const formattedDescription = changeDescription ? ` ${changeDescription}` : '';
+
+    const changeText = [arrow, formattedChange, formattedPercent].filter(Boolean).join(' ') + formattedDescription;
+
+    return { changeText, color };
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { notoSansDisplay, redditSans, spaceGrotesk } from "./fonts";
-import ReactQueryProvider from "@/lib/react-query-provider";
+import ReactQueryProvider from '@/lib/react-query-provider';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${notoSansDisplay.variable} ${redditSans.variable} ${spaceGrotesk.variable}`}>
-      <body className="antialiased">
+      <body>
         <ReactQueryProvider>
           {children}
         </ReactQueryProvider>

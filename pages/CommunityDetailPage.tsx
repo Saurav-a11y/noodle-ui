@@ -19,7 +19,7 @@ import { formatCurrency, formatPercent } from "@/lib/format";
 const CommunityDetailPage = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const { data, isLoading, error } = useCommunityOverview(communityId);
+	const { data } = useCommunityOverview(communityId);
 
 	const communityOverview = {
 		projectName: data?.data?.project?.name,
@@ -30,9 +30,11 @@ const CommunityDetailPage = () => {
 		symbol: data?.data?.project?.symbol,
 	}
 
-	const communityData = {
+	const communityHealthScore = { ...data?.data?.project?.health_score, ...data?.data?.project?.badges }
+	const communityMetrics = { ...data?.data?.project?.core_metrics }
+	const crossPlatformAnalytics = { ...data?.data?.project?.cross_platform_analytics }
+	const basicInformation = { ...data?.data?.project?.links }
 
-	}
 	const [isChatVisible, setChatVisible] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const [chatWidth, setChatWidth] = useState(26); // phần trăm
@@ -159,9 +161,9 @@ const CommunityDetailPage = () => {
 						<div className="grid grid-cols-4 gap-8">
 							<div className="col-span-4 md:col-span-1 space-y-6">
 								{/* Metrics Grid */}
-								<CommunityMetrics />
+								<CommunityMetrics communityHealthScore={communityHealthScore} communityMetrics={communityMetrics} crossPlatformAnalytics={crossPlatformAnalytics} />
 								{/* Basic Information */}
-								<ProjectInfo />
+								<ProjectInfo basicInformation={basicInformation} />
 							</div>
 							<div className="col-span-4 md:col-span-3 space-y-5">
 								<SocialChart />
