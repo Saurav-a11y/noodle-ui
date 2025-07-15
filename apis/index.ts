@@ -15,6 +15,11 @@ export type FetchPriceHistoryParams = {
     interval?: string;
 }
 
+export type FetchListTweetParams = {
+    symbol: string;
+    timeRange?: string;
+}
+
 export const fetchTopGainingProject = async () => {
     const res = await fetch(`${BASE_URL}/top-gaining-project`);
     if (!res.ok) throw new Error('Failed to fetch top gaining projects');
@@ -71,5 +76,20 @@ export const fetchPriceHistory = async ({
     const res = await fetch(`https://data-api.agentos.cloud/api/v2/crypto-token/price-history?${query}`);
 
     if (!res.ok) throw new Error('Failed to fetch price history');
+    return res.json();
+};
+
+export const fetchListTweets = async ({
+    symbol,
+    timeRange,
+}: FetchListTweetParams) => {
+    const query = new URLSearchParams({
+        symbol,
+        ...(timeRange && { timeRange: String(timeRange) }),
+    });
+
+    const res = await fetch(`https://data-api.agentos.cloud/api/v3/x-interaction/tweets/by-symbol?${query}`);
+
+    if (!res.ok) throw new Error('Failed to fetch list of tweets');
     return res.json();
 };
