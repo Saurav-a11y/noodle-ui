@@ -13,17 +13,18 @@ import '@/styles/chartStyles.scss';
 // import TweetList from './TweetList';
 // import formatNumberWithDecimal from '@/lib/format';
 import ModalCommon from './ModalCommon';
-import { tweets } from './fakeData';
 import TweetList from './TweetList';
 import { formattedDate } from '@/lib/format';
 import useThemekMode from '@/lib/useThemkMode';
 import { usePriceHistory } from '../hooks/usePriceHistory';
 import { useParams } from 'next/navigation';
+import { useListTweets } from '../hooks/useListTweets';
+import IconifyIcon from '@/components/common/IconifyIcon';
 
-// const COMMUNITIES_STATUS = {
-// 	LISTED: 'listed',
-// 	UNLISTED: 'unlisted',
-// };
+const COMMUNITIES_STATUS = {
+	LISTED: 'listed',
+	UNLISTED: 'unlisted',
+};
 
 const platforms = [
 	{ name: "All", active: true },
@@ -73,19 +74,14 @@ const barsInTimeFrame = {
 	'1M': 24 * 30,
 };
 
-const CandlestickChart = ({
-	symbol,
-	// status 
-}: {
-	symbol?: string;
-	// status?: string 
-}) => {
+const CandlestickChart = () => {
 	// const dispatch = useAppDispatch();
 	// const {
 	// 	priceHistory: { data: priceHistoryToken, isLoading, tweets },
 	// } = useAppSelector((state) => state.community);
 	const params = useParams();
 	const communityId = params?.slug as string;
+	const tokenSymbol = typeof communityId === 'string' ? communityId.replace('USD', '') : '';
 	const { isDark } = useThemekMode();
 	const now = useMemo(() => new Date(), []);
 	const startTime = useMemo(() => getTime(subMonths(now, 1)), [now]);
@@ -97,12 +93,16 @@ const CandlestickChart = ({
 		endTime,
 		interval: '1M',
 	});
-	console.log("🚀 ~ data:", priceHistoryToken)
+
+	const { data: tweets } = useListTweets({
+		symbol: tokenSymbol,
+		timeRange: '30d',
+	});
 	// const premiumRef = useRef<PremiumFeatureLinkRef>(null);
 
 	// ✅ State lưu thời gian từ
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3D');
-	const limitTweetNormalUser = 5;
+	const limitTweetNormalUser = 12;
 
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 	const markerContainerRef = useRef<HTMLDivElement>(null);
@@ -147,20 +147,6 @@ const CandlestickChart = ({
 			justifyContent: 'center',
 		});
 	}, [isDark]);
-
-	// useEffect(() => {
-	// 	dispatch(
-	// 		getPriceHistory({
-	// 			symbol,
-	// 			startTime: getTime(subMonths(now, 1)),
-	// 			endTime: currentTimestamp,
-	// 			interval: '1M',
-	// 		}),
-	// 	);
-	// 	return () => {
-	// 		dispatch(resetPriceHistory());
-	// 	};
-	// }, []);
 
 	useEffect(() => {
 		if (!chartContainerRef.current) return;
@@ -240,7 +226,7 @@ const CandlestickChart = ({
 		return () => {
 			chart.remove();
 		};
-	}, [selectedTimeFrame, isDark, priceHistoryToken]);
+	}, [selectedTimeFrame, isDark, priceHistoryToken, tweets]);
 
 	// Cập nhật vị trí markers khi zoom/pan
 	useEffect(() => {
@@ -283,7 +269,7 @@ const CandlestickChart = ({
 		let accessibleCount = 0; // Count accessible tweets
 		// Tạo marker nhóm cho mỗi giờ
 		tweetsByTimeInterval.forEach((tweetsInInterval, intervalTimestamp) => {
-			if (tweetsInInterval.length === 0) return;
+			if (tweetsInInterval?.length === 0) return;
 			const isAccessible = accessibleCount < limitTweetNormalUser;
 			if (isAccessible) {
 				accessibleCount++;
@@ -312,13 +298,13 @@ const CandlestickChart = ({
 			iconMarkup.style.height = '28px';
 			iconMarkup.style.borderRadius = '50%';
 
-			if (tweetsInInterval.length === 1 && isAccessible) {
+			if (tweetsInInterval?.length === 1 && isAccessible) {
 				// Single tweet and accessible
 				const tweet = tweetsInInterval[0];
 				iconMarkup.innerHTML = `
           <img 
             src="${tweet?.profile_image_url}" 
-            onerror="this.onerror=null; this.src='/avatar.png';" 
+            onerror="this.onerror=null; this.src='https://static.vecteezy.com/system/resources/previews/020/911/750/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';" 
             class="marker-avatar" 
             style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #B1B1B1; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); object-fit: cover;" 
             alt="${tweet?.['xt.username']}"
@@ -332,24 +318,25 @@ const CandlestickChart = ({
 				iconMarkup.innerHTML = `
          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="m17.687 3.063l-4.996 5.711l-4.32-5.711H2.112l7.477 9.776l-7.086 8.099h3.034l5.469-6.25l4.78 6.25h6.102l-7.794-10.304l6.625-7.571zm-1.064 16.06L5.654 4.782h1.803l10.846 14.34z"/></svg>
         `;
-			} else {
-				// Premium locked content
-				applyMultipleMarkerStyle(iconMarkup);
-
-				// Lock icon for premium-locked content
-				iconMarkup.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path fill="currentColor" d="M24.875 15.334v-4.876c0-4.894-3.98-8.875-8.875-8.875s-8.875 3.98-8.875 8.875v4.876H5.042v15.083h21.916V15.334zm-14.25-4.876c0-2.964 2.41-5.375 5.375-5.375s5.375 2.41 5.375 5.375v4.876h-10.75zm7.647 16.498h-4.545l1.222-3.667a2.37 2.37 0 0 1-1.325-2.12a2.375 2.375 0 1 1 4.75 0c0 .932-.542 1.73-1.324 2.12z"/></svg>
-        `;
 			}
+			// 	else {
+			// 		// Premium locked content
+			// 		applyMultipleMarkerStyle(iconMarkup);
+
+			// 		// Lock icon for premium-locked content
+			// 		iconMarkup.innerHTML = `
+			//   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path fill="currentColor" d="M24.875 15.334v-4.876c0-4.894-3.98-8.875-8.875-8.875s-8.875 3.98-8.875 8.875v4.876H5.042v15.083h21.916V15.334zm-14.25-4.876c0-2.964 2.41-5.375 5.375-5.375s5.375 2.41 5.375 5.375v4.876h-10.75zm7.647 16.498h-4.545l1.222-3.667a2.37 2.37 0 0 1-1.325-2.12a2.375 2.375 0 1 1 4.75 0c0 .932-.542 1.73-1.324 2.12z"/></svg>
+			// `;
+			// 	}
 
 			// Count badge
-			if (tweetsInInterval.length > 1 && isAccessible) {
+			if (tweetsInInterval?.length > 1 && isAccessible) {
 				const countBadge = document.createElement('div');
 				countBadge.style.position = 'absolute';
 				countBadge.style.top = '-11px';
 				countBadge.style.right = '-8px';
 				countBadge.style.backgroundColor = isDark ? '#ffffff' : '#000000';
-				countBadge.textContent = `+${tweetsInInterval.length.toString()}`;
+				countBadge.textContent = `+${tweetsInInterval?.length.toString()}`;
 				countBadge.style.fontSize = '10px';
 				countBadge.style.fontWeight = 'bold';
 				countBadge.style.height = '18px';
@@ -466,13 +453,13 @@ const CandlestickChart = ({
 			chart.timeScale().unsubscribeVisibleTimeRangeChange(updateMarkerPositions);
 			chart.timeScale().unsubscribeVisibleLogicalRangeChange(updateMarkerPositions);
 		};
-	}, [chartInstance, selectedTimeFrame, isDark, applyMultipleMarkerStyle]);
+	}, [chartInstance, selectedTimeFrame, isDark, tweets, applyMultipleMarkerStyle]);
 
 	useEffect(() => {
 		if (!chartInstance) return;
 		const { chart, candlestickSeries, formattedData } = chartInstance;
 
-		if (formattedData.length > 0) {
+		if (formattedData?.length > 0) {
 			// const latestCandle = formattedData[formattedData.length - 1]; // Cây nến mới nhất
 
 			// setHoveredCandle({
@@ -510,7 +497,7 @@ const CandlestickChart = ({
 
 	const renderTweetTitle = (list: TweetInfo[]) => {
 		if (isEmpty(list)) return 'No tweet';
-		const count = list.length;
+		const count = list?.length;
 		const time = formattedDate(list[0].created_at || '', count > 1 ? 'HH:00 - MMM dd yyyy' : undefined);
 		return `${count} ${count === 1 ? 'tweet' : 'tweets'} posted at ${time}`;
 	};
@@ -588,7 +575,7 @@ const CandlestickChart = ({
 			</div>
 			<div style={{ position: 'relative' }}>
 				{/* ✅ Hiển thị loading overlay nếu đang fetch data */}
-				{/* {isLoading && (
+				{isLoading && (
 					<div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[3] rounded-2xl border dark:border-borderPrimary flex-col gap-3'>
 						<div className='w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin'></div>
 						<div>
@@ -596,8 +583,8 @@ const CandlestickChart = ({
 							<p className='text-white text-center'>Please wait a moment</p>
 						</div>
 					</div>
-				)} */}
-				{/* {!isLoading && !priceHistoryToken.length && (
+				)}
+				{/* {!isLoading && !priceHistoryToken?.length && (
 					<div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[3] rounded-2xl border dark:border-borderPrimary flex-col gap-3'>
 						<div className='w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin'></div>
 						<IconifyIcon icon='vaadin:line-bar-chart' className='size-10' />
@@ -629,7 +616,7 @@ const CandlestickChart = ({
 				classNameChildren='overflow-y-auto overflow-x-hidden rounded-none hidden-scrollbar max-h-[80vh]'
 				classNameContent='sm:w-full w-[96vw] max-w-screen-sm'
 			>
-				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={symbol} />
+				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={communityId} />
 			</ModalCommon>
 		</div>
 	);
