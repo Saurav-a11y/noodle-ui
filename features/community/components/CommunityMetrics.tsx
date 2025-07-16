@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 const CommunityMetrics = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const { data } = useCommunityOverview(communityId);
+	const { data, isFetching } = useCommunityOverview(communityId);
 
 	const communityHealthScore = { ...data?.data?.project?.health_score, ...data?.data?.project?.badges }
 	const communityMetrics = { ...data?.data?.project?.core_metrics }
@@ -127,20 +127,27 @@ const CommunityMetrics = () => {
 						<p className="text-sm font-reddit font-medium">Community Health Score</p>
 						<TooltipCommon content="A score from 0 to 100 that represents the overall health of a project’s community. It’s calculated using growth, engagement, authenticity, and activity consistency." />
 					</div>
-					<div className="flex items-center gap-2">
-						<p className="text-3xl font-semibold font-noto dark:text-[#FFF]">{communityHealthScore?.value}</p>
-						{communityHealthScore?.change !== undefined && (
-							<p
-								className={`text-xs font-medium font-noto flex items-center gap-2 ${communityHealthScore.change > 0 ? 'text-[#00B552]' : 'text-[#FF0000]'
-									}`}
-							>
-								<span>
-									{communityHealthScore.change > 0 ? "▲" : "▼"}
-								</span>
-								<span>{Math.abs(communityHealthScore.change)} {communityHealthScore?.change_description}</span>
-							</p>
-						)}
-					</div>
+					{isFetching ? (
+						<div className="flex items-center gap-2">
+							<div className="h-9 w-10 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+							<div className="h-4 w-32 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+						</div>
+					) : (
+						<div className="flex items-center gap-2">
+							<p className="text-3xl font-semibold font-noto dark:text-[#FFF]">{communityHealthScore?.value}</p>
+							{communityHealthScore?.change !== undefined && (
+								<p
+									className={`text-xs font-medium font-noto flex items-center gap-2 ${communityHealthScore.change > 0 ? 'text-[#00B552]' : 'text-[#FF0000]'
+										}`}
+								>
+									<span>
+										{communityHealthScore.change > 0 ? "▲" : "▼"}
+									</span>
+									<span>{Math.abs(communityHealthScore.change)} {communityHealthScore?.change_description}</span>
+								</p>
+							)}
+						</div>
+					)}
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -149,11 +156,11 @@ const CommunityMetrics = () => {
 							<div>
 								{typeof metric.icon === 'string' ? metric.icon : metric.icon}
 							</div>
-							<div className="flex items-center gap-2 dark:text-[#FFF]">
+							<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
 								<p className="text-xs font-reddit">{metric.title}</p>
 								<TooltipCommon content={metric.content} />
 							</div>
-							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.value}</p>
+							{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.value}</p>}
 						</div>
 					))}
 				</div>
@@ -169,12 +176,20 @@ const CommunityMetrics = () => {
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 					{coreMetrics.map((metric, index) => (
 						<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-							<div className="flex items-center gap-2 dark:text-[#FFF]">
+							<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
 								<p className="text-xs font-reddit">{metric.title}</p>
 								<TooltipCommon content={metric.content} />
 							</div>
-							<div className="text-xl font-semibold font-noto dark:text-[#FFF]">{metric.value}</div>
-							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+							{isFetching ?
+								<>
+									<div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
+									<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+								</>
+								: <>
+									<div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{metric.value}</div>
+									<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+								</>
+							}
 						</div>
 					))}
 				</div>
@@ -190,12 +205,21 @@ const CommunityMetrics = () => {
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 					{sourceMetrics.map((metric, index) => (
 						<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-							<div className="flex items-center gap-2 dark:text-[#FFF]">
+							<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
 								<p className="text-xs font-reddit">{metric.title}</p>
 								<TooltipCommon content={metric.content} />
 							</div>
-							<p className="text-xl font-semibold font-noto dark:text-[#FFF]">{metric.value}</p>
-							<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+							{isFetching ? (
+								<>
+									<div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
+									<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+								</>
+							) : (
+								<>
+									<p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{metric.value}</p>
+									<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+								</>
+							)}
 						</div>
 					))}
 				</div>

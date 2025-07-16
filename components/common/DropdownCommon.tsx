@@ -37,7 +37,6 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 						<ChevronDown className="w-4 h-4 flex-shrink-0" />
 					)}
 				</span>
-
 				{open && (
 					<div className="absolute -bottom-[174px] bg-[#1A1A1A] text-white rounded-md shadow-md py-2 z-50 w-50">
 						{data.map((item, index) => (
