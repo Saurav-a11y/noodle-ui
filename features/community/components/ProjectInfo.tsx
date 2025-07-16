@@ -11,6 +11,10 @@ import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import { CopyIcon } from "lucide-react";
 import toast from 'react-hot-toast';
 
+const Skeleton = ({ className = "" }) => (
+	<div className={`bg-gray-200 dark:bg-[#333] animate-pulse rounded ${className}`} />
+)
+
 const shortenAddress = (address: string): string => {
 	if (!address || address.length < 10) return address;
 	return `${address.slice(0, 4)}...${address.slice(-4)}`;
@@ -19,13 +23,54 @@ const shortenAddress = (address: string): string => {
 const ProjectInfo = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const { data } = useCommunityOverview(communityId);
+	const { data, isFetching } = useCommunityOverview(communityId);
 	const basicInformation = { ...data?.data?.project?.links }
+	if (isFetching) {
+		return (
+			<div>
+				<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>
+				<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
+					{/* Website */}
+					<div className="flex justify-between items-center gap-3">
+						<p className="text-sm font-medium opacity-50 font-noto">Website</p>
+						<Skeleton className="h-[31px] w-40 rounded-full w-[150px]" />
+					</div>
+					{/* Explorers */}
+					<div className="flex justify-between items-center gap-3">
+						<p className="text-sm font-medium opacity-50 font-noto">Explorers</p>
+						<Skeleton className="w-33 h-8 rounded-full" />
+					</div>
+					{/* Contract Address */}
+					<div className="flex items-center justify-between">
+						<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
+						<div className="flex items-center justify-end gap-4 flex-1">
+							<Skeleton className="h-5 w-32" />
+						</div>
+					</div>
+					{/* Wallets */}
+					<div className="flex items-center justify-between">
+						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
+						<div className="flex items-center gap-4 flex-1 justify-end">
+							<Skeleton className="h-5 w-24" />
+						</div>
+					</div>
+					{/* Community */}
+					<div className="flex items-center justify-between">
+						<p className="text-sm font-medium opacity-50 font-noto">Community</p>
+						<div className="flex items-center justify-end gap-4 flex-1">
+							<Skeleton className="h-5 w-36" />
+						</div>
+					</div>
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div>
 			<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>
 			<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
+				{/* Website */}
 				<div className="flex justify-between items-center gap-3">
 					<p className="text-sm font-medium opacity-50 font-noto">Website</p>
 					<div className="flex flex-wrap items-center justify-end gap-4 flex-1">
@@ -49,29 +94,34 @@ const ProjectInfo = () => {
 						)}
 					</div>
 				</div>
+				{/* Explorers */}
 				{basicInformation?.explorers?.length > 0 && (
 					<DropdownCommon data={basicInformation?.explorers} title="Explorers" />
 				)}
-				{basicInformation?.contract_address && (
-					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
-						<div className="flex items-center justify-end gap-4 flex-1">
-							<p className="text-sm font-medium font-noto">{shortenAddress(basicInformation?.contract_address)}</p>
-							<span
-								className="cursor-pointer"
-								onClick={() => {
-									if (basicInformation?.contract_address) {
-										navigator.clipboard.writeText(basicInformation.contract_address);
-										toast.success('Address copied!');
-									}
-								}}
-								title="Copy"
-							>
-								<CopyIcon className="w-4 h-4" />
-							</span>
-						</div>
+				{/* Contract Address */}
+				<div className="flex items-center justify-between">
+					<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
+					<div className="flex items-center justify-end gap-4 flex-1">
+						{basicInformation?.contract_address && (
+							<>
+								<p className="text-sm font-medium font-noto">{shortenAddress(basicInformation?.contract_address)}</p>
+								<span
+									className="cursor-pointer"
+									onClick={() => {
+										if (basicInformation?.contract_address) {
+											navigator.clipboard.writeText(basicInformation.contract_address);
+											toast.success('Address copied!');
+										}
+									}}
+									title="Copy"
+								>
+									<CopyIcon className="w-4 h-4" />
+								</span>
+							</>
+						)}
 					</div>
-				)}
+				</div>
+				{/* Wallets */}
 				{basicInformation?.wallets?.length > 0 && (
 					<div className="flex items-center justify-between">
 						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
@@ -83,6 +133,7 @@ const ProjectInfo = () => {
 						</div>
 					</div>
 				)}
+				{/* Community */}
 				{basicInformation?.community_channels?.length > 0 && (
 					<div className="flex items-center justify-between">
 						<p className="text-sm font-medium opacity-50 font-noto">Community</p>
