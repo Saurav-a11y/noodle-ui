@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { notoSansDisplay, redditSans, spaceGrotesk } from "./fonts";
 import ReactQueryProvider from '@/lib/react-query-provider';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en" className={`${notoSansDisplay.variable} ${redditSans.variable} ${spaceGrotesk.variable}`}>
       <body>
         <ReactQueryProvider>
+          <Toaster position="top-center" />
           {children}
         </ReactQueryProvider>
       </body>
