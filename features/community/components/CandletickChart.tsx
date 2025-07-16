@@ -19,12 +19,12 @@ import useThemekMode from '@/lib/useThemkMode';
 import { usePriceHistory } from '../hooks/usePriceHistory';
 import { useParams } from 'next/navigation';
 import { useListTweets } from '../hooks/useListTweets';
-import IconifyIcon from '@/components/common/IconifyIcon';
+// import IconifyIcon from '@/components/common/IconifyIcon';
 
-const COMMUNITIES_STATUS = {
-	LISTED: 'listed',
-	UNLISTED: 'unlisted',
-};
+// const COMMUNITIES_STATUS = {
+// 	LISTED: 'listed',
+// 	UNLISTED: 'unlisted',
+// };
 
 const platforms = [
 	{ name: "All", active: true },
@@ -75,10 +75,6 @@ const barsInTimeFrame = {
 };
 
 const CandlestickChart = () => {
-	// const dispatch = useAppDispatch();
-	// const {
-	// 	priceHistory: { data: priceHistoryToken, isLoading, tweets },
-	// } = useAppSelector((state) => state.community);
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const tokenSymbol = typeof communityId === 'string' ? communityId.replace('USD', '') : '';
@@ -98,7 +94,6 @@ const CandlestickChart = () => {
 		symbol: tokenSymbol,
 		timeRange: '30d',
 	});
-	// const premiumRef = useRef<PremiumFeatureLinkRef>(null);
 
 	// ✅ State lưu thời gian từ
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3D');
@@ -112,13 +107,13 @@ const CandlestickChart = () => {
 	// 	null,
 	// );
 	// State for platforms
-	const [platformsState, setPlatformsState] = useState(platforms);
+	// const [platformsState, setPlatformsState] = useState(platforms);
 
-	const handlePlatformClick = (name: string) => {
-		setPlatformsState((prev) =>
-			prev.map((p) => ({ ...p, active: p.name === name }))
-		);
-	};
+	// const handlePlatformClick = (name: string) => {
+	// 	setPlatformsState((prev) =>
+	// 		prev.map((p) => ({ ...p, active: p.name === name }))
+	// 	);
+	// };
 
 	const [activeHourTweets, setActiveHourTweets] = useState<TweetInfo[]>([]);
 	const [isShowModalTweet, setIsShowModalTweet] = useState(false);
@@ -531,7 +526,7 @@ const CandlestickChart = () => {
 		<div>
 			<div className='flex items-center gap-x-6 gap-y-3 mb-4 flex-wrap  justify-between gap-1'>
 				<div className="flex items-center gap-2">
-					{platformsState.map((platform) => (
+					{/* {platformsState.map((platform) => (
 						<button
 							key={platform.name}
 							className={`px-3 py-1.5 rounded text-xs font-reddit cursor-pointer font-medium transition-colors ${platform.active
@@ -542,7 +537,7 @@ const CandlestickChart = () => {
 						>
 							{platform.name}
 						</button>
-					))}
+					))} */}
 				</div>
 				<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
 					{['1D', '3D', '7D', '1M'].map((timeFrame) => (
