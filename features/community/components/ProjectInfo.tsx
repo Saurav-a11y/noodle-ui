@@ -8,6 +8,8 @@ import XIcon from "@/icons/XIcon";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
+import { CopyIcon } from "lucide-react";
+import toast from 'react-hot-toast';
 
 const shortenAddress = (address: string): string => {
 	if (!address || address.length < 10) return address;
@@ -28,18 +30,18 @@ const ProjectInfo = () => {
 					<p className="text-sm font-medium opacity-50 font-noto">Website</p>
 					<div className="flex flex-wrap items-center justify-end gap-4 flex-1">
 						{basicInformation?.website && (
-							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit">
-								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
-									<Link href={basicInformation?.website || ""} target='_blank'>
+							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
+								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit max-w-[200px] w-full">
+									<Link href={basicInformation?.website || ""} target='_blank' className="overflow-hidden text-ellipsis whitespace-nowrap">
 										{basicInformation?.website}
 									</Link>
 								</button>
 							</div>
 						)}
 						{basicInformation?.white_paper && (
-							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit">
-								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
-									<Link href={basicInformation?.white_paper || ""} target='_blank'>
+							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
+								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer text-[#494949] font-reddit max-w-[200px]">
+									<Link href={basicInformation?.white_paper || ""} target='_blank' className="overflow-hidden text-ellipsis whitespace-nowrap">
 										{basicInformation?.white_paper}
 									</Link>
 								</button>
@@ -55,10 +57,22 @@ const ProjectInfo = () => {
 						<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
 						<div className="flex items-center justify-end gap-4 flex-1">
 							<p className="text-sm font-medium font-noto">{shortenAddress(basicInformation?.contract_address)}</p>
+							<span
+								className="cursor-pointer"
+								onClick={() => {
+									if (basicInformation?.contract_address) {
+										navigator.clipboard.writeText(basicInformation.contract_address);
+										toast.success('Address copied!');
+									}
+								}}
+								title="Copy"
+							>
+								<CopyIcon className="w-4 h-4" />
+							</span>
 						</div>
 					</div>
 				)}
-				{basicInformation?.contract_address && (
+				{basicInformation?.wallets?.length > 0 && (
 					<div className="flex items-center justify-between">
 						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
 						<div className="flex items-center gap-4 flex-1 justify-end">

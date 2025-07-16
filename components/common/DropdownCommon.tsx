@@ -25,9 +25,10 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 		<div className="flex items-center justify-between relative" ref={ref}>
 			<p className="text-sm font-medium opacity-50 font-noto">{title}</p>
 			<div className="relative flex-1 flex items-center justify-end gap-2">
-				<button className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-sm cursor-pointer font-reddit"
+				<button
+					className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-sm cursor-pointer font-reddit w-full max-w-[124px] overflow-hidden whitespace-nowrap truncate"
 				>
-					{data[0]?.name}
+					<span className="truncate block w-full">{data[0]?.name}</span>
 				</button>
 				<span onClick={() => setOpen(!open)} className='cursor-pointer'>
 					{open ? (
