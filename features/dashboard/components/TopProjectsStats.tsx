@@ -57,11 +57,11 @@ const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading }:
 								className="flex items-center justify-between py-2 animate-pulse"
 							>
 								<div className="flex items-center gap-3">
-									<div className="h-4 w-4 bg-gray-200 rounded" />
-									<div className="w-8 h-8 bg-gray-200 rounded-full" />
-									<div className="h-4 w-30 bg-gray-200 rounded" />
+									<div className="h-4 w-4 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
+									<div className="w-8 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded-full" />
+									<div className="h-4 w-30 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
 								</div>
-								<div className="h-4 w-14 bg-gray-200 rounded" />
+								<div className="h-4 w-14 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
 							</div>
 						))}
 					</div>

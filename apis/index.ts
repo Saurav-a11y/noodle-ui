@@ -60,6 +60,19 @@ export const fetchCommunityOverview = async ({ communityId }: { communityId: str
     return res.json();
 };
 
+export const fetchCommunityTeamActivityAnalysis = async ({ communityId, fromDate, toDate }: { communityId: string, fromDate?: string, toDate?: string }) => {
+    const query = new URLSearchParams({
+        communityId,
+        ...(fromDate && { fromDate: String(fromDate) }),
+        ...(toDate && { toDate: String(toDate) }),
+    });
+
+    const res = await fetch(`${BASE_URL}/community-team-activity-analysis?${query}`);
+
+    if (!res.ok) throw new Error('Failed to fetch price history');
+    return res.json();
+};
+
 export const fetchPriceHistory = async ({
     symbol,
     startTime,

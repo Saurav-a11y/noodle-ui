@@ -99,28 +99,26 @@ const ProjectInfo = () => {
 					<DropdownCommon data={basicInformation?.explorers} title="Explorers" />
 				)}
 				{/* Contract Address */}
-				<div className="flex items-center justify-between">
-					<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
-					<div className="flex items-center justify-end gap-4 flex-1">
-						{basicInformation?.contract_address && (
-							<>
-								<p className="text-sm font-medium font-noto">{shortenAddress(basicInformation?.contract_address)}</p>
-								<span
-									className="cursor-pointer"
-									onClick={() => {
-										if (basicInformation?.contract_address) {
-											navigator.clipboard.writeText(basicInformation.contract_address);
-											toast.success('Address copied!');
-										}
-									}}
-									title="Copy"
-								>
-									<CopyIcon className="w-4 h-4" />
-								</span>
-							</>
-						)}
+				{basicInformation?.contract_address && (
+					<div className="flex items-center justify-between">
+						<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
+						<div className="flex items-center justify-end gap-4 flex-1">
+							<p className="text-sm font-medium font-noto">{shortenAddress(basicInformation?.contract_address)}</p>
+							<span
+								className="cursor-pointer"
+								onClick={() => {
+									if (basicInformation?.contract_address) {
+										navigator.clipboard.writeText(basicInformation.contract_address);
+										toast.success('Address copied!');
+									}
+								}}
+								title="Copy"
+							>
+								<CopyIcon className="w-4 h-4" />
+							</span>
+						</div>
 					</div>
-				</div>
+				)}
 				{/* Wallets */}
 				{basicInformation?.wallets?.length > 0 && (
 					<div className="flex items-center justify-between">
