@@ -60,11 +60,11 @@ export const fetchCommunityOverview = async ({ communityId }: { communityId: str
     return res.json();
 };
 
-export const fetchCommunityTeamActivityAnalysis = async ({ communityId, fromDate, toDate }: { communityId: string, fromDate?: string, toDate?: string }) => {
+export const fetchCommunityTeamActivityAnalysis = async ({ communityId, amount, unit }: { communityId: string, amount?: number, unit?: string }) => {
     const query = new URLSearchParams({
         communityId,
-        ...(fromDate && { fromDate: String(fromDate) }),
-        ...(toDate && { toDate: String(toDate) }),
+        ...(amount && { amount: String(amount) }),
+        ...(unit && { unit: String(unit) }),
     });
 
     const res = await fetch(`${BASE_URL}/community-team-activity-analysis?${query}`);

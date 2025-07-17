@@ -1,6 +1,5 @@
 'use client';
-import { useMemo, useState } from "react";
-import { endOfDay, subDays, startOfDay } from 'date-fns';
+import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useCommunityTeamActivityAnalysis } from "../hooks/useCommunityTeamActivityAnalysis";
 import { useParams } from "next/navigation";
@@ -12,38 +11,27 @@ const labels = [
 	{ name: 'AMAs', color: '#FF0000' },
 ]
 
-const timeframeDays: Record<string, number> = {
-	"7D": 7,
-	"1M": 30,
-	"3M": 90,
-	"6M": 180,
-	"1Y": 365,
-};
-
-const getDateRange = (days: number) => {
-	const toDate = endOfDay(new Date());
-	const fromDate = startOfDay(subDays(toDate, days - 1));
-	return {
-		fromDate: fromDate.toISOString(),
-		toDate: toDate.toISOString(),
-	};
+const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }> = {
+	"7D": { amount: 7, unit: "day" },
+	"1M": { amount: 30, unit: "day" },
+	"3M": { amount: 3, unit: "month" },
+	"6M": { amount: 6, unit: "month" },
+	"1Y": { amount: 12, unit: "month" },
 };
 
 const ActivityTimeline = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 
-	const [selectedTimeframe, setSelectedTimeframe] = useState("1M");
+	const [selectedTimeframe, setSelectedTimeframe] = useState<keyof typeof timeframeOptions>("1M");
 	const [visibleLabels, setVisibleLabels] = useState<string[]>(labels.map(l => l.name));
 
-	const { fromDate, toDate } = useMemo(
-		() => getDateRange(timeframeDays[selectedTimeframe]),
-		[selectedTimeframe]
-	);
+	const timeOption = timeframeOptions[selectedTimeframe];
+
 	const { data, isFetching } = useCommunityTeamActivityAnalysis({
 		communityId,
-		fromDate,
-		toDate
+		amount: timeOption.amount,
+		unit: timeOption.unit,
 	})
 
 	const toggleLabel = (labelName: string) => {
@@ -54,9 +42,29 @@ const ActivityTimeline = () => {
 		);
 	};
 
-	const timeframes = ["7D", "1M", "3M", "6M", "1Y"];
 	const totals = data?.data?.totals || null
 	const dataChart = data?.data?.time_series
+
+	const activeLabels = labels.filter(label => {
+		if (label.name === "Twitter Posts") return totals?.twitter_posts > 0;
+		if (label.name === "GitHub Commits") return totals?.github_commits > 0;
+		if (label.name === "Reddit Posts") return totals?.reddit_posts > 0;
+		if (label.name === "AMAs") return totals?.amas > 0;
+		return false;
+	});
+
+	useEffect(() => {
+		// Khi dữ liệu về, chỉ cho visible labels là những cái có data
+		if (totals) {
+			const newVisible: string[] = [];
+			if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
+			if (totals?.github_commits > 0) newVisible.push("GitHub Commits");
+			if (totals?.reddit_posts > 0) newVisible.push("Reddit Posts");
+			if (totals?.amas > 0) newVisible.push("AMAs");
+			setVisibleLabels(newVisible);
+		}
+	}, [totals]);
+
 	return (
 		<div className="p-6 rounded-xl bg-white dark:bg-[#1A1A1A] dark:text-white text-[#1E1B39]">
 			<div className="mb-4">
@@ -69,12 +77,15 @@ const ActivityTimeline = () => {
 				<div className="flex flex-col gap-3 xl:flex-row xl:items-center justify-end xl:justify-between mb-4 w-full">
 					<div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
 						{labels.map((label) => {
+							const isActive = activeLabels.some(l => l.name === label.name);
 							const isSelected = visibleLabels.includes(label.name);
 							return (
 								<div
 									key={label.name}
-									className={`px-3 py-1.5 rounded flex items-center gap-2 cursor-pointer ${isSelected ? "bg-[#F9F9F9] dark:bg-[#222]" : ""}`}
-									onClick={() => toggleLabel(label.name)}
+									className={
+										`px-3 py-1.5 rounded flex items-center gap-2 cursor-pointer ${isSelected && isActive ? "bg-[#F9F9F9] dark:bg-[#222]" : ""} ${!isActive ? "opacity-40 pointer-events-none" : ""}`
+									}
+									onClick={() => isActive && toggleLabel(label.name)}
 								>
 									<span className="w-6 h-1 rounded-full" style={{ backgroundColor: label.color }}></span>
 									<p className="text-xs font-reddit">{label.name}</p>
@@ -83,10 +94,10 @@ const ActivityTimeline = () => {
 						})}
 					</div>
 					<div className="flex items-center justify-end w-fit gap-1 bg-[#F9F9F9] dark:bg-[#222] p-1.5 rounded">
-						{Object.keys(timeframeDays).map((timeframe) => (
+						{Object.keys(timeframeOptions).map((timeframe) => (
 							<button
 								key={timeframe}
-								onClick={() => setSelectedTimeframe(timeframe)}
+								onClick={() => setSelectedTimeframe(timeframe as keyof typeof timeframeOptions)}
 								className={`px-2 py-1 rounded cursor-pointer text-xs font-reddit font-medium ${selectedTimeframe === timeframe ? "bg-[#DDF346] dark:text-[#222]" : ""
 									}`}
 							>
@@ -102,16 +113,16 @@ const ActivityTimeline = () => {
 						<XAxis dataKey="date" tick={{ fontSize: 12 }} />
 						<YAxis tick={{ fontSize: 12 }} />
 						<Tooltip content={undefined} />
-						{visibleLabels.includes("Twitter Posts") && (
-							<Line type="monotone" dataKey="twitter" stroke="#38E1FF" strokeWidth={2} dot={false} />
+						{totals?.twitter_posts > 0 && visibleLabels.includes("Twitter Posts") && (
+							<Line type="monotone" dataKey="twitter_posts" stroke="#38E1FF" strokeWidth={2} dot={false} />
 						)}
-						{visibleLabels.includes("GitHub Commits") && (
-							<Line type="monotone" dataKey="github" stroke="#546DF9" strokeWidth={2} dot={false} />
+						{totals?.github_commits > 0 && visibleLabels.includes("GitHub Commits") && (
+							<Line type="monotone" dataKey="github_commits" stroke="#546DF9" strokeWidth={2} dot={false} />
 						)}
-						{visibleLabels.includes("Reddit Posts") && (
-							<Line type="monotone" dataKey="reddit" stroke="#FF7D4D" strokeWidth={2} dot={false} />
+						{totals?.reddit_posts > 0 && visibleLabels.includes("Reddit Posts") && (
+							<Line type="monotone" dataKey="reddit_posts" stroke="#FF7D4D" strokeWidth={2} dot={false} />
 						)}
-						{visibleLabels.includes("AMAs") && (
+						{totals?.amas > 0 && visibleLabels.includes("AMAs") && (
 							<Line type="monotone" dataKey="amas" stroke="#FF0000" strokeWidth={2} dot={false} />
 						)}
 					</LineChart>
