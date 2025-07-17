@@ -7,7 +7,7 @@ import TooltipCommon from "@/components/common/TooltipCommon";
 import { useTopGainingProject } from "../hooks/useTopGainingProject";
 import { useMostTalkedProject } from "../hooks/useMostTalkedProject";
 import { useOverviewStats } from "../hooks/useOverviewStats";
-import { formatNumberShort } from "@/lib/format";
+import { formatNumberShort, formatPercent } from "@/lib/format";
 
 const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
 	const isUp = change?.direction === 'up';
@@ -80,7 +80,13 @@ const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading }:
 								<span className="text-sm font-medium">{project?.name}</span>
 							</div>
 							<span className="text-sm font-medium text-[#00B552]">
-								<strong>{project?.[valueKey]}</strong>{valueSuffix}
+								{valueSuffix === '%'
+									? <strong>{formatPercent(project?.[valueKey])}</strong>
+									:
+									<>
+										<strong>{formatNumberShort(project?.[valueKey])}</strong>{valueSuffix}
+									</>
+								}
 							</span>
 						</div>
 					))
