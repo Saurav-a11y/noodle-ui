@@ -24,7 +24,7 @@ const CommunityHealthRankings = () => {
 	const { data, isLoading } = useCommunityHealthRanks(filters);
 
 	const rankings = _get(data, 'data.community_health_rankings', []);
-	const filterCategory = _get(data, 'metadata.filters.category', []);
+	// const filterCategory = _get(data, 'metadata.filters.category', []);
 	const filterScore = _get(data, 'metadata.filters.score_range', []);
 	const filterSize = _get(data, 'metadata.filters.size', []);
 
@@ -136,7 +136,7 @@ const CommunityHealthRankings = () => {
 			<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
 				{/* Filters */}
 				<div className="flex gap-4 mb-6">
-					{renderSelect(filterCategory, 'category')}
+					{/* {renderSelect(filterCategory, 'category')} */}
 					{renderSelect(filterScore, 'score_range')}
 					{renderSelect(filterSize, 'size')}
 				</div>
