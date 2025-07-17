@@ -69,7 +69,16 @@ export const fetchCommunityTeamActivityAnalysis = async ({ communityId, fromDate
 
     const res = await fetch(`${BASE_URL}/community-team-activity-analysis?${query}`);
 
-    if (!res.ok) throw new Error('Failed to fetch price history');
+    if (!res.ok) throw new Error('Failed to fetch Community Team Activity Analysis');
+    return res.json();
+};
+
+export const fetchCommunityDataSources = async ({ symbol, platform }: { symbol: string, platform: string }) => {
+    const query = new URLSearchParams({ symbol, platform });
+
+    const res = await fetch(`${BASE_URL}/community-data-sources?${query}`);
+
+    if (!res.ok) throw new Error('Failed to fetch Community Data Sources');
     return res.json();
 };
 
