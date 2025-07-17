@@ -216,7 +216,7 @@ const CommunityHealthRankings = () => {
 										</TableCell>
 										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(project?.health_score)}</p></TableCell>
 										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(project?.active_users)}</p></TableCell>
-										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div className="text-center">{formatPercent(project?.engagement_rate_percent)}</div></TableCell>
+										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{formatPercent(project?.engagement_rate_percent)}</div></TableCell>
 										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
 											<div className={`text-center font-noto`}>
 												{formatPercent(project?.growth_rate_percent)}
