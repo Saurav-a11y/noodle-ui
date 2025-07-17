@@ -8,12 +8,13 @@ import { useTopGainingProject } from "../hooks/useTopGainingProject";
 import { useMostTalkedProject } from "../hooks/useMostTalkedProject";
 import { useOverviewStats } from "../hooks/useOverviewStats";
 import { formatNumberShort } from "@/lib/format";
-import QuestionIcon from "@/icons/QuestionIcon";
 
 const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
 	const isUp = change?.direction === 'up';
 	const icon = isUp ? '▲' : '▼';
+	console.log("🚀 ~ StatCard ~ icon:", icon)
 	const color = isUp ? 'text-[#00B552]' : 'text-[#FF0000]';
+	console.log("🚀 ~ StatCard ~ color:", color)
 
 	return (
 		<div className="p-4 bg-white dark:bg-black rounded-xl shadow-xl dark:text-white flex-1">
@@ -29,9 +30,9 @@ const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
 			) : (
 				<>
 					<div className="text-4xl font-bold font-noto">{formatNumberShort(value)}</div>
-					<div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
+					{/* <div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
 						{icon} {isUp ? '+' : '-'}{change?.absolute} ({isUp ? '+' : '-'}{change?.percentage}%)
-					</div>
+					</div> */}
 				</>
 			)}
 		</div>
