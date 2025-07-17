@@ -53,14 +53,14 @@ const CommunityMetrics = () => {
 		{
 			title: "Active Users (30d)",
 			value: formatNumberShort(communityMetrics?.active_users_30d?.value),
-			change: `${communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? "▲" : "▼"} ${communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? "+" : ""}${formatNumberShort(communityMetrics?.active_users_30d?.change)} (${communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? "+" : ""}${communityMetrics?.active_users_30d?.change_percent})`,
+			// change: `${communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? "▲" : "▼"} ${communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? "+" : ""}${formatNumberShort(communityMetrics?.active_users_30d?.change)} (${communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? "+" : ""}${communityMetrics?.active_users_30d?.change_percent})`,
 			color: communityMetrics?.active_users_30d?.change > 0 && communityMetrics?.active_users_30d?.change_percent > 0 ? '#00B552' : '#FF0000',
 			content: 'The number of distinct users who interacted with the project in the past 30 days. Covers social, development, and on-chain activity.'
 		},
 		{
 			title: "Engagement Rate (7d)",
 			value: `${communityMetrics?.engagement_rate_7d?.value}${communityMetrics?.engagement_rate_7d?.unit}`,
-			change: `${communityMetrics?.engagement_rate_7d?.change_percent > 0 && communityMetrics?.engagement_rate_7d?.change_percent > 0 ? "▲" : "▼"} ${communityMetrics?.engagement_rate_7d?.change_percent > 0 && communityMetrics?.engagement_rate_7d?.change_percent > 0 ? "+" : ''}${communityMetrics?.engagement_rate_7d?.change_percent}${communityMetrics?.engagement_rate_7d?.unit}`,
+			// change: `${communityMetrics?.engagement_rate_7d?.change_percent > 0 && communityMetrics?.engagement_rate_7d?.change_percent > 0 ? "▲" : "▼"} ${communityMetrics?.engagement_rate_7d?.change_percent > 0 && communityMetrics?.engagement_rate_7d?.change_percent > 0 ? "+" : ''}${communityMetrics?.engagement_rate_7d?.change_percent}${communityMetrics?.engagement_rate_7d?.unit}`,
 			color: communityMetrics?.engagement_rate_7d?.change_percent > 0 && communityMetrics?.engagement_rate_7d?.change_percent > 0 ? '#00B552' : '#FF0000',
 			content: 'The percentage of users actively participating (e.g. likes, comments, retweets) within the last 7 days. Higher rates indicate a more involved community.'
 		},
@@ -73,7 +73,7 @@ const CommunityMetrics = () => {
 		},
 		{
 			title: "Dev Commits (30d)",
-			value: communityMetrics?.dev_commits_30d?.value,
+			value: formatNumberShort(communityMetrics?.dev_commits_30d?.value),
 			change: communityMetrics?.dev_commits_30d?.trend,
 			color: '#FFAB36',
 			content: 'Total code commits made to the project’s repository in the past 30 days. Indicates ongoing technical progress and developer engagement.'
@@ -81,7 +81,7 @@ const CommunityMetrics = () => {
 		{
 			title: "Token Holders",
 			value: formatNumberShort(communityMetrics?.token_holders?.value),
-			change: `${communityMetrics?.token_holders?.change > 0 ? '▲' : '▼'} ${communityMetrics?.token_holders?.change > 0 ? '+' : ''}${communityMetrics?.token_holders?.change} ${communityMetrics?.token_holders?.change_description}`,
+			// change: `${communityMetrics?.token_holders?.change > 0 ? '▲' : '▼'} ${communityMetrics?.token_holders?.change > 0 ? '+' : ''}${communityMetrics?.token_holders?.change} ${communityMetrics?.token_holders?.change_description}`,
 			color: communityMetrics?.token_holders?.change > 0 ? '#00B552' : '#FF0000',
 			content: 'Shows the number of unique wallets currently holding the project’s token. Growth in holders typically reflects trust and adoption.'
 		}
@@ -91,28 +91,28 @@ const CommunityMetrics = () => {
 		{
 			title: "Twitter Mentions",
 			value: formatNumberShort(crossPlatformAnalytics?.twitter_mentions?.value),
-			change: `${crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.twitter_mentions?.change_percent}% ${crossPlatformAnalytics?.twitter_mentions?.comparison}`,
+			// change: `${crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.twitter_mentions?.change_percent}% ${crossPlatformAnalytics?.twitter_mentions?.comparison}`,
 			color: crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? '#00B552' : '#FF0000',
 			content: 'Shows the number of unique wallets currently holding the project’s token. Growth in holders typically reflects trust and adoption.'
 		},
 		{
 			title: "Reddit Posts",
 			value: formatNumberShort(crossPlatformAnalytics?.reddit_posts?.value),
-			change: `${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? '+' : ''}${crossPlatformAnalytics?.reddit_posts?.change_percent}% ${crossPlatformAnalytics?.reddit_posts?.comparison}`,
+			// change: `${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? '+' : ''}${crossPlatformAnalytics?.reddit_posts?.change_percent}% ${crossPlatformAnalytics?.reddit_posts?.comparison}`,
 			color: '#FF0000',
 			content: 'Counts how many Reddit posts discussed the project in the past 24 hours. Reflects discussion volume in crypto’s most active forums.'
 		},
 		{
 			title: "GitHub Commits",
 			value: formatNumberShort(crossPlatformAnalytics?.github_commits?.value),
-			change: crossPlatformAnalytics?.github_commits?.change_description,
+			// change: crossPlatformAnalytics?.github_commits?.change_description,
 			color: '#FFAB36',
 			content: 'Number of code commits to the main repository during the past 7 days. Indicates project development activity and transparency.'
 		},
 		{
 			title: "YouTube Videos",
 			value: formatNumberShort(crossPlatformAnalytics?.youtube_videos?.value),
-			change: `${crossPlatformAnalytics?.youtube_videos?.change > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.youtube_videos?.change} ${crossPlatformAnalytics?.youtube_videos?.change_description}`,
+			// change: `${crossPlatformAnalytics?.youtube_videos?.change > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.youtube_videos?.change} ${crossPlatformAnalytics?.youtube_videos?.change_description}`,
 			color: crossPlatformAnalytics?.youtube_videos?.change > 0 ? '#00B552' : '#FF0000',
 			content: 'Measures how many videos about the project were published in the last week. Shows how much creator interest the project is getting.'
 		}
@@ -135,7 +135,7 @@ const CommunityMetrics = () => {
 					) : (
 						<div className="flex items-center gap-2">
 							<p className="text-3xl font-semibold font-noto dark:text-[#FFF]">{communityHealthScore?.value}</p>
-							{communityHealthScore?.change !== undefined && (
+							{/* {communityHealthScore?.change !== undefined && (
 								<p
 									className={`text-xs font-medium font-noto flex items-center gap-2 ${communityHealthScore.change > 0 ? 'text-[#00B552]' : 'text-[#FF0000]'
 										}`}
@@ -145,7 +145,7 @@ const CommunityMetrics = () => {
 									</span>
 									<span>{Math.abs(communityHealthScore.change)} {communityHealthScore?.change_description}</span>
 								</p>
-							)}
+							)} */}
 						</div>
 					)}
 				</div>
@@ -217,7 +217,7 @@ const CommunityMetrics = () => {
 							) : (
 								<>
 									<p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{metric.value}</p>
-									<p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+									{/* <p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p> */}
 								</>
 							)}
 						</div>
