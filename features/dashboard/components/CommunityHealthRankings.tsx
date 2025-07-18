@@ -8,7 +8,7 @@ import Image from "next/image";
 import TooltipCommon from "@/components/common/TooltipCommon";
 import SmallGradientChart from "./SmallGradientChart";
 import { useCommunityHealthRanks } from "../hooks/useCommunityHealthRanks";
-import { formatNumberShort, formatPercent } from "@/lib/format";
+import { formatCurrency, formatNumberShort, formatPercent } from "@/lib/format";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -225,7 +225,7 @@ const CommunityHealthRankings = () => {
 										<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.risk_flag}</TableCell>
 										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 											<div className="flex items-center gap-3">
-												<p className="text-sm font-medium font-noto text-[#4B4A4A] dark:text-[#FFF]">{project?.market_cap?.display}</p>
+												<p className="text-sm font-medium font-noto text-[#4B4A4A] dark:text-[#FFF]">{formatCurrency(project?.market_cap?.value)}</p>
 												<div className={`flex items-center font-noto text-[#4B4A4A] dark:text-white`}>
 													{formatPercent(project?.market_cap?.change_percent)}
 												</div>
