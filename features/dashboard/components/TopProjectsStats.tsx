@@ -11,10 +11,21 @@ import { formatNumberShort, formatPercent } from "@/lib/format";
 
 const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
 	const isUp = change?.direction === 'up';
-	const icon = isUp ? '▲' : '▼';
-	console.log("🚀 ~ StatCard ~ icon:", icon)
-	const color = isUp ? 'text-[#00B552]' : 'text-[#FF0000]';
-	console.log("🚀 ~ StatCard ~ color:", color)
+	const isDown = change?.direction === 'down';
+	const isNoChange = change?.direction === 'no-change';
+
+	let icon = '';
+	let color = '';
+	if (isUp) {
+		icon = '▲';
+		color = 'text-[#00B552]';
+	} else if (isDown) {
+		icon = '▼';
+		color = 'text-[#FF0000]';
+	} else {
+		icon = '';
+		color = 'text-gray-400';
+	}
 
 	return (
 		<div className="p-4 bg-white dark:bg-black rounded-xl shadow-xl dark:text-white flex-1">
@@ -30,9 +41,17 @@ const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
 			) : (
 				<>
 					<div className="text-4xl font-bold font-noto">{formatNumberShort(value)}</div>
-					{/* <div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
-						{icon} {isUp ? '+' : '-'}{change?.absolute} ({isUp ? '+' : '-'}{change?.percentage}%)
-					</div> */}
+					{isUp || isDown ? (
+						<div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
+							{icon} {isUp ? '+' : '-'}
+							{change?.absolute}
+							{isUp || isDown ? ` (${isUp ? '+' : '-'}${change?.percentage}%)` : ''}
+						</div>
+					) : (
+						<div className="text-sm text-gray-400 font-medium mt-1 font-noto flex items-center">
+							<span style={{ letterSpacing: 0.5 }}>No change</span>
+						</div>
+					)}
 				</>
 			)}
 		</div>
