@@ -11,6 +11,8 @@ import ChatIcon from "@/icons/ChatIcon";
 import TooltipCommon from "../../../components/common/TooltipCommon";
 import { useCommunityDataSources } from "../hooks/useCommunityDataSources";
 import { useParams } from "next/navigation";
+import { formattedDate } from "@/lib/format";
+import Image from "next/image";
 
 const LiveActivity = () => {
 	const params = useParams();
@@ -22,17 +24,6 @@ const LiveActivity = () => {
 	console.log("🚀 ~ LiveActivity ~ activeTab:", activeTab)
 	const { data, isFetching } = useCommunityDataSources({ symbol: communityId, platform: activeTab })
 	console.log("🚀 ~ LiveActivity ~ data:", data)
-	const twitterActivity = [
-		{
-			user: "@kathryn_bonk",
-			followers: "2.5K followers",
-			time: "2 hours ago",
-			content: '"This is me when $BONK surpasses Bitcoin. 😍❤️ #BONK #SOLEcosystem"',
-			engagement: { likes: 131, retweets: 81, replies: 315, rate: "7.6%" },
-			authentic: true,
-			verified: true
-		}
-	];
 
 	const redditActivity = [
 		{
@@ -114,27 +105,27 @@ const LiveActivity = () => {
 											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hover:bg-[#F0F0F0] transition-colors duration-200">View all on Twitter</button>
 										</div>
 										<div className="space-y-4">
-											{twitterActivity.map((tweet, index) => (
+											{data?.data?.items.map((tweet, index) => (
 												<div key={index} className="bg-white dark:bg-[#000] rounded-xl p-5 space-y-4 text-[#373737] dark:text-[#fff]">
 													<div className="flex items-start gap-3">
 														<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-															{tweet.user[1].toUpperCase()}
+															<Image src={tweet?.profileImageUrl} alt="Avatar" height={40} width={40} />
 														</div>
 														<div className="flex-1">
 															<div className="mb-1 font-noto">
-																<span className="text-sm font-semibold">{tweet.user}</span>
+																<span className="text-sm font-semibold">{tweet.userName}</span>
 																<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
-																	<span className="text-xs opacity-50">{tweet.followers}</span>
+																	<span className="text-xs opacity-50">{tweet.metrics?.followers_count}</span>
 																	<span>•</span>
-																	<span className="text-xs">{tweet.time}</span>
+																	<span className="text-xs">{formattedDate(tweet.createdAt)}</span>
 																</div>
 															</div>
 														</div>
-														{tweet.authentic && (
+														{tweet.verified && (
 															<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
 														)}
 													</div>
-													<p className="text-sm font-reddit">{tweet.content}</p>
+													<p className="text-sm font-reddit">{tweet.description}</p>
 													<hr className="text-[#C5C5C5]" />
 													<div className="flex items-center gap-4 text-xs font-medium font-noto">
 														<div className="flex items-center gap-1"><Heart className="w-4 h-4" />{tweet.engagement.likes}</div>

@@ -107,26 +107,42 @@ const ActivityTimeline = () => {
 					</div>
 				</div>
 				{/* Chart Block */}
-				<ResponsiveContainer width="100%" height={300}>
-					<LineChart data={dataChart}>
-						<CartesianGrid strokeDasharray="3 3" stroke="#E9E9E9" />
-						<XAxis dataKey="date" tick={{ fontSize: 12 }} />
-						<YAxis tick={{ fontSize: 12 }} />
-						<Tooltip content={undefined} />
-						{totals?.twitter_posts > 0 && visibleLabels.includes("Twitter Posts") && (
-							<Line type="monotone" dataKey="twitter_posts" stroke="#38E1FF" strokeWidth={2} dot={false} />
-						)}
-						{totals?.github_commits > 0 && visibleLabels.includes("GitHub Commits") && (
-							<Line type="monotone" dataKey="github_commits" stroke="#546DF9" strokeWidth={2} dot={false} />
-						)}
-						{totals?.reddit_posts > 0 && visibleLabels.includes("Reddit Posts") && (
-							<Line type="monotone" dataKey="reddit_posts" stroke="#FF7D4D" strokeWidth={2} dot={false} />
-						)}
-						{totals?.amas > 0 && visibleLabels.includes("AMAs") && (
-							<Line type="monotone" dataKey="amas" stroke="#FF0000" strokeWidth={2} dot={false} />
-						)}
-					</LineChart>
-				</ResponsiveContainer>
+				<div className="relative min-h-[300px]">
+					{isFetching ? (
+						// Loading skeleton
+						<div className="flex items-center justify-center h-[300px]">
+							<div className="w-full h-full bg-gray-100 dark:bg-[#1A1A1A] rounded-xl animate-pulse flex items-center justify-center">
+								<span className="text-gray-400 dark:text-gray-600 text-lg">Loading chart...</span>
+							</div>
+						</div>
+					) : data?.data?.time_series?.length > 0 ? (
+						<ResponsiveContainer width="100%" height={300}>
+							<LineChart data={dataChart}>
+								<CartesianGrid strokeDasharray="3 3" stroke="#E9E9E9" />
+								<XAxis dataKey="date" tick={{ fontSize: 12 }} />
+								<YAxis tick={{ fontSize: 12 }} />
+								<Tooltip content={undefined} />
+								{totals?.twitter_posts > 0 && visibleLabels.includes("Twitter Posts") && (
+									<Line type="monotone" dataKey="twitter_posts" stroke="#38E1FF" strokeWidth={2} dot={false} />
+								)}
+								{totals?.github_commits > 0 && visibleLabels.includes("GitHub Commits") && (
+									<Line type="monotone" dataKey="github_commits" stroke="#546DF9" strokeWidth={2} dot={false} />
+								)}
+								{totals?.reddit_posts > 0 && visibleLabels.includes("Reddit Posts") && (
+									<Line type="monotone" dataKey="reddit_posts" stroke="#FF7D4D" strokeWidth={2} dot={false} />
+								)}
+								{totals?.amas > 0 && visibleLabels.includes("AMAs") && (
+									<Line type="monotone" dataKey="amas" stroke="#FF0000" strokeWidth={2} dot={false} />
+								)}
+							</LineChart>
+						</ResponsiveContainer>
+					) : (
+						// No data UI
+						<div className="flex items-center justify-center h-[300px] bg-gray-50 dark:bg-[#181818] rounded-xl">
+							<span className="text-gray-400 dark:text-gray-600 text-lg font-medium">No activity data available for this timeframe.</span>
+						</div>
+					)}
+				</div>
 				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4 mt-4">
 					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
 						<p className="text-sm font-reddit mb-2">Total Twitter Posts</p>
