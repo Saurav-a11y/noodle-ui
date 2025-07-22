@@ -10,6 +10,7 @@ import CryptoIcon from "@/icons/CryptoIcon";
 import OilIcon from "@/icons/OilIcon";
 import GoldIcon from "@/icons/GoldIcon";
 import StockIcon from "@/icons/StockIcon";
+import { SearchInput } from "./SearchInput";
 
 const marketItems = [
 	{ name: 'Crypto', icon: <CryptoIcon /> },
@@ -20,6 +21,7 @@ const marketItems = [
 
 const Header = () => {
 	const { isDark } = useThemekMode();
+
 	return (
 		<header className="bg-white dark:bg-[#0B0B0B] shadow-md sticky top-0 z-50">
 			<div className="container mx-auto px-6 py-2">
@@ -31,19 +33,7 @@ const Header = () => {
 
 					<div className="flex items-center">
 						{/* Search Bar */}
-						<div className="flex-1 max-w-[200px] mx-8 hidden md:block">
-							<div className="relative">
-								<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-full">
-									<div className="relative rounded-full bg-[#f9f9f9] dark:bg-[#1A1A1A] dark:text-[#FFFFFF]">
-										<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
-										<Input
-											placeholder="Search..."
-											className="pl-10 py-2 w-full bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit dark:text-[#FFFFFF]"
-										/>
-									</div>
-								</div>
-							</div>
-						</div>
+						<SearchInput />
 						<div className="text-black dark:text-white flex items-center gap-10">
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">

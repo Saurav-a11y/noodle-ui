@@ -6,6 +6,7 @@ export type CommunityHealthRankParams = {
     category?: string;
     score_range?: string;
     size?: string;
+    search?: string;
 };
 
 export type FetchPriceHistoryParams = {
@@ -46,6 +47,7 @@ export const fetchCommunityHealthRanks = async (params: CommunityHealthRankParam
     if (params.category && params.category !== 'All') query.append('category', params.category);
     if (params.score_range && params.score_range !== 'All') query.append('score_range', params.score_range);
     if (params.size && params.size !== 'All') query.append('size', params.size);
+    if (params.search) query.append('search', String(params.search));
 
     const url = `${BASE_URL}/community-health-ranks?${query.toString()}`;
 

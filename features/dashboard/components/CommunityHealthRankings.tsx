@@ -11,6 +11,7 @@ import { useCommunityHealthRanks } from "../hooks/useCommunityHealthRanks";
 import { formatCurrency, formatNumberShort, formatPercent } from "@/lib/format";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SearchInput } from "@/components/SearchInput";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
@@ -134,11 +135,15 @@ const CommunityHealthRankings = () => {
 			</div>
 
 			<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
-				{/* Filters */}
-				<div className="flex gap-4 mb-6">
-					{/* {renderSelect(filterCategory, 'category')} */}
-					{renderSelect(filterScore, 'score_range')}
-					{renderSelect(filterSize, 'size')}
+				<div className="flex justify-between items-center w-full">
+					{/* Filters */}
+					<div className="flex gap-4">
+						{/* {renderSelect(filterCategory, 'category')} */}
+						{renderSelect(filterScore, 'score_range')}
+						{renderSelect(filterSize, 'size')}
+					</div>
+					{/* Search */}
+					<SearchInput placeholder="Search by symbol, name" inputClassname="!mx-0 max-w-xs" popupClassname="!left-0 !max-w-xs" />
 				</div>
 
 				{/* Table */}

@@ -16,9 +16,9 @@ import ProjectHeader from "@/features/community/components/ProjectHeader";
 
 const CommunityDetailPage = () => {
 
-	const [isChatVisible, setChatVisible] = useState(false);
+	const [isChatVisible, setChatVisible] = useState(true);
 	const [isMobile, setIsMobile] = useState(false);
-	const [chatWidth, setChatWidth] = useState(26); // phần trăm
+	const [chatWidth, setChatWidth] = useState(26);
 
 	const handleCloseChat = () => {
 		setChatVisible(false);
