@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Globe } from 'lucide-react';
 
 export default function DropdownCommon({ data, title }: { data: { name: string; url: string }[], title: string }) {
 	const [open, setOpen] = useState(false);
@@ -47,8 +47,9 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 								onClick={() => {
 									setOpen(false);
 								}}
-								className="block px-4 py-2 text-sm hover:bg-[#333] cursor-pointer truncate"
+								className="block px-4 py-2 text-sm hover:bg-[#333] cursor-pointer truncate flex items-center gap-2"
 							>
+								<Globe className='w-4 h-4' />
 								{item?.name}
 							</Link>
 						))}
