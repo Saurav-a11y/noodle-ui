@@ -7,6 +7,7 @@ import { useCommunityHealthRanks } from "@/features/dashboard/hooks/useCommunity
 import Link from "next/link";
 import clsx from "clsx";
 import { formatCurrency } from "@/lib/format";
+import Image from "next/image";
 
 const SkeletonItem = () => (
 	<div className="flex items-center gap-2 px-4 py-3 animate-pulse">
@@ -119,7 +120,7 @@ export const SearchInput = ({ inputClassname, popupClassname, placeholder }: { p
 										onClick={() => setShowResults(false)}
 									>
 										<div className="flex items-center gap-2">
-											<img src={item.medium_logo_url} className="w-8 h-8 rounded-full" />
+											<Image src={item.medium_logo_url} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
 											<div>
 												<div className="text-sm dark:text-white font-noto font-semibold">{item.name}</div>
 												<div className="text-[10px] text-gray-500 font-noto">{item.symbol}</div>
