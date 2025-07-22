@@ -7,7 +7,6 @@ import { useCommunityHealthRanks } from "@/features/dashboard/hooks/useCommunity
 import Link from "next/link";
 import clsx from "clsx";
 import { formatCurrency } from "@/lib/format";
-import Image from "next/image";
 
 const SkeletonItem = () => (
 	<div className="flex items-center gap-2 px-4 py-3 animate-pulse">
