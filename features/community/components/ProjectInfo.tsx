@@ -2,7 +2,6 @@
 
 import DropdownCommon from "@/components/common/DropdownCommon";
 import DiscordIcon from "@/icons/DiscordIcon";
-import PhantomIcon from "@/icons/PhantomIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import XIcon from "@/icons/XIcon";
 import Link from "next/link";
@@ -10,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import { CopyIcon, Globe, Newspaper } from "lucide-react";
 import toast from 'react-hot-toast';
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/NavigationMenu";
 
 const Skeleton = ({ className = "" }) => (
 	<div className={`bg-gray-200 dark:bg-[#333] animate-pulse rounded ${className}`} />
@@ -127,12 +127,65 @@ const ProjectInfo = () => {
 				{basicInformation?.wallets?.length > 0 && (
 					<div className="flex items-center justify-between">
 						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
-						<div className="flex items-center gap-4 flex-1 justify-end">
-							<div className="flex items-center gap-2 ">
-								<PhantomIcon />
-								<p className="text-sm font-medium font-noto">Phantom</p>
-							</div>
-						</div>
+						<NavigationMenu>
+							<NavigationMenuList className="flex space-x-8">
+								<NavigationMenuItem>
+									<NavigationMenuTrigger className="bg-transparent font-mediumflex items-center gap-1.5">
+										{basicInformation?.wallets.slice(0, 4).map((item, index) => {
+											const isValidUrl = item.logo?.startsWith('http');
+											const imageSrc = isValidUrl
+												? item.logo
+												: 'https://pintu-academy.pintukripto.com/wp-content/uploads/2024/02/Web3-Wallet.png';
+
+											return (
+												<Link
+													href={item.url}
+													target="_blank"
+													key={index}
+													className="w-6 h-6 flex items-center text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+												>
+													<img
+														src={imageSrc}
+														width='100%'
+														height='100%'
+														className="rounded-full"
+														alt="Wallet Logo"
+													/>
+												</Link>
+											);
+										})}
+									</NavigationMenuTrigger>
+									<NavigationMenuContent>
+										<div className="w-[232px] p-2 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-lg">
+											{basicInformation?.wallets.map((item, index) => {
+												const isValidUrl = item.logo?.startsWith('http');
+												const imageSrc = isValidUrl
+													? item.logo
+													: 'https://pintu-academy.pintukripto.com/wp-content/uploads/2024/02/Web3-Wallet.png';
+
+												return (
+													<Link
+														href={item.url}
+														target="_blank"
+														key={index}
+														className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+													>
+														<img
+															src={imageSrc}
+															width={24}
+															height={24}
+															className="rounded-full"
+															alt="Wallet Logo"
+														/>
+														<span>{item.name}</span>
+													</Link>
+												);
+											})}
+										</div>
+									</NavigationMenuContent>
+								</NavigationMenuItem>
+							</NavigationMenuList>
+						</NavigationMenu>
 					</div>
 				)}
 				{/* Community */}
