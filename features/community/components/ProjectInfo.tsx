@@ -8,7 +8,7 @@ import XIcon from "@/icons/XIcon";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, Globe, Newspaper } from "lucide-react";
 import toast from 'react-hot-toast';
 
 const Skeleton = ({ className = "" }) => (
@@ -77,8 +77,9 @@ const ProjectInfo = () => {
 						{basicInformation?.website && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
 								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit max-w-[200px] w-full">
-									<Link href={basicInformation?.website || ""} target='_blank' className="overflow-hidden text-ellipsis whitespace-nowrap">
-										{basicInformation?.website}
+									<Link href={basicInformation?.website || ""} target='_blank' className="flex items-center gap-1.5">
+										<Globe className="w-4 h-4 text-inherit" />
+										<span>Website</span>
 									</Link>
 								</button>
 							</div>
@@ -86,8 +87,11 @@ const ProjectInfo = () => {
 						{basicInformation?.white_paper && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
 								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer text-[#494949] font-reddit max-w-[200px]">
-									<Link href={basicInformation?.white_paper || ""} target='_blank' className="overflow-hidden text-ellipsis whitespace-nowrap">
-										{basicInformation?.white_paper}
+									<Link href={basicInformation?.white_paper || ""} target='_blank' className="flex items-center gap-1.5">
+										<Newspaper className="w-4 h-4 text-inherit" />
+										<span>
+											Whitepaper
+										</span>
 									</Link>
 								</button>
 							</div>
