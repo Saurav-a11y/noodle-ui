@@ -148,7 +148,6 @@ const CommunityHealthRankings = () => {
 
 				{/* Table */}
 				<div className="overflow-x-auto">
-
 					<Table>
 						<TableHeader className="dark:bg-[#1A1A1A]">
 							<TableRow>
