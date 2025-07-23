@@ -4,20 +4,9 @@ import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
 import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
 import useThemekMode from '@/lib/useThemkMode';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "./ui/NavigationMenu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "./ui/NavigationMenu";
 import Link from "next/link";
-import CryptoIcon from "@/icons/CryptoIcon";
-import OilIcon from "@/icons/OilIcon";
-import GoldIcon from "@/icons/GoldIcon";
-import StockIcon from "@/icons/StockIcon";
 import { SearchInput } from "./SearchInput";
-
-const marketItems = [
-	{ name: 'Crypto', icon: <CryptoIcon /> },
-	{ name: 'Oil', icon: <OilIcon /> },
-	{ name: 'Gold', icon: <GoldIcon /> },
-	{ name: 'Stocks', icon: <StockIcon /> },
-];
 
 const Header = () => {
 	const { isDark } = useThemekMode();
@@ -37,6 +26,7 @@ const Header = () => {
 						<div className="text-black dark:text-white flex items-center gap-10">
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
+									{/* Homepage */}
 									<NavigationMenuItem>
 										<Link
 											href="/"
@@ -45,42 +35,34 @@ const Header = () => {
 											Homepage
 										</Link>
 									</NavigationMenuItem>
-									<NavigationMenuItem>
-										<NavigationMenuTrigger className="bg-transparent font-mediumflex items-center gap-1">
-											<p className="text-base">Markets</p>
-										</NavigationMenuTrigger>
-										<NavigationMenuContent>
-											<div className="w-[232px] p-2 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-lg">
-												{marketItems.map((item, index) => (
-													<Link
-														href={`/markets/${item.name.toLowerCase()}`}
-														key={index}
-														className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
-													>
-														<span className="text-lg">{item.icon}</span>
-														<span>{item.name}</span>
-													</Link>
-												))}
-											</div>
-										</NavigationMenuContent>
-									</NavigationMenuItem>
-									{/* Community */}
+
+									{/* Cryptocurrencies */}
 									<NavigationMenuItem>
 										<Link
-											href="/community"
-											className="font-medium transition-colors"
+											href="/cryptocurrencies"
+											className="font-medium"
 										>
-											Community
+											Cryptocurrencies
 										</Link>
 									</NavigationMenuItem>
 
-									{/* Prices */}
+									{/* Stocks */}
+									<NavigationMenuItem>
+										<Link
+											href="/stocks"
+											className="font-medium transition-colors"
+										>
+											Stocks
+										</Link>
+									</NavigationMenuItem>
+
+									{/* Commodities */}
 									<NavigationMenuItem>
 										<a
-											href="/prices"
+											href="/commodities"
 											className="font-medium"
 										>
-											Prices
+											Commodities
 										</a>
 									</NavigationMenuItem>
 								</NavigationMenuList>

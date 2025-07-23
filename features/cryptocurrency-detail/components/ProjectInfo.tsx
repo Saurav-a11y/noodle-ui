@@ -76,7 +76,7 @@ const ProjectInfo = () => {
 					<div className="flex flex-wrap items-center justify-end gap-4 flex-1">
 						{basicInformation?.website && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
-								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit max-w-[200px] w-full">
+								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit w-full">
 									<Link href={basicInformation?.website || ""} target='_blank' className="flex items-center gap-1.5">
 										<Globe className="w-4 h-4 text-inherit" />
 										<span>Website</span>
@@ -86,7 +86,7 @@ const ProjectInfo = () => {
 						)}
 						{basicInformation?.white_paper && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
-								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer text-[#494949] font-reddit max-w-[200px]">
+								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
 									<Link href={basicInformation?.white_paper || ""} target='_blank' className="flex items-center gap-1.5">
 										<Newspaper className="w-4 h-4 text-inherit" />
 										<span>
@@ -127,10 +127,10 @@ const ProjectInfo = () => {
 				{basicInformation?.wallets?.length > 0 && (
 					<div className="flex items-center justify-between">
 						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
-						<NavigationMenu>
+						<NavigationMenu className='z-10'>
 							<NavigationMenuList className="flex space-x-8">
 								<NavigationMenuItem>
-									<NavigationMenuTrigger className="bg-transparent font-mediumflex items-center gap-1.5">
+									<NavigationMenuTrigger className="bg-transparent font-mediumflex items-center gap-1.5 px-0 py-0">
 										{basicInformation?.wallets.slice(0, 4).map((item, index) => {
 											const isValidUrl = item.logo?.startsWith('http');
 											const imageSrc = isValidUrl
@@ -156,7 +156,7 @@ const ProjectInfo = () => {
 										})}
 									</NavigationMenuTrigger>
 									<NavigationMenuContent>
-										<div className="w-[232px] p-2 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-lg">
+										<div className="w-[232px] p-2 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-lg z-80">
 											{basicInformation?.wallets.map((item, index) => {
 												const isValidUrl = item.logo?.startsWith('http');
 												const imageSrc = isValidUrl

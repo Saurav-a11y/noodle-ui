@@ -8,7 +8,7 @@ const labels = [
 	{ name: 'Twitter Posts', color: '#38E1FF' },
 	{ name: 'GitHub Commits', color: '#546DF9' },
 	{ name: 'Reddit Posts', color: '#FF7D4D' },
-	{ name: 'AMAs', color: '#FF0000' },
+	{ name: 'YouTube', color: '#FF0000' },
 ]
 
 const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }> = {
@@ -49,7 +49,7 @@ const ActivityTimeline = () => {
 		if (label.name === "Twitter Posts") return totals?.twitter_posts > 0;
 		if (label.name === "GitHub Commits") return totals?.github_commits > 0;
 		if (label.name === "Reddit Posts") return totals?.reddit_posts > 0;
-		if (label.name === "AMAs") return totals?.amas > 0;
+		if (label.name === "YouTube") return totals?.youtube > 0;
 		return false;
 	});
 
@@ -60,7 +60,7 @@ const ActivityTimeline = () => {
 			if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
 			if (totals?.github_commits > 0) newVisible.push("GitHub Commits");
 			if (totals?.reddit_posts > 0) newVisible.push("Reddit Posts");
-			if (totals?.amas > 0) newVisible.push("AMAs");
+			if (totals?.youtube > 0) newVisible.push("YouTube");
 			setVisibleLabels(newVisible);
 		}
 	}, [totals]);
@@ -131,8 +131,8 @@ const ActivityTimeline = () => {
 								{totals?.reddit_posts > 0 && visibleLabels.includes("Reddit Posts") && (
 									<Line type="monotone" dataKey="reddit_posts" stroke="#FF7D4D" strokeWidth={2} dot={false} />
 								)}
-								{totals?.amas > 0 && visibleLabels.includes("AMAs") && (
-									<Line type="monotone" dataKey="amas" stroke="#FF0000" strokeWidth={2} dot={false} />
+								{totals?.youtube > 0 && visibleLabels.includes("YouTube") && (
+									<Line type="monotone" dataKey="youtube" stroke="#FF0000" strokeWidth={2} dot={false} />
 								)}
 							</LineChart>
 						</ResponsiveContainer>
@@ -146,19 +146,19 @@ const ActivityTimeline = () => {
 				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4 mt-4">
 					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
 						<p className="text-sm font-reddit mb-2">Total Twitter Posts</p>
-						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.twitter_posts}</p>}
+						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.twitter_posts || 0}</p>}
 					</div>
 					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
 						<p className="text-sm font-reddit mb-2">Total GitHub Commits</p>
-						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.github_commits}</p>}
+						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.github_commits || 0}</p>}
 					</div>
 					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
 						<p className="text-sm font-reddit mb-2">Total Reddit Posts</p>
-						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.reddit_posts}</p>}
+						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.reddit_posts || 0}</p>}
 					</div>
 					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
-						<p className="text-sm font-reddit mb-2">Total AMAs</p>
-						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.amas}</p>}
+						<p className="text-sm font-reddit mb-2">Total YouTube</p>
+						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.youtube || 0}</p>}
 					</div>
 				</div>
 			</div>

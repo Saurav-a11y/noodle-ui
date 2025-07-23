@@ -1,12 +1,12 @@
 'use client'
 
-import CommunityHealthRankings from "@/features/dashboard/components/CommunityHealthRankings";
-import TopProjectsStats from "@/features/dashboard/components/TopProjectsStats";
+import CommunityHealthRankings from "@/features/cryptocurrencies/components/CommunityHealthRankings";
+import TopProjectsStats from "@/features/cryptocurrencies/components/TopProjectsStats";
 import Header from "@/components/Header";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import BackgroundPage from "@/icons/BackgroundPage";
 
-const Dashboard = () => {
+const CryptocurrenciesPage = () => {
 	return (
 		<ReactQueryProvider>
 			<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto">
@@ -25,4 +25,4 @@ const Dashboard = () => {
 	);
 }
 
-export default Dashboard;
+export default CryptocurrenciesPage;
