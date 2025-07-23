@@ -1,119 +1,12 @@
 'use client'
-import { useRouter } from "next/navigation";
 import _get from 'lodash/get';
 import _map from 'lodash/map';
-import Image from "next/image";
 import TooltipCommon from "@/components/common/TooltipCommon";
 import { useTopGainingProject } from "../hooks/useTopGainingProject";
 import { useMostTalkedProject } from "../hooks/useMostTalkedProject";
 import { useOverviewStats } from "../hooks/useOverviewStats";
-import { formatNumberShort, formatPercent } from "@/lib/format";
-
-const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
-	const isUp = change?.direction === 'up';
-	const isDown = change?.direction === 'down';
-	const isNoChange = change?.direction === 'no-change';
-
-	let icon = '';
-	let color = '';
-	if (isUp) {
-		icon = '▲';
-		color = 'text-[#00B552]';
-	} else if (isDown) {
-		icon = '▼';
-		color = 'text-[#FF0000]';
-	} else {
-		icon = '';
-		color = 'text-gray-400';
-	}
-
-	return (
-		<div className="p-4 bg-white dark:bg-black rounded-xl shadow-xl dark:text-white flex-1">
-			<div className="flex items-center gap-2 mb-2">
-				<h3 className="font-reddit">{title}</h3>
-				<TooltipCommon content={tooltip} />
-			</div>
-			{isLoading ? (
-				<div className="space-y-2">
-					<div className="h-10 w-24 bg-gray-200 dark:bg-[#333] rounded-md animate-pulse" />
-					<div className="h-4 w-32 bg-gray-200 dark:bg-[#333] rounded-md animate-pulse" />
-				</div>
-			) : (
-				<>
-					<div className="text-4xl font-bold font-noto">{formatNumberShort(value)}</div>
-					{isUp || isDown ? (
-						<div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
-							{icon} {isUp ? '+' : '-'}
-							{change?.absolute}
-							{isUp || isDown ? ` (${isUp ? '+' : '-'}${change?.percentage}%)` : ''}
-						</div>
-					) : (
-						<div className="text-sm text-gray-400 font-medium mt-1 font-noto flex items-center">
-							<span style={{ letterSpacing: 0.5 }}>No change</span>
-						</div>
-					)}
-				</>
-			)}
-		</div>
-	);
-};
-
-const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading }: any) => {
-	const router = useRouter();
-
-	return (
-		<div className="bg-white dark:bg-black rounded-xl shadow-xl">
-			<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
-				<h3 className="font-reddit">{title}</h3>
-				<TooltipCommon content={tooltip} />
-			</div>
-			<div className="text-[#4B4A4A] dark:text-white pb-3">
-				{isLoading ? (
-					<div className="px-5">
-						{[...Array(5)].map((_, idx) => (
-							<div
-								key={idx}
-								className="flex items-center justify-between py-2 animate-pulse"
-							>
-								<div className="flex items-center gap-3">
-									<div className="h-4 w-4 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
-									<div className="w-8 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded-full" />
-									<div className="h-4 w-30 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
-								</div>
-								<div className="h-4 w-14 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
-							</div>
-						))}
-					</div>
-				) : (
-					_map(data, (project) => (
-						<div
-							key={project?.rank}
-							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
-							onClick={() => router.push(`/cryptocurrencies/${project.symbol}`)}
-						>
-							<div className="flex items-center gap-3 font-noto">
-								<span className="text-xs font-medium w-4">{project?.rank}</span>
-								<div className="w-8 h-8 flex items-center justify-center text-sm">
-									<Image src={project?.medium_logo_url} alt="Symbol" width={64} height={64} className="rounded-full" />
-								</div>
-								<span className="text-sm font-medium">{project?.name}</span>
-							</div>
-							<span className="text-sm font-medium text-[#00B552]">
-								{valueSuffix === '%'
-									? <strong>{formatPercent(project?.[valueKey])}</strong>
-									:
-									<>
-										<strong>{formatNumberShort(project?.[valueKey])}</strong>{valueSuffix}
-									</>
-								}
-							</span>
-						</div>
-					))
-				)}
-			</div>
-		</div>
-	);
-};
+import StatCard from "@/components/common/StatCard";
+import ProjectList from '@/components/common/ProjectList';
 
 const TopProjectsStats = () => {
 	const { data: topGainingProjectData, isLoading: isGettingTopGainingProject, } = useTopGainingProject();
