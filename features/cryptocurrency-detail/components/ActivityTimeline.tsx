@@ -22,14 +22,14 @@ const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }
 const ActivityTimeline = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-
+	const tokenSymbol = typeof communityId === 'string' ? communityId.replace('USD', '') : '';
 	const [selectedTimeframe, setSelectedTimeframe] = useState<keyof typeof timeframeOptions>("1M");
 	const [visibleLabels, setVisibleLabels] = useState<string[]>(labels.map(l => l.name));
 
 	const timeOption = timeframeOptions[selectedTimeframe];
 
 	const { data, isFetching } = useCommunityTeamActivityAnalysis({
-		communityId,
+		communityId: tokenSymbol,
 		amount: timeOption.amount,
 		unit: timeOption.unit,
 	})
