@@ -1,20 +1,20 @@
 'use client';
 import { useState, useEffect } from "react";
 
-import ActivityTimeline from "@/features/community/components/ActivityTimeline";
-import AICommunityAnalyst from "@/features/community/components/AICommunityAnalyst";
-import CommunityMetrics from "@/features/community/components/CommunityMetrics";
-import LiveActivity from "@/features/community/components/LiveActivity";
-import ProjectInfo from "@/features/community/components/ProjectInfo";
-import SocialChart from "@/features/community/components/SocialChart";
+import ActivityTimeline from "@/features/cryptocurrency-detail/components/ActivityTimeline";
+import AICommunityAnalyst from "@/features/cryptocurrency-detail/components/AICommunityAnalyst";
+import CommunityMetrics from "@/features/cryptocurrency-detail/components/CommunityMetrics";
+import LiveActivity from "@/features/cryptocurrency-detail/components/LiveActivity";
+import ProjectInfo from "@/features/cryptocurrency-detail/components/ProjectInfo";
+import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 import Header from "@/components/Header";
 import HeartIcon from "@/icons/HeartIcon";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import BackgroundPage from "@/icons/BackgroundPage";
 import ReactQueryProvider from "@/lib/react-query-provider";
-import ProjectHeader from "@/features/community/components/ProjectHeader";
+import ProjectHeader from "@/features/cryptocurrency-detail/components/ProjectHeader";
 
-const CommunityDetailPage = () => {
+const CryptocurrencyDetailPage = () => {
 
 	const [isChatVisible, setChatVisible] = useState(true);
 	const [isMobile, setIsMobile] = useState(false);
@@ -147,4 +147,4 @@ const CommunityDetailPage = () => {
 	);
 };
 
-export default CommunityDetailPage;
+export default CryptocurrencyDetailPage;

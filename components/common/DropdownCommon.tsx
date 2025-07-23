@@ -1,61 +1,48 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronUp, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '../ui/NavigationMenu';
 
 export default function DropdownCommon({ data, title }: { data: { name: string; url: string }[], title: string }) {
-	const [open, setOpen] = useState(false);
-
-	const ref = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		function handleClickOutside(event: MouseEvent) {
-			if (ref.current && !ref.current.contains(event.target as Node)) {
-				setOpen(false);
-			}
-		}
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, []);
 
 	if (!data || data.length === 0) return null;
 
 	return (
-		<div className="flex items-center justify-between relative" ref={ref}>
+		<div className="flex items-center justify-between">
 			<p className="text-sm font-medium opacity-50 font-noto">{title}</p>
-			<div className="relative flex-1 flex items-center justify-end gap-2">
-				<button
-					className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-sm cursor-pointer font-reddit w-full max-w-[124px] overflow-hidden whitespace-nowrap truncate"
-				>
-					<span className="truncate block w-full">{data[0]?.name}</span>
-				</button>
-				<span onClick={() => setOpen(!open)} className='cursor-pointer'>
-					{open ? (
-						<ChevronUp className="w-4 h-4 flex-shrink-0" />
-					) : (
-						<ChevronDown className="w-4 h-4 flex-shrink-0" />
-					)}
-				</span>
-				{open && (
-					<div className="absolute -bottom-[174px] bg-[#1A1A1A] text-white rounded-md shadow-md py-2 z-50 w-50">
-						{data.map((item, index) => (
+			<NavigationMenu className='z-20'>
+				<NavigationMenuList className="flex space-x-8">
+					<NavigationMenuItem>
+						<NavigationMenuTrigger className="bg-transparent font-mediumflex items-center gap-1.5 px-0 py-0">
 							<Link
-								key={index}
-								href={item?.url || '#'}
+								href={data[0].url}
 								target="_blank"
-								onClick={() => {
-									setOpen(false);
-								}}
-								className="block px-4 py-2 text-sm hover:bg-[#333] cursor-pointer truncate flex items-center gap-2"
+								className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-sm cursor-pointer font-reddit w-fit overflow-hidden whitespace-nowrap truncate"
 							>
-								<Globe className='w-4 h-4' />
-								{item?.name}
+								{data[0]?.name}
 							</Link>
-						))}
-					</div>
-				)}
-			</div>
-		</div >
+						</NavigationMenuTrigger>
+						<NavigationMenuContent>
+							<div className="w-[232px] p-2 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-lg z-90">
+								{data.map((item, index) => {
+									return (
+										<Link
+											href={item.url}
+											target="_blank"
+											key={index}
+											className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+										>
+											<Globe className='w-4 h-4' />
+											{item?.name}
+										</Link>
+									);
+								})}
+							</div>
+						</NavigationMenuContent>
+					</NavigationMenuItem>
+				</NavigationMenuList>
+			</NavigationMenu>
+		</div>
 	);
 }

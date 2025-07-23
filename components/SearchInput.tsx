@@ -3,7 +3,7 @@
 import { Loader2, Search } from "lucide-react"
 import { Input } from "./ui/Input"
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useCommunityHealthRanks } from "@/features/dashboard/hooks/useCommunityHealthRanks";
+import { useCommunityHealthRanks } from "@/features/cryptocurrencies/hooks/useCommunityHealthRanks";
 import Link from "next/link";
 import clsx from "clsx";
 import { formatCurrency } from "@/lib/format";
@@ -110,7 +110,7 @@ export const SearchInput = ({ inputClassname, popupClassname, placeholder }: { p
 							<>
 								{results.map((item: any) => (
 									<Link
-										href={`/community/${item.symbol}`}
+										href={`/cryptocurrencies/${item.symbol}`}
 										key={item.symbol}
 										className={clsx(
 											"block px-4 py-3 hover:bg-[#F3F3F3] dark:hover:bg-[#222] transition-colors",
