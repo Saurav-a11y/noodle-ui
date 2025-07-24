@@ -6,5 +6,6 @@ export const useCommunityDataSources = ({ symbol, platform }: { symbol: string, 
         queryKey: ['communityTeamActivity', symbol, platform],
         queryFn: () => fetchCommunityDataSources({ symbol, platform }),
         enabled: !!symbol,
+        staleTime: 1000 * 60 * 5,
     });
 };

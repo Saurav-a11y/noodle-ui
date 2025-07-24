@@ -1,4 +1,4 @@
-import { format, isValid, parseISO } from "date-fns";
+import { format, isValid, parseISO, formatDistanceToNow, isToday, fromUnixTime } from "date-fns";
 import numeral from "numeral";
 
 export default function formatNumberWithDecimal(number: string | number, decimalPlaces = 0) {
@@ -192,3 +192,17 @@ export function getChangeDisplay({
 
     return { changeText, color };
 }
+
+export const formatTimestamp = (timestamp: number): string => {
+    const date = fromUnixTime(timestamp);
+    if (isToday(date)) {
+        return formatDistanceToNow(date, { addSuffix: true }); // e.g., "2 hours ago"
+    }
+    return format(date, 'dd/MM/yyyy'); // e.g., "23/07/2025"
+};
+
+export const calculateEngagementRate = (likes: number, retweets: number, replies: number, followersCount: number) => {
+    if (!followersCount) return 0;
+    const totalEngagement = likes + retweets + replies;
+    return Number(((totalEngagement / followersCount) * 100).toFixed(3));
+};
