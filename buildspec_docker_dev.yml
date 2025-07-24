@@ -1,0 +1,31 @@
+version: 0.2
+
+# DOT_ENV: prodelopment | production
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d ':')
+      - AWS_REGION=$(echo $CODEBUILD_BUILD_ARN | cut -f4 -d ':')
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/mnet
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - ls -al
+      - docker build -t $REPOSITORY_URI:metaverse-network-app-dev-x86-latest .
+      - docker tag $REPOSITORY_URI:metaverse-network-app-dev-x86-latest $REPOSITORY_URI:metaverse-network-app-dev-x86-$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:metaverse-network-app-dev-x86-latest
+      - docker push $REPOSITORY_URI:metaverse-network-app-dev-x86-$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"metaverse-network-app","imageUri":"%s"}]' $REPOSITORY_URI:metaverse-network-app-dev-x86-$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
