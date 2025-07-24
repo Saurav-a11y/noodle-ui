@@ -127,7 +127,7 @@ const LiveActivity = () => {
 															<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
 														)}
 													</div>
-													<p className="text-sm font-reddit [&>a]:text-blue-500 leading-none" dangerouslySetInnerHTML={{ __html: tweet.html }} />
+													<p className="text-sm font-reddit [&>a]:text-blue-500 leading-[1.7]" dangerouslySetInnerHTML={{ __html: tweet.html }} />
 													<hr className="text-[#C5C5C5]" />
 													<div className="flex items-center gap-4 text-xs font-medium font-noto">
 														<div className="flex items-center gap-1">
