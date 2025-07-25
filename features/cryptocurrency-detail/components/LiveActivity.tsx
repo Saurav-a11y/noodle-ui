@@ -288,12 +288,12 @@ const LiveActivity = () => {
 											<div className="flex items-center gap-2">
 												<YoutubeIcon width={24} height={24} fill="#000" />
 												<p className="font-semibold font-noto">YouTube Community Content</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> videos</span>
+												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_videos)}</b> videos</span>
 											</div>
 											<button className="text-xs bg-white text-[#373737] dark:text-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded font-reddit hidden md:block cursor-pointer hover:bg-[#F0F0F0] transition-colors duration-200">View Channel</button>
 										</div>
 										<div className="flex items-center justify-between mb-4 md:hidden">
-											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> videos</span>
+											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(data?.data?.summary?.total_videos)}</b> videos</span>
 											<button className="text-xs bg-white text-[#373737] dark:text-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded font-reddit cursor-pointer hover:bg-[#F0F0F0] transition-colors duration-200">View Channel</button>
 										</div>
 										{data?.data?.items?.map((video, i) => (
