@@ -5,11 +5,12 @@ import EnergyCommoditiesOverview from "./EnergyCommoditiesOverview";
 import MetalsCommoditiesOverview from "./MetalsCommoditiesOverview";
 import AgriculturalCommoditiesOverview from "./AgriculturalCommoditiesOverview";
 import IndustrialCommoditiesOverview from "./IndustrialCommoditiesOverview";
+import LiveStocksCommoditiesOverview from "./LiveStocksCommoditiesOverview";
+import IndexsCommoditiesOverview from "./IndexsCommoditiesOverview";
+import ElectricityCommoditiesOverview from "./ElectricityCommoditiesOverview";
 import { useCommoditiesHealthRanks } from "../hooks";
 
-const tabList = ["All", "Energy", "Metals", "Agricultural", "Industrial",
-	// "LiveStock", "Index", "Electricity"
-];
+const tabList = ["All", "Energy", "Metals", "Agricultural", "Industrial", "Livestock", "Index", "Electricity"];
 
 const CommoditiesList = () => {
 	const [activeTab, setActiveTab] = useState("All");
@@ -31,6 +32,12 @@ const CommoditiesList = () => {
 				return <AgriculturalCommoditiesOverview data={commoditiesHealthRanksData?.data?.agricultural} isLoading={isGettingCommoditiesHealthRanks} />;
 			case "Industrial":
 				return <IndustrialCommoditiesOverview data={commoditiesHealthRanksData?.data?.industrial} isLoading={isGettingCommoditiesHealthRanks} />;
+			case "Livestock":
+				return <LiveStocksCommoditiesOverview data={commoditiesHealthRanksData?.data?.livestock} isLoading={isGettingCommoditiesHealthRanks} />;
+			case "Index":
+				return <IndexsCommoditiesOverview data={commoditiesHealthRanksData?.data?.index} isLoading={isGettingCommoditiesHealthRanks} />;
+			case "Electricity":
+				return <ElectricityCommoditiesOverview data={commoditiesHealthRanksData?.data?.electricity} isLoading={isGettingCommoditiesHealthRanks} />;
 			default:
 				return (
 					<>
@@ -38,6 +45,9 @@ const CommoditiesList = () => {
 						<MetalsCommoditiesOverview data={commoditiesHealthRanksData?.data?.metals} isLoading={isGettingCommoditiesHealthRanks} />
 						<AgriculturalCommoditiesOverview data={commoditiesHealthRanksData?.data?.agricultural} isLoading={isGettingCommoditiesHealthRanks} />
 						<IndustrialCommoditiesOverview data={commoditiesHealthRanksData?.data?.industrial} isLoading={isGettingCommoditiesHealthRanks} />
+						<LiveStocksCommoditiesOverview data={commoditiesHealthRanksData?.data?.livestock} isLoading={isGettingCommoditiesHealthRanks} />
+						<IndexsCommoditiesOverview data={commoditiesHealthRanksData?.data?.index} isLoading={isGettingCommoditiesHealthRanks} />
+						<ElectricityCommoditiesOverview data={commoditiesHealthRanksData?.data?.electricity} isLoading={isGettingCommoditiesHealthRanks} />
 					</>
 				);
 		}

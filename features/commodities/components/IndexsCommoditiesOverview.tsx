@@ -5,9 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import _get from "lodash/get";
 import _map from "lodash/map";
 import { formatNumberShort } from "@/lib/format";
-import MetalIcon from "@/icons/commodities/MetalIcon";
+import { TrendingUpDown } from "lucide-react";
 
-const MetalsCommoditiesOverview = ({ data, isLoading }) => {
+const IndexsCommoditiesOverview = ({ data, isLoading }) => {
     const router = useRouter();
     return (
         <div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
@@ -17,7 +17,7 @@ const MetalsCommoditiesOverview = ({ data, isLoading }) => {
                         <TableRow className="bg-[#F8F8F8] border-b border-b-[#C9C9C9]">
                             <TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg">#</TableHead>
                             <TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
-                                <p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Metals</p>
+                                <p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Index</p>
                             </TableHead>
                             <TableHead className="text-center  border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
                                 <div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
@@ -96,7 +96,7 @@ const MetalsCommoditiesOverview = ({ data, isLoading }) => {
                                     <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
                                         <div className="flex items-center gap-3">
                                             <div className="w-8 h-8 flex items-center justify-center font-noto">
-                                                <MetalIcon />
+                                                <TrendingUpDown />
                                             </div>
                                             <div className="text-[#4B4A4A] dark:text-[#FFF]">
                                                 <p className="font-medium text-sm font-noto">{metal?.name}</p>
@@ -134,4 +134,4 @@ const MetalsCommoditiesOverview = ({ data, isLoading }) => {
     )
 }
 
-export default MetalsCommoditiesOverview
+export default IndexsCommoditiesOverview

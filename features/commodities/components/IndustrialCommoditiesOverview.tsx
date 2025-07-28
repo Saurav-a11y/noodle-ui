@@ -106,7 +106,13 @@ const IndustrialCommoditiesOverview = ({ data, isLoading }) => {
 									</TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(industry?.healthScore)}</p></TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(industry?.price)}</p></TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{industry?.day}</div></TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
+										<div className={`text-center font-noto space-x-1 ${industry?.trend === 'up' && 'text-[#00B552]'} ${industry?.trend === 'down' && 'text-[#FF0000]'}`}>
+											<span>{industry?.trend === 'up' && '▲'}</span>
+											<span>{industry?.trend === 'down' && '▼'}</span>
+											<span>{industry?.day}</span>
+										</div>
+									</TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
 										<div className={`text-center font-noto space-x-1 ${industry?.trend === 'up' && 'text-[#00B552]'} ${industry?.trend === 'down' && 'text-[#FF0000]'}`}>
 											<span>{industry?.trend === 'up' && '▲'}</span>
