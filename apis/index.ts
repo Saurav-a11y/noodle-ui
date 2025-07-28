@@ -117,3 +117,43 @@ export const fetchListTweets = async ({
     if (!res.ok) throw new Error('Failed to fetch list of tweets');
     return res.json();
 };
+
+// Commodities
+export const fetchCommoditiesHealthRanks = async ({ limit, page, search, groupFilter }) => {
+    const query = new URLSearchParams();
+
+    if (limit) query.append('limit', String(limit));
+    if (page) query.append('page', String(page));
+    if (search) query.append('search', String(search));
+    if (groupFilter) query.append('groupFilter', String(groupFilter));
+
+    const url = `${BASE_URL}/commodities-health-ranks?${query.toString()}`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch commodities health ranks');
+    return res.json();
+};
+
+export const fetchTopGrowthCommodities = async () => {
+    const res = await fetch(`${BASE_URL}/top-growth-commodities`);
+    if (!res.ok) throw new Error('Failed to fetch top growth commodities');
+    return res.json();
+};
+
+export const fetchOverviewCommoditiesStats = async () => {
+    const res = await fetch(`${BASE_URL}/overview-commodities-stats`);
+    if (!res.ok) throw new Error('Failed to fetch overview commodities stats');
+    return res.json();
+};
+
+// Chat with AI Agent
+export const chatWithAgent = async ({ messages }: { messages: { ai: string, text: string }[] }) => {
+    const query = new URLSearchParams();
+    if (messages) query.append('messages', String(messages));
+
+    const url = `${BASE_URL}/chat-gpt-request?${query.toString()}`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch commodities health ranks');
+    return res.json();
+};
