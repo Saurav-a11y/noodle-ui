@@ -119,7 +119,7 @@ export const fetchListTweets = async ({
 };
 
 // Commodities
-export const fetchCommoditiesHealthRanks = async ({ limit, page, search, groupFilter }) => {
+export const fetchCommoditiesHealthRanks = async ({ limit, page, search, groupFilter }: { limit?: number, page?: number, search?: string, groupFilter?: string }) => {
     const query = new URLSearchParams();
 
     if (limit) query.append('limit', String(limit));

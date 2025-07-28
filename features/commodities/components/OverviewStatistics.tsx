@@ -88,7 +88,7 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 const OverviewStatistics = () => {
 	const { data: topGrowthCommoditiesData, isLoading: isGettingTopGrowthCommodities, } = useTopGrowthCommodities();
 	const { data: overviewCommoditiesStatsData, isLoading: isGettingOverviewCommoditiesStats, } = useOverviewCommoditiesStats();
-	console.log("🚀 ~ OverviewStatistics ~ overviewCommoditiesStatsData:", overviewCommoditiesStatsData)
+
 	const topGrowthCommodities7d = topGrowthCommoditiesData?.data?.top_growth_commodities_7d || [];
 	const trackedCommodities = overviewCommoditiesStatsData?.data?.tracked_commodities || {};
 	return (

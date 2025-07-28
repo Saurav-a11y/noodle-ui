@@ -10,30 +10,24 @@ import OilIcon from "@/icons/commodities/OilIcon";
 import GasIcon from "@/icons/commodities/GasIcon";
 import CoalIcon from "@/icons/commodities/CoalIcon";
 import EthanolIcon from "@/icons/commodities/EthanolIcon";
+import { Atom } from "lucide-react";
 
-const energies = [
-	{ rank: 1, icon: <OilIcon />, name: 'Crude Oil', symbol: 'USD/Bbl', health_score: 98, price: 67.574, day: 0.234, '%': 0.35, weekly: 0.84, monthly: -1.41, ytd: -5.82, yoy: -13.85, date: '11:19' },
-	{ rank: 2, icon: <OilIcon />, name: 'Brent', symbol: 'USD/Bbl', health_score: 97, price: 69.416, day: 0.136, '%': 0.20, weekly: 0.27, monthly: -2.91, ytd: -7.02, yoy: -15.78, date: '11:19' },
-	{ rank: 3, icon: <GasIcon />, name: 'Natural Gas', symbol: 'USD/MMBtu', health_score: 95, price: 3.3927, day: -0.1723, '%': -4.83, weekly: -2.17, monthly: -11.00, ytd: -6.66, yoy: 50.64, date: '11:19' },
-	{ rank: 4, icon: <GasIcon />, name: 'Gasoline', symbol: 'USD/Gal', health_score: 92, price: 2.1451, day: -0.0015, '%': 0.20, weekly: 0.27, monthly: -2.91, ytd: -7.02, yoy: -15.78, date: '11:19' },
-	{ rank: 5, icon: <OilIcon />, name: 'Heating Oil', symbol: 'USD/Gal', health_score: 91, price: 2.4549, day: 0.0019, '%': 0.08, weekly: 2.64, monthly: 7.59, ytd: 5.85, yoy: 0.93, date: '11:19' },
-	{ rank: 6, icon: <CoalIcon />, name: 'Coal', symbol: 'USD/T', health_score: 88, price: 110.40, day: -0.10, '%': -0.09, weekly: -1.43, monthly: 3.18, ytd: -11.86, yoy: -18.28, date: 'Jul/18' },
-	{ rank: 7, icon: <GasIcon />, name: 'TTF Gas', symbol: 'EUR/MWh', health_score: 75, price: 33.89, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: 'Jul/18' },
-	{ rank: 8, icon: <GasIcon />, name: 'UK Gas', symbol: 'GBP/thm', health_score: 74, price: 80.9176, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: 'Jul/18' },
-	{ rank: 9, icon: <EthanolIcon />, name: 'Ethanol', symbol: 'USD/Gal', health_score: 72, price: 1.8050, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: 'Jul/18' },
-	{ rank: 10, icon: <EthanolIcon />, name: 'Naphtha', symbol: 'USD/T', health_score: 71, price: 550.31, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: 'Jul/18' },
-];
-
-const EnergyCommoditiesOverview = () => {
-	const isLoading = false
+const EnergyCommoditiesOverview = ({ data, isLoading }) => {
 	const router = useRouter();
+	const typeIcons = {
+		'Oil': <OilIcon />,
+		'Gas': <GasIcon />,
+		'Ethanol': <EthanolIcon />,
+		'Coal': <CoalIcon />,
+		'Nuclear': <Atom />
+	}
 	return (
 		<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="overflow-x-auto">
 				<Table>
 					<TableHeader className="dark:bg-[#1A1A1A]">
-						<TableRow>
-							<TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg">#</TableHead>
+						<TableRow className="bg-[#F8F8F8] border-b border-b-[#C9C9C9]">
+							<TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg">#</TableHead>
 							<TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
 								<p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Energy</p>
 							</TableHead>
@@ -85,7 +79,7 @@ const EnergyCommoditiesOverview = () => {
 									<TooltipCommon content="Indicates any warning signals such as sudden drops in activity, negative sentiment, or whale sell-offs. Helps identify potential community or project risks." />
 								</div>
 							</TableHead>
-							<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+							<TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] rounded-tr-lg">
 								<div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
 									<p className="text-xs font-noto">Date</p>
 									<TooltipCommon content="Indicates any warning signals such as sudden drops in activity, negative sentiment, or whale sell-offs. Helps identify potential community or project risks." />
@@ -97,44 +91,51 @@ const EnergyCommoditiesOverview = () => {
 						{isLoading
 							? Array.from({ length: 5 }).map((_, i) => (
 								<TableRow key={i} className="animate-pulse">
-									{Array.from({ length: 10 }).map((_, j) => (
+									{Array.from({ length: 11 }).map((_, j) => (
 										<TableCell key={j} className="py-4 h-[73px] border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 											<div className="h-6 bg-gray-200 dark:bg-[#333] rounded animate-pulse w-full" />
 										</TableCell>
 									))}
 								</TableRow>
 							))
-							: _map(energies, (energy) => (
+							: _map(data, (energy, index) => (
 								<TableRow
-									key={energy?.rank}
+									key={index}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-									onClick={() => router.push(`/cryptocurrencies/${energy?.symbol}`)}
+									onClick={() => router.push(`/cryptocurrencies/${energy?.name_slug}`)}
 								>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.rank}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<div className="flex items-center gap-3">
 											<div className="w-8 h-8 flex items-center justify-center font-noto">
-												{energy?.icon}
-												{/* <Image src={_get(energy, 'medium_logo_url', '/images/icon-section-6_2.png')} alt="Symbol" width={64} height={64} className="rounded-full" /> */}
+												{typeIcons[energy?.energyType]}
 											</div>
 											<div className="text-[#4B4A4A] dark:text-[#FFF]">
 												<p className="font-medium text-sm font-noto">{energy?.name}</p>
-												<div className="text-[10px] font-medium opacity-50 font-noto">{energy?.symbol}</div>
+												<div className="text-[10px] font-medium opacity-50 font-noto">{energy?.unit}</div>
 											</div>
 										</div>
 									</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(energy?.health_score)}</p></TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(energy?.healthScore)}</p></TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(energy?.price)}</p></TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{energy?.day}</div></TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
-										<div className={`text-center font-noto`}>
-											{formatPercent(energy?.["%"])}
+										<div className={`text-center font-noto space-x-1 ${energy?.trend === 'up' && 'text-[#00B552]'} ${energy?.trend === 'down' && 'text-[#FF0000]'}`}>
+											<span>{energy?.trend === 'up' && '▲'}</span>
+											<span>{energy?.trend === 'down' && '▼'}</span>
+											<span>{energy?.day}</span>
 										</div>
 									</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.weekly}%</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.monthly}%</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.ytd}%</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.yoy}%</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
+										<div className={`text-center font-noto space-x-1 ${energy?.trend === 'up' && 'text-[#00B552]'} ${energy?.trend === 'down' && 'text-[#FF0000]'}`}>
+											<span>{energy?.trend === 'up' && '▲'}</span>
+											<span>{energy?.trend === 'down' && '▼'}</span>
+											<span>{energy?.percent}</span>
+										</div>
+									</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.weekly}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.monthly}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.ytd}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.yoy}</TableCell>
 									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.date}</TableCell>
 								</TableRow>
 							))}

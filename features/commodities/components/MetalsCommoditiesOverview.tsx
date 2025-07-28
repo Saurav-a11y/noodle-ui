@@ -2,35 +2,20 @@
 import { useRouter } from "next/navigation";
 import TooltipCommon from "@/components/common/TooltipCommon"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
-// import Image from "next/image";
 import _get from "lodash/get";
 import _map from "lodash/map";
-import { formatNumberShort, formatPercent } from "@/lib/format";
+import { formatNumberShort } from "@/lib/format";
 import MetalIcon from "@/icons/commodities/MetalIcon";
 
-const metals = [
-    { rank: 1, name: "Gold", symbol: "USD/t.oz", health_score: 85, price: 3367.55, day: 0.234, '%': 0.35, weekly: 0.84, monthly: -1.41, ytd: -5.82, yoy: -13.85, date: "11:19" },
-    { rank: 2, name: "Silver", symbol: "USD/t.oz", health_score: 85, price: 38.355, day: 0.136, '%': 0.20, weekly: 0.27, monthly: -2.91, ytd: -7.02, yoy: -15.78, date: "11:19" },
-    { rank: 3, name: "Copper", symbol: "USD/Lbs", health_score: 84, price: 5.6177, day: -0.1723, '%': -4.83, weekly: -2.17, monthly: -11.00, ytd: -6.66, yoy: 50.64, date: "11:19" },
-    { rank: 4, name: "Steel", symbol: "CNY/T", health_score: 81, price: 3163.00, day: -0.0015, '%': 0.20, weekly: 0.27, monthly: -2.91, ytd: -7.02, yoy: -15.78, date: "11:19" },
-    { rank: 5, name: "Lithium", symbol: "CNY/T", health_score: 80, price: 68000, day: 0.0019, '%': 0.08, weekly: 2.64, monthly: 7.59, ytd: 5.85, yoy: 0.93, date: "11:19" },
-    { rank: 6, name: "Iron Ore CNY", symbol: "CNY/T", health_score: 79, price: 814.00, day: -0.10, '%': -0.09, weekly: -1.43, monthly: 3.18, ytd: -11.86, yoy: -18.28, date: "Jul/18" },
-    { rank: 7, name: "Platinum", symbol: "USD/Lbs", health_score: 78, price: 1443.80, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: "Jul/18" },
-    { rank: 8, name: "HRC Steel", symbol: "USD/T", health_score: 77, price: 873.06, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: "Jul/18" },
-    { rank: 9, name: "Iron Ore", symbol: "USD/T", health_score: 75, price: 97.22, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: "Jul/18" },
-    { rank: 10, name: "Titanium", symbol: "CNY/KG", health_score: 74, price: 50.50, day: 0.81, '%': -2.36, weekly: -5.53, monthly: -19.00, ytd: -33.41, yoy: 5.92, date: "Jul/18" },
-];
-
-const MetalsCommoditiesOverview = () => {
-    const isLoading = false
+const MetalsCommoditiesOverview = ({ data, isLoading }) => {
     const router = useRouter();
     return (
         <div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
             <div className="overflow-x-auto">
                 <Table>
                     <TableHeader className="dark:bg-[#1A1A1A]">
-                        <TableRow>
-                            <TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg">#</TableHead>
+                        <TableRow className="bg-[#F8F8F8] border-b border-b-[#C9C9C9]">
+                            <TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg">#</TableHead>
                             <TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
                                 <p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Metals</p>
                             </TableHead>
@@ -82,7 +67,7 @@ const MetalsCommoditiesOverview = () => {
                                     <TooltipCommon content="Indicates any warning signals such as sudden drops in activity, negative sentiment, or whale sell-offs. Helps identify potential community or project risks." />
                                 </div>
                             </TableHead>
-                            <TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
+                            <TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] rounded-tr-lg">
                                 <div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
                                     <p className="text-xs font-noto">Date</p>
                                     <TooltipCommon content="Indicates any warning signals such as sudden drops in activity, negative sentiment, or whale sell-offs. Helps identify potential community or project risks." />
@@ -94,45 +79,46 @@ const MetalsCommoditiesOverview = () => {
                         {isLoading
                             ? Array.from({ length: 5 }).map((_, i) => (
                                 <TableRow key={i} className="animate-pulse">
-                                    {Array.from({ length: 10 }).map((_, j) => (
+                                    {Array.from({ length: 11 }).map((_, j) => (
                                         <TableCell key={j} className="py-4 h-[73px] border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
                                             <div className="h-6 bg-gray-200 dark:bg-[#333] rounded animate-pulse w-full" />
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
-                            : _map(metals, (energy) => (
+                            : _map(data, (metal, index) => (
                                 <TableRow
-                                    key={energy?.rank}
+                                    key={index}
                                     className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-                                    onClick={() => router.push(`/cryptocurrencies/${energy?.symbol}`)}
+                                    onClick={() => router.push(`/cryptocurrencies/${metal?.name_slug}`)}
                                 >
-                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.rank}</TableCell>
+                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
                                     <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
                                         <div className="flex items-center gap-3">
                                             <div className="w-8 h-8 flex items-center justify-center font-noto">
                                                 <MetalIcon />
-                                                {/* <Image src={_get(energy, 'medium_logo_url', '/images/icon-section-6_2.png')} alt="Symbol" width={64} height={64} className="rounded-full" /> */}
                                             </div>
                                             <div className="text-[#4B4A4A] dark:text-[#FFF]">
-                                                <p className="font-medium text-sm font-noto">{energy?.name}</p>
-                                                <div className="text-[10px] font-medium opacity-50 font-noto">{energy?.symbol}</div>
+                                                <p className="font-medium text-sm font-noto">{metal?.name}</p>
+                                                <div className="text-[10px] font-medium opacity-50 font-noto">{metal?.unit}</div>
                                             </div>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(energy?.health_score)}</p></TableCell>
-                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(energy?.price)}</p></TableCell>
-                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{energy?.day}</div></TableCell>
+                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(metal?.healthScore)}</p></TableCell>
+                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatNumberShort(metal?.price)}</p></TableCell>
+                                    <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{metal?.day}</div></TableCell>
                                     <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
-                                        <div className={`text-center font-noto`}>
-                                            {formatPercent(energy?.["%"])}
+                                        <div className={`text-center font-noto space-x-1 ${metal?.trend === 'up' && 'text-[#00B552]'} ${metal?.trend === 'down' && 'text-[#FF0000]'}`}>
+                                            <span>{metal?.trend === 'up' && '▲'}</span>
+                                            <span>{metal?.trend === 'down' && '▼'}</span>
+                                            <span>{metal?.percent}</span>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.weekly}%</TableCell>
-                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.monthly}%</TableCell>
-                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.ytd}%</TableCell>
-                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.yoy}%</TableCell>
-                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{energy?.date}</TableCell>
+                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{metal?.weekly}</TableCell>
+                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{metal?.monthly}</TableCell>
+                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{metal?.ytd}</TableCell>
+                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{metal?.yoy}</TableCell>
+                                    <TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{metal?.date}</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
