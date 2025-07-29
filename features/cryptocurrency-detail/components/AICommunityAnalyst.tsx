@@ -9,7 +9,7 @@ import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
-import BackgroundChat from "@/icons/BackgroundChat";
+// import BackgroundChat from "@/icons/BackgroundChat";
 import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
 
 function getCurrentTime(): string {
