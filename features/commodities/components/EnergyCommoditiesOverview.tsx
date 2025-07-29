@@ -23,6 +23,7 @@ const EnergyCommoditiesOverview = ({ data, isLoading }) => {
 	}
 	return (
 		<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
+			<p className="text-lg font-medium font-reddit mb-5">Energy Commodities Overview</p>
 			<div className="overflow-x-auto">
 				<Table>
 					<TableHeader className="dark:bg-[#1A1A1A]">

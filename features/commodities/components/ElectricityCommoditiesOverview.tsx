@@ -11,6 +11,7 @@ const ElectricityCommoditiesOverview = ({ data, isLoading }) => {
     const router = useRouter();
     return (
         <div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
+            <p className="text-lg font-medium font-reddit mb-5">Electricity Commodities Overview</p>
             <div className="overflow-x-auto">
                 <Table>
                     <TableHeader className="dark:bg-[#1A1A1A]">
