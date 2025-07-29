@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchCommoditiesHealthRanks, fetchTopGrowthCommodities, fetchOverviewCommoditiesStats } from '@/apis';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { fetchCommoditiesHealthRanks, fetchTopGrowthCommodities, fetchOverviewCommoditiesStats, chatWithAgent, sayHello } from '@/apis';
 
 export const useTopGrowthCommodities = () =>
     useQuery({
@@ -20,4 +20,18 @@ export const useOverviewCommoditiesStats = () =>
         queryKey: ['overviewCommoditiesStats'],
         queryFn: fetchOverviewCommoditiesStats,
         staleTime: 1000 * 60 * 5,
+    });
+
+export const useSendChatMessage = () => {
+    return useMutation({
+        mutationFn: ({ symbol, prompt, messages }: { symbol: string; prompt: string; messages: { ai: boolean; text: string }[] }) =>
+            chatWithAgent({ prompt, messages }),
+    });
+};
+
+export const useSayHello = ({ symbol }) =>
+    useQuery({
+        queryKey: ['say-hello', symbol],
+        queryFn: () => sayHello(),
+        enabled: !!symbol,
     });

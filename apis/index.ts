@@ -147,13 +147,28 @@ export const fetchOverviewCommoditiesStats = async () => {
 };
 
 // Chat with AI Agent
-export const chatWithAgent = async ({ messages }: { messages: { ai: string, text: string }[] }) => {
+export const chatWithAgent = async ({
+    prompt,
+    messages,
+}: {
+    prompt: string;
+    messages: { ai: boolean; text: string }[];
+}) => {
     const query = new URLSearchParams();
-    if (messages) query.append('messages', String(messages));
+    query.append('prompt', prompt);
+    query.append('messages', JSON.stringify(messages));
 
     const url = `${BASE_URL}/chat-gpt-request?${query.toString()}`;
 
     const res = await fetch(url);
-    if (!res.ok) throw new Error('Failed to fetch commodities health ranks');
-    return res.json();
+    if (!res.ok) throw new Error('Failed to fetch chat from agent');
+    return res.text();
+};
+
+export const sayHello = async () => {
+    const url = `${BASE_URL}/say-hello`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch chat from agent');
+    return res.text();
 };

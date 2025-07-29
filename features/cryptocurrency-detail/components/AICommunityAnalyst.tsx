@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useLayoutEffect, useRef, useEffect, memo, useReducer } from "react";
 import { Button } from "@/components/ui/Button";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
-import LightIcon from "@/icons/LightIcon";
+// import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
@@ -10,11 +10,151 @@ import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import BackgroundChat from "@/icons/BackgroundChat";
+import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
+
+function getCurrentTime(): string {
+	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+const ChatBubble = memo(({ chat }: { chat: any }) => {
+	return (
+		<div className="space-y-2">
+			{chat.type === 'assistant' && (
+				<div className="w-full flex justify-start">
+					<div className="bg-[#FBFBFB] rounded-xl p-4 max-w-[90%] w-fit">
+						<p className="text-sm text-gray-800 font-reddit">{chat.message}</p>
+						<p className="text-xs text-gray-500 mt-1 font-reddit">{chat.timestamp}</p>
+					</div>
+				</div>
+			)}
+			{chat.type === 'user' && (
+				<div className="w-full flex justify-end">
+					<div className="bg-[#FAFFD9] rounded-xl p-4 max-w-[90%] w-fit">
+						<p className="text-sm text-[#373737] text-right font-reddit">{chat.message}</p>
+						<p className="text-xs text-[#373737] mt-1 text-right opacity-50 font-reddit">{chat.timestamp}</p>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+});
+
+const TypingIndicator = () => (
+	<div className="w-full flex justify-start">
+		<div className="bg-[#FBFBFB] rounded-xl px-4 py-3 w-fit flex items-center gap-2">
+			<div className="w-4 h-4 border-2 border-gray-300 border-t-[#84EA07] rounded-full animate-spin" />
+			<span className="text-sm text-gray-500 font-reddit">AI is typing...</span>
+		</div>
+	</div>
+);
+
+const QuickQuestions = ({ selected, onSelect }: { selected: string | null, onSelect: (q: string) => void }) => {
+	const questions = [
+		"Explain health score",
+		"Why the alerts?",
+		"Compare to DOGE",
+		"Investment advice",
+		"Bot detection",
+		"Whale impact"
+	];
+
+	return (
+		<div className="p-4 border-b border-[#E9E9E9] dark:border-[#B1B1B1]">
+			<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
+			<div className="flex flex-wrap gap-2">
+				{questions.map((question, index) => (
+					<Button
+						key={index}
+						variant="outline"
+						size="sm"
+						className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selected === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'}`}
+						onClick={() => onSelect(question)}
+					>
+						{question}
+					</Button>
+				))}
+			</div>
+		</div>
+	);
+};
+
+const ChatMessages = memo(({ chatHistory, isLoading }: {
+	chatHistory: any[],
+	isLoading: boolean
+}) => (
+	<div className="flex-1 p-4 space-y-4 overflow-y-auto">
+		{chatHistory.map((chat) => (
+			<ChatBubble key={chat.id} chat={chat} />
+		))}
+		{isLoading && <TypingIndicator />}
+	</div>
+));
+
+const ChatInput = ({
+	userInput,
+	setUserInput,
+	onSend,
+	placeholder,
+	loading
+}: {
+	userInput: string;
+	setUserInput: (text: string) => void;
+	onSend: () => void;
+	placeholder: string;
+	loading: boolean;
+}) => {
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	useLayoutEffect(() => {
+		if (textareaRef.current) {
+			textareaRef.current.style.height = 'auto';
+			textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+		}
+	}, [userInput]);
+
+	return (
+		<div className="p-4 border-t border-[#E9E9E9] dark:border-t-[#B1B1B1]">
+			<div className="flex items-center justify-between w-full max-w-xl px-3 py-2 border border-[#E9E9E9] rounded-full bg-white">
+				<StarIcon />
+				<textarea
+					ref={textareaRef}
+					rows={1}
+					value={userInput}
+					placeholder={placeholder}
+					className="flex-1 mx-2 bg-transparent resize-none placeholder-gray-400 text-sm focus:outline-none max-h-[5rem] overflow-y-auto font-reddit"
+					style={{ lineHeight: '1rem' }}
+					onChange={(e) => setUserInput(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' && !e.shiftKey) {
+							e.preventDefault();
+							onSend();
+						}
+					}}
+				/>
+				<button
+					className="flex items-center justify-center w-10 h-10 rounded-full bg-[#84EA07] text-white cursor-pointer"
+					onClick={onSend}
+					disabled={loading}
+				>
+					<SendIcon />
+				</button>
+			</div>
+		</div>
+	);
+};
 
 const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
+
+	const [userInput, setUserInput] = useState('');
+	const chatHistoryRef = useRef<any[]>([]);
+	const [_, forceUpdate] = useReducer((x) => x + 1, 0)
+	const scrollRef = useRef<HTMLDivElement>(null);
+
+	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data } = useCommunityOverview(communityId);
+	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
 
 	const communityOverview = {
 		projectName: data?.data?.project?.name,
@@ -26,47 +166,71 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	}
 	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
-	const quickQuestions = [
-		"Explain health score",
-		"Why the alerts?",
-		"Compare to DOGE",
-		"Investment advice",
-		"Bot detection",
-		"Whale impact"
-	];
-
-	const chatHistory = [
-		{
-			id: 1,
-			type: "assistant",
-			message: "Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard.",
-			timestamp: "4 minutes ago"
-		},
-		{
-			id: 2,
-			type: "insight",
-			message: "BONK's health score of 78 puts it in the \"Good\" category, but the recent 15% engagement drop combined with whale activity suggests increased caution is warranted.",
-			timestamp: "4 minutes ago"
-		},
-		{
-			id: 3,
-			type: "assistant",
-			message: "Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard",
-			timestamp: "4 minutes ago"
-		}
-	];
-
 	const handleQuickQuestion = (question: string) => {
 		setSelectedQuestion(question);
 		console.log("Quick question:", question);
 	};
+
+	const handleSendMessage = () => {
+		const trimmed = userInput.trim();
+		if (!trimmed) return;
+
+		const id = Date.now();
+		const timestamp = getCurrentTime();
+
+		chatHistoryRef.current.push({
+			id,
+			type: 'user',
+			message: trimmed,
+			timestamp,
+		});
+		forceUpdate();
+		setUserInput('');
+
+		sendMessage(
+			{ symbol: communityId, prompt: '', messages: [{ ai: false, text: trimmed }] },
+			{
+				onSuccess: (res) => {
+					chatHistoryRef.current.push({
+						id: Date.now(),
+						type: 'assistant',
+						message: res || 'No response',
+						timestamp: getCurrentTime(),
+					});
+					forceUpdate();
+				},
+				onError: (err) => {
+					console.error('Error sending message:', err);
+				},
+			}
+		);
+	};
+
+	// 👇 Auto scroll to bottom when chat updates
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [chatHistoryRef.current.length, isPending]);
+
+	// 👇 Greeting once
+	useEffect(() => {
+		if (initialGreeting && chatHistoryRef.current.length === 0) {
+			chatHistoryRef.current.push({
+				id: Date.now(),
+				type: 'assistant',
+				message: initialGreeting,
+				timestamp: getCurrentTime(),
+			});
+			forceUpdate();
+		}
+	}, [initialGreeting]);
+
 
 	return (
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
 				<div className="w-full h-[90px] absolute top-0 left-12">
-					<BackgroundChat />
+					{/* <BackgroundChat /> */}
 				</div>
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
@@ -107,82 +271,22 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 			</div>
 
 			{/* Quick Questions */}
-			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1]">
-				<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
-				<div className="flex flex-wrap gap-2">
-					{quickQuestions.map((question, index) => (
-						<Button
-							key={index}
-							variant="outline"
-							size="sm"
-							className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selectedQuestion === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'
-								}`}
-							onClick={() => handleQuickQuestion(question)}
-						>
-							{question}
-						</Button>
-					))}
-				</div>
-			</div>
+			<QuickQuestions selected={selectedQuestion} onSelect={handleQuickQuestion} />
 
 			{/* Chat Messages */}
-			<div className="flex-1 p-4 space-y-4 overflow-y-auto">
-				{chatHistory.map((chat) => (
-					<div key={chat.id} className="space-y-2">
-						{chat.type === "assistant" && (
-							<div className="w-full flex justify-start">
-								<div className="bg-[#FBFBFB] rounded-xl p-4 w-[90%]">
-									<p className="text-sm text-gray-800 font-reddit">{chat.message}</p>
-									<p className="text-xs text-gray-500 mt-1 font-reddit">{chat.timestamp}</p>
-								</div>
-							</div>
-						)}
-
-						{chat.type === "insight" && (
-							<div className="w-full flex justify-start">
-								<div className="border-l border-l-5 border-[#DDF346] rounded-xl p-4 bg-[#FBFBFB] w-[90%]">
-									<div className="flex items-center gap-2 mb-2">
-										<LightIcon />
-										<span className="text-sm font-medium text-[#30B500] font-noto">Real-time Insight</span>
-									</div>
-									<p className="text-sm text-[#373737] font-reddit">{chat.message}</p>
-									<p className="text-xs text-[#373737] mt-1 opacity-50 font-reddit">{chat.timestamp}</p>
-								</div>
-							</div>
-						)}
-					</div>
-				))}
-				<div className="w-full flex justify-end">
-					<div className="bg-[#FAFFD9] rounded-xl p-4 w-[90%]">
-						<p className="text-sm text-[#373737] text-right font-reddit">{`Hi! I'm your BONK community intelligence assistant. I can see you're viewing the project dashboard`}</p>
-						<p className="text-xs text-[#373737] mt-1 text-right opacity-50 font-reddit">4 minutes ago</p>
-					</div>
-				</div>
-			</div>
+			<ChatMessages
+				chatHistory={chatHistoryRef.current}
+				isLoading={isPending || isFetching}
+			/>
 
 			{/* Input Area */}
-			<div className="p-4 border-t border-t-[#E9E9E9] dark:border-t-[#B1B1B1]">
-				<div className="flex items-center justify-between w-full max-w-xl px-3 py-2 border border-[#E9E9E9] rounded-full bg-white">
-					{/* Left Icon */}
-					<StarIcon />
-					<textarea
-						rows={1}
-						placeholder="Ask me anything about BONK’s community data"
-						className="flex-1 mx-2 bg-transparent resize-none placeholder-gray-400 text-sm focus:outline-none max-h-[5rem] overflow-y-auto font-reddit"
-						style={{ lineHeight: "1rem" }}
-						onInput={(e) => {
-							const el = e.currentTarget;
-							el.style.height = "auto";
-							el.style.height = el.scrollHeight + "px";
-						}}
-					/>
-
-					{/* Right Submit Button */}
-					<button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#84EA07] text-white cursor-pointer">
-						<SendIcon />
-					</button>
-				</div>
-			</div>
+			<ChatInput
+				userInput={userInput}
+				setUserInput={setUserInput}
+				onSend={handleSendMessage}
+				placeholder={`Ask me anything about ${communityOverview.projectName}’s community data`}
+				loading={isPending}
+			/>
 		</div>
 	);
 };
