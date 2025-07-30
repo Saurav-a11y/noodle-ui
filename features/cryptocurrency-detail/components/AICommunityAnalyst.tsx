@@ -1,5 +1,5 @@
 import { useState, useLayoutEffect, useRef, useEffect, memo, useReducer } from "react";
-import { Button } from "@/components/ui/Button";
+// import { Button } from "@/components/ui/Button";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
 // import LightIcon from "@/icons/LightIcon";
@@ -11,18 +11,31 @@ import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
 // import BackgroundChat from "@/icons/BackgroundChat";
 import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
+import { motion } from 'framer-motion';
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
 const ChatBubble = memo(({ chat }: { chat: any }) => {
+	const lines = chat.message.split('\n').filter(Boolean);
+
 	return (
 		<div className="space-y-2">
 			{chat.type === 'assistant' && (
 				<div className="w-full flex justify-start">
 					<div className="bg-[#FBFBFB] rounded-xl p-4 max-w-[90%] w-fit">
-						<p className="text-sm text-gray-800 font-reddit">{chat.message}</p>
+						{lines.map((line, idx) => (
+							<motion.pre
+								key={idx}
+								initial={{ opacity: 0, y: 6 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: idx * 0.1, duration: 0.3 }}
+								className="text-sm text-[#373737] whitespace-pre-wrap"
+							>
+								{line}
+							</motion.pre>
+						))}
 						<p className="text-xs text-gray-500 mt-1 font-reddit">{chat.timestamp}</p>
 					</div>
 				</div>
@@ -30,8 +43,8 @@ const ChatBubble = memo(({ chat }: { chat: any }) => {
 			{chat.type === 'user' && (
 				<div className="w-full flex justify-end">
 					<div className="bg-[#FAFFD9] rounded-xl p-4 max-w-[90%] w-fit">
-						<p className="text-sm text-[#373737] text-right font-reddit">{chat.message}</p>
-						<p className="text-xs text-[#373737] mt-1 text-right opacity-50 font-reddit">{chat.timestamp}</p>
+						<pre className="text-[#373737] text-right whitespace-pre-wrap text-sm">{chat.message}</pre>
+						<p className="text-xs text-gray-500 mt-1 text-right opacity-50 font-reddit">{chat.timestamp}</p>
 					</div>
 				</div>
 			)}
@@ -42,53 +55,58 @@ const ChatBubble = memo(({ chat }: { chat: any }) => {
 const TypingIndicator = () => (
 	<div className="w-full flex justify-start">
 		<div className="bg-[#FBFBFB] rounded-xl px-4 py-3 w-fit flex items-center gap-2">
-			<div className="w-4 h-4 border-2 border-gray-300 border-t-[#84EA07] rounded-full animate-spin" />
-			<span className="text-sm text-gray-500 font-reddit">AI is typing...</span>
+			<span className="flex space-x-1">
+				<span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]" />
+				<span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]" />
+				<span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+			</span>
 		</div>
 	</div>
 );
 
-const QuickQuestions = ({ selected, onSelect }: { selected: string | null, onSelect: (q: string) => void }) => {
-	const questions = [
-		"Explain health score",
-		"Why the alerts?",
-		"Compare to DOGE",
-		"Investment advice",
-		"Bot detection",
-		"Whale impact"
-	];
+// const QuickQuestions = ({ selected, onSelect }: { selected: string | null, onSelect: (q: string) => void }) => {
+// 	const questions = [
+// 		"Explain health score",
+// 		"Why the alerts?",
+// 		"Compare to DOGE",
+// 		"Investment advice",
+// 		"Bot detection",
+// 		"Whale impact"
+// 	];
 
-	return (
-		<div className="p-4 border-b border-[#E9E9E9] dark:border-[#B1B1B1]">
-			<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
-			<div className="flex flex-wrap gap-2">
-				{questions.map((question, index) => (
-					<Button
-						key={index}
-						variant="outline"
-						size="sm"
-						className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selected === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'}`}
-						onClick={() => onSelect(question)}
-					>
-						{question}
-					</Button>
-				))}
-			</div>
-		</div>
-	);
-};
+// 	return (
+// 		<div className="p-4 border-b border-[#E9E9E9] dark:border-[#B1B1B1]">
+// 			<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
+// 			<div className="flex flex-wrap gap-2">
+// 				{questions.map((question, index) => (
+// 					<Button
+// 						key={index}
+// 						variant="outline"
+// 						size="sm"
+// 						className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selected === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'}`}
+// 						onClick={() => onSelect(question)}
+// 					>
+// 						{question}
+// 					</Button>
+// 				))}
+// 			</div>
+// 		</div>
+// 	);
+// };
 
 const ChatMessages = memo(({ chatHistory, isLoading }: {
 	chatHistory: any[],
 	isLoading: boolean
-}) => (
-	<div className="flex-1 p-4 space-y-4 overflow-y-auto">
-		{chatHistory.map((chat) => (
-			<ChatBubble key={chat.id} chat={chat} />
-		))}
-		{isLoading && <TypingIndicator />}
-	</div>
-));
+}) => {
+	return (
+		<div className="flex-1 p-4 space-y-4 overflow-y-auto">
+			{chatHistory.map((chat) => (
+				<ChatBubble key={chat.id} chat={chat} />
+			))}
+			{isLoading && <TypingIndicator />}
+		</div>
+	)
+});
 
 const ChatInput = ({
 	userInput,
@@ -153,7 +171,7 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const scrollRef = useRef<HTMLDivElement>(null);
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
-	const { data } = useCommunityOverview(communityId);
+	const { data, isFetching: isGettingCommunity } = useCommunityOverview(communityId);
 	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
 
 	const communityOverview = {
@@ -164,12 +182,12 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 		price_change_percent: data?.data?.project?.price_change_percent,
 		symbol: data?.data?.project?.symbol,
 	}
-	const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
+	// const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
-	const handleQuickQuestion = (question: string) => {
-		setSelectedQuestion(question);
-		console.log("Quick question:", question);
-	};
+	// const handleQuickQuestion = (question: string) => {
+	// 	setSelectedQuestion(question);
+	// 	console.log("Quick question:", question);
+	// };
 
 	const handleSendMessage = () => {
 		const trimmed = userInput.trim();
@@ -188,11 +206,11 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 		setUserInput('');
 
 		sendMessage(
-			{ symbol: communityId, prompt: '', messages: [{ ai: false, text: trimmed }] },
+			{ messages: [{ ai: false, text: trimmed }] },
 			{
 				onSuccess: (res) => {
 					chatHistoryRef.current.push({
-						id: Date.now(),
+						id: Date.now() + Math.random(),
 						type: 'assistant',
 						message: res || 'No response',
 						timestamp: getCurrentTime(),
@@ -211,19 +229,20 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [chatHistoryRef.current.length, isPending]);
 
+	const greetingText = Array.isArray(initialGreeting) ? initialGreeting[0] : initialGreeting;
+
 	// 👇 Greeting once
 	useEffect(() => {
-		if (initialGreeting && chatHistoryRef.current.length === 0) {
+		if (greetingText && chatHistoryRef.current.length === 0) {
 			chatHistoryRef.current.push({
 				id: Date.now(),
 				type: 'assistant',
-				message: initialGreeting,
+				message: greetingText,
 				timestamp: getCurrentTime(),
 			});
 			forceUpdate();
 		}
-	}, [initialGreeting]);
-
+	}, [greetingText]);
 
 	return (
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
@@ -251,31 +270,47 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 
 			{/* Project Info */}
 			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1] text-[#4B4A4A] dark:text-white">
-				<div className="flex items-center gap-3">
-					<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-						{communityOverview?.logo && (
-							<Image src={communityOverview?.logo || ""} alt="Avatar" width={40} height={40} className="rounded-full" />
-						)}
-					</div>
-					<div className="space-y-1">
-						<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>
-						<div className="flex items-center gap-2 text-xs">
-							<span className="font-medium font-noto">${communityOverview?.base_currency}</span>
-							<span>•</span>
-							<span className="font-medium font-noto">{formatCurrency(communityOverview?.price_usd)}</span>
-							<span>•</span>
-							<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
+				{isGettingCommunity ? (
+					<div className="flex items-center gap-3 animate-pulse">
+						<div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full" />
+						<div className="space-y-2">
+							<div className="w-40 h-6 bg-gray-200 dark:bg-gray-700 rounded" />
+							<div className="w-24 h-4 bg-gray-200 dark:bg-gray-700 rounded" />
 						</div>
 					</div>
-				</div>
+				) : (
+					<div className="flex items-center gap-3">
+						<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+							{communityOverview?.logo && (
+								<Image
+									src={communityOverview?.logo || ""}
+									alt="Avatar"
+									width={40}
+									height={40}
+									className="rounded-full"
+								/>
+							)}
+						</div>
+						<div className="space-y-1">
+							<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>
+							<div className="flex items-center gap-2 text-xs">
+								<span className="font-medium font-noto">${communityOverview?.base_currency}</span>
+								<span>•</span>
+								<span className="font-medium font-noto">{formatCurrency(communityOverview?.price_usd)}</span>
+								<span>•</span>
+								<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 
 			{/* Quick Questions */}
-			<QuickQuestions selected={selectedQuestion} onSelect={handleQuickQuestion} />
+			{/* <QuickQuestions selected={selectedQuestion} onSelect={handleQuickQuestion} /> */}
 
 			{/* Chat Messages */}
 			<ChatMessages
-				chatHistory={chatHistoryRef.current}
+				chatHistory={[...chatHistoryRef.current]}
 				isLoading={isPending || isFetching}
 			/>
 
