@@ -10,12 +10,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'a.thumbs.redditmedia.com',
+        hostname: 'cdn.pixabay.com',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'cdn.pixabay.com',
+        hostname: 's3-symbol-logo.tradingview.com',
         pathname: '/**',
       },
     ],

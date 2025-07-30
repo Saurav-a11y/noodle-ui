@@ -146,6 +146,27 @@ export const fetchOverviewCommoditiesStats = async () => {
 	return res.json();
 };
 
+// Stocks
+export const fetchStocksHealthRanks = async ({ limit, page, search }: { limit?: number, page?: number, search?: string }) => {
+	const query = new URLSearchParams();
+
+	if (limit) query.append('limit', String(limit));
+	if (page) query.append('page', String(page));
+	if (search) query.append('search', String(search));
+
+	const url = `${BASE_URL}/stock-health-ranks?${query.toString()}`;
+
+	const res = await fetch(url);
+	if (!res.ok) throw new Error('Failed to fetch commodities health ranks');
+	return res.json();
+};
+
+export const fetchTopGrowthStocks = async () => {
+	const res = await fetch(`${BASE_URL}/top-growth-stocks`);
+	if (!res.ok) throw new Error('Failed to fetch top growth stocks');
+	return res.json();
+};
+
 // Chat with AI Agent
 export const chatWithAgent = async ({
 	messages,

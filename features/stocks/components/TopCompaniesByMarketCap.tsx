@@ -1,11 +1,12 @@
 'use client'
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import TooltipCommon from "@/components/common/TooltipCommon"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
 import Image from "next/image";
 import _get from "lodash/get";
 import _map from "lodash/map";
-import { formatPercent } from "@/lib/format";
+import { formatCurrency, formatPercent } from "@/lib/format";
+import { useStocksHealthRanks } from "../hooks";
 
 const companies = [
 	{ rank: 1, medium_logo_url: '/images/stocks/nvidia.png', name: "NVIDIA Corporation", symbol: "NVDA", price: 172.41, change: -0.34, volume: "146.45M", marketCap: "4.21T", pe: 55.54, eps: 3.10, epsGrowth: 81.60, dividend: "0.02%" },
@@ -31,8 +32,13 @@ const companies = [
 ];
 
 const TopCompaniesByMarketCap = () => {
-	const isLoading = false
-	const router = useRouter();
+	const { data: stocksHealthRanksData, isFetching: isGettingStocks } = useStocksHealthRanks({
+		limit: 20,
+		page: 1,
+		search: "",
+	})
+	const stocks = stocksHealthRanksData?.data?.stock_health_rankings;
+	// const router = useRouter();
 	return (
 		<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="overflow-x-auto">
@@ -94,7 +100,7 @@ const TopCompaniesByMarketCap = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{isLoading
+						{isGettingStocks
 							? Array.from({ length: 5 }).map((_, i) => (
 								<TableRow key={i} className="animate-pulse">
 									{Array.from({ length: 10 }).map((_, j) => (
@@ -104,36 +110,36 @@ const TopCompaniesByMarketCap = () => {
 									))}
 								</TableRow>
 							))
-							: _map(companies, (stock) => (
+							: _map(stocks, (stock, index) => (
 								<TableRow
-									key={stock?.rank}
+									key={index}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-									onClick={() => router.push(`/cryptocurrencies/${stock?.symbol}`)}
+								// onClick={() => router.push(`/cryptocurrencies/${stock?.symbol}`)}
 								>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{stock?.rank}</TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<div className="flex items-center gap-3">
 											<div className="w-8 h-8 flex items-center justify-center font-noto border border border-[#F8F8F8] rounded-full">
-												<Image src={_get(stock, 'medium_logo_url', '/images/icon-section-6_2.png')} alt="Symbol" width={64} height={64} className="rounded-full" />
+												<Image src={`https://s3-symbol-logo.tradingview.com/${stock?.logoid}.svg` || '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 											</div>
 											<div className="text-[#4B4A4A] dark:text-[#FFF]">
-												<p className="font-medium text-sm font-noto">{stock?.name}</p>
-												<div className="text-[10px] font-medium opacity-50 font-noto">{stock?.symbol}</div>
+												<p className="font-medium text-sm font-noto">{stock?.description}</p>
+												<div className="text-[10px] font-medium opacity-50 font-noto">{stock?.name}</div>
 											</div>
 										</div>
 									</TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{stock?.price}</p></TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><p className="text-center">{formatCurrency(stock?.close)}</p></TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div className="text-center">{formatPercent(stock?.change)}</div></TableCell>
-									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{stock?.volume}</div></TableCell>
+									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto"><div>{formatCurrency(stock?.volume)}</div></TableCell>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">
 										<div className={`text-center font-noto`}>
-											{stock?.marketCap}
+											{formatCurrency(stock?.market_cap_basic)}
 										</div>
 									</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{stock?.pe}</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{stock?.eps}</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{formatPercent(stock?.epsGrowth)}</TableCell>
-									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{stock?.dividend}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{Number((stock?.price_earnings_ttm ?? 0).toFixed(2))}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{Number((stock?.earnings_per_share_diluted_ttm ?? 0).toFixed(2))}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{formatPercent(stock?.earnings_per_share_diluted_yoy_growth_ttm)}</TableCell>
+									<TableCell className="text-sm font-medium text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{Number((stock?.dividends_yield ?? 0).toFixed(2))}%</TableCell>
 								</TableRow>
 							))}
 					</TableBody>
