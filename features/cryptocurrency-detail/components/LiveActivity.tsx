@@ -15,6 +15,7 @@ import { useParams } from "next/navigation";
 import { calculateEngagementRate, formatNumberShort, formatTimestamp } from "@/lib/format";
 import PostAvatar from "@/components/common/PostAvatar";
 import Image from "next/image";
+import Link from "next/link";
 
 const LiveActivity = () => {
 	const params = useParams();
@@ -65,15 +66,14 @@ const LiveActivity = () => {
 											<div className="flex items-center text-black dark:text-white gap-2">
 												<XIcon width={24} height={24} />
 												<p className="font-semibold font-noto">Latest Twitter Activity</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> mentions</span>
+												<div className="border-l h-4 border-[#000] opacity-50 mx-2" />
+												<span className="text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> mentions</span>
 											</div>
-											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View all on Twitter</button>
 										</div>
 										<div className="flex items-center block md:hidden justify-between mb-4">
 											<span className="text-xs text-[#373737] font-reddi"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> mentions</span>
-											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hover:bg-[#F0F0F0] transition-colors duration-200">View all on Twitter</button>
 										</div>
-										<div className="space-y-6">
+										<div className="space-y-5">
 											{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
 											{data?.data?.items.map((tweet, index) => (
 												<div key={index} className="bg-white dark:bg-[#000] rounded-xl p-5 space-y-4 text-[#373737] dark:text-[#fff]">
@@ -94,6 +94,7 @@ const LiveActivity = () => {
 														{tweet.verified && (
 															<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
 														)}
+														<Link href={tweet?.permanentUrl || ''} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Twitter</Link>
 													</div>
 													<p className="text-sm font-reddit [&>a]:text-blue-500 leading-[1.7]" dangerouslySetInnerHTML={{ __html: tweet.html }} />
 													<hr className="text-[#C5C5C5]" />

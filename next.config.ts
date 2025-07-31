@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'a.thumbs.redditmedia.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 's3-symbol-logo.tradingview.com',
         pathname: '/**',
       },
