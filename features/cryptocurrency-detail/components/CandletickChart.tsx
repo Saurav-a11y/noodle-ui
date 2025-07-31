@@ -74,12 +74,17 @@ const barsInTimeFrame = {
 	'1M': 24 * 30,
 };
 
-const CandlestickChart = () => {
+const CandlestickChart = ({ utcOffset }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const tokenSymbol = typeof communityId === 'string' ? communityId.replace('USD', '') : '';
 	const { isDark } = useThemekMode();
-	const now = useMemo(() => new Date(), []);
+	const now = useMemo(() => {
+		const localNow = new Date();
+		const utcTime = localNow.getTime() + localNow.getTimezoneOffset() * 60000;
+		return new Date(utcTime + 3600000 * utcOffset);
+	}, [utcOffset]);
+
 	const startTime = useMemo(() => getTime(subMonths(now, 1)), [now]);
 	const endTime = useMemo(() => getTime(now), [now]);
 
@@ -97,40 +102,14 @@ const CandlestickChart = () => {
 
 	// ✅ State lưu thời gian từ
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3D');
-	const limitTweetNormalUser = 12;
 
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 	const markerContainerRef = useRef<HTMLDivElement>(null);
 	const [chartInstance, setChartInstance] = useState<{ chart: any; candlestickSeries: any; formattedData: PricePoint[] } | null>(null);
 	const markerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
-	// const [hoveredCandle, setHoveredCandle] = useState<{ open: number; high: number; low: number; close: number; color: string } | null>(
-	// 	null,
-	// );
-	// State for platforms
-	// const [platformsState, setPlatformsState] = useState(platforms);
-
-	// const handlePlatformClick = (name: string) => {
-	// 	setPlatformsState((prev) =>
-	// 		prev.map((p) => ({ ...p, active: p.name === name }))
-	// 	);
-	// };
 
 	const [activeHourTweets, setActiveHourTweets] = useState<TweetInfo[]>([]);
 	const [isShowModalTweet, setIsShowModalTweet] = useState(false);
-
-	// const formattedDate = (date: string, regex = 'HH:mm - MMM dd yyyy') => {
-	// 	const parsedDate = parseISO(date);
-	// 	return format(
-	// 		new Date(
-	// 			parsedDate.getUTCFullYear(),
-	// 			parsedDate.getUTCMonth(),
-	// 			parsedDate.getUTCDate(),
-	// 			parsedDate.getUTCHours(),
-	// 			parsedDate.getUTCMinutes(),
-	// 		),
-	// 		regex,
-	// 	);
-	// };
 
 	const applyMultipleMarkerStyle = useCallback((element: HTMLElement) => {
 		Object.assign(element.style, {
@@ -182,7 +161,7 @@ const CandlestickChart = () => {
 			borderVisible: false,
 		});
 		chart.priceScale('right').applyOptions({
-			mode: PriceScaleMode.Normal, // Giữ giá trị chính xác
+			mode: PriceScaleMode.Normal,
 			autoScale: true,
 			borderVisible: false,
 			alignLabels: true,
@@ -438,33 +417,12 @@ const CandlestickChart = () => {
 		if (!chartInstance) return;
 		const { chart, candlestickSeries, formattedData } = chartInstance;
 
-		if (formattedData?.length > 0) {
-			// const latestCandle = formattedData[formattedData.length - 1]; // Cây nến mới nhất
-
-			// setHoveredCandle({
-			// 	open: latestCandle.open,
-			// 	high: latestCandle.high,
-			// 	low: latestCandle.low,
-			// 	close: latestCandle.close,
-			// 	color: latestCandle.close >= latestCandle.open ? 'text-green-500' : 'text-red-500',
-			// });
-		}
-
 		const handleCrosshairMove = (param: any) => {
 			if (!param || !param.seriesData) return;
 
 			// Lấy dữ liệu của cây nến đang hover
 			const candlestickData = param.seriesData.get(candlestickSeries);
 			if (!candlestickData) return;
-
-			// Cập nhật state với giá trị mới
-			// setHoveredCandle({
-			// 	open: candlestickData.open,
-			// 	high: candlestickData.high,
-			// 	low: candlestickData.low,
-			// 	close: candlestickData.close,
-			// 	color: candlestickData.close >= candlestickData.open ? 'text-green-500' : 'text-red-500',
-			// });
 		};
 
 		chart.subscribeCrosshairMove(handleCrosshairMove);
@@ -510,18 +468,6 @@ const CandlestickChart = () => {
 		<div>
 			<div className='flex items-center gap-x-6 gap-y-3 mb-4 flex-wrap  justify-between gap-1'>
 				<div className="flex items-center gap-2">
-					{/* {platformsState.map((platform) => (
-						<button
-							key={platform.name}
-							className={`px-3 py-1.5 rounded text-xs font-reddit cursor-pointer font-medium transition-colors ${platform.active
-								? "bg-[#DDF346] text-[#222]"
-								: "border border-[#DDF346] hover:bg-[#F4F4F5] dark:hover:bg-[#313131]"
-								}`}
-							onClick={() => handlePlatformClick(platform.name)}
-						>
-							{platform.name}
-						</button>
-					))} */}
 				</div>
 				<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
 					{['1D', '3D', '7D', '1M'].map((timeFrame) => (
@@ -535,22 +481,6 @@ const CandlestickChart = () => {
 						</button>
 					))}
 				</div>
-				{/* {hoveredCandle && (
-					<div className='flex justify-center items-center gap-2 text-xs sm:text-sm font-medium py-2 flex-wrap'>
-						<p>
-							O <span className={hoveredCandle.color}>{formatNumberWithDecimal(hoveredCandle.open, 8)}</span>
-						</p>
-						<p>
-							H <span className={hoveredCandle.color}>{formatNumberWithDecimal(hoveredCandle.high, 8)}</span>
-						</p>
-						<p>
-							L <span className={hoveredCandle.color}>{formatNumberWithDecimal(hoveredCandle.low, 8)}</span>
-						</p>
-						<p>
-							C <span className={hoveredCandle.color}>{formatNumberWithDecimal(hoveredCandle.close, 8)}</span>
-						</p>
-					</div>
-				)} */}
 			</div>
 			<div style={{ position: 'relative' }}>
 				{/* ✅ Hiển thị loading overlay nếu đang fetch data */}
@@ -587,7 +517,6 @@ const CandlestickChart = () => {
 					style={{ overflow: 'hidden', width: 'calc(100% - 85px)', pointerEvents: 'none' }}
 				/>
 			</div>
-			{/* <PremiumFeatureLink ref={premiumRef} showLink={false} /> */}
 			<ModalCommon
 				open={isShowModalTweet}
 				onOpenChange={setIsShowModalTweet}
@@ -595,7 +524,7 @@ const CandlestickChart = () => {
 				classNameChildren='overflow-y-auto overflow-x-hidden rounded-none hidden-scrollbar max-h-[80vh]'
 				classNameContent='sm:w-full w-[96vw] max-w-screen-sm'
 			>
-				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={communityId} />
+				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={communityId} utcOffset={utcOffset} />
 			</ModalCommon>
 		</div>
 	);

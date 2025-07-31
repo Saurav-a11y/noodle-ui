@@ -35,7 +35,6 @@ interface TweetInfo {
 function TweetList({ tweets, isParseUTC,
 	// symbol 
 }: any) {
-	console.log("🚀 ~ tweets:", tweets)
 	// const [openReport, setOpenReport] = useState({ open: false, tweet: {} as any });
 	return (
 		<div className='max-h-[75vh] overflow-y-auto hidden-scrollbar pb-2 font-noto'>
