@@ -1,9 +1,9 @@
 import IconifyIcon from '@/components/common/IconifyIcon';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import ReportTweetModal from './ReportTweetModal';
+import React from 'react';
+// import ReportTweetModal from './ReportTweetModal';
 import ImgWithOnError from './ImgWithOnError';
-import { Button } from '../../../components/ui/Button';
+// import { Button } from '../../../components/ui/Button';
 import formatNumberWithDecimal, { formattedDate } from '@/lib/format';
 import HeartIcon from '@/icons/HeartIcon';
 import ChatIcon from '@/icons/ChatIcon';
@@ -35,7 +35,8 @@ interface TweetInfo {
 function TweetList({ tweets, isParseUTC,
 	// symbol 
 }: any) {
-	const [openReport, setOpenReport] = useState({ open: false, tweet: {} as any });
+	console.log("🚀 ~ tweets:", tweets)
+	// const [openReport, setOpenReport] = useState({ open: false, tweet: {} as any });
 	return (
 		<div className='max-h-[75vh] overflow-y-auto hidden-scrollbar pb-2 font-noto'>
 			{tweets?.map((tweet: TweetInfo, index: number) => (
@@ -62,14 +63,14 @@ function TweetList({ tweets, isParseUTC,
 								<div className='bg-[#775bdd] px-2 py-1 text-white text-xs rounded-full mb-auto capitalize'>{tweet?.classification}</div>
 							)}
 						</div>
-						<Button
+						{/* <Button
 							size='sm'
 							variant='outline'
 							className={'rounded-full shrink-0 dark:bg-black2 border border-[#E4E4E4] dark:border-grayPrimary font-reddit text-xs cursor-pointer'}
 							onClick={() => setOpenReport({ open: true, tweet })}
 						>
 							Report
-						</Button>
+						</Button> */}
 					</div>
 
 					<div className='text-sm dark:text-[#ffffff] mb-4 break-all custom_tweet' dangerouslySetInnerHTML={{ __html: tweet?.text }}></div>
@@ -98,14 +99,14 @@ function TweetList({ tweets, isParseUTC,
 					</div>
 				</div>
 			))}
-			{openReport.open && (
+			{/* {openReport.open && (
 				<ReportTweetModal
 					open={openReport.open}
 					tweetId={openReport.tweet?.id}
 					// symbol={symbol}
 					onClose={() => setOpenReport({ open: false, tweet: {} })}
 				/>
-			)}
+			)} */}
 		</div>
 	);
 }

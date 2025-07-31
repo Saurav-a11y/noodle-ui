@@ -261,14 +261,9 @@ const CandlestickChart = () => {
 			tweetsByTimeInterval.get(intervalTimestamp)?.push(tweet as any);
 		});
 
-		let accessibleCount = 0; // Count accessible tweets
 		// Tạo marker nhóm cho mỗi giờ
 		tweetsByTimeInterval.forEach((tweetsInInterval, intervalTimestamp) => {
 			if (tweetsInInterval?.length === 0) return;
-			const isAccessible = accessibleCount < limitTweetNormalUser;
-			if (isAccessible) {
-				accessibleCount++;
-			}
 
 			// Tìm điểm giá gần nhất với giờ này
 			const closestPricePoint = formattedData.reduce((prev: PricePoint, curr: PricePoint) => {
@@ -293,7 +288,7 @@ const CandlestickChart = () => {
 			iconMarkup.style.height = '28px';
 			iconMarkup.style.borderRadius = '50%';
 
-			if (tweetsInInterval?.length === 1 && isAccessible) {
+			if (tweetsInInterval?.length === 1) {
 				// Single tweet and accessible
 				const tweet = tweetsInInterval[0];
 				iconMarkup.innerHTML = `
@@ -305,7 +300,7 @@ const CandlestickChart = () => {
             alt="${tweet?.['xt.username']}"
           />
         `;
-			} else if (isAccessible) {
+			} else {
 				// Multiple tweets and accessible
 				applyMultipleMarkerStyle(iconMarkup);
 
@@ -314,18 +309,9 @@ const CandlestickChart = () => {
          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="m17.687 3.063l-4.996 5.711l-4.32-5.711H2.112l7.477 9.776l-7.086 8.099h3.034l5.469-6.25l4.78 6.25h6.102l-7.794-10.304l6.625-7.571zm-1.064 16.06L5.654 4.782h1.803l10.846 14.34z"/></svg>
         `;
 			}
-			// 	else {
-			// 		// Premium locked content
-			// 		applyMultipleMarkerStyle(iconMarkup);
-
-			// 		// Lock icon for premium-locked content
-			// 		iconMarkup.innerHTML = `
-			//   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path fill="currentColor" d="M24.875 15.334v-4.876c0-4.894-3.98-8.875-8.875-8.875s-8.875 3.98-8.875 8.875v4.876H5.042v15.083h21.916V15.334zm-14.25-4.876c0-2.964 2.41-5.375 5.375-5.375s5.375 2.41 5.375 5.375v4.876h-10.75zm7.647 16.498h-4.545l1.222-3.667a2.37 2.37 0 0 1-1.325-2.12a2.375 2.375 0 1 1 4.75 0c0 .932-.542 1.73-1.324 2.12z"/></svg>
-			// `;
-			// 	}
 
 			// Count badge
-			if (tweetsInInterval?.length > 1 && isAccessible) {
+			if (tweetsInInterval?.length > 1) {
 				const countBadge = document.createElement('div');
 				countBadge.style.position = 'absolute';
 				countBadge.style.top = '-11px';
@@ -355,10 +341,8 @@ const CandlestickChart = () => {
 			// Thêm sự kiện khi click vào marker
 			groupMarkerElement.addEventListener('click', (event) => {
 				event.stopPropagation();
-				if (isAccessible) {
-					setActiveHourTweets(tweetsInInterval);
-					setIsShowModalTweet(true);
-				}
+				setActiveHourTweets(tweetsInInterval);
+				setIsShowModalTweet(true);
 				// else {
 				// 	if (premiumRef.current) {
 				// 		premiumRef.current.checkPremiumStatus(); // Gọi hàm qua ref
