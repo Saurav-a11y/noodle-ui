@@ -10,6 +10,8 @@ import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import { CopyIcon, Globe, Newspaper } from "lucide-react";
 import toast from 'react-hot-toast';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/NavigationMenu";
+import MediumIcon from "@/icons/MediumIcon";
+import SimpleRedditIcon from "@/icons/SimpleRedditIcon";
 
 const Skeleton = ({ className = "" }) => (
 	<div className={`bg-gray-200 dark:bg-[#333] animate-pulse rounded ${className}`} />
@@ -19,6 +21,18 @@ const shortenAddress = (address: string): string => {
 	if (!address || address.length < 10) return address;
 	return `${address.slice(0, 4)}...${address.slice(-4)}`;
 }
+
+const communityIcons: Record<
+	string,
+	{ icon: React.ReactNode; label: string }
+> = {
+	Twitter: { icon: <XIcon width={24} height={24} />, label: "Twitter" },
+	Reddit: { icon: <SimpleRedditIcon />, label: "Reddit" },
+	Telegram: { icon: <TelegramIcon />, label: "Telegram" },
+	Medium: { icon: <MediumIcon />, label: "Medium" },
+	Blog: { icon: <Globe />, label: "Blog" },
+	Discord: { icon: <DiscordIcon />, label: "Discord" },
+};
 
 const ProjectInfo = () => {
 	const params = useParams();
@@ -193,16 +207,23 @@ const ProjectInfo = () => {
 					<div className="flex items-center justify-between">
 						<p className="text-sm font-medium opacity-50 font-noto">Community</p>
 						<div className="flex items-center justify-end gap-4 flex-1">
-							<div className="flex items-center gap-4">
-								<div className="bg-black dark:bg-white w-6 h-6 rounded-full flex items-center justify-center text-[#FFF] dark:text-black">
-									<XIcon />
-								</div>
-								<span className="dark:text-[#FFF]">
-									<DiscordIcon />
-								</span>
-								<span className="dark:text-[#FFF]">
-									<TelegramIcon />
-								</span>
+							<div className="flex items-center gap-2">
+								{basicInformation.community_channels.map((channel, index) => {
+									const IconComponent = communityIcons[channel.type];
+									if (!IconComponent) return null;
+									return (
+										<Link
+											key={index}
+											href={channel.url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="w-8 h-8 flex items-center justify-center items-center rounded-full hover:opacity-80 transition"
+											title={IconComponent.label}
+										>
+											{IconComponent.icon}
+										</Link>
+									);
+								})}
 							</div>
 						</div>
 					</div>

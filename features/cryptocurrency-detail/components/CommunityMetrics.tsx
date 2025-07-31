@@ -108,33 +108,45 @@ const CommunityMetrics = () => {
 
 	const sourceMetrics = [
 		{
-			title: "Twitter Mentions",
-			value: formatNumberShort(crossPlatformAnalytics?.twitter_mentions?.value),
-			// change: `${crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.twitter_mentions?.change_percent}% ${crossPlatformAnalytics?.twitter_mentions?.comparison}`,
-			color: crossPlatformAnalytics?.twitter_mentions?.change_percent > 0 ? '#00B552' : '#FF0000',
-			content: 'Shows the number of unique wallets currently holding the project’s token. Growth in holders typically reflects trust and adoption.'
+			key: 'twitter_mentions',
+			title: 'Twitter Mentions',
+			content: 'Shows the number of unique wallets currently holding the project’s token. Growth in holders typically reflects trust and adoption.',
+			getChange: (data) =>
+				data?.change_percent === 0 || data?.change_percent == null
+					? `${data.comparison}`
+					: `${data.change_percent > 0 ? "▲" : "▼"} ${data.change_percent}% ${data.comparison}`,
+			getColor: (data) =>
+				data.change_percent === 0 ? '#FFAB36' : data.change_percent > 0 ? '#00B552' : '#FF0000',
 		},
 		{
-			title: "Reddit Posts",
-			value: formatNumberShort(crossPlatformAnalytics?.reddit_posts?.value),
-			// change: `${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.reddit_posts?.change_percent > 0 ? '+' : ''}${crossPlatformAnalytics?.reddit_posts?.change_percent}% ${crossPlatformAnalytics?.reddit_posts?.comparison}`,
-			color: '#FF0000',
-			content: 'Counts how many Reddit posts discussed the project in the past 24 hours. Reflects discussion volume in crypto’s most active forums.'
+			key: 'reddit_posts',
+			title: 'Reddit Posts',
+			content: 'Counts how many Reddit posts discussed the project in the past 24 hours. Reflects discussion volume in crypto’s most active forums.',
+			getChange: (data) =>
+				data?.change_percent === 0 || data?.change_percent == null
+					? `${data.comparison}`
+					: `${data.change_percent > 0 ? "▲" : "▼"} ${data.change_percent > 0 ? '+' : ''}${data.change_percent}% ${data.comparison}`,
+			getColor: (data) =>
+				data.change_percent === 0 ? '#FFAB36' : data.change_percent > 0 ? '#00B552' : '#FF0000',
 		},
 		{
-			title: "GitHub Commits",
-			value: formatNumberShort(crossPlatformAnalytics?.github_commits?.value),
-			// change: crossPlatformAnalytics?.github_commits?.change_description,
-			color: '#FFAB36',
-			content: 'Number of code commits to the main repository during the past 7 days. Indicates project development activity and transparency.'
+			key: 'github_commits',
+			title: 'GitHub Commits',
+			content: 'Number of code commits to the main repository during the past 7 days. Indicates project development activity and transparency.',
+			getChange: () => 'Same as last week',
+			getColor: () => '#FFAB36',
 		},
 		{
-			title: "YouTube Videos",
-			value: formatNumberShort(crossPlatformAnalytics?.youtube_videos?.value),
-			// change: `${crossPlatformAnalytics?.youtube_videos?.change > 0 ? "▲" : "▼"} ${crossPlatformAnalytics?.youtube_videos?.change} ${crossPlatformAnalytics?.youtube_videos?.change_description}`,
-			color: crossPlatformAnalytics?.youtube_videos?.change > 0 ? '#00B552' : '#FF0000',
-			content: 'Measures how many videos about the project were published in the last week. Shows how much creator interest the project is getting.'
-		}
+			key: 'youtube_videos',
+			title: 'YouTube Videos',
+			content: 'Measures how many videos about the project were published in the last week. Shows how much creator interest the project is getting.',
+			getChange: (data) =>
+				data?.change === 0 || data?.change == null
+					? `${data.change_description}`
+					: `${data.change > 0 ? "▲" : "▼"} ${data.change} ${data.change_description}`,
+			getColor: (data) =>
+				data.change === 0 ? '#FFAB36' : data.change > 0 ? '#00B552' : '#FF0000',
+		},
 	];
 
 	return (
@@ -222,25 +234,40 @@ const CommunityMetrics = () => {
 				</div>
 
 				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-					{sourceMetrics.map((metric, index) => (
-						<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-							<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-								<p className="text-xs font-reddit">{metric.title}</p>
-								<TooltipCommon content={metric.content} />
+					{sourceMetrics.map(({ key, title, content, getChange, getColor }, index) => {
+						const data = crossPlatformAnalytics?.[key] || {};
+
+						// Xác định có nên hiển thị change hay không
+						const showChange = key === 'github_commits'
+							? false
+							: key === 'youtube_videos'
+								? data?.change !== 0
+								: data?.change_percent !== 0;
+
+						return (
+							<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
+								<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
+									<p className="text-xs font-reddit">{title}</p>
+									<TooltipCommon content={content} />
+								</div>
+								{!isFetching ? (
+									<>
+										<p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
+											{formatNumberShort(data?.value)}
+										</p>
+										<p className="text-sm font-medium font-noto" style={{ color: getColor(data) }}>
+											{getChange(data)}
+										</p>
+									</>
+								) : (
+									<>
+										<div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
+										<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+									</>
+								)}
 							</div>
-							{isFetching ? (
-								<>
-									<div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
-									<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
-								</>
-							) : (
-								<>
-									<p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{metric.value}</p>
-									{/* <p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p> */}
-								</>
-							)}
-						</div>
-					))}
+						);
+					})}
 				</div>
 			</div>
 		</div>
