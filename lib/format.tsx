@@ -193,16 +193,27 @@ export function getChangeDisplay({
     return { changeText, color };
 }
 
-export const formatTimestamp = (timestamp: number): string => {
-    const date = fromUnixTime(timestamp);
+export const formatTimestamp = (timestamp: number | string): string => {
+    let date: Date;
+
+    if (typeof timestamp === 'number') {
+        // Unix timestamp (seconds)
+        date = fromUnixTime(timestamp);
+    } else {
+        // ISO date string
+        date = new Date(timestamp);
+        if (isNaN(date.getTime())) return ''; // Invalid date
+    }
+
     if (isToday(date)) {
         return formatDistanceToNow(date, { addSuffix: true }); // e.g., "2 hours ago"
     }
+
     return format(date, 'dd/MM/yyyy'); // e.g., "23/07/2025"
 };
 
-export const calculateEngagementRate = (likes: number, retweets: number, replies: number, followersCount: number) => {
+export const calculateEngagementRate = (likes: number, retweets: number, replies: number, impressions: number = 0, bookmarks: number = 0, followersCount: number,) => {
     if (!followersCount) return 0;
-    const totalEngagement = likes + retweets + replies;
-    return Number(((totalEngagement / followersCount) * 100).toFixed(3));
-};
+    const totalEngagement = likes + retweets + replies + impressions + bookmarks;
+    return Number(((totalEngagement / followersCount) * 100).toFixed(2))
+}

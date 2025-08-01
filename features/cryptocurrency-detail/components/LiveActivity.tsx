@@ -1,4 +1,4 @@
-import { Loader, MessageCircle } from "lucide-react";
+import { Loader, MessageCircle, Bookmark, Eye } from "lucide-react";
 import XIcon from "@/icons/XIcon";
 import he from 'he'
 import { format } from 'date-fns';
@@ -6,7 +6,7 @@ import GithubIcon from "@/icons/GithubIcon";
 import RedditIcon from "@/icons/RedditIcon";
 // import LightIcon from "@/icons/LightIcon";
 import YoutubeIcon from "@/icons/YoutubeIcon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RotateIcon from "@/icons/RotateIcon";
 import ChatIcon from "@/icons/ChatIcon";
 import TooltipCommon from "../../../components/common/TooltipCommon";
@@ -24,7 +24,18 @@ const LiveActivity = () => {
 	// "All Activity", 
 	const tabs = ["Twitter", "Reddit", "GitHub", "YouTube"];
 	const [activeTab, setActiveTab] = useState("Twitter");
-	const { data, isFetching } = useCommunityDataSources({ symbol: tokenSymbol, platform: activeTab })
+	const [page, setPage] = useState(1);
+	const [tweets, setTweets] = useState<any[]>([]);
+	const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+	const { data, isFetching } = useCommunityDataSources({ symbol: tokenSymbol, platform: activeTab, page: page.toString() })
+
+	useEffect(() => {
+		if (!isFetching && data?.data?.items?.length > 0) {
+			setTweets((prev) => [...prev, ...data.data.items]);
+			setIsLoadingMore(false);
+		}
+	}, [data]);
 
 	return (
 		<div className="text-[#1E1B39] dark:text-white">
@@ -48,7 +59,7 @@ const LiveActivity = () => {
 				))}
 			</div>
 
-			<div className={`grid ${activeTab === "All Activity" ? "grid-cols-2" : "grid-cols-1"} gap-6 min-h-[500px]`}>
+			<div className={`grid ${activeTab === "All Activity" ? "grid-cols-2" : "grid-cols-1"} gap-6 h-[700px] overflow-auto`}>
 				{["All Activity", "Twitter", "GitHub"].includes(activeTab) && (
 					<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 						{(activeTab === "All Activity" || activeTab === "Twitter") && (
@@ -79,49 +90,62 @@ const LiveActivity = () => {
 												<div key={index} className="bg-white dark:bg-[#000] rounded-xl p-5 space-y-4 text-[#373737] dark:text-[#fff]">
 													<div className="flex items-start gap-3">
 														<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-															<PostAvatar username={tweet.username} src={tweet?.user?.profileImageUrl} />
+															<PostAvatar username={tweet.username} src={tweet?.profile_image_url} />
 														</div>
 														<div className="flex-1">
 															<div className="font-noto">
 																<span className="text-sm font-semibold">{tweet.username}</span>
 																<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
-																	<span className="text-xs opacity-50">{formatTimestamp(tweet.timestamp)}</span>
+																	<span className="text-xs opacity-50">{formatTimestamp(tweet.created_at)}</span>
 																	<span>•</span>
-																	<span className="text-xs font-medium">{formatNumberShort(tweet.user?.followersCount)} followers</span>
+																	<span className="text-xs font-medium">{formatNumberShort(tweet.followers_count)} followers</span>
 																</div>
 															</div>
 														</div>
-														{tweet.verified && (
-															<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
-														)}
-														<Link href={tweet?.permanentUrl || ''} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Twitter</Link>
+														<div className="flex items-center gap-2">
+															{tweet.verified && (
+																<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
+															)}
+															<Link href={`https://x.com/${tweet.username}/status/${tweet.id}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Twitter</Link>
+														</div>
 													</div>
-													<p className="text-sm font-reddit [&>a]:text-blue-500 leading-[1.7]" dangerouslySetInnerHTML={{ __html: tweet.html }} />
+													<p className="text-sm font-reddit">
+														{tweet.text.split(' ').map((word, index) => {
+															const isSpecial =
+																word.startsWith('#') || word.startsWith('@') || word.startsWith('http');
+															return (
+																<span
+																	key={index}
+																	className={isSpecial ? 'text-blue-500' : undefined}
+																>
+																	{word + ' '}
+																</span>
+															);
+														})}
+													</p>
 													<hr className="text-[#C5C5C5]" />
 													<div className="flex items-center gap-4 text-xs font-medium font-noto">
 														<div className="flex items-center gap-1">
 															<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 																<path d="M9.38733 3.97987C9.75898 3.561 10.2108 3.22087 10.7161 2.97956C11.2214 2.73824 11.77 2.60065 12.3294 2.5749C12.8888 2.54915 13.4476 2.63577 13.973 2.82964C14.4983 3.02351 14.9795 3.3207 15.388 3.70365C15.7966 4.0866 16.1243 4.54755 16.3517 5.05926C16.5791 5.57098 16.7017 6.12308 16.7121 6.68296C16.7226 7.24283 16.6207 7.79913 16.4126 8.31898C16.2044 8.83884 15.8942 9.31171 15.5003 9.70965L9.34169 15.9274C9.29686 15.9727 9.24349 16.0086 9.18468 16.0331C9.12587 16.0577 9.06277 16.0703 8.99905 16.0703C8.93532 16.0703 8.87223 16.0577 8.81342 16.0331C8.7546 16.0086 8.70124 15.9727 8.6564 15.9274L2.49783 9.70965C1.7511 8.95532 1.31837 7.94578 1.28699 6.88482C1.25561 5.82386 1.62792 4.79051 2.32876 3.99337C3.99248 2.10144 6.93805 2.09501 8.61076 3.97987L8.99905 4.41701L9.38733 3.97987Z" fill="#FF5959" />
 															</svg>
-															{tweet?.likes}
+															{tweet?.public_metrics?.like_count}
 														</div>
-														<div className="flex items-center gap-1"><RotateIcon />{tweet?.retweets}</div>
-														<div className="flex items-center gap-1"><ChatIcon className="w-4 h-4" />{tweet?.replies}</div>
-														<span className="text-xs ml-auto font-reddit text-[#373737] dark:text-white"><span className="opacity-50">Engagement:</span> <b>{calculateEngagementRate(tweet?.likes, tweet?.retweets, tweet?.replies, tweet.user?.followersCount)}%</b></span>
+														<div className="flex items-center gap-1"><RotateIcon />{tweet?.public_metrics?.retweet_count}</div>
+														<div className="flex items-center gap-1"><ChatIcon className="w-4 h-4" />{tweet?.public_metrics?.reply_count}</div>
+														<div className="flex items-center gap-1"><Eye className="w-4 h-4" />{tweet?.public_metrics?.impression_count}</div>
+														<div className="flex items-center gap-1"><Bookmark className="w-4 h-4" />{tweet?.public_metrics?.bookmark_count}</div>
+														<span className="text-xs ml-auto font-reddit text-[#373737] dark:text-white"><span className="opacity-50">Engagement:</span> <b>{calculateEngagementRate(
+															tweet?.public_metrics?.like_count,
+															tweet?.public_metrics?.retweet_count,
+															tweet?.public_metrics?.reply_count,
+															tweet?.public_metrics?.impression_count,
+															tweet?.public_metrics?.bookmark_count,
+															tweet?.followers_count)}%</b>
+														</span>
 													</div>
 												</div>
 											))}
-											{/* </div> */}
-											{/* <div className="bg-[#FFF7E2] border border-[#FFDA78] rounded-xl p-5">
-												<div className="flex items-center gap-1.5 mb-2">
-													<RecentActivityDropIcon />
-													<span className="font-semibold text-[#DD7519] font-noto">Suspicious Activity Detected</span>
-												</div>
-												<p className="text-sm text-[#373737] font-reddit">
-													47 similar comments posted within 30 minutes by new accounts.
-													<button className="text-[#DD7519] underline ml-1 cursor-pointer">View Details</button>
-												</p>
-											</div> */}
 										</div>
 									</div>
 								)}

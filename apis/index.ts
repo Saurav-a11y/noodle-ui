@@ -75,8 +75,8 @@ export const fetchCommunityTeamActivityAnalysis = async ({ communityId, amount, 
 	return res.json();
 };
 
-export const fetchCommunityDataSources = async ({ symbol, platform }: { symbol: string, platform: string }) => {
-	const query = new URLSearchParams({ symbol, platform });
+export const fetchCommunityDataSources = async ({ symbol, platform, page }: { symbol: string, platform: string, page: string }) => {
+	const query = new URLSearchParams({ symbol, platform, page });
 
 	const res = await fetch(`${BASE_URL}/community-data-sources?${query}`);
 
