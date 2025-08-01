@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'abs.twimg.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'a.thumbs.redditmedia.com',
         pathname: '/**',
       },

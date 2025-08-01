@@ -6,7 +6,7 @@ import GithubIcon from "@/icons/GithubIcon";
 import RedditIcon from "@/icons/RedditIcon";
 // import LightIcon from "@/icons/LightIcon";
 import YoutubeIcon from "@/icons/YoutubeIcon";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import RotateIcon from "@/icons/RotateIcon";
 import ChatIcon from "@/icons/ChatIcon";
 import TooltipCommon from "../../../components/common/TooltipCommon";
@@ -16,6 +16,42 @@ import { calculateEngagementRate, formatNumberShort, formatTimestamp } from "@/l
 import PostAvatar from "@/components/common/PostAvatar";
 import Image from "next/image";
 import Link from "next/link";
+import _map from 'lodash/map';
+import { fetchCommunityDataSources } from "@/apis";
+import AuthenticIcon from "@/icons/AuthenticIcon";
+
+export const formatTweetText = (text: string): string => {
+	if (!text) return '';
+
+	// Escape HTML
+	let formatted = text
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;');
+
+	// Replace URLs with anchor
+	formatted = formatted.replace(
+		/(https?:\/\/[^\s]+)/g,
+		(url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+	);
+
+	// Replace @mentions
+	formatted = formatted.replace(
+		/@(\w+)/g,
+		(mention) => `<a href="https://twitter.com/${mention.slice(1)}" target="_blank" rel="noopener noreferrer">${mention}</a>`
+	);
+
+	// Replace #hashtags
+	formatted = formatted.replace(
+		/#(\w+)/g,
+		(hashtag) => `<a href="https://twitter.com/hashtag/${hashtag.slice(1)}" target="_blank" rel="noopener noreferrer">#${hashtag.slice(1)}</a>`
+	);
+
+	// Replace \n with <br>
+	formatted = formatted.replace(/\n/g, '<br>');
+
+	return formatted;
+};
 
 const LiveActivity = () => {
 	const params = useParams();
@@ -25,17 +61,53 @@ const LiveActivity = () => {
 	const tabs = ["Twitter", "Reddit", "GitHub", "YouTube"];
 	const [activeTab, setActiveTab] = useState("Twitter");
 	const [page, setPage] = useState(1);
-	const [tweets, setTweets] = useState<any[]>([]);
+	const [data, setData] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
+	const [totalItems, setTotalitems] = useState<number>(0);
+	const scrollRef = useRef<HTMLDivElement>(null);
 
-	const { data, isFetching } = useCommunityDataSources({ symbol: tokenSymbol, platform: activeTab, page: page.toString() })
+	const fetchData = async (pageToFetch: number, replace = false) => {
+		const response = await fetchCommunityDataSources({
+			symbol: tokenSymbol,
+			platform: activeTab,
+			page: pageToFetch.toString(),
+		});
 
-	useEffect(() => {
-		if (!isFetching && data?.data?.items?.length > 0) {
-			setTweets((prev) => [...prev, ...data.data.items]);
-			setIsLoadingMore(false);
+		const items = response?.data?.items || [];
+		console.log("🚀 ~ fetchData ~ items:", items)
+		const total = response?.data?.summary?.total_posts || 0;
+
+		if (replace) {
+			setData(items);
+		} else {
+			setData((prev) => [...prev, ...items]);
 		}
-	}, [data]);
+		setTotalitems(total);
+	};
+
+	const handleScroll = () => {
+		if (!scrollRef.current || isLoadingMore || data.length >= totalItems) return;
+
+		const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+		if (scrollTop + clientHeight >= scrollHeight - 200) {
+			setIsLoadingMore(true);
+			const nextPage = page + 1;
+			fetchData(nextPage).then(() => {
+				setPage(nextPage);
+				setIsLoadingMore(false);
+			});
+		}
+	};
+
+	// Fetch data khi đổi tab hoặc symbol
+	useEffect(() => {
+		if (!tokenSymbol) return;
+		setIsLoading(true);
+		setPage(1);
+		fetchData(1, true).finally(() => setIsLoading(false));
+	}, [tokenSymbol, activeTab]);
+
 
 	return (
 		<div className="text-[#1E1B39] dark:text-white">
@@ -59,93 +131,147 @@ const LiveActivity = () => {
 				))}
 			</div>
 
-			<div className={`grid ${activeTab === "All Activity" ? "grid-cols-2" : "grid-cols-1"} gap-6 h-[700px] overflow-auto`}>
+			<div
+				ref={scrollRef}
+				onScroll={handleScroll}
+				className={`grid ${activeTab === "All Activity" ? "grid-cols-2" : "grid-cols-1"} gap-6 h-[700px] overflow-auto`}>
 				{["All Activity", "Twitter", "GitHub"].includes(activeTab) && (
 					<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 						{(activeTab === "All Activity" || activeTab === "Twitter") && (
 							<>
-								{isFetching && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
-								{!isFetching && data?.data?.items?.length === 0 && (
-									<>
-
-										<p className="text-center font-reddit text-[#373737] dark:text-white">No Twitter activity found for this community.</p>
-									</>
+								{isLoading && (
+									<p className="flex justify-center font-noto">
+										<Loader className="animate-spin" />
+									</p>
 								)}
-								{!isFetching && data?.data?.items?.length > 0 && (
+								{!isLoading && data.length === 0 && (
+									<p className="text-center font-reddit text-[#373737] dark:text-white">No Twitter activity found for this community.</p>
+								)}
+								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
 										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 											<div className="flex items-center text-black dark:text-white gap-2">
 												<XIcon width={24} height={24} />
 												<p className="font-semibold font-noto">Latest Twitter Activity</p>
 												<div className="border-l h-4 border-[#000] opacity-50 mx-2" />
-												<span className="text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> mentions</span>
+												<span className="text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> mentions</span>
 											</div>
 										</div>
 										<div className="flex items-center block md:hidden justify-between mb-4">
-											<span className="text-xs text-[#373737] font-reddi"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> mentions</span>
+											<span className="text-xs text-[#373737] font-reddi"><b>{formatNumberShort(totalItems)}</b> mentions</span>
 										</div>
 										<div className="space-y-5">
 											{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
-											{data?.data?.items.map((tweet, index) => (
-												<div key={index} className="bg-white dark:bg-[#000] rounded-xl p-5 space-y-4 text-[#373737] dark:text-[#fff]">
-													<div className="flex items-start gap-3">
-														<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-															<PostAvatar username={tweet.username} src={tweet?.profile_image_url} />
-														</div>
-														<div className="flex-1">
-															<div className="font-noto">
-																<span className="text-sm font-semibold">{tweet.username}</span>
-																<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
-																	<span className="text-xs opacity-50">{formatTimestamp(tweet.created_at)}</span>
-																	<span>•</span>
-																	<span className="text-xs font-medium">{formatNumberShort(tweet.followers_count)} followers</span>
+											{_map(data, (tweet, index) => {
+												const isReTweet = tweet?.dataType === "retweet";
+												return (
+													<div key={index} className="bg-white dark:bg-[#000] rounded-xl p-5 space-y-4 text-[#373737] dark:text-[#fff]">
+														<div>
+															{isReTweet && (
+																<p className="ml-6 flex items-center gap-1.5 text-xs font-medium font-noto mb-1.5">
+																	<RotateIcon />
+																	<span>{tweet?.name} reposted</span>
+																</p>
+															)}
+															<div className="flex items-start gap-3">
+																<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
+																	<PostAvatar username={isReTweet ? tweet?.info_retweet?.username : tweet?.username} src={isReTweet ? tweet?.info_retweet?.profile_image_url : tweet?.profile_image_url} />
 																</div>
+																<div className="flex-1">
+																	<div className="font-noto">
+																		<div className="flex gap-1.5 items-center">
+																			<span className="text-sm font-semibold">{isReTweet ? tweet?.info_retweet?.name : tweet?.name}</span>
+																			{(isReTweet ? tweet?.info_retweet?.verified : tweet?.verified) && (
+																				<span className="w-5 h-5 flex text-blue-500"><AuthenticIcon /></span>
+																			)}
+																			<span className="text-xs">@{isReTweet ? tweet?.info_retweet?.username : tweet?.username}</span>
+																		</div>
+																		<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
+																			<span className="text-xs opacity-50">{formatTimestamp(isReTweet ? tweet?.info_retweet?.created_at : tweet?.created_at)}</span>
+																			<span>•</span>
+																			<span className="text-xs font-medium">{formatNumberShort(isReTweet ? tweet?.info_retweet?.followers_count : tweet?.followers_count ?? 0)} followers</span>
+																		</div>
+																	</div>
+																</div>
+																{/* {tweet?.verified && (
+																		<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
+																	)} */}
+																<Link href={`https://x.com/${tweet?.username}/status/${tweet?.id}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Twitter</Link>
 															</div>
 														</div>
-														<div className="flex items-center gap-2">
-															{tweet.verified && (
-																<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">Authentic</span>
-															)}
-															<Link href={`https://x.com/${tweet.username}/status/${tweet.id}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Twitter</Link>
+														<p
+															className="text-sm font-reddit [&>a]:text-blue-500 leading-[1.7]"
+															dangerouslySetInnerHTML={{
+																__html: formatTweetText(isReTweet ? tweet?.info_retweet?.text : tweet?.text),
+															}}
+														/>
+														<hr className="text-[#C5C5C5]" />
+														<div className="flex items-center gap-4 text-xs font-medium font-noto">
+															<div className="flex items-center gap-1">
+																<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+																	<path d="M9.38733 3.97987C9.75898 3.561 10.2108 3.22087 10.7161 2.97956C11.2214 2.73824 11.77 2.60065 12.3294 2.5749C12.8888 2.54915 13.4476 2.63577 13.973 2.82964C14.4983 3.02351 14.9795 3.3207 15.388 3.70365C15.7966 4.0866 16.1243 4.54755 16.3517 5.05926C16.5791 5.57098 16.7017 6.12308 16.7121 6.68296C16.7226 7.24283 16.6207 7.79913 16.4126 8.31898C16.2044 8.83884 15.8942 9.31171 15.5003 9.70965L9.34169 15.9274C9.29686 15.9727 9.24349 16.0086 9.18468 16.0331C9.12587 16.0577 9.06277 16.0703 8.99905 16.0703C8.93532 16.0703 8.87223 16.0577 8.81342 16.0331C8.7546 16.0086 8.70124 15.9727 8.6564 15.9274L2.49783 9.70965C1.7511 8.95532 1.31837 7.94578 1.28699 6.88482C1.25561 5.82386 1.62792 4.79051 2.32876 3.99337C3.99248 2.10144 6.93805 2.09501 8.61076 3.97987L8.99905 4.41701L9.38733 3.97987Z" fill="#FF5959" />
+																</svg>
+																{isReTweet ? tweet?.info_retweet?.public_metrics?.like_count : tweet?.public_metrics?.like_count}
+															</div>
+															<div className="flex items-center gap-1"><RotateIcon />{isReTweet ? tweet?.info_retweet?.public_metrics?.retweet_count : tweet?.public_metrics?.retweet_count}</div>
+															<div className="flex items-center gap-1"><ChatIcon className="w-4 h-4" />{isReTweet ? tweet?.info_retweet?.public_metrics?.reply_count : tweet?.public_metrics?.reply_count}</div>
+															<div className="flex items-center gap-1"><Eye className="w-4 h-4" />{isReTweet ? tweet?.info_retweet?.public_metrics?.reply_count : tweet?.public_metrics?.impression_count}</div>
+															<div className="flex items-center gap-1"><Bookmark className="w-4 h-4" />{isReTweet ? tweet?.info_retweet?.public_metrics?.bookmark_count : tweet?.public_metrics?.bookmark_count}</div>
+															<span className="text-xs ml-auto font-reddit text-[#373737] dark:text-white"><span className="opacity-50">Engagement:</span> <b>{calculateEngagementRate(
+																isReTweet ? tweet?.info_retweet?.public_metrics?.like_count : tweet?.public_metrics?.like_count,
+																isReTweet ? tweet?.info_retweet?.public_metrics?.retweet_count : tweet?.public_metrics?.retweet_count,
+																isReTweet ? tweet?.info_retweet?.public_metrics?.reply_count : tweet?.public_metrics?.reply_count,
+																isReTweet ? tweet?.info_retweet?.public_metrics?.impression_count : tweet?.public_metrics?.impression_count,
+																isReTweet ? tweet?.info_retweet?.public_metrics?.bookmark_count : tweet?.public_metrics?.bookmark_count,
+																isReTweet ? tweet?.info_retweet?.followers_count : tweet?.followers_count)}%</b>
+															</span>
 														</div>
 													</div>
-													<p className="text-sm font-reddit">
-														{tweet.text.split(' ').map((word, index) => {
-															const isSpecial =
-																word.startsWith('#') || word.startsWith('@') || word.startsWith('http');
-															return (
-																<span
-																	key={index}
-																	className={isSpecial ? 'text-blue-500' : undefined}
-																>
-																	{word + ' '}
-																</span>
-															);
-														})}
-													</p>
-													<hr className="text-[#C5C5C5]" />
-													<div className="flex items-center gap-4 text-xs font-medium font-noto">
-														<div className="flex items-center gap-1">
-															<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-																<path d="M9.38733 3.97987C9.75898 3.561 10.2108 3.22087 10.7161 2.97956C11.2214 2.73824 11.77 2.60065 12.3294 2.5749C12.8888 2.54915 13.4476 2.63577 13.973 2.82964C14.4983 3.02351 14.9795 3.3207 15.388 3.70365C15.7966 4.0866 16.1243 4.54755 16.3517 5.05926C16.5791 5.57098 16.7017 6.12308 16.7121 6.68296C16.7226 7.24283 16.6207 7.79913 16.4126 8.31898C16.2044 8.83884 15.8942 9.31171 15.5003 9.70965L9.34169 15.9274C9.29686 15.9727 9.24349 16.0086 9.18468 16.0331C9.12587 16.0577 9.06277 16.0703 8.99905 16.0703C8.93532 16.0703 8.87223 16.0577 8.81342 16.0331C8.7546 16.0086 8.70124 15.9727 8.6564 15.9274L2.49783 9.70965C1.7511 8.95532 1.31837 7.94578 1.28699 6.88482C1.25561 5.82386 1.62792 4.79051 2.32876 3.99337C3.99248 2.10144 6.93805 2.09501 8.61076 3.97987L8.99905 4.41701L9.38733 3.97987Z" fill="#FF5959" />
-															</svg>
-															{tweet?.public_metrics?.like_count}
+												)
+											})}
+											{!isLoadingMore && (
+												<div className="space-y-4">
+													{[...Array(3)].map((_, i) => (
+														<div key={i} className="rounded-xl bg-white px-4 py-3 shadow-sm animate-pulse">
+															<div className="flex justify-between items-start">
+																<div className="flex items-center gap-3">
+																	<div className="h-10 w-10 rounded-full bg-gray-200" />
+																	<div className="flex flex-col gap-1">
+																		<div className="h-3 w-28 bg-gray-200 rounded" />
+																		<div className="h-3 w-20 bg-gray-100 rounded" />
+																	</div>
+																</div>
+																<div className="h-6 w-24 rounded bg-gray-200" />
+															</div>
+
+															<div className="mt-3 h-4 w-3/4 bg-gray-200 rounded" />
+															<div className="mt-1 h-4 w-2/3 bg-gray-100 rounded" />
+
+															<div className="mt-3 flex items-center justify-between text-gray-400 text-xs">
+																<div className="flex items-center gap-5">
+																	<div className="flex items-center gap-1">
+																		<div className="h-3 w-3 rounded-full bg-gray-300" />
+																		<div className="h-3 w-4 bg-gray-300 rounded" />
+																	</div>
+																	<div className="flex items-center gap-1">
+																		<div className="h-3 w-3 rounded-full bg-gray-300" />
+																		<div className="h-3 w-4 bg-gray-300 rounded" />
+																	</div>
+																	<div className="flex items-center gap-1">
+																		<div className="h-3 w-3 rounded-full bg-gray-300" />
+																		<div className="h-3 w-4 bg-gray-300 rounded" />
+																	</div>
+																	<div className="flex items-center gap-1">
+																		<div className="h-3 w-3 rounded-full bg-gray-300" />
+																		<div className="h-3 w-4 bg-gray-300 rounded" />
+																	</div>
+																</div>
+																<div className="h-3 w-12 bg-gray-300 rounded" />
+															</div>
 														</div>
-														<div className="flex items-center gap-1"><RotateIcon />{tweet?.public_metrics?.retweet_count}</div>
-														<div className="flex items-center gap-1"><ChatIcon className="w-4 h-4" />{tweet?.public_metrics?.reply_count}</div>
-														<div className="flex items-center gap-1"><Eye className="w-4 h-4" />{tweet?.public_metrics?.impression_count}</div>
-														<div className="flex items-center gap-1"><Bookmark className="w-4 h-4" />{tweet?.public_metrics?.bookmark_count}</div>
-														<span className="text-xs ml-auto font-reddit text-[#373737] dark:text-white"><span className="opacity-50">Engagement:</span> <b>{calculateEngagementRate(
-															tweet?.public_metrics?.like_count,
-															tweet?.public_metrics?.retweet_count,
-															tweet?.public_metrics?.reply_count,
-															tweet?.public_metrics?.impression_count,
-															tweet?.public_metrics?.bookmark_count,
-															tweet?.followers_count)}%</b>
-														</span>
-													</div>
+													))}
 												</div>
-											))}
+											)}
 										</div>
 									</div>
 								)}
@@ -154,25 +280,25 @@ const LiveActivity = () => {
 
 						{(activeTab === "All Activity" || activeTab === "GitHub") && (
 							<>
-								{isFetching && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
-								{!isFetching && data?.data?.items?.length === 0 && (
+								{isLoading && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
+								{!isLoading && data?.length === 0 && (
 									<p className="text-center font-reddit text-[#373737] dark:text-white">No GitHub activity found for this community.</p>
 								)}
-								{!isFetching && data?.data?.items?.length > 0 && (
+								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
 										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 											<div className="flex items-center gap-2">
 												<GithubIcon width={24} height={24} />
 												<p className="font-semibold font-noto">GitHub Development Activity</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-[#FFF] font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_commits)}</b> commits</span>
+												<span className="ml-3 text-xs text-[#373737] dark:text-[#FFF] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> commits</span>
 											</div>
 											<button className="text-xs dark:bg-[#000] dark:hover:bg-[#222] bg-white px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View Repository</button>
 										</div>
 										<div className="flex items-center justify-between block md:hidden mb-4">
-											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(data?.data?.summary?.total_commits)}</b> commits</span>
+											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(totalItems)}</b> commits</span>
 											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hover:bg-[#F0F0F0] transition-colors duration-200">View Repository</button>
 										</div>
-										{data?.data?.items?.map((item, i) => (
+										{_map(data, (item, i) => (
 											<div key={i}>
 												{item?.activities?.map((activity, j) => (
 													<div key={j} className="space-y-6">
@@ -201,10 +327,6 @@ const LiveActivity = () => {
 												))}
 											</div>
 										))}
-										{/* <div className="bg-[#E2FEFF] border border-[#3DE1E6] rounded-xl p-5 mt-4">
-											<div className="flex items-center gap-1.5 mb-2"><LightIcon /><span className="font-semibold text-[#00B2B8] font-noto">Development Insight</span></div>
-											<p className="text-sm text-[#373737] font-reddit">Consistent contributor activity with meaningful commits.</p>
-										</div> */}
 									</div>
 								)}
 							</>
@@ -215,26 +337,26 @@ const LiveActivity = () => {
 					<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 						{(activeTab === "All Activity" || activeTab === "Reddit") && (
 							<>
-								{isFetching && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
-								{!isFetching && data?.data?.items?.length === 0 && (
+								{isLoading && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
+								{!isLoading && data?.length === 0 && (
 									<p className="text-center font-reddit text-[#373737] dark:text-white">No Reddit activity found for this community.</p>
 								)}
-								{!isFetching && data?.data?.items?.length > 0 && (
+								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
 										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 											<div className="flex items-center gap-2">
 												<RedditIcon width={24} height={24} fill="#000" />
 												<p className="font-semibold font-noto">Latest Reddit Discussions</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> posts</span>
+												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> posts</span>
 											</div>
 											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded font-reddit hidden md:block cursor-pointer hover:bg-[#F0F0F0] transition-colors duration-200">View all on Reddit</button>
 										</div>
 										<div className="flex items-center justify-between mb-4 md:hidden">
-											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(data?.data?.summary?.total_posts)}</b> posts</span>
+											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(totalItems)}</b> posts</span>
 											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded font-reddit cursor-pointer hover:bg-[#F0F0F0] transition-colors duration-200">View all on Reddit</button>
 										</div>
 										<div className="space-y-6">
-											{data?.data?.items.map((post, i) => (
+											{_map(data, (post, i) => (
 												<div key={i} className="bg-white dark:bg-black rounded-xl p-5">
 													<div className="space-y-4">
 														<div className="flex items-start gap-3">
@@ -245,17 +367,17 @@ const LiveActivity = () => {
 																<div className="mb-1 font-noto">
 																	<span className="text-sm font-semibold">{post?.data?.subreddit_name_prefixed}</span>
 																	<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
-																		{/* <span className="text-xs opacity-50">r/bonk</span>
-																	<span>•</span> */}
+																		<span className="text-xs opacity-50">r/bonk</span>
+																		<span>•</span>
 																		<span className="text-xs opacity-50">{formatTimestamp(post?.data?.created)}</span>
-																		{/* <span>•</span>
-																	<span className="text-xs"> {post.karma}</span> */}
+																		<span>•</span>
+																		<span className="text-xs"> {post.karma}</span>
 																	</div>
 																</div>
 															</div>
-															{/* <span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">
-															Authentic
-														</span> */}
+															<span className="bg-[#DDFFE4] text-[#16BC00] px-2 py-1 rounded-full text-xs font-reddit">
+																Authentic
+															</span>
 														</div>
 														{post?.data?.title && (
 															<p className="font-space text-[#373737] font-medium">{post?.data?.title}</p>
@@ -303,25 +425,25 @@ const LiveActivity = () => {
 
 						{(activeTab === "All Activity" || activeTab === "YouTube") && (
 							<>
-								{isFetching && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
-								{!isFetching && data?.data?.items?.length === 0 && (
+								{isLoading && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
+								{!isLoading && data?.length === 0 && (
 									<p className="text-center font-reddit text-[#373737] dark:text-white">No Videos activity found for this community.</p>
 								)}
-								{!isFetching && data?.data?.items?.length > 0 && (
+								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
 										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 											<div className="flex items-center gap-2">
 												<YoutubeIcon width={24} height={24} fill="#000" />
 												<p className="font-semibold font-noto">YouTube Community Content</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(data?.data?.summary?.total_videos)}</b> videos</span>
+												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> videos</span>
 											</div>
 											<button className="text-xs bg-white text-[#373737] dark:text-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded font-reddit hidden md:block cursor-pointer hover:bg-[#F0F0F0] transition-colors duration-200">View Channel</button>
 										</div>
 										<div className="flex items-center justify-between mb-4 md:hidden">
-											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(data?.data?.summary?.total_videos)}</b> videos</span>
+											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(totalItems)}</b> videos</span>
 											<button className="text-xs bg-white text-[#373737] dark:text-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded font-reddit cursor-pointer hover:bg-[#F0F0F0] transition-colors duration-200">View Channel</button>
 										</div>
-										{data?.data?.items?.map((video, i) => (
+										{_map(data, (video, i) => (
 											<div key={i} className="space-y-6">
 												{video?.recentVideos?.map((v, x) =>
 													<div key={x} className="bg-white dark:bg-[#000] dark:hover:bg-[#222] rounded-xl p-5">
