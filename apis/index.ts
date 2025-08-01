@@ -78,7 +78,7 @@ export const fetchCommunityTeamActivityAnalysis = async ({ communityId, amount, 
 export const fetchCommunityDataSources = async ({ symbol, platform, page }: { symbol: string, platform: string, page: string }) => {
 	const query = new URLSearchParams({ symbol, platform, page });
 
-	const res = await fetch(`${BASE_URL}/community-data-sources?${query}`);
+	const res = await fetch(`http://localhost:3000/noodle/community-data-sources?${query}`);
 
 	if (!res.ok) throw new Error('Failed to fetch Community Data Sources');
 	return res.json();
