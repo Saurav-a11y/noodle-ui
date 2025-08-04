@@ -23,6 +23,7 @@ import DownVoteIcon from "@/icons/DownVoteIcon";
 import RewardIcon from "@/icons/RewardIcon";
 import TwitterCommunityLoading from "@/components/common/loading/TwiiterCommunityLoading";
 import { YoutubeCommunityLoading } from "@/components/common/loading/YoutubeCommunityLoading";
+import RedditCommunityLoading from "@/components/common/loading/RedditCommunityLoading";
 
 export const formatTweetText = (text: string): string => {
 	if (!text) return '';
@@ -408,6 +409,7 @@ const LiveActivity = () => {
 													</div>
 												</div>
 											))}
+											{isLoadingMore && <RedditCommunityLoading />}
 										</div>
 									</div>
 								)}
