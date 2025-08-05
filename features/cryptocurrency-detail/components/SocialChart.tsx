@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
 
-import Calendar from "@/icons/Calendar";
 import CandlestickChart from "./CandletickChart";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 
@@ -15,7 +14,7 @@ const timezones = [
 	{ label: '(UTC-7) Vancouver', offset: -7 },
 	{ label: '(UTC-6) Denver', offset: -6 },
 	{ label: '(UTC-6) San Salvador', offset: -6 },
-	{ label: '(UTC-6) Thành phố Mexico', offset: -6 },
+	{ label: '(UTC-6) Mexico City', offset: -6 },
 	{ label: '(UTC-5) Bogota', offset: -5 },
 	{ label: '(UTC-5) Chicago', offset: -5 },
 	{ label: '(UTC-5) Lima', offset: -5 },
@@ -46,10 +45,10 @@ const timezones = [
 	{ label: '(UTC+2) Malta', offset: 2 },
 	{ label: '(UTC+2) Oslo', offset: 2 },
 	{ label: '(UTC+2) Paris', offset: 2 },
-	{ label: '(UTC+2) Praha', offset: 2 },
+	{ label: '(UTC+2) Prague', offset: 2 },
 	{ label: '(UTC+2) Rome', offset: 2 },
 	{ label: '(UTC+2) Stockholm', offset: 2 },
-	{ label: '(UTC+2) Viên', offset: 2 },
+	{ label: '(UTC+2) Vienna', offset: 2 },
 	{ label: '(UTC+2) Warsaw', offset: 2 },
 	{ label: '(UTC+2) Zurich', offset: 2 },
 	{ label: '(UTC+3) Athens', offset: 3 },
@@ -60,7 +59,7 @@ const timezones = [
 	{ label: '(UTC+3) Istanbul', offset: 3 },
 	{ label: '(UTC+3) Jerusalem', offset: 3 },
 	{ label: '(UTC+3) Kuwait', offset: 3 },
-	{ label: '(UTC+3) Moskva', offset: 3 },
+	{ label: '(UTC+3) Moscow', offset: 3 },
 	{ label: '(UTC+3) Nairobi', offset: 3 },
 	{ label: '(UTC+3) Nicosia', offset: 3 },
 	{ label: '(UTC+3) Qatar', offset: 3 },
@@ -81,25 +80,25 @@ const timezones = [
 	{ label: '(UTC+6:30) Yangon', offset: 6.5 },
 	{ label: '(UTC+7) Bangkok', offset: 7 },
 	{ label: '(UTC+7) Jakarta', offset: 7 },
-	{ label: '(UTC+7) Thành phố Hồ Chí Minh', offset: 7 },
-	{ label: '(UTC+8) Đài Bắc', offset: 8 },
-	{ label: '(UTC+8) Hồng Kông', offset: 8 },
+	{ label: '(UTC+7) Ho Chi Minh City', offset: 7 },
+	{ label: '(UTC+8) Taipei', offset: 8 },
+	{ label: '(UTC+8) Hong Kong', offset: 8 },
 	{ label: '(UTC+8) Kuala Lumpur', offset: 8 },
 	{ label: '(UTC+8) Manila', offset: 8 },
 	{ label: '(UTC+8) Perth', offset: 8 },
 	{ label: '(UTC+8) Singapore', offset: 8 },
-	{ label: '(UTC+8) Thượng Hải', offset: 8 },
-	{ label: '(UTC+8) Trùng Khánh', offset: 8 },
+	{ label: '(UTC+8) Shanghai', offset: 8 },
+	{ label: '(UTC+8) Chongqing', offset: 8 },
 	{ label: '(UTC+9) Seoul', offset: 9 },
 	{ label: '(UTC+9) Tokyo', offset: 9 },
 	{ label: '(UTC+9:30) Adelaide', offset: 9.5 },
 	{ label: '(UTC+10) Brisbane', offset: 10 },
 	{ label: '(UTC+10) Sydney', offset: 10 },
-	{ label: '(UTC+11) Đảo Norfolk', offset: 11 },
+	{ label: '(UTC+11) Norfolk Island', offset: 11 },
 	{ label: '(UTC+12) New Zealand', offset: 12 },
-	{ label: '(UTC+12:45) Đảo Chatham', offset: 12.75 },
+	{ label: '(UTC+12:45) Chatham Islands', offset: 12.75 },
 	{ label: '(UTC+13) Tokelau', offset: 13 },
-]
+];
 
 const SocialChart = () => {
 	const [currentTime, setCurrentTime] = useState('')
@@ -109,7 +108,15 @@ const SocialChart = () => {
 	useEffect(() => {
 		const updateTime = () => {
 			const now = new Date();
-			const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+			const utc = Date.UTC(
+				now.getUTCFullYear(),
+				now.getUTCMonth(),
+				now.getUTCDate(),
+				now.getUTCHours(),
+				now.getUTCMinutes(),
+				now.getUTCSeconds()
+			);
+
 			const target = new Date(utc + selectedTz.offset * 3600000);
 			const time = target.toISOString().split('T')[1].split('.')[0];
 			setCurrentTime(time);
@@ -119,7 +126,6 @@ const SocialChart = () => {
 		const interval = setInterval(updateTime, 1000);
 		return () => clearInterval(interval);
 	}, [selectedTz]);
-
 	return (
 		<div className="p-6 rounded-xl dark:bg-[#1A1A1A] bg-white text-[#1E1B39] dark:text-[#FFF]">
 			<p className="text-xl font-semibold mb-4 font-noto">
@@ -128,20 +134,6 @@ const SocialChart = () => {
 			<CandlestickChart utcOffset={selectedTz.offset} />
 			<hr className="text-[#E8E8E8] dark:text-[#B1B1B1] mt-2" />
 			<div className="flex flex-col md:flex-row md:items-center mt-4 justify-between gap-2">
-				{/* <div className="flex items-center">
-					{['1D', '5D', '1M', '3M', '6M', 'YTD', '1Y', '5Y', 'All'].map((item) => (
-						<p
-							key={item}
-							className="text-xs cursor-pointer hover:bg-[#F4F4F5] pr-2 md:px-2 py-1 rounded-md transition-colors"
-						>
-							{item}
-						</p>
-					))}
-					<div className="border-l mr-2 h-4 border-[#E8E8E8]" />
-					<span className="cursor-pointer hover:bg-[#F4F4F5] px-2 py-0.5 rounded-md">
-						<Calendar />
-					</span>
-				</div> */}
 				<div className="flex items-center gap-2 text-xs text-[#222222] dark:text-white">
 					<Popover open={open} onOpenChange={setOpen}>
 						<PopoverTrigger asChild >
@@ -167,12 +159,6 @@ const SocialChart = () => {
 							))}
 						</PopoverContent>
 					</Popover>
-					{/* <div className="border-l h-4 border-[#E8E8E8]" />
-					<span className={`cursor-pointer ${isPercentageMode ? 'text-blue-500' : ''}`} onClick={() => {
-						setIsPercentageMode(!isPercentageMode);
-					}}>%</span>
-					<span>log</span>
-					<span className="text-blue-500">auto</span> */}
 				</div>
 			</div>
 		</div>
