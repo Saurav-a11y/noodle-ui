@@ -7,6 +7,7 @@ import useThemekMode from '@/lib/useThemkMode';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "./ui/NavigationMenu";
 import Link from "next/link";
 import { SearchInput } from "./SearchInput";
+import SocialWalletLogin from "./common/SocialWalletLogin";
 
 const Header = () => {
 	const { isDark } = useThemekMode();
@@ -70,9 +71,7 @@ const Header = () => {
 						</div>
 					</div>
 					{/* Launch App Button */}
-					<button className="px-4.5 py-2.5 rounded-full font-medium text-sm transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer text-[#494949] font-space">
-						Launch App
-					</button>
+					<SocialWalletLogin />
 				</div>
 				<div className="flex-1 mt-4 w-full block md:hidden">
 					<div className="relative">

@@ -1,5 +1,5 @@
 const PhantomIcon = (props: React.SVGProps<SVGSVGElement>) => (
-	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+	<svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 		<rect width="20" height="20" fill="url(#pattern0_2274_128723)" />
 		<defs>
 			<pattern id="pattern0_2274_128723" patternContentUnits="objectBoundingBox" width="1" height="1">

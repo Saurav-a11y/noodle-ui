@@ -31,7 +31,7 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 											href={item.url}
 											target="_blank"
 											key={index}
-											className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+											className="flex items-center gap-3 px-3 py-2 text-sm dark:text-white hover:bg-[#F3F3F3] dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
 										>
 											<Globe className='w-4 h-4' />
 											{item?.name}
