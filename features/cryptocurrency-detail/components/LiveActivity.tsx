@@ -24,6 +24,7 @@ import RewardIcon from "@/icons/RewardIcon";
 import TwitterCommunityLoading from "@/components/common/loading/TwiiterCommunityLoading";
 import { YoutubeCommunityLoading } from "@/components/common/loading/YoutubeCommunityLoading";
 import RedditCommunityLoading from "@/components/common/loading/RedditCommunityLoading";
+import GithubCommunityLoading from "@/components/common/loading/GithubCommunityLoading";
 
 export const formatTweetText = (text: string): string => {
 	if (!text) return '';
@@ -81,7 +82,7 @@ const LiveActivity = () => {
 		});
 
 		const items = response?.data?.items || [];
-		const total = response?.data?.summary?.total_posts || response?.data?.summary?.total_videos || 0;
+		const total = response?.data?.summary?.total_posts || response?.data?.summary?.total_videos || response?.data?.summary?.total_commits || 0;
 
 		if (replace) {
 			setData(items);
@@ -145,12 +146,30 @@ const LiveActivity = () => {
 						{(activeTab === "All Activity" || activeTab === "Twitter") && (
 							<>
 								{isLoading && (
-									<p className="flex justify-center font-noto">
-										<Loader className="animate-spin" />
-									</p>
+									<div className="space-y-6">
+										{[...Array(3)].map((_, i) => (
+											<TwitterCommunityLoading key={i} />
+										))}
+									</div>
 								)}
 								{!isLoading && data.length === 0 && (
-									<p className="text-center font-reddit text-[#373737] dark:text-white">No Twitter activity found for this community.</p>
+									<div className="py-20 animate-fade-in">
+										<div className="flex flex-col items-center">
+											<Image
+												src="/images/twitter-notfound.png"
+												alt="Twitter activity not available"
+												width={180}
+												height={180}
+												className="mb-5"
+											/>
+											<h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+												Twitter activity isn’t available yet.
+											</h3>
+											<p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm text-center">
+												We couldn't display Twitter videos for this community at the moment.
+											</p>
+										</div>
+									</div>
 								)}
 								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
@@ -166,7 +185,6 @@ const LiveActivity = () => {
 											<span className="text-xs text-[#373737] font-reddi"><b>{formatNumberShort(totalItems)}</b> mentions</span>
 										</div>
 										<div className="space-y-5">
-											{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
 											{_map(data, (tweet, index) => {
 												const isReTweet = tweet?.dataType === "retweet";
 												return (
@@ -192,7 +210,11 @@ const LiveActivity = () => {
 																			<span className="text-xs">@{isReTweet ? tweet?.info_retweet?.username : tweet?.username}</span>
 																		</div>
 																		<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
-																			<span className="text-xs opacity-50">{formatDistanceToNow(new Date(isReTweet ? tweet?.info_retweet?.created_at : tweet?.created_at), { addSuffix: true, })}</span>
+																			<span className="text-xs opacity-50">
+																				{(isReTweet ? tweet?.info_retweet?.created_at : tweet?.created_at)
+																					? formatDistanceToNow(new Date(isReTweet ? tweet?.info_retweet?.created_at : tweet?.created_at), { addSuffix: true, })
+																					: 'Unknown'}
+																			</span>
 																			<span>•</span>
 																			<span className="text-xs font-medium">{formatNumberShort(isReTweet ? tweet?.info_retweet?.followers_count : tweet?.followers_count ?? 0)} followers</span>
 																		</div>
@@ -233,7 +255,7 @@ const LiveActivity = () => {
 											})}
 											{!isLoadingMore && (
 												<div className="space-y-4">
-													{[...Array(3)].map((_, i) => (
+													{[...Array(5)].map((_, i) => (
 														<TwitterCommunityLoading key={i} />
 													))}
 												</div>
@@ -246,9 +268,26 @@ const LiveActivity = () => {
 
 						{(activeTab === "All Activity" || activeTab === "GitHub") && (
 							<>
-								{isLoading && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
+								{isLoading && <div className="space-y-6">
+									{[...Array(5)].map((_, i) => (
+										<GithubCommunityLoading key={i} />
+									))}
+								</div>}
 								{!isLoading && data?.length === 0 && (
-									<p className="text-center font-reddit text-[#373737] dark:text-white">No GitHub activity found for this community.</p>
+									<div className="flex flex-col items-center justify-center space-y-4 text-center animate-fade-in py-20">
+										<Image
+											src="/images/github-notfound.png"
+											alt="GitHub activity not available"
+											width={220}
+											height={220}
+										/>
+										<p className="text-base text-[#4B4A4A] dark:text-gray-300 font-medium font-reddit">
+											GitHub activity isn’t available yet.
+										</p>
+										<p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+											We couldn't display GitHub contributions for this community at the moment.
+										</p>
+									</div>
 								)}
 								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
@@ -256,43 +295,108 @@ const LiveActivity = () => {
 											<div className="flex items-center gap-2">
 												<GithubIcon width={24} height={24} />
 												<p className="font-semibold font-noto">GitHub Development Activity</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-[#FFF] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> commits</span>
+												<div className="border-l h-4 border-[#000] opacity-50 mx-2" />
+												<span className="text-xs text-[#373737] dark:text-[#FFF] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> commits</span>
 											</div>
-											<button className="text-xs dark:bg-[#000] dark:hover:bg-[#222] bg-white px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View Repository</button>
 										</div>
-										<div className="flex items-center justify-between block md:hidden mb-4">
-											<span className="ml-3 text-xs text-[#373737] font-reddit"><b>{formatNumberShort(totalItems)}</b> commits</span>
-											<button className="text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hover:bg-[#F0F0F0] transition-colors duration-200">View Repository</button>
-										</div>
-										{_map(data, (item, i) => (
-											<div key={i}>
-												{item?.activities?.map((activity, j) => (
-													<div key={j} className="space-y-6">
-														{activity?.payload?.commits?.map((commit, k) => (
-															<div key={k} className="bg-white dark:bg-black rounded-xl p-5">
-																<div className="space-y-4">
-																	<div className="flex items-start gap-3 font-noto">
-																		<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
-																			<Image src="/images/github.png" alt='logo github' width={320} height={320} className="rounded-full" />
-																		</div>
-																		<div className="flex-1">
-																			<div className="mb-1">
-																				<span className="text-sm font-semibold">{activity.repo}</span>
-																				<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
-																					{/* <span className="text-xs opacity-50">{format(new Date(activity?.created_at), 'dd/MM/yyyy')}</span> */}
-																				</div>
-																			</div>
-																		</div>
+										<div className="space-y-6">
+											{_map(data, (item, i) => (
+												<div key={i} className="bg-white dark:bg-black rounded-xl p-5">
+													<div className="space-y-4">
+														<div className="flex items-start gap-3 font-noto">
+															<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
+																<Image src="/images/github.png" alt='logo github' width={320} height={320} className="rounded-full" />
+															</div>
+															<div className="flex-1">
+																<div>
+																	<p className="text-sm font-semibold mb-1">{item.repo}</p>
+																	<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
+																		<span className="text-xs opacity-50">
+																			{item?.created_at
+																				? formatDistanceToNow(new Date(item.created_at), { addSuffix: true, })
+																				: 'Unknown'}
+																		</span>
 																	</div>
-																	<p className="text-sm font-reddit">{commit.message}</p>
-																	{/* <p className="text-xs text-[#4B4A4A] opacity-50 font-noto dark:text-white">{item.stats}</p> */}
 																</div>
 															</div>
-														))}
+															<div className="flex items-center gap-3">
+																{item?.type === 'PushEvent' && <p className={`text-xs text-white bg-[#1b7f37] w-fit px-2 py-1 rounded-full`}>Committed</p>}
+																{item?.type === 'PullRequestEvent' && (<p className={`text-xs text-white ${item?.payload?.pull_request?.merged ? 'bg-[#8250df]' : 'bg-[#1b7f37]'} px-2 py-1 rounded-full flex items-center`}>{item?.payload?.pull_request?.merged ? 'Merged' : 'Merge'}</p>)}
+																{item?.type === 'IssuesEvent' && (<p className="text-xs bg-gray-200 px-2.5 py-1 rounded-full flex items-center">Issue</p>)}
+																<Link
+																	href={`https://github.com/${item.repo}/${item?.type === 'IssuesEvent' && 'issues' || item?.type === 'PullRequestEvent' && 'pull' || item?.type === 'PushEvent' && 'commit'}/${item?.payload?.issue?.number || item?.payload?.pull_request?.number || item?.payload?.head}`}
+																	target="_blank"
+																	className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">
+																	View Repository
+																</Link>
+															</div>
+														</div>
+														<div className="font-reddit text-[#373737]">
+															{item?.type === 'IssuesEvent' && (
+																<div className="flex gap-2 items-start">
+																	<p className="mt-1">
+																		{item?.payload?.action === 'opened' && (
+																			<svg color="open.fg" aria-hidden="true" focusable="false" aria-label="" className="octicon octicon-issue-opened Octicon-sc-9kayk9-0 cRyBKI" viewBox="0 0 16 16" width="16" height="16" fill="#1b7f37" display="inline-block" overflow="visible" style={{ verticalAlign: 'text-bottom' }}><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path></svg>
+																		)}
+																		{item?.payload?.action === 'closed' && (
+																			<svg color="done.fg" aria-hidden="true" focusable="false" aria-label="" className="octicon octicon-issue-closed Octicon-sc-9kayk9-0 hjIZXg" viewBox="0 0 16 16" width="16" height="16" fill="#8250df" display="inline-block" overflow="visible" style={{ verticalAlign: 'text-bottom' }}><path d="M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z"></path><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z"></path></svg>
+																		)}
+																	</p>
+																	<div>
+																		<p className="font-medium mb-1">{item?.payload?.issue?.title}</p>
+
+																		<div className="flex items-center text-xs opacity-70 space-x-1">
+																			<p>#{item?.payload?.issue?.number}</p>
+																			<p>·</p>
+																			<p><strong>{item?.actor}</strong> {item?.payload?.action} {item?.created_at
+																				? formatDistanceToNow(new Date(item?.created_at), { addSuffix: true, })
+																				: 'Unknown'}</p>
+																			<p>·</p>
+																			<Link target="_blank" href={`https://github.com/${item.repo}/milestone/${item?.payload?.issue?.milestone?.number}`} className="flex items-center gap-1 hover:text-[#0969da]">
+																				<svg aria-hidden="true" focusable="false" className="octicon octicon-milestone Octicon-sc-9kayk9-0" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" display="inline-block" overflow="visible" style={{ verticalAlign: 'text-bottom' }}><path d="M7.75 0a.75.75 0 0 1 .75.75V3h3.634c.414 0 .814.147 1.13.414l2.07 1.75a1.75 1.75 0 0 1 0 2.672l-2.07 1.75a1.75 1.75 0 0 1-1.13.414H8.5v5.25a.75.75 0 0 1-1.5 0V10H2.75A1.75 1.75 0 0 1 1 8.25v-3.5C1 3.784 1.784 3 2.75 3H7V.75A.75.75 0 0 1 7.75 0Zm4.384 8.5a.25.25 0 0 0 .161-.06l2.07-1.75a.248.248 0 0 0 0-.38l-2.07-1.75a.25.25 0 0 0-.161-.06H2.75a.25.25 0 0 0-.25.25v3.5c0 .138.112.25.25.25h9.384Z"></path></svg>
+																				{item?.payload?.issue?.milestone?.title}
+																			</Link>
+																		</div>
+																	</div>
+																</div>
+															)}
+															{item?.type === 'PullRequestEvent' && (
+																<div>
+																	<p className="font-medium mb-1.5">{item?.payload?.pull_request?.title}</p>
+																	<div className="flex items-center text-xs opacity-70 space-x-1">
+																		<p>#{item?.payload?.pull_request?.number}</p>
+																		<p>·</p>
+																		<p><strong>{item?.payload?.pull_request?.merged_by?.login}</strong> {item?.payload?.pull_request?.merged ? 'merged' : 'merge'} {item?.payload?.pull_request?.commits} commits into <Link target="_blank" href={`https://github.com/${item.repo}/tree/${item?.payload?.pull_request?.base?.ref}`} className="text-[#0969da] bg-[#def4ff] px-1.5 py-0.5 rounded">{item?.payload?.pull_request?.base?.ref}</Link> from <Link target="_blank" href={`https://github.com/${item.repo}/tree/${item?.payload?.pull_request?.head?.ref}`} className="text-[#0969da] bg-[#def4ff] px-1.5 py-0.5 rounded">{item?.payload?.pull_request?.head?.ref}</Link>
+																		</p>
+																	</div>
+																</div>
+															)}
+															{item?.type === 'PushEvent' && (
+																<div>
+																	<div>
+																		{item?.payload?.commits[0]?.message.split('\n').map((line, index) => (
+																			<p className="font-medium" key={index}>{line}</p>
+																		))}
+																	</div>
+																	<div className="flex items-center text-xs opacity-80 space-x-1 mt-2">
+																		<p>{item?.payload?.commits[0]?.author?.name} commited {item?.created_at
+																			? formatDistanceToNow(new Date(item?.created_at), { addSuffix: true, })
+																			: 'Unknown'}</p>
+																	</div>
+																</div>
+															)}
+														</div>
 													</div>
-												))}
-											</div>
-										))}
+												</div>
+											))}
+											{isLoadingMore && (
+												<div className="space-y-6">
+													{[...Array(5)].map((_, i) => (
+														<GithubCommunityLoading key={i} />
+													))}
+												</div>
+											)}
+										</div>
 									</div>
 								)}
 							</>
@@ -303,9 +407,25 @@ const LiveActivity = () => {
 					<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 						{(activeTab === "All Activity" || activeTab === "Reddit") && (
 							<>
-								{isLoading && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
+								{isLoading && <RedditCommunityLoading />}
 								{!isLoading && data?.length === 0 && (
-									<p className="text-center font-reddit text-[#373737] dark:text-white">No Reddit activity found for this community.</p>
+									<div className="py-20 animate-fade-in">
+										<div className="flex flex-col items-center">
+											<Image
+												src="/images/reddit-notfound.png"
+												alt="Twitter activity not available"
+												width={180}
+												height={180}
+												className="mb-5"
+											/>
+											<h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+												Reddit activity isn’t available yet.
+											</h3>
+											<p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm text-center">
+												We couldn't display Reddit videos for this community at the moment.
+											</p>
+										</div>
+									</div>
 								)}
 								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
@@ -346,7 +466,7 @@ const LiveActivity = () => {
 															<p
 																className="text-sm mt-1.5 font-reddit line-clamp-6 overflow-hidden text-[#373737]"
 																dangerouslySetInnerHTML={{
-																	__html: he.decode(post?.data?.selftext_html || 'dhdkjdhjdksahdakjdahdka')
+																	__html: he.decode(post?.data?.selftext_html || '')
 																}}
 															/>
 														)}
@@ -418,9 +538,25 @@ const LiveActivity = () => {
 
 						{(activeTab === "All Activity" || activeTab === "YouTube") && (
 							<>
-								{isLoading && <p className="flex justify-center font-noto"><Loader className="animate-spin" /></p>}
+								{isLoading && Array.from({ length: 5 }).map((_, i) => <YoutubeCommunityLoading key={i} />)}
 								{!isLoading && data?.length === 0 && (
-									<p className="text-center font-reddit text-[#373737] dark:text-white">No Videos activity found for this community.</p>
+									<div className="py-20 animate-fade-in">
+										<div className="flex flex-col items-center">
+											<Image
+												src="/images/youtube-notfound.png"
+												alt="YouTube activity not available"
+												width={180}
+												height={180}
+												className="opacity-90"
+											/>
+											<h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+												YouTube activity isn’t available yet.
+											</h3>
+											<p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm text-center">
+												We couldn't display YouTube videos for this community at the moment.
+											</p>
+										</div>
+									</div>
 								)}
 								{!isLoading && data?.length > 0 && (
 									<div className="bg-[#F6F6F6] dark:bg-[#1A1A1A] p-4 rounded-xl">
@@ -448,9 +584,9 @@ const LiveActivity = () => {
 																</svg>
 															</div>
 															<div className="flex-1">
-																<div className="mb-1 space-y-1">
-																	<span className="font-semibold font-noto text-[#373737] dark:text-white line-clamp-2">{video?.title}</span>
-																	<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white font-noto hidden md:flex">
+																<div className="mb-1">
+																	<p className="font-semibold font-noto text-[#373737] dark:text-white line-clamp-2">{video?.title}</p>
+																	<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white font-noto hidden md:flex mb-1">
 																		<span className="text-xs opacity-50">{video?.channelTitle}</span>
 																		<span>•</span>
 																		<span className="text-xs font-medium">{formatNumberShort(video?.metrics?.views)} views</span>
@@ -475,6 +611,7 @@ const LiveActivity = () => {
 																	</div>
 																</div>
 															</div>
+															<Link href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View Video</Link>
 														</div>
 														<div className="flex items-center mt-2 md:mt-4 gap-2 text-[#4B4A4A] font-noto md:hidden">
 															<span className="text-xs opacity-50">{video?.channelTitle}</span>
