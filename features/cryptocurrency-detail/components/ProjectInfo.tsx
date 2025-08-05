@@ -7,11 +7,13 @@ import XIcon from "@/icons/XIcon";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
-import { CopyIcon, Globe, Newspaper } from "lucide-react";
+import { CopyIcon, ExternalLinkIcon, Globe, MoreHorizontal, Newspaper } from "lucide-react";
 import toast from 'react-hot-toast';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/NavigationMenu";
 import MediumIcon from "@/icons/MediumIcon";
 import SimpleRedditIcon from "@/icons/SimpleRedditIcon";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 const Skeleton = ({ className = "" }) => (
 	<div className={`bg-gray-200 dark:bg-[#333] animate-pulse rounded ${className}`} />
@@ -36,9 +38,28 @@ const communityIcons: Record<
 
 const ProjectInfo = () => {
 	const params = useParams();
+	const popupRef = useRef<HTMLDivElement | null>(null);
+	const [showAll, setShowAll] = useState(false);
 	const communityId = params?.slug as string;
 	const { data, isFetching } = useCommunityOverview(communityId);
 	const basicInformation = { ...data?.data?.project?.links }
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+				setShowAll(false);
+			}
+		};
+
+		if (showAll) {
+			document.addEventListener('mousedown', handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [showAll]);
+
 	if (isFetching) {
 		return (
 			<div>
@@ -79,7 +100,6 @@ const ProjectInfo = () => {
 			</div>
 		)
 	}
-
 	return (
 		<div>
 			<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>
@@ -118,22 +138,71 @@ const ProjectInfo = () => {
 				)}
 				{/* Contract Address */}
 				{basicInformation?.contract_address && (
-					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
-						<div className="flex items-center justify-end gap-4 flex-1">
-							<p className="text-sm font-medium font-noto">{shortenAddress(basicInformation?.contract_address)}</p>
+					<div className="relative group flex justify-between">
+						<div className="flex items-center justify-between">
+							<p className="text-sm font-medium opacity-50 font-noto">Contract</p>
+						</div>
+
+						<div className="flex items-center justify-end gap-2 mt-1">
+							{/* Chỉ hiện contract đầu tiên */}
+							<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${basicInformation?.contract_address[0]['blockchain-id']}.svg`} alt={basicInformation?.contract_address[0]['blockchain-name']} width={18} height={18} className="rounded-full" />
+							<a
+								href={basicInformation?.contract_address[0].link}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-sm font-medium font-noto hover:underline"
+							>
+								{shortenAddress(basicInformation?.contract_address[0]['blockchain-name'])} {shortenAddress(basicInformation?.contract_address[0].contract)}
+							</a>
 							<span
 								className="cursor-pointer"
 								onClick={() => {
-									if (basicInformation?.contract_address) {
-										navigator.clipboard.writeText(basicInformation.contract_address);
-										toast.success('Address copied!');
-									}
+									navigator.clipboard.writeText(basicInformation?.contract_address[0].address);
+									toast.success('Address copied!');
 								}}
-								title="Copy"
 							>
 								<CopyIcon className="w-4 h-4" />
 							</span>
+
+							{/* Toggle hover để xem thêm */}
+							<div className="relative">
+								<span className="cursor-pointer" onClick={() => setShowAll(!showAll)}>
+									<MoreHorizontal className="w-4 h-4" />
+								</span>
+
+								{showAll && (
+									<div className="absolute right-0 z-50 mt-2 w-[300px] max-h-[300px] overflow-auto bg-white dark:bg-zinc-900 rounded-lg shadow-lg" ref={popupRef}>
+										{basicInformation?.contract_address.map((c, index) => (
+											<div key={index} className="flex items-center justify-between gap-2 text-sm font-noto hover:bg-gray-100 px-3 py-2 cursor-pointer">
+												<Link href={c.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
+													<div className="flex items-center gap-2 justify-between w-full">
+														<div className="flex items-center gap-2">
+															<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${c['blockchain-id']}.svg`} alt={c['blockchain-name']} width={18} height={18} className="rounded-full" />
+															<span>{shortenAddress(c['blockchain-name'])}</span>
+														</div>
+														<span>{shortenAddress(c.contract)}</span>
+													</div>
+												</Link>
+												<div className="flex items-center gap-2">
+													<Link href={c.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
+														<ExternalLinkIcon className="w-4 h-4" />
+													</Link>
+													<span
+														className="cursor-pointer"
+														onClick={() => {
+															navigator.clipboard.writeText(c.contract);
+															toast.success('Address copied!');
+															setShowAll(false)
+														}}
+													>
+														<CopyIcon className="w-4 h-4" />
+													</span>
+												</div>
+											</div>
+										))}
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				)}
