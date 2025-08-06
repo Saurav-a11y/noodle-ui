@@ -135,7 +135,7 @@ const CommunityHealthRankings = () => {
 			</div>
 
 			<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
-				<div className="flex justify-between items-center w-full">
+				<div className="flex justify-between items-center w-full mb-5">
 					{/* Filters */}
 					<div className="flex gap-4">
 						{/* {renderSelect(filterCategory, 'category')} */}
