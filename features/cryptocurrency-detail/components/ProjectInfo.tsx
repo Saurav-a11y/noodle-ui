@@ -137,7 +137,7 @@ const ProjectInfo = () => {
 					<DropdownCommon data={basicInformation?.explorers} title="Explorers" />
 				)}
 				{/* Contract Address */}
-				{basicInformation?.contract_address && (
+				{basicInformation?.contract_address?.length > 0 && (
 					<div className="relative group flex justify-between">
 						<div className="flex items-center justify-between">
 							<p className="text-sm font-medium opacity-50 font-noto">Contract</p>
@@ -145,19 +145,19 @@ const ProjectInfo = () => {
 
 						<div className="flex items-center justify-end gap-2 mt-1">
 							{/* Chỉ hiện contract đầu tiên */}
-							<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${basicInformation?.contract_address[0]['blockchain-id']}.svg`} alt={basicInformation?.contract_address[0]['blockchain-name']} width={18} height={18} className="rounded-full" />
+							<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${basicInformation?.contract_address[0]?.['blockchain-id']}.svg`} alt={basicInformation?.contract_address[0]?.['blockchain-name']} width={18} height={18} className="rounded-full" />
 							<a
-								href={basicInformation?.contract_address[0].link}
+								href={basicInformation?.contract_address[0]?.link}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="text-sm font-medium font-noto hover:underline"
 							>
-								{shortenAddress(basicInformation?.contract_address[0]['blockchain-name'])} {shortenAddress(basicInformation?.contract_address[0].contract)}
+								{shortenAddress(basicInformation?.contract_address[0]?.['blockchain-name'])} {shortenAddress(basicInformation?.contract_address[0]?.contract)}
 							</a>
 							<span
 								className="cursor-pointer"
 								onClick={() => {
-									navigator.clipboard.writeText(basicInformation?.contract_address[0].address);
+									navigator.clipboard.writeText(basicInformation?.contract_address[0]?.address);
 									toast.success('Address copied!');
 								}}
 							>
@@ -177,20 +177,20 @@ const ProjectInfo = () => {
 												<Link href={c.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
 													<div className="flex items-center gap-2 justify-between w-full">
 														<div className="flex items-center gap-2">
-															<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${c['blockchain-id']}.svg`} alt={c['blockchain-name']} width={18} height={18} className="rounded-full" />
-															<span>{shortenAddress(c['blockchain-name'])}</span>
+															<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${c?.['blockchain-id']}.svg`} alt={c?.['blockchain-name']} width={18} height={18} className="rounded-full" />
+															<span>{shortenAddress(c?.['blockchain-name'])}</span>
 														</div>
-														<span>{shortenAddress(c.contract)}</span>
+														<span>{shortenAddress(c?.contract)}</span>
 													</div>
 												</Link>
 												<div className="flex items-center gap-2">
-													<Link href={c.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
+													<Link href={c?.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
 														<ExternalLinkIcon className="w-4 h-4" />
 													</Link>
 													<span
 														className="cursor-pointer"
 														onClick={() => {
-															navigator.clipboard.writeText(c.contract);
+															navigator.clipboard.writeText(c?.contract);
 															toast.success('Address copied!');
 															setShowAll(false)
 														}}
