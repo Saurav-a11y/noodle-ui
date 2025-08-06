@@ -177,7 +177,7 @@ const LiveActivity = () => {
 											<div className="flex items-center text-black dark:text-white gap-2">
 												<XIcon width={24} height={24} />
 												<p className="font-semibold font-noto">Latest Twitter Activity</p>
-												<div className="border-l h-4 border-[#000] opacity-50 mx-2" />
+												<div className="border-l h-4 border-[#000] dark:border-[#fff] opacity-50 mx-2" />
 												<span className="text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> mentions</span>
 											</div>
 										</div>
@@ -295,7 +295,7 @@ const LiveActivity = () => {
 											<div className="flex items-center gap-2">
 												<GithubIcon width={24} height={24} />
 												<p className="font-semibold font-noto">GitHub Development Activity</p>
-												<div className="border-l h-4 border-[#000] opacity-50 mx-2" />
+												<div className="border-l h-4 border-[#000] dark:border-[#fff] opacity-50 mx-2" />
 												<span className="text-xs text-[#373737] dark:text-[#FFF] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> commits</span>
 											</div>
 										</div>
@@ -322,7 +322,7 @@ const LiveActivity = () => {
 															<div className="flex items-center gap-3">
 																{item?.type === 'PushEvent' && <p className={`text-xs text-white bg-[#1b7f37] w-fit px-2 py-1 rounded-full`}>Committed</p>}
 																{item?.type === 'PullRequestEvent' && (<p className={`text-xs text-white ${item?.payload?.pull_request?.merged ? 'bg-[#8250df]' : 'bg-[#1b7f37]'} px-2 py-1 rounded-full flex items-center`}>{item?.payload?.pull_request?.merged ? 'Merged' : 'Merge'}</p>)}
-																{item?.type === 'IssuesEvent' && (<p className="text-xs bg-gray-200 px-2.5 py-1 rounded-full flex items-center">Issue</p>)}
+																{item?.type === 'IssuesEvent' && (<p className="text-xs dark:text-black bg-gray-200 px-2.5 py-1 rounded-full flex items-center">Issue</p>)}
 																<Link
 																	href={`https://github.com/${item.repo}/${item?.type === 'IssuesEvent' && 'issues' || item?.type === 'PullRequestEvent' && 'pull' || item?.type === 'PushEvent' && 'commit'}/${item?.payload?.issue?.number || item?.payload?.pull_request?.number || item?.payload?.head}`}
 																	target="_blank"
@@ -343,9 +343,9 @@ const LiveActivity = () => {
 																		)}
 																	</p>
 																	<div>
-																		<p className="font-medium mb-1">{item?.payload?.issue?.title}</p>
+																		<p className="font-medium mb-1 dark:text-white">{item?.payload?.issue?.title}</p>
 
-																		<div className="flex items-center text-xs opacity-70 space-x-1">
+																		<div className="flex items-center text-xs opacity-70 space-x-1 dark:text-white">
 																			<p>#{item?.payload?.issue?.number}</p>
 																			<p>·</p>
 																			<p><strong>{item?.actor}</strong> {item?.payload?.action} {item?.created_at
@@ -362,8 +362,8 @@ const LiveActivity = () => {
 															)}
 															{item?.type === 'PullRequestEvent' && (
 																<div>
-																	<p className="font-medium mb-1.5">{item?.payload?.pull_request?.title}</p>
-																	<div className="flex items-center text-xs opacity-70 space-x-1">
+																	<p className="font-medium mb-1.5 dark:text-white">{item?.payload?.pull_request?.title}</p>
+																	<div className="flex items-center text-xs opacity-70 space-x-1 dark:text-white">
 																		<p>#{item?.payload?.pull_request?.number}</p>
 																		<p>·</p>
 																		<p><strong>{item?.payload?.pull_request?.merged_by?.login}</strong> {item?.payload?.pull_request?.merged ? 'merged' : 'merge'} {item?.payload?.pull_request?.commits} commits into <Link target="_blank" href={`https://github.com/${item.repo}/tree/${item?.payload?.pull_request?.base?.ref}`} className="text-[#0969da] bg-[#def4ff] px-1.5 py-0.5 rounded">{item?.payload?.pull_request?.base?.ref}</Link> from <Link target="_blank" href={`https://github.com/${item.repo}/tree/${item?.payload?.pull_request?.head?.ref}`} className="text-[#0969da] bg-[#def4ff] px-1.5 py-0.5 rounded">{item?.payload?.pull_request?.head?.ref}</Link>
@@ -375,10 +375,10 @@ const LiveActivity = () => {
 																<div>
 																	<div>
 																		{item?.payload?.commits[0]?.message.split('\n').map((line, index) => (
-																			<p className="font-medium" key={index}>{line}</p>
+																			<p className="font-medium dark:text-white" key={index}>{line}</p>
 																		))}
 																	</div>
-																	<div className="flex items-center text-xs opacity-80 space-x-1 mt-2">
+																	<div className="flex items-center text-xs opacity-80 space-x-1 mt-2 dark:text-white">
 																		<p>{item?.payload?.commits[0]?.author?.name} commited {item?.created_at
 																			? formatDistanceToNow(new Date(item?.created_at), { addSuffix: true, })
 																			: 'Unknown'}</p>
@@ -433,7 +433,7 @@ const LiveActivity = () => {
 											<div className="flex items-center gap-2">
 												<RedditIcon width={24} height={24} fill="#000" />
 												<p className="font-semibold font-noto">Latest Reddit Discussions</p>
-												<div className="border-l h-4 border-[#000] opacity-50 mx-2" />
+												<div className="border-l h-4 border-[#000] dark:border-[#fff] opacity-50 mx-2" />
 												<span className="text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> posts</span>
 											</div>
 										</div>
@@ -448,7 +448,7 @@ const LiveActivity = () => {
 															<div className="flex-1">
 																<div className="font-noto">
 																	<div>
-																		<p className="flex items-center space-x-2 text-[#373737]">
+																		<p className="flex items-center space-x-2 text-[#373737] dark:text-white">
 																			<span className="text-sm font-semibold">{post?.data?.subreddit_name_prefixed}</span>
 																			<span className="opacity-50">•</span>
 																			<span className="text-xs opacity-50">{formatTimestamp(post?.data?.created)}</span>
@@ -460,11 +460,11 @@ const LiveActivity = () => {
 															<Link href={`https://reddit.com/${post?.data?.permalink}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Reddit</Link>
 														</div>
 														{post?.data?.title && (
-															<p className="font-space text-[#373737] font-medium text-2xl mt-1">{post?.data?.title}</p>
+															<p className="font-space text-[#373737] dark:text-white font-medium text-2xl mt-1">{post?.data?.title}</p>
 														)}
 														{post?.data?.selftext_html && (
 															<p
-																className="text-sm mt-1.5 font-reddit line-clamp-6 overflow-hidden text-[#373737]"
+																className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[#373737] dark:text-white"
 																dangerouslySetInnerHTML={{
 																	__html: he.decode(post?.data?.selftext_html || '')
 																}}
@@ -494,7 +494,7 @@ const LiveActivity = () => {
 																	</Link>
 																	<div className="p-4 flex justify-between items-center">
 																		<Link href={post?.data?.url} target="_blank">
-																			<p className="text-sm hover:underline cursor-pointer">
+																			<p className="text-sm hover:underline cursor-pointer dark:text-white">
 																				{new URL(post?.data?.url).hostname.replace(/^www\./, '')}
 																			</p>
 																		</Link>
@@ -502,7 +502,7 @@ const LiveActivity = () => {
 																			href={post?.data?.url}
 																			target="_blank"
 																			rel="noopener noreferrer"
-																			className="text-sm font-medium px-4 py-1.5 border rounded-full border-gray-300 hover:bg-gray-100 transition"
+																			className="text-sm font-medium px-4 py-1.5 border rounded-full border-gray-300 hover:bg-gray-100 transition dark:text-white"
 																		>
 																			Open
 																		</a>
@@ -564,7 +564,8 @@ const LiveActivity = () => {
 											<div className="flex items-center gap-2">
 												<YoutubeIcon width={24} height={24} fill="#000" />
 												<p className="font-semibold font-noto">YouTube Community Content</p>
-												<span className="ml-3 text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> videos</span>
+												<div className="border-l h-4 border-[#000] dark:border-[#fff] opacity-50 mx-2" />
+												<span className="text-xs text-[#373737] dark:text-white font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> videos</span>
 											</div>
 										</div>
 										<div className="space-y-6">
