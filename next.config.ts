@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
         hostname: 'b.thumbs.redditmedia.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'd14ciuzrn5ydd5.cloudfront.net',
+        pathname: '/**',
+      },
     ],
   },
   output: 'standalone',
