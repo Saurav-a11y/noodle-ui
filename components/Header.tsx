@@ -66,6 +66,14 @@ const Header = () => {
 											Commodities
 										</a>
 									</NavigationMenuItem>
+									<NavigationMenuItem>
+										<a
+											href="/watchlist"
+											className="font-medium"
+										>
+											Watchlist
+										</a>
+									</NavigationMenuItem>
 								</NavigationMenuList>
 							</NavigationMenu>
 						</div>

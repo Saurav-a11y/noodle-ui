@@ -217,3 +217,7 @@ export const calculateEngagementRate = (likes: number, retweets: number, replies
     const totalEngagement = likes + retweets + replies + impressions + bookmarks;
     return Number(((totalEngagement / followersCount) * 100).toFixed(2))
 }
+
+export const formatNumberWithCommas = (value: number) => {
+    return new Intl.NumberFormat("en-US").format(value);
+};

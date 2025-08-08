@@ -8,11 +8,11 @@ import LiveActivity from "@/features/cryptocurrency-detail/components/LiveActivi
 import ProjectInfo from "@/features/cryptocurrency-detail/components/ProjectInfo";
 import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 import Header from "@/components/Header";
-import HeartIcon from "@/icons/HeartIcon";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import BackgroundPage from "@/icons/BackgroundPage";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import ProjectHeader from "@/features/cryptocurrency-detail/components/ProjectHeader";
+import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
 
 const CryptocurrencyDetailPage = () => {
 
@@ -117,12 +117,7 @@ const CryptocurrencyDetailPage = () => {
 							{/* Project Header */}
 							<div className="flex items-center justify-between">
 								<ProjectHeader />
-								<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg">
-									<button className="flex items-center gap-2 bg-white dark:bg-black px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] dark:text-[#FFF] font-noto hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] transition-colors duration-200">
-										<HeartIcon />
-										<span className="hidden md:block">Add to Watchlist</span>
-									</button>
-								</div>
+								<AddToWatchlistButton />
 							</div>
 							<div className="grid grid-cols-4 gap-8">
 								<div className="col-span-4 md:col-span-1 space-y-6">

@@ -1,0 +1,120 @@
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+
+export const useWatchlistStatus = (params: {
+    userId?: string;
+    code: string;
+    assetType: string;
+    enabled?: boolean;
+}) => {
+    const { userId, code, assetType, enabled = true } = params;
+    const qc = useQueryClient();
+
+    return useQuery({
+        enabled: !!userId && !!code && !!assetType && enabled,
+        queryKey: ['watchlist-status', userId, code, assetType],
+        queryFn: async () => {
+            // ✅ Ưu tiên dùng API check status
+            const res = await fetch(
+                `https://data-api.agentos.cloud/noodle/watchlist/status?userId=${userId}&code=${code}&assetType=${assetType}`,
+            );
+            if (res.ok) {
+                const data = await res.json();
+                // Kỳ vọng { inWatchlist: boolean }
+                return { inWatchlist: !!data?.inWatchlist };
+            }
+
+            // 🔁 Fallback: nếu có cache list thì tính tại client
+            const list = qc.getQueryData<any[]>(['watchlist', userId]) || [];
+            const inWatchlist = list.some(
+                (i) => i.code === code && i.assetType === assetType
+            );
+            return { inWatchlist };
+        },
+        select: (d) => !!d?.inWatchlist,
+        staleTime: 15_000,
+    });
+};
+
+export const useGetWatchlist = (userId: string, enabled = true) => {
+    return useQuery({
+        queryKey: ['watchlist', userId],
+        queryFn: async () => {
+            const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist?userId=${userId}`);
+            if (!res.ok) throw new Error('Failed to fetch watchlist');
+            return res.json(); // { data: { items: [...] } | [...] } tuỳ bạn
+        },
+        enabled: !!userId && enabled,
+        staleTime: 30_000,             // tuỳ chọn
+        gcTime: 5 * 60_000,            // tuỳ chọn
+        refetchOnWindowFocus: false,   // tránh refetch gây nháy
+        refetchOnMount: false,         // nếu đã có cache
+    });
+};
+
+export const useAddToWatchlist = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload: { userId: string; code: string; assetType: string }) => {
+            const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!res.ok) throw new Error('Failed to add to watchlist');
+            return res.json();
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ['watchlist', variables.userId] });
+        },
+    });
+};
+
+export const useRemoveFromWatchlist = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload: { userId: string; code: string }) => {
+            const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist/remove`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+            if (!res.ok) throw new Error('Failed to remove from watchlist');
+            return res.json();
+        },
+
+        // 1) Optimistic update
+        onMutate: async ({ userId, code }) => {
+            await queryClient.cancelQueries({ queryKey: ['watchlist', userId] });
+
+            const prev = queryClient.getQueryData<any>(['watchlist', userId]);
+
+            queryClient.setQueryData(['watchlist', userId], (old: any) => {
+                if (!old?.data?.items) return old;
+                return {
+                    ...old,
+                    data: {
+                        ...old.data,
+                        items: old.data.items.filter((x: any) => String(x.assetId ?? x.id) !== String(code)),
+                    },
+                };
+            });
+
+            return { prev };
+        },
+
+        // 2) Rollback nếu lỗi
+        onError: (_err, { userId }, ctx) => {
+            if (ctx?.prev) queryClient.setQueryData(['watchlist', userId], ctx.prev);
+        },
+
+        // 3) KHÔNG invalidate để tránh refetch lần nữa
+        onSettled: (_data, _err, variables, ctx) => {
+            queryClient.invalidateQueries({ queryKey: ['watchlist', variables.userId], refetchType: 'active' });
+        },
+    });
+};
