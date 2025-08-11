@@ -30,7 +30,6 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 		refetch,
 		isLoading,
 	} = useCandidateTokens(userId, search);
-	console.log("🚀 ~ AddAssetModal ~ data:", data)
 
 	const handleScroll = useCallback(
 		(e: React.UIEvent<HTMLDivElement>) => {
