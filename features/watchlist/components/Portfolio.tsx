@@ -7,16 +7,25 @@ import Image from "next/image";
 import _get from 'lodash/get';
 import { formatNumberWithCommas } from "@/lib/format";
 import { useQueryClient } from "@tanstack/react-query";
+import AddAssetModal from "./AddAssetModal";
+import { usePathname } from "next/navigation";
 
 const Portfolio = () => {
 	const { user } = useAuth()
+	const pathname = usePathname();
+	const assetType = pathname ? pathname.split('/')[1] : '';
 	const queryClient = useQueryClient();
-	const { data, isLoading, isFetching } = useGetWatchlist(user?.id || "");
+	const { data, isLoading } = useGetWatchlist(user?.id || "");
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
 	const [busyById, setBusyById] = useState<Record<string, boolean>>({});
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const items = data?.data?.items ?? [];
+
+	const handleAddAsset = () => {
+		setIsModalOpen(true);
+	};
 
 	const handleRemove = async (asset: any) => {
 		const assetId = asset.assetId ?? asset.id;
@@ -62,6 +71,7 @@ const Portfolio = () => {
 				</div>
 				<div
 					className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] px-4 py-1.5 text-sm cursor-pointer rounded flex items-center gap-2 text-[#494949]"
+					onClick={handleAddAsset}
 				>
 					<Plus className="w-4 h-4" />
 					<p>New Asset</p>
@@ -152,6 +162,13 @@ const Portfolio = () => {
 					</Table>
 				</div>
 			</div>
+			<AddAssetModal
+				open={isModalOpen}
+				onOpenChange={setIsModalOpen}
+				onSave={() => { }}
+				userId={user?.id || ""}
+				assetType={assetType}
+			/>
 		</div>
 	);
 };
