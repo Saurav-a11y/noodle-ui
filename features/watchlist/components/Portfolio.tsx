@@ -2,16 +2,16 @@ import { useState } from "react";
 import { Star, Plus } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { useGetWatchlist, useRemoveFromWatchlist } from "@/hooks/useWatchlist";
+import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import _get from 'lodash/get';
 import { formatNumberWithCommas } from "@/lib/format";
 import { useQueryClient } from "@tanstack/react-query";
 import AddAssetModal from "./AddAssetModal";
 import { usePathname } from "next/navigation";
-import { useMe } from "@/hooks/useAuth";
 
 const Portfolio = () => {
-	const { data: user } = useMe();
+	const { user } = useAuth()
 	const pathname = usePathname();
 	const assetType = pathname ? pathname.split('/')[1] : '';
 	const queryClient = useQueryClient();

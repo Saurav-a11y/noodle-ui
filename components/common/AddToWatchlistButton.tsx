@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
 import HeartIcon from '@/icons/HeartIcon'
 import LoginModal from '../LoginModal'
 import { useAddToWatchlist, useRemoveFromWatchlist, useWatchlistStatus } from '@/hooks/useWatchlist'
@@ -8,12 +9,10 @@ import { useParams, usePathname } from 'next/navigation'
 import HeartFullIcon from '@/icons/HeartFullIcon'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader } from 'lucide-react'
-import { useMe, useTwitterLogin } from '@/hooks/useAuth'
 
 const AddToWatchlistButton = () => {
-	const { data: user } = useMe();
-	const { login: handleLogin } = useTwitterLogin();
 	const queryClient = useQueryClient();
+	const { user, handleLogin } = useAuth()
 	const pathname = usePathname();
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';

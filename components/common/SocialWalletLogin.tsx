@@ -1,57 +1,28 @@
 'use client';
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/DropdownMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import LoginModal from "../LoginModal";
-import { useLogout, useMe, useTwitterLogin } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 const SocialWalletLogin = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { data: user, isLoading } = useMe();
-	const { login: handleLogin } = useTwitterLogin();
-	const logout = useLogout();
-
-	const avatarUrl = useMemo(
-		() => user?.avatar || user?.profile_image_url || '',
-		[user]
-	);
-
-	const displayName = user?.name || user?.username || 'User';
-	const initials =
-		(displayName?.match(/\b\w/g) || []).join('').slice(0, 2).toUpperCase() || 'U';
-
-	const handleLogout = () => {
-		logout.mutate();
-	};
-	if (isLoading) {
-		return (
-			<div className="h-9 w-[120px] rounded-full bg-black/5 dark:bg-white/10 animate-pulse" />
-		);
-	}
+	const { user, handleLogin, handleLogout } = useAuth();
 
 	if (user) {
 		return (
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<div className="flex items-center gap-2 p-2 cursor-pointer rounded-full hover:bg-black/5 dark:hover:bg-white/10">
+					<div className="flex items-center gap-2 p-2 cursor-pointer">
 						<Avatar className="h-8 w-8">
-							<AvatarImage src={avatarUrl} alt={user?.username} />
-							<AvatarFallback>{initials}</AvatarFallback>
+							<AvatarImage src={user?.profile_image_url} alt={user?.username} />
+							<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 						</Avatar>
-						<span className="hidden sm:inline-block dark:text-white">{displayName}</span>
+						<span className="hidden sm:inline-block dark:text-white">{user?.name}</span>
 					</div>
 				</DropdownMenuTrigger>
-
-				<DropdownMenuContent
-					align="end"
-					className="bg-white dark:bg-[#0B0B0B] border border-black/5 dark:border-white/10"
-				>
-					{/* Tuỳ chọn thêm: trang profile */}
-					{/* <DropdownMenuItem onClick={() => router.push('/profile')} className="cursor-pointer">Profile</DropdownMenuItem> */}
-					<DropdownMenuItem
-						onClick={handleLogout}
-						className="text-destructive cursor-pointer focus:text-destructive"
-					>
+				<DropdownMenuContent align="end" className="bg-white">
+					<DropdownMenuItem onClick={handleLogout} className="text-destructive cursor-pointer">
 						Log out
 					</DropdownMenuItem>
 				</DropdownMenuContent>
@@ -72,9 +43,7 @@ const SocialWalletLogin = () => {
 			<LoginModal
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}
-				handleLogin={() => {
-					handleLogin();
-				}}
+				handleLogin={handleLogin}
 			/>
 		</>
 	);
