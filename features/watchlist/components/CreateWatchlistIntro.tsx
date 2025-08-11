@@ -1,13 +1,13 @@
 'use client';
 
 import LoginModal from "@/components/LoginModal";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useTwitterLogin } from "@/hooks/useAuth";
 import IconSection1_1 from "@/icons/IconSection1_1";
 import { useState } from "react";
 
 const CreateWatchlistIntro = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { handleLogin } = useAuth();
+	const { login: handleLogin } = useTwitterLogin();
 	return (
 		<>
 			<div className="container mx-auto px-6 mt-10 md:mt-20 relative bg-transparent mb-10 flex items-center gap-10">
