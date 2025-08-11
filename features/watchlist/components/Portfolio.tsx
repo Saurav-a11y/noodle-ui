@@ -153,7 +153,7 @@ const Portfolio = () => {
 												<div>${formatNumberWithCommas(asset?.overview?.market?.['24h_vol_cmc'])}</div>
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-												${formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}
+												{formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}
 											</TableCell>
 										</TableRow>
 									)
