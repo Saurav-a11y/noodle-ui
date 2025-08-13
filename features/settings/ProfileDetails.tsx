@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { format, parseISO, isValid } from "date-fns";
 import { toast } from 'react-toastify';
@@ -20,21 +20,26 @@ import { useAuth } from "@/hooks/useAuth";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
 import { Calendar } from "@/components/ui/Calendar";
 import { useGetUser, useUpdateUser } from "@/hooks/useUser";
+import { useCloudinaryUnsignedUpload } from "@/hooks/useCloudinaryUnsignedUpload";
 
 const ProfileDetails = () => {
 	const { userId } = useAuth();
+	const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
 	const { data: user, isLoading: loadingUser } = useGetUser({ userId });
-	console.log("🚀 ~ ProfileDetails ~ user:", user?.data)
 	const updateUser = useUpdateUser({ userId });
+	const { upload, uploading, progress, error } = useCloudinaryUnsignedUpload(
+		'noodles',
+		{ folder: 'avatar', maxFileSizeMB: 5, accept: ['image/jpeg', 'image/png', 'image/webp'] }
+	);
 
-	console.log("🚀 ~ ProfileDetails ~ userId:", userId)
 	const [isDobOpen, setIsDobOpen] = useState(false);
 	const [formData, setFormData] = useState({
 		displayName: "",
 		username: "",
 		email: "",
 		birthday: "",
-		bio: ""
+		bio: "",
+		avatar: ""
 	});
 
 	const [characterCounts, setCharacterCounts] = useState({
@@ -42,6 +47,29 @@ const ProfileDetails = () => {
 		username: 0,
 		bio: 0
 	});
+
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
+	const onPickAvatarClick = () => fileInputRef.current?.click();
+
+	const onPickAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+		try {
+			const res = await upload(file); // { secure_url, ... }
+			setPreviewAvatar(res.secure_url);                      // đổi ảnh ngay
+			setFormData(s => ({ ...s, avatar: res.secure_url }));  // để Save sẽ gửi lên BE
+			toast.success('Avatar uploaded');
+		} catch (err: any) {
+			toast.error(err?.message || 'Upload failed');
+		} finally {
+			e.target.value = '';
+		}
+	};
+
+	const onRemoveAvatar = () => {
+		setPreviewAvatar(null);
+		setFormData(s => ({ ...s, avatar: '' }));
+	};
 
 	const handleInputChange = (field: keyof typeof formData, value: string) => {
 		setFormData((prev) => ({ ...prev, [field]: value }));
@@ -79,25 +107,28 @@ const ProfileDetails = () => {
 				email: formData.email,
 				birthday: formData.birthday,
 				biography: formData.bio,
-				// avatar: ... (nếu có UI upload thì truyền thêm)
+				avatar: formData.avatar
 			});
 		} catch { }
 	};
 
 	useEffect(() => {
-		if (!user) return;
-		setFormData({
-			displayName: user?.data?.name || '',
-			username: user?.data?.username || '',
-			email: user?.data?.email || '',
-			birthday: (user as any)?.data?.birthday || '',
-			bio: (user as any)?.data?.biography || '',
-		});
-		setCharacterCounts({
-			displayName: (user?.data?.name || '').length,
-			username: (user?.data?.username || '').length,
-			bio: ((user as any)?.data?.biography || '').length,
-		});
+		if (!user?.data) {
+			setPreviewAvatar(null);
+			setFormData((s) => ({ ...s, avatar: "" }));
+			return;
+		}
+		const ava = user?.data?.avatar || "";
+		setPreviewAvatar(ava || null);
+		setFormData((s) => ({
+			...s,
+			displayName: user?.data?.name || "",
+			username: user?.data?.username || "",
+			email: user?.data?.email || "",
+			birthday: (user?.data as any)?.birthday || "",
+			bio: (user?.data as any)?.biography || "",
+			avatar: ava
+		}));
 	}, [user]);
 
 	const socialAccounts = [
@@ -130,25 +161,52 @@ const ProfileDetails = () => {
 					<div>
 						<Label className="text-xs font-normal">Avatar</Label>
 						<div className="flex items-center gap-5 mt-2">
-							<Avatar className="w-20 h-20">
-								{user?.data?.avatar ? (
-									<AvatarImage src={user?.data?.avatar} alt={user?.data?.username || "avatar"} />
-								) : (
-									<AvatarFallback className="bg-[#F0F0F0]">
-										<UserDefaultIcon />
-									</AvatarFallback>
+							<div className="relative">
+								<Avatar className="w-20 h-20">
+									{previewAvatar ? (
+										<AvatarImage src={previewAvatar} alt={user?.data?.username || "avatar"} />
+									) : (
+										<AvatarFallback className="bg-[#F0F0F0]">
+											<UserDefaultIcon />
+										</AvatarFallback>
+									)}
+								</Avatar>
+								{uploading && (
+									<div className="absolute inset-0 grid place-items-center bg-black/40 rounded-full">
+										<span className="text-white text-xs">{progress}%</span>
+									</div>
 								)}
-							</Avatar>
+							</div>
 							<div className="flex gap-2">
-								<Button variant="outline" size="sm" className="font-normal cursor-pointer">
+								<input
+									ref={fileInputRef}
+									type="file"
+									accept="image/*"
+									hidden
+									onChange={onPickAvatar}
+								/>
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={onPickAvatarClick}
+									disabled={uploading || loadingUser}
+									className="font-normal cursor-pointer"
+								>
 									<UploadIcon />
 									Change photo
 								</Button>
-								<Button variant="ghost" size="sm" className="text-muted-foreground font-normal cursor-pointer">
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={onRemoveAvatar}
+									disabled={uploading || loadingUser || !previewAvatar}
+									className="text-muted-foreground font-normal cursor-pointer"
+								>
 									Remove
 								</Button>
 							</div>
 						</div>
+						{error && <div className="text-xs text-red-500 mt-1">{error}</div>}
 					</div>
 
 					{/* Form Fields */}
