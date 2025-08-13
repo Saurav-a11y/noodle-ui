@@ -22,10 +22,11 @@ import { Calendar } from "@/components/ui/Calendar";
 import { useGetUser, useUpdateUser } from "@/hooks/useUser";
 
 const ProfileDetails = () => {
-	const [userId, setUserId] = useState<string | null>(null);
+	const { userId } = useAuth();
 	const { data: user, isLoading: loadingUser } = useGetUser({ userId });
 	const updateUser = useUpdateUser({ userId });
 
+	console.log("🚀 ~ ProfileDetails ~ userId:", userId)
 	const [isDobOpen, setIsDobOpen] = useState(false);
 	const [formData, setFormData] = useState({
 		displayName: "",
@@ -118,11 +119,6 @@ const ProfileDetails = () => {
 			connected: false
 		}
 	];
-
-	useEffect(() => {
-		const id = localStorage.getItem("userId");
-		setUserId(id);
-	}, []);
 
 	return (
 		<div className="space-y-8">

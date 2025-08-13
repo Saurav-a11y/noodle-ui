@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useAuth = () => {
-	const [user, setUser] = useState<any>(null);
+	const [userId, setUserId] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
 
 	const handleLogin = async () => {
@@ -19,15 +19,15 @@ export const useAuth = () => {
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem("user");
-		setUser(null);
+		localStorage.removeItem("userId");
+		setUserId(null);
 	};
 
 	useEffect(() => {
-		const userData = localStorage.getItem("user");
-		if (userData) {
+		const userId = localStorage.getItem("userId");
+		if (userId) {
 			try {
-				setUser(JSON.parse(userData));
+				setUserId(JSON.parse(userId));
 			} catch (error) {
 				console.error("Failed to parse user data:", error);
 			}
@@ -36,7 +36,7 @@ export const useAuth = () => {
 	}, []);
 
 	return {
-		user,
+		userId,
 		loading,
 		handleLogin,
 		handleLogout,

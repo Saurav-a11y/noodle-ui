@@ -25,6 +25,7 @@ type UpdateUserPayload = {
 }
 
 export const useGetUser = ({ userId }) => {
+	console.log("🚀 ~ useGetUser ~ userId:", userId)
 	return useQuery({
 		queryKey: ["user", userId],
 		queryFn: async () => {
