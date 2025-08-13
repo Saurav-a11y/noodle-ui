@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/DropdownMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import LoginModal from "../LoginModal";
@@ -16,7 +16,7 @@ import { useGetUser } from "@/hooks/useUser";
 const SocialWalletLogin = () => {
 	const { userId, handleLogin, handleLogout } = useAuth();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { data: user, isLoading: loadingUser } = useGetUser({ userId });
+	const { data: user } = useGetUser({ userId });
 	console.log("🚀 ~ SocialWalletLogin ~ user:", user)
 
 	if (user) {
