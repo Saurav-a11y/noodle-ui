@@ -165,3 +165,19 @@ export const useAddBulkToWatchlist = () => {
 		},
 	})
 }
+
+export const useGetStableCoins = (enabled = true) => {
+	return useQuery({
+		queryKey: ['stablecoins'],
+		queryFn: async () => {
+			const res = await fetch(`https://data-api.agentos.cloud/noodle/stablecoins`);
+			if (!res.ok) throw new Error('Failed to fetch stablecoins');
+			return res.json(); // { data: { items: [...] } | [...] } tuỳ bạn
+		},
+		enabled: enabled,
+		staleTime: 30_000,             // tuỳ chọn
+		gcTime: 5 * 60_000,            // tuỳ chọn
+		refetchOnWindowFocus: false,   // tránh refetch gây nháy
+		refetchOnMount: false,         // nếu đã có cache
+	});
+};

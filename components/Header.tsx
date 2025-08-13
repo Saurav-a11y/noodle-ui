@@ -68,10 +68,10 @@ const Header = () => {
 									</NavigationMenuItem>
 									<NavigationMenuItem>
 										<a
-											href="/watchlist"
+											href="/stablecoins"
 											className="font-medium"
 										>
-											Watchlist
+											Stablecoins
 										</a>
 									</NavigationMenuItem>
 								</NavigationMenuList>
