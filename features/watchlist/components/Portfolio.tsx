@@ -11,11 +11,11 @@ import AddAssetModal from "./AddAssetModal";
 import { usePathname } from "next/navigation";
 
 const Portfolio = () => {
-	const { user } = useAuth()
+	const { userId } = useAuth()
 	const pathname = usePathname();
 	const assetType = pathname ? pathname.split('/')[1] : '';
 	const queryClient = useQueryClient();
-	const { data, isLoading } = useGetWatchlist(user?.id || "");
+	const { data, isLoading } = useGetWatchlist(userId || "");
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
 	const [busyById, setBusyById] = useState<Record<string, boolean>>({});
@@ -29,11 +29,11 @@ const Portfolio = () => {
 
 	const handleRemove = async (asset: any) => {
 		const assetId = asset.assetId ?? asset.id;
-		if (!assetId || !user?.id) return;
+		if (!assetId || !userId) return;
 
 		setBusyById(s => ({ ...s, [assetId]: true }));
 
-		const qk = ['watchlist', user?.id];
+		const qk = ['watchlist', userId];
 		const prev = queryClient.getQueryData(qk);
 
 		// Optimistic update
@@ -49,7 +49,7 @@ const Portfolio = () => {
 		});
 
 		try {
-			await removeFromWatchlist.mutateAsync({ userId: user?.id, code: String(assetId) });
+			await removeFromWatchlist.mutateAsync({ userId, code: String(assetId) });
 		} catch (e) {
 			// rollback nếu lỗi
 			queryClient.setQueryData(qk, prev);
@@ -166,7 +166,7 @@ const Portfolio = () => {
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}
 				onSave={() => { }}
-				userId={user?.id || ""}
+				userId={userId || ""}
 				assetType={assetType}
 			/>
 		</div>

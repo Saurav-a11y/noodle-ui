@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import {
 	Table,
@@ -17,25 +17,10 @@ import Image from "next/image";
 import { Trash2Icon } from "lucide-react";
 import AddAssetModal from "../watchlist/components/AddAssetModal";
 
-interface PortfolioAsset {
-	name: string;
-	symbol: string;
-	icon: string;
-	bgColor: string;
-	price: string;
-	marketCap: string;
-	healthScore: number;
-	healthColor: string;
-	engagementRate: string;
-	growthRate: string;
-	holdings: string;
-	holdingsValue: string;
-}
-
 const WatchlistPortfolio = () => {
-	const { user } = useAuth()
+	const { userId } = useAuth()
 	const queryClient = useQueryClient();
-	const { data, isLoading } = useGetWatchlist(user?.id || "");
+	const { data, isLoading } = useGetWatchlist(userId || "");
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
 	const [busyById, setBusyById] = useState<Record<string, boolean>>({});
@@ -59,11 +44,11 @@ const WatchlistPortfolio = () => {
 
 	const handleRemove = async (asset: any) => {
 		const assetId = asset.assetId ?? asset.id;
-		if (!assetId || !user?.id) return;
+		if (!assetId || !userId) return;
 
 		setBusyById(s => ({ ...s, [assetId]: true }));
 
-		const qk = ['watchlist', user?.id];
+		const qk = ['watchlist', userId];
 		const prev = queryClient.getQueryData(qk);
 
 		// Optimistic update
@@ -79,7 +64,7 @@ const WatchlistPortfolio = () => {
 		});
 
 		try {
-			await removeFromWatchlist.mutateAsync({ userId: user?.id, code: String(assetId) });
+			await removeFromWatchlist.mutateAsync({ userId, code: String(assetId) });
 		} catch (e) {
 			// rollback nếu lỗi
 			queryClient.setQueryData(qk, prev);
@@ -231,7 +216,7 @@ const WatchlistPortfolio = () => {
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}
 				onSave={() => { }}
-				userId={user?.id || ""}
+				userId={userId || ""}
 				assetType={''}
 			/>
 		</div>

@@ -9,7 +9,7 @@ import BackgroundPage from '@/icons/BackgroundPage';
 import ReactQueryProvider from '@/lib/react-query-provider';
 
 const WatchListPage = () => {
-	const { user, loading } = useAuth();
+	const { userId, loading } = useAuth();
 	return (
 		<ReactQueryProvider>
 			<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto font-space">
@@ -19,10 +19,10 @@ const WatchListPage = () => {
 						<BackgroundPage />
 					</div>
 				</div>
-				{!loading && !user && (
+				{!loading && !userId && (
 					<CreateWatchlistIntro />
 				)}
-				{!loading && user && (
+				{!loading && userId && (
 					<Portfolio />
 				)}
 			</div>
