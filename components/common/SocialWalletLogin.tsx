@@ -42,36 +42,36 @@ const SocialWalletLogin = () => {
 					</div>
 					<hr className="my-3 text-[#EEEEEE]" />
 					<Link href='/settings/profile'>
-						<DropdownMenuItem className="text-destructive cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
 							<ProfileIcon />
 							<span>My Profile</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/security'>
-						<DropdownMenuItem className="text-destructive cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
 							<ShieldIcon />
 							<span>Account Security</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/notifications'>
-						<DropdownMenuItem className="text-destructive cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
 							<NotificationIcon />
 							<span>Notification Settings</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/watchlist'>
-						<DropdownMenuItem className="text-destructive cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
 							<FavouriteIcon />
 							<span>Watchlist & Portfolio</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/analytics'>
-						<DropdownMenuItem className="text-destructive cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
 							<AnalystIcon />
 							<span>Account Analytics</span>
 						</DropdownMenuItem>
 					</Link>
-					<DropdownMenuItem onClick={handleLogout} className="text-destructive cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+					<DropdownMenuItem onClick={handleLogout} className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
 						<LogoutIcon />
 						<span>Log Out</span>
 					</DropdownMenuItem>

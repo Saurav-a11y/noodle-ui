@@ -29,7 +29,7 @@ export default function AuthSuccessHandler() {
 
             // Lưu vào cookie hoặc localStorage
             Cookies.set('access_token', token, { expires: 7 }); // 7 ngày
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('userId', JSON.stringify(user?.id));
 
             // Redirect về trang trước đó nếu có lưu
             const redirectTo = localStorage.getItem('redirectAfterLogin') || '/homepage';

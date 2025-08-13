@@ -1,7 +1,10 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { format, parseISO, isValid } from "date-fns";
+import { toast } from 'react-toastify';
+
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
@@ -14,10 +17,16 @@ import LinkIcon from "@/icons/LinkIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import DiscordIcon from "@/icons/DiscordIcon";
 import { useAuth } from "@/hooks/useAuth";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
+import { Calendar } from "@/components/ui/Calendar";
+import { useGetUser, useUpdateUser } from "@/hooks/useUser";
 
 const ProfileDetails = () => {
-	const { user } = useAuth();
-	console.log("🚀 ~ ProfileDetails ~ user:", user)
+	const [userId, setUserId] = useState<string | null>(null);
+	const { data: user, isLoading: loadingUser } = useGetUser({ userId });
+	const updateUser = useUpdateUser({ userId });
+
+	const [isDobOpen, setIsDobOpen] = useState(false);
 	const [formData, setFormData] = useState({
 		displayName: "",
 		username: "",
@@ -32,19 +41,62 @@ const ProfileDetails = () => {
 		bio: 0
 	});
 
-	const handleInputChange = (field: string, value: string) => {
-		setFormData(prev => ({
-			...prev,
-			[field]: value
-		}));
-
+	const handleInputChange = (field: keyof typeof formData, value: string) => {
+		setFormData((prev) => ({ ...prev, [field]: value }));
 		if (field in characterCounts) {
-			setCharacterCounts(prev => ({
-				...prev,
-				[field]: value.length
-			}));
+			setCharacterCounts((prev) => ({ ...prev, [field]: value.length }));
 		}
 	};
+
+	const dobDate = useMemo(() => {
+		if (!formData.birthday) return undefined;
+		const d = parseISO(formData.birthday);
+		return isValid(d) ? d : undefined;
+	}, [formData.birthday]);
+
+	const handleSelectDob = (date?: Date) => {
+		if (!date) return;
+		const value = format(date, 'yyyy-MM-dd');
+		handleInputChange('birthday', value);
+		setIsDobOpen(false);
+	};
+
+	const onSave = async () => {
+		if (!formData.displayName.trim()) {
+			toast.error('Display name is required');
+			return;
+		}
+		if (!formData.username.trim()) {
+			toast.error('Username is required');
+			return;
+		}
+		try {
+			await updateUser.mutateAsync({
+				name: formData.displayName,
+				username: formData.username,
+				email: formData.email,
+				birthday: formData.birthday,
+				biography: formData.bio,
+				// avatar: ... (nếu có UI upload thì truyền thêm)
+			});
+		} catch { }
+	};
+
+	useEffect(() => {
+		if (!user) return;
+		setFormData({
+			displayName: user?.name || '',
+			username: user?.username || '',
+			email: user?.email || '',
+			birthday: (user as any)?.birthday || '',
+			bio: (user as any)?.bio || (user as any)?.biography || '',
+		});
+		setCharacterCounts({
+			displayName: (user?.name || '').length,
+			username: (user?.username || '').length,
+			bio: ((user as any)?.bio || (user as any)?.biography || '').length,
+		});
+	}, [user]);
 
 	const socialAccounts = [
 		{
@@ -68,22 +120,9 @@ const ProfileDetails = () => {
 	];
 
 	useEffect(() => {
-		if (user) {
-			setFormData({
-				displayName: user?.name || "",
-				username: user?.username || "",
-				email: user?.email || "",
-				birthday: user?.birthday || "",
-				bio: user?.bio || user?.biography || "" // tuỳ BE trả về
-			});
-
-			setCharacterCounts({
-				displayName: user?.name?.length || 0,
-				username: user?.username?.length || 0,
-				bio: (user.biography || "").length
-			});
-		}
-	}, [user]);
+		const id = localStorage.getItem("userId");
+		setUserId(id);
+	}, []);
 
 	return (
 		<div className="space-y-8">
@@ -178,10 +217,44 @@ const ProfileDetails = () => {
 									type="text"
 									placeholder="Birthday"
 									value={formData.birthday}
-									onChange={(e) => handleInputChange("birthday", e.target.value)}
+									readOnly
+									onClick={() => setIsDobOpen(true)}
 									className="border-[#F0F0F0] outline-none focus:outline-none h-12 rounded-xl p-4 pl-10"
 								/>
 							</div>
+							<Dialog open={isDobOpen} onOpenChange={setIsDobOpen}>
+								<DialogContent className="sm:max-w-[360px] p-0 overflow-hidden">
+									<DialogHeader className="p-4 pb-0">
+										<DialogTitle>Select your birthday</DialogTitle>
+									</DialogHeader>
+									<div className="p-4">
+										<Calendar
+											mode="single"
+											selected={dobDate}
+											onSelect={handleSelectDob}
+											// tuỳ chọn UX:
+											captionLayout="dropdown"
+											className="rounded-md border w-full"
+										/>
+										<div className="mt-3 flex items-center justify-end gap-2">
+											<button
+												onClick={() => setIsDobOpen(false)}
+												className="text-sm px-3 py-1.5 rounded-md hover:bg-muted"
+											>
+												Cancel
+											</button>
+											{dobDate && (
+												<button
+													onClick={() => setIsDobOpen(false)}
+													className="text-sm px-3 py-1.5 rounded-md bg-primary text-primary-foreground"
+												>
+													Done
+												</button>
+											)}
+										</div>
+									</div>
+								</DialogContent>
+							</Dialog>
 						</div>
 					</div>
 
@@ -203,8 +276,17 @@ const ProfileDetails = () => {
 						</div>
 					</div>
 
-					<Button className="transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer">
-						Save
+					<Button
+						className="relative transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer"
+						onClick={onSave}
+						disabled={updateUser.isPending || loadingUser}
+					>
+						{updateUser.isPending && (
+							<span className="absolute inset-0 grid place-items-center">
+								<span className="h-4 w-4 animate-spin border-2 border-black dark:border-white border-t-transparent rounded-full" />
+							</span>
+						)}
+						<span className={updateUser.isPending ? 'opacity-0' : ''}>Save</span>
 					</Button>
 				</div>
 			</div>
