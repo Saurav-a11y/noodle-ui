@@ -24,6 +24,7 @@ import { useGetUser, useUpdateUser } from "@/hooks/useUser";
 const ProfileDetails = () => {
 	const { userId } = useAuth();
 	const { data: user, isLoading: loadingUser } = useGetUser({ userId });
+	console.log("🚀 ~ ProfileDetails ~ user:", user?.data)
 	const updateUser = useUpdateUser({ userId });
 
 	console.log("🚀 ~ ProfileDetails ~ userId:", userId)
@@ -130,8 +131,8 @@ const ProfileDetails = () => {
 						<Label className="text-xs font-normal">Avatar</Label>
 						<div className="flex items-center gap-5 mt-2">
 							<Avatar className="w-20 h-20">
-								{user?.avatar ? (
-									<AvatarImage src={user.avatar} alt={user.username || "avatar"} />
+								{user?.data?.avatar ? (
+									<AvatarImage src={user?.data?.avatar} alt={user?.data?.username || "avatar"} />
 								) : (
 									<AvatarFallback className="bg-[#F0F0F0]">
 										<UserDefaultIcon />
