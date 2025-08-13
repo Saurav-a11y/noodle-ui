@@ -86,16 +86,16 @@ const ProfileDetails = () => {
 	useEffect(() => {
 		if (!user) return;
 		setFormData({
-			displayName: user?.name || '',
-			username: user?.username || '',
-			email: user?.email || '',
-			birthday: (user as any)?.birthday || '',
-			bio: (user as any)?.bio || (user as any)?.biography || '',
+			displayName: user?.data?.name || '',
+			username: user?.data?.username || '',
+			email: user?.data?.email || '',
+			birthday: (user as any)?.data?.birthday || '',
+			bio: (user as any)?.data?.biography || '',
 		});
 		setCharacterCounts({
-			displayName: (user?.name || '').length,
-			username: (user?.username || '').length,
-			bio: ((user as any)?.bio || (user as any)?.biography || '').length,
+			displayName: (user?.data?.name || '').length,
+			username: (user?.data?.username || '').length,
+			bio: ((user as any)?.data?.biography || '').length,
 		});
 	}, [user]);
 
