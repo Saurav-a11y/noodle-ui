@@ -13,6 +13,7 @@ import BackgroundPage from "@/icons/BackgroundPage";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import ProjectHeader from "@/features/cryptocurrency-detail/components/ProjectHeader";
 import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
+import { ToastContainer } from "react-toastify";
 
 const CryptocurrencyDetailPage = () => {
 
@@ -59,6 +60,7 @@ const CryptocurrencyDetailPage = () => {
 
 	return (
 		<ReactQueryProvider>
+			<ToastContainer />
 			<div className="h-screen flex">
 				{(!isMobile && !isChatVisible) && (
 					<button

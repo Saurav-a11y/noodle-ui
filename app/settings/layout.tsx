@@ -13,6 +13,7 @@ import AnalystIcon from '@/icons/AnalystIcon';
 import NotificationIcon from '@/icons/NotificationIcon';
 import FavouriteIcon from '@/icons/FavouriteIcon';
 import SubscriptionIcon from '@/icons/SubscriptionIcon';
+import { ToastContainer } from 'react-toastify';
 
 const SECTIONS = [
 	{ key: 'profile', label: 'Profile setting', icon: <ProfileIcon height={24} width={24} /> },
@@ -29,6 +30,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
 
 	return (
 		<ReactQueryProvider>
+			<ToastContainer />
 			<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto">
 				<Header />
 				{/* <div className="absolute top-27 md:top-3 w-full flex justify-center">

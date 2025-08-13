@@ -29,6 +29,7 @@ export default function AuthSuccessHandler() {
 
             // Lưu vào cookie hoặc localStorage
             Cookies.set('access_token', token, { expires: 7 }); // 7 ngày
+            Cookies.set("userId", user?.id, { expires: 7 });
             localStorage.setItem('userId', JSON.stringify(user?.id));
 
             // Redirect về trang trước đó nếu có lưu

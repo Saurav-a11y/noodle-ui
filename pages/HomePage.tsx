@@ -27,6 +27,7 @@ import IconSection61 from '@/icons/IconSection61';
 import IconSection62 from '@/icons/IconSection62';
 import BackgroundPage from '@/icons/BackgroundPage';
 import ReactQueryProvider from '@/lib/react-query-provider';
+import { ToastContainer } from 'react-toastify';
 
 interface FeatureCardProps {
 	title: string;
@@ -132,6 +133,7 @@ const skewFadeVariant = {
 const HomePage = () => {
 	return (
 		<ReactQueryProvider>
+			<ToastContainer />
 			<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto font-space">
 				<Header />
 				<div className="absolute top-27 md:top-3 w-full flex justify-center">

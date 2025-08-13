@@ -45,8 +45,8 @@ export const useUpdateUser = ({ userId }) => {
 		mutationFn: async (payload: UpdateUserPayload) => {
 			if (!userId) throw new Error("User ID not found in localStorage");
 
-			const res = await fetch(`${API_BASE}/users/update`, {
-				method: "PUT",
+			const res = await fetch(`${API_BASE}/user/update`, {
+				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -57,11 +57,11 @@ export const useUpdateUser = ({ userId }) => {
 			return res.json();
 		},
 		onSuccess: () => {
-			toast.success("Cập nhật thông tin thành công");
+			toast.success("Information updated successfully");
 			queryClient.invalidateQueries({ queryKey: ["user"] });
 		},
 		onError: () => {
-			toast.error("Cập nhật thất bại");
+			toast.error("Update failed");
 		},
 	});
 };

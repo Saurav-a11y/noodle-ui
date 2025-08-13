@@ -5,10 +5,12 @@ import TopProjectsStats from "@/features/cryptocurrencies/components/TopProjects
 import Header from "@/components/Header";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import BackgroundPage from "@/icons/BackgroundPage";
+import { ToastContainer } from "react-toastify";
 
 const CryptocurrenciesPage = () => {
 	return (
 		<ReactQueryProvider>
+			<ToastContainer />
 			<div className="h-screen relative bg-[#F9F9F9] dark:bg-[#0B0B0B] overflow-auto">
 				<Header />
 				<div className="absolute top-27 md:top-3 w-full flex justify-center">
