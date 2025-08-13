@@ -12,7 +12,7 @@ import { Loader } from 'lucide-react'
 
 const AddToWatchlistButton = () => {
 	const queryClient = useQueryClient();
-	const { user, handleLogin } = useAuth()
+	const { userId, handleLogin } = useAuth()
 	const pathname = usePathname();
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';
@@ -20,10 +20,10 @@ const AddToWatchlistButton = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const { data: inWatchlist = false, isFetching: statusLoading } = useWatchlistStatus({
-		userId: user?.id,
+		userId,
 		code,
 		assetType,
-		enabled: !!user,
+		enabled: !!userId,
 	});
 
 	const addMutation = useAddToWatchlist();
@@ -32,30 +32,30 @@ const AddToWatchlistButton = () => {
 	const loading = statusLoading || addMutation.isPending || removeMutation.isPending;
 
 	const handleClick = () => {
-		if (!user) {
+		if (!userId) {
 			setIsModalOpen(true);
 			return;
 		}
 		if (inWatchlist) {
 			removeMutation.mutate(
-				{ userId: user.id, code },
+				{ userId, code },
 				{
 					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['watchlist', user.id] });
+						queryClient.invalidateQueries({ queryKey: ['watchlist', userId] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', user.id, code, assetType],
+							queryKey: ['watchlist-status', userId, code, assetType],
 						});
 					},
 				}
 			);
 		} else {
 			addMutation.mutate(
-				{ userId: user.id, code, assetType },
+				{ userId, code, assetType },
 				{
 					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['watchlist', user.id] });
+						queryClient.invalidateQueries({ queryKey: ['watchlist', userId] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', user.id, code, assetType],
+							queryKey: ['watchlist-status', userId, code, assetType],
 						});
 					},
 				}
