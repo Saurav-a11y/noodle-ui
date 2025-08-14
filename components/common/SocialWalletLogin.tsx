@@ -26,8 +26,8 @@ const SocialWalletLogin = () => {
 				<DropdownMenuTrigger asChild>
 					<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
 						<Avatar className="h-10 w-10 cursor-pointer">
-							<AvatarImage src={user?.data?.avatar} alt={user?.data?.username} />
-							<AvatarFallback>{user?.data?.name.charAt(0)}</AvatarFallback>
+							<AvatarImage src={user?.avatar} alt={user?.username} />
+							<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 						</Avatar>
 					</div>
 				</DropdownMenuTrigger>
@@ -35,12 +35,12 @@ const SocialWalletLogin = () => {
 					<div className="flex items-center gap-2">
 						<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
 							<Avatar className="h-10 w-10 bg-white">
-								<AvatarImage src={user?.data?.avatar} alt={user?.username} />
-								<AvatarFallback>{user?.data?.name.charAt(0)}</AvatarFallback>
+								<AvatarImage src={user?.avatar} alt={user?.username} />
+								<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 							</Avatar>
 						</div>
 						<div className="space-y-1">
-							<p className="text-[#111] fonr-space text-xs font-medium">{user?.data?.name}</p>
+							<p className="text-[#111] fonr-space text-xs font-medium">{user?.name}</p>
 							<p className="text-[10px] font-medium text-[#494949] bg-[#EBEBEB] rounded-full py-[2px] px-2 w-fit">Free Plan</p>
 						</div>
 					</div>

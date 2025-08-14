@@ -16,16 +16,17 @@ import XIcon from "@/icons/XIcon";
 import LinkIcon from "@/icons/LinkIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import DiscordIcon from "@/icons/DiscordIcon";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useMe } from "@/hooks/useAuth";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
 import { Calendar } from "@/components/ui/Calendar";
-import { useGetUser, useUpdateUser } from "@/hooks/useUser";
+import { useUpdateUser } from "@/hooks/useUser";
 import { useCloudinaryUnsignedUpload } from "@/hooks/useCloudinaryUnsignedUpload";
 
 const ProfileDetails = () => {
 	const { userId } = useAuth();
 	const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
-	const { data: user, isLoading: loadingUser } = useGetUser({ userId });
+	const { data, isFetching } = useMe();
+	const user = data?.data;
 	const updateUser = useUpdateUser({ userId });
 	const { upload, uploading, progress, error } = useCloudinaryUnsignedUpload(
 		'noodles',
@@ -113,20 +114,20 @@ const ProfileDetails = () => {
 	};
 
 	useEffect(() => {
-		if (!user?.data) {
+		if (!user) {
 			setPreviewAvatar(null);
 			setFormData((s) => ({ ...s, avatar: "" }));
 			return;
 		}
-		const ava = user?.data?.avatar || "";
+		const ava = user?.avatar || "";
 		setPreviewAvatar(ava || null);
 		setFormData((s) => ({
 			...s,
-			displayName: user?.data?.name || "",
-			username: user?.data?.username || "",
-			email: user?.data?.email || "",
-			birthday: (user?.data as any)?.birthday || "",
-			bio: (user?.data as any)?.biography || "",
+			displayName: user?.name || "",
+			username: user?.username || "",
+			email: user?.email || "",
+			birthday: (user as any)?.birthday || "",
+			bio: (user as any)?.biography || "",
 			avatar: ava
 		}));
 	}, [user]);
@@ -189,7 +190,7 @@ const ProfileDetails = () => {
 									variant="outline"
 									size="sm"
 									onClick={onPickAvatarClick}
-									disabled={uploading || loadingUser}
+									disabled={uploading || isFetching}
 									className="font-normal cursor-pointer"
 								>
 									<UploadIcon />
@@ -199,7 +200,7 @@ const ProfileDetails = () => {
 									variant="ghost"
 									size="sm"
 									onClick={onRemoveAvatar}
-									disabled={uploading || loadingUser || !previewAvatar}
+									disabled={uploading || isFetching || !previewAvatar}
 									className="text-muted-foreground font-normal cursor-pointer"
 								>
 									Remove
@@ -334,7 +335,7 @@ const ProfileDetails = () => {
 					<Button
 						className="relative transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer"
 						onClick={onSave}
-						disabled={updateUser.isPending || loadingUser}
+						disabled={updateUser.isPending || isFetching}
 					>
 						{updateUser.isPending && (
 							<span className="absolute inset-0 grid place-items-center">
