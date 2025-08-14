@@ -3,6 +3,7 @@
 
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function AuthSuccessHandler() {
     const router = useRouter();
@@ -16,6 +17,7 @@ export default function AuthSuccessHandler() {
         }
         try {
             const user = JSON.parse(decodeURIComponent(userParam));
+            Cookies.set("auth_token", token);
             localStorage.setItem('auth_token', token);
             localStorage.setItem('user', JSON.stringify(user));
             const back = localStorage.getItem('redirectAfterLogin') || '/';
