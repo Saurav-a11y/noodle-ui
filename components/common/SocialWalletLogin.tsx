@@ -16,7 +16,9 @@ const SocialWalletLogin = () => {
 	const { handleLogout } = useAuth();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { data } = useMe();
+	console.log("🚀 ~ SocialWalletLogin ~ data:", data)
 	const user = data?.data;
+	console.log("🚀 ~ SocialWalletLogin ~ user:", user)
 
 	if (user) {
 		return (
