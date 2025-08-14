@@ -19,7 +19,7 @@ export const useAuth = () => {
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem("user");
+		localStorage.removeItem("auth_token");
 		setUserId(null);
 	};
 
