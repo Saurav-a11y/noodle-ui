@@ -12,7 +12,7 @@ import { Loader } from 'lucide-react'
 
 const AddToWatchlistButton = () => {
 	const queryClient = useQueryClient();
-	const { userId, handleLogin } = useAuth()
+	const { userId } = useAuth()
 	const pathname = usePathname();
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';
@@ -90,7 +90,7 @@ const AddToWatchlistButton = () => {
 				</button>
 			</div>
 
-			<LoginModal open={isModalOpen} onOpenChange={setIsModalOpen} handleLogin={handleLogin} />
+			<LoginModal open={isModalOpen} onOpenChange={setIsModalOpen} />
 		</>
 	)
 }

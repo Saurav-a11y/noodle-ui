@@ -3,45 +3,28 @@
 
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
-import Cookies from 'js-cookie';
 
 export default function AuthSuccessHandler() {
     const router = useRouter();
-    const searchParams = useSearchParams();
+    const sp = useSearchParams();
 
     useEffect(() => {
-        if (!searchParams) {
-            router.push('/auth/failed'); // fallback nếu searchParams is null
-            return;
+        const token = sp?.get('token');
+        const userParam = sp?.get('user');
+        if (!token || !userParam) {
+            router.replace('/auth-failed'); return;
         }
-
-        const userParam = searchParams.get('user');
-        const token = searchParams.get('token');
-
-        if (!userParam || !token) {
-            router.push('/auth/failed'); // fallback nếu thiếu param
-            return;
-        }
-
         try {
-            // Giải mã user
             const user = JSON.parse(decodeURIComponent(userParam));
-
-            // Lưu vào cookie hoặc localStorage
-            Cookies.set('access_token', token, { expires: 7 }); // 7 ngày
-            Cookies.set("userId", user?.id, { expires: 7 });
-            localStorage.setItem('userId', JSON.stringify(user?.id));
-
-            // Redirect về trang trước đó nếu có lưu
-            const redirectTo = localStorage.getItem('redirectAfterLogin') || '/homepage';
+            localStorage.setItem('auth_token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            const back = localStorage.getItem('redirectAfterLogin') || '/';
             localStorage.removeItem('redirectAfterLogin');
-
-            router.push(redirectTo);
-        } catch (error) {
-            console.error('Invalid user data:', error);
-            router.push('/auth/failed');
+            router.replace(back);
+        } catch {
+            router.replace('/auth-failed');
         }
-    }, []);
+    }, [sp, router]);
 
-    return <p>Redirecting...</p>;
+    return <p>Signing you in…</p>;
 }

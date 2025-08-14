@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/DropdownMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import LoginModal from "../LoginModal";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useMe } from "@/hooks/useAuth";
 import LogoutIcon from "@/icons/LogoutIcon";
 import ShieldIcon from "@/icons/ShieldIcon";
 import NotificationIcon from "@/icons/NotificationIcon";
@@ -11,13 +11,12 @@ import FavouriteIcon from "@/icons/FavouriteIcon";
 import AnalystIcon from "@/icons/AnalystIcon";
 import Link from "next/link";
 import ProfileIcon from "@/icons/ProfileIcon";
-import { useGetUser } from "@/hooks/useUser";
 
 const SocialWalletLogin = () => {
-	const { userId, handleLogin, handleLogout } = useAuth();
+	const { handleLogout } = useAuth();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { data: user } = useGetUser({ userId });
-	console.log("🚀 ~ SocialWalletLogin ~ user:", user)
+	const { data } = useMe();
+	const user = data?.data;
 
 	if (user) {
 		return (
@@ -96,7 +95,6 @@ const SocialWalletLogin = () => {
 			<LoginModal
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}
-				handleLogin={handleLogin}
 			/>
 		</>
 	);

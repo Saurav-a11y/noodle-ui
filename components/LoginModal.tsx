@@ -7,14 +7,15 @@ import PhantomIcon from "@/icons/PhantomIcon";
 import Telegram2Icon from "@/icons/Telegram2Icon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/Dialog";
 import TwitterIcon from "@/icons/TwitterIcon";
+import { startTwitterLogin } from "@/hooks/useAuth";
 
 type LoginModalProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	handleLogin: () => void;
+	// handleLogin: () => void;
 };
 
-export default function LoginModal({ open, onOpenChange, handleLogin }: LoginModalProps) {
+export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 	const socialProviders = [
 		{ name: 'Google', icon: <GoogleIcon /> },
 		{ name: 'GitHub', icon: <Github2Icon /> },
@@ -42,7 +43,7 @@ export default function LoginModal({ open, onOpenChange, handleLogin }: LoginMod
 						</h3>
 						<div className="space-y-3">
 							<button
-								onClick={handleLogin}
+								onClick={() => startTwitterLogin()}
 								className="w-full hover:bg-[#F8FAFD] dark:hover:bg-[#222] cursor-pointer text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 dark:text-white"
 							>
 								<TwitterIcon />

@@ -48,17 +48,39 @@ export function useMe(opts?: { enabled?: boolean }) {
 		queryKey: ['me'],
 		enabled: opts?.enabled ?? true,
 		retry: false,
-		refetchOnWindowFocus: false,
 		queryFn: async () => {
-			const res = await fetch('https://data-api.agentos.cloud/api/v2/auth/me', {
-				credentials: 'include' // ✅ gửi cookie token
+			const token = localStorage.getItem('auth_token');
+			if (!token) return null;
+			const res = await fetch(`https://data-api.agentos.cloud/api/v2/auth/me`, {
+				headers: { Authorization: `Bearer ${token}` },
 			});
-			console.log("🚀 ~ queryFn: ~ res:", res)
 			if (res.status === 401) return null;
 			if (!res.ok) throw new Error('Failed to fetch /me');
 			return res.json();
 		},
 	});
+}
+
+export function useStartTwitterLogin() {
+	return useMutation({
+		mutationFn: async () => {
+			const res = await fetch(`https://data-api.agentos.cloud/api/v2/auth/twitter`);
+			if (!res.ok) throw new Error('Failed to get Twitter login URL');
+			const data = await res.json();
+			return data.url as string;
+		},
+		onSuccess: (url) => {
+			window.location.href = url;
+		},
+	});
+}
+
+export async function startTwitterLogin() {
+	localStorage.setItem("redirectAfterLogin", window.location.pathname);
+	const res = await fetch('https://data-api.agentos.cloud/api/v2/auth/twitter');
+	if (!res.ok) throw new Error('Failed to get twitter auth url');
+	const data = await res.json(); // { url }
+	window.location.href = data.url; // chuyển sang Twitter
 }
 
 export const useTwitterLogin = () => {

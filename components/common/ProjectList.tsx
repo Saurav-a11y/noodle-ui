@@ -41,7 +41,7 @@ const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading, h
                             <div className="flex items-center gap-3 font-noto">
                                 <span className="text-xs font-medium w-4">{project?.rank}</span>
                                 <div className="w-8 h-8 flex items-center justify-center text-sm">
-                                    {hasIcon ? project?.medium_logo_url : <Image src={project?.medium_logo_url} alt="Symbol" width={64} height={64} className="rounded-full" />}
+                                    {hasIcon ? project?.medium_logo_url : <Image src={project?.medium_logo_url ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />}
                                 </div>
                                 <span className="text-sm font-medium">{project?.name}</span>
                             </div>
