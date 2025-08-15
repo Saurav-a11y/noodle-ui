@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuth, useMe } from '@/hooks/useAuth'
+import { useMe } from '@/hooks/useAuth'
 import HeartIcon from '@/icons/HeartIcon'
 import LoginModal from '../LoginModal'
 import { useAddToWatchlist, useRemoveFromWatchlist, useWatchlistStatus } from '@/hooks/useWatchlist'
