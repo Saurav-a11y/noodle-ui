@@ -194,8 +194,9 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 											<label className="inline-flex items-center gap-2 cursor-pointer select-none">
 												<input
 													type="checkbox"
-													className="h-4 w-4"
+													className="h-4 w-4 cursor-pointer"
 													checked={checked}
+													onClick={(e) => e.stopPropagation()}
 													onChange={() =>
 														setSelected((s) => ({ ...s, [c.code]: !s[c.code] }))
 													}
