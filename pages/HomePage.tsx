@@ -28,6 +28,7 @@ import IconSection62 from '@/icons/IconSection62';
 import BackgroundPage from '@/icons/BackgroundPage';
 import ReactQueryProvider from '@/lib/react-query-provider';
 import { ToastContainer } from 'react-toastify';
+import Link from 'next/link';
 
 interface FeatureCardProps {
 	title: string;
@@ -150,7 +151,7 @@ const HomePage = () => {
 						viewport={{ once: true, amount: 0.3 }}
 					>
 						<div className="relative">
-							<div className="space-y-6 px-6 md:px-0 py-20 container mx-auto">
+							<div className="relative space-y-6 px-6 md:px-0 py-20 container mx-auto z-30">
 								<motion.div
 									variants={skewFadeVariant}
 									initial="hidden"
@@ -180,21 +181,23 @@ const HomePage = () => {
 											<PlayIcon />
 										</div>
 									</motion.div>
-									<motion.div
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.97 }}
-										transition={{ type: 'spring', stiffness: 300 }}
-										className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] px-8 py-4 cursor-pointer rounded font-medium flex items-center gap-2 text-black"
-									>
-										<p>Begin Your Journey</p>
-										<PlayBlackIcon />
-									</motion.div>
+									<Link href="/cryptocurrencies">
+										<motion.div
+											whileHover={{ scale: 1.05 }}
+											whileTap={{ scale: 0.97 }}
+											transition={{ type: 'spring', stiffness: 300 }}
+											className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] px-8 py-4 cursor-pointer rounded font-medium flex items-center gap-2 text-black"
+										>
+											<p>Begin Your Journey</p>
+											<PlayBlackIcon />
+										</motion.div>
+									</Link>
 								</div>
 								<div className="flex justify-center">
 									<IconSection1_1 />
 								</div>
 							</div>
-							<div className="absolute bottom-0 w-full flex justify-center">
+							<div className="absolute bottom-0 w-full flex justify-center z-20">
 								<BackgroundSection1 />
 							</div>
 						</div>
