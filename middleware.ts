@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const PROTECTED = ['/settings'];
+const PROTECTED = [];
 
 export function middleware(req: NextRequest) {
     const isProtected = PROTECTED.some(p => req.nextUrl.pathname.startsWith(p));
@@ -17,5 +17,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/settings/:path*'],
+    matcher: [],
 };

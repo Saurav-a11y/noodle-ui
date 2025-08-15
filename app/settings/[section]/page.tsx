@@ -1,6 +1,7 @@
 // app/settings/[section]/page.tsx
 'use client';
 
+import ComingSoon from '@/components/common/ComingSoon';
 import AccountAnalytics from '@/features/settings/AccountAnalytics';
 import AccountSecurity from '@/features/settings/AccountSecurity';
 import ProfileDetails from '@/features/settings/ProfileDetails';
@@ -11,9 +12,9 @@ const SectionMap: Record<string, React.ReactNode> = {
 	profile: <ProfileDetails />,
 	security: <AccountSecurity />,
 	analytics: <AccountAnalytics />,
-	notifications: <div>Notification settings…</div>,
+	notifications: <ComingSoon />,
 	watchlist: <WatchlistPortfolio />,
-	subscription: <div>Subscription settings…</div>,
+	subscription: <ComingSoon />,
 };
 
 export default function SettingsSectionPage() {
