@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth, useMe } from '@/hooks/useAuth'
 import HeartIcon from '@/icons/HeartIcon'
 import LoginModal from '../LoginModal'
 import { useAddToWatchlist, useRemoveFromWatchlist, useWatchlistStatus } from '@/hooks/useWatchlist'
@@ -12,7 +12,7 @@ import { Loader } from 'lucide-react'
 
 const AddToWatchlistButton = () => {
 	const queryClient = useQueryClient();
-	const { userId } = useAuth()
+	const { data } = useMe()
 	const pathname = usePathname();
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';
@@ -20,10 +20,10 @@ const AddToWatchlistButton = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const { data: inWatchlist = false, isFetching: statusLoading } = useWatchlistStatus({
-		userId,
+		userId: data?.data?.id,
 		code,
 		assetType,
-		enabled: !!userId,
+		enabled: !!data?.data?.id,
 	});
 
 	const addMutation = useAddToWatchlist();
@@ -32,30 +32,30 @@ const AddToWatchlistButton = () => {
 	const loading = statusLoading || addMutation.isPending || removeMutation.isPending;
 
 	const handleClick = () => {
-		if (!userId) {
+		if (!data?.data?.id) {
 			setIsModalOpen(true);
 			return;
 		}
 		if (inWatchlist) {
 			removeMutation.mutate(
-				{ userId, code },
+				{ userId: data?.data?.id, code },
 				{
 					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['watchlist', userId] });
+						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', userId, code, assetType],
+							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
 						});
 					},
 				}
 			);
 		} else {
 			addMutation.mutate(
-				{ userId, code, assetType },
+				{ userId: data?.data?.id, code, assetType },
 				{
 					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['watchlist', userId] });
+						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', userId, code, assetType],
+							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
 						});
 					},
 				}

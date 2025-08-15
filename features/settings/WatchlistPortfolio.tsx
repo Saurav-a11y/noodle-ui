@@ -9,7 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/Table";
-import { useAuth } from "@/hooks/useAuth";
+import { useMe } from "@/hooks/useAuth";
 import { useGetWatchlist, useRemoveFromWatchlist } from "@/hooks/useWatchlist";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatNumberWithCommas } from "@/lib/format";
@@ -18,9 +18,9 @@ import { Trash2Icon } from "lucide-react";
 import AddAssetModal from "../watchlist/components/AddAssetModal";
 
 const WatchlistPortfolio = () => {
-	const { userId } = useAuth()
 	const queryClient = useQueryClient();
-	const { data, isLoading } = useGetWatchlist(userId || "");
+	const { data: userData } = useMe()
+	const { data, isLoading } = useGetWatchlist(userData?.data?.id || "");
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
 	const [busyById, setBusyById] = useState<Record<string, boolean>>({});
@@ -44,11 +44,11 @@ const WatchlistPortfolio = () => {
 
 	const handleRemove = async (asset: any) => {
 		const assetId = asset.assetId ?? asset.id;
-		if (!assetId || !userId) return;
+		if (!assetId || !userData?.data?.id) return;
 
 		setBusyById(s => ({ ...s, [assetId]: true }));
 
-		const qk = ['watchlist', userId];
+		const qk = ['watchlist', userData?.data?.id];
 		const prev = queryClient.getQueryData(qk);
 
 		// Optimistic update
@@ -64,7 +64,7 @@ const WatchlistPortfolio = () => {
 		});
 
 		try {
-			await removeFromWatchlist.mutateAsync({ userId, code: String(assetId) });
+			await removeFromWatchlist.mutateAsync({ userId: userData?.data?.id, code: String(assetId) });
 		} catch (e) {
 			// rollback nếu lỗi
 			queryClient.setQueryData(qk, prev);
@@ -216,7 +216,7 @@ const WatchlistPortfolio = () => {
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}
 				onSave={() => { }}
-				userId={userId || ""}
+				userId={userData?.data?.id || ""}
 				assetType={''}
 			/>
 		</div>

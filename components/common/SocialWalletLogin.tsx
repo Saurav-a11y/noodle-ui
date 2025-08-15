@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/DropdownMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import LoginModal from "../LoginModal";
-import { useAuth, useMe } from "@/hooks/useAuth";
+import { useMe } from "@/hooks/useAuth";
 import LogoutIcon from "@/icons/LogoutIcon";
 import ShieldIcon from "@/icons/ShieldIcon";
 import NotificationIcon from "@/icons/NotificationIcon";
@@ -11,15 +11,17 @@ import FavouriteIcon from "@/icons/FavouriteIcon";
 import AnalystIcon from "@/icons/AnalystIcon";
 import Link from "next/link";
 import ProfileIcon from "@/icons/ProfileIcon";
+import { useRouter } from "next/navigation";
 
 const SocialWalletLogin = () => {
-	const { handleLogout } = useAuth();
+	const router = useRouter();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { data } = useMe();
-	console.log("🚀 ~ SocialWalletLogin ~ data:", data)
 	const user = data?.data;
-	console.log("🚀 ~ SocialWalletLogin ~ user:", user)
-
+	const handleLogout = () => {
+		localStorage.removeItem("auth_token");
+		router.push("/");
+	};
 	if (user) {
 		return (
 			<DropdownMenu>

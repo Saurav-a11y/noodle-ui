@@ -16,18 +16,17 @@ import XIcon from "@/icons/XIcon";
 import LinkIcon from "@/icons/LinkIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import DiscordIcon from "@/icons/DiscordIcon";
-import { useAuth, useMe } from "@/hooks/useAuth";
+import { useMe } from "@/hooks/useAuth";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
 import { Calendar } from "@/components/ui/Calendar";
 import { useUpdateUser } from "@/hooks/useUser";
 import { useCloudinaryUnsignedUpload } from "@/hooks/useCloudinaryUnsignedUpload";
 
 const ProfileDetails = () => {
-	const { userId } = useAuth();
 	const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
 	const { data, isFetching } = useMe();
 	const user = data?.data;
-	const updateUser = useUpdateUser({ userId });
+	const updateUser = useUpdateUser({ userId: user?.id });
 	const { upload, uploading, progress, error } = useCloudinaryUnsignedUpload(
 		'noodles',
 		{ folder: 'avatar', maxFileSizeMB: 5, accept: ['image/jpeg', 'image/png', 'image/webp'] }
