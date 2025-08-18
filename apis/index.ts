@@ -190,3 +190,20 @@ export const sayHello = async () => {
 	if (!res.ok) throw new Error('Failed to fetch chat from agent');
 	return res.text();
 };
+
+export async function upsertHoldingsApi(input: {
+	userId: string;
+	assetId: string;
+	holdings: number;
+}) {
+	const res = await fetch(`${BASE_URL}/watchlist/holdings`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(input),
+	});
+	if (!res.ok) {
+		const text = await res.text().catch(() => '');
+		throw new Error(text || 'Failed to upsert holdings');
+	}
+	return res.json(); // { ok: true, action: 'updated' | 'inserted', ... }
+}

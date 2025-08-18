@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import {
 	Table,
@@ -10,22 +10,106 @@ import {
 	TableRow,
 } from "@/components/ui/Table";
 import { useMe } from "@/hooks/useAuth";
-import { useGetWatchlist, useRemoveFromWatchlist } from "@/hooks/useWatchlist";
+import { useGetWatchlist, useRemoveFromWatchlist, useUpsertHoldings } from "@/hooks/useWatchlist";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatNumberWithCommas } from "@/lib/format";
 import Image from "next/image";
-import { Trash2Icon } from "lucide-react";
+import { PlusCircle, Trash2Icon } from "lucide-react";
 import AddAssetModal from "../watchlist/components/AddAssetModal";
+
+type HoldingEditState = {
+	editing: boolean;
+};
+
+const EditableHoldingsCell = ({
+	value,
+	usdValue = 0,
+	editing = false,
+	onChangeValue,
+	onCommit,      // gọi khi cần commit (blur / Enter)
+}: {
+	value: string;                     // <-- controlled
+	usdValue?: number;
+	editing?: boolean;
+	onChangeValue: (v: string) => void;
+	onCommit: () => void;
+}) => {
+	const [local, setLocal] = useState<HoldingEditState>({
+		editing,
+	});
+
+	// sync khi parent đổi editing
+	useEffect(() => {
+		setLocal((s) => ({ ...s, editing }));
+	}, [editing]);
+
+	const onChangeNumber = (raw: string) => {
+		if (raw === '') return onChangeValue('');
+		const cleaned = raw
+			.replace(/[^\d.]/g, '')
+			.replace(/^0+(\d)/, '$1')
+			.replace(/(\..*)\./g, '$1');
+		onChangeValue(cleaned);
+	};
+
+	const commit = () => {
+		onChangeValue(value === '' ? '0' : value);
+		onCommit();
+	};
+
+	return (
+		<div className="font-noto font-medium">
+			{local.editing ? (
+				<input
+					autoFocus
+					type="text"
+					inputMode="decimal"
+					className="text-xs w-[120px] border rounded px-2 py-1 outline-none"
+					value={value}
+					onChange={(e) => onChangeNumber(e.target.value)}
+					onBlur={commit}
+					onKeyDown={(e) => { if (e.key === 'Enter') commit(); }}
+				/>
+			) : (
+				<p className="text-xs truncate max-w-[120px]">{value || '0'}</p>
+			)}
+			<p className="text-[10px] opacity-50">
+				${formatNumberWithCommas(usdValue * (parseFloat(value || '0') || 0))}
+			</p>
+		</div>
+	);
+};
 
 const WatchlistPortfolio = () => {
 	const queryClient = useQueryClient();
 	const { data: userData } = useMe()
 	const { data, isLoading } = useGetWatchlist(userData?.data?.id || "");
 	const removeFromWatchlist = useRemoveFromWatchlist();
-
+	const upsertHoldings = useUpsertHoldings(userData?.data?.id);
 	const [busyById, setBusyById] = useState<Record<string, boolean>>({});
 	const [activeTab, setActiveTab] = useState("All Assets");
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [editingId, setEditingId] = useState<string | null>(null);
+	const [holdingsDraft, setHoldingsDraft] = useState<Record<string, string>>({});
+
+	const startEdit = (assetId: string, initial: string) => {
+		setHoldingsDraft((s) => ({ ...s, [assetId]: initial ?? '0' }));
+		setEditingId(assetId);
+	};
+
+	const commitEdit = (assetId: string) => {
+		const raw = holdingsDraft[assetId] ?? '0';
+		const val = Number(raw || 0);
+		if (!Number.isFinite(val)) return;
+		if (!userData?.data?.id) return;
+
+		upsertHoldings.mutate({
+			userId: userData.data.id,
+			assetId,
+			holdings: val,
+		});
+		setEditingId(null);
+	};
 
 	const items = data?.data?.items ?? [];
 	const totalItems = data?.data?.totals?.tokens || 0
@@ -76,7 +160,7 @@ const WatchlistPortfolio = () => {
 			}, 500);
 		}
 	};
-
+	const showEmpty = !isLoading && items.length === 0
 	return (
 		<div className="space-y-5 text-[#2F2F2F]">
 			<div>
@@ -135,6 +219,7 @@ const WatchlistPortfolio = () => {
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Market Cap</TableHead>
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Volume(24h)</TableHead>
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Circulating Supply</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Holdings</TableHead>
 								<TableHead className="w-12 text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Actions</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -142,7 +227,7 @@ const WatchlistPortfolio = () => {
 							{isLoading
 								? Array.from({ length: 5 }).map((_, i) => (
 									<TableRow key={i} className="animate-pulse">
-										{Array.from({ length: 7 }).map((_, j) => (
+										{Array.from({ length: 8 }).map((_, j) => (
 											<TableCell key={j} className="py-4 h-[73px] border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 												<div className="h-6 bg-gray-200 dark:bg-[#333] rounded animate-pulse w-full" />
 											</TableCell>
@@ -152,6 +237,10 @@ const WatchlistPortfolio = () => {
 								: items.map((asset) => {
 									const assetId = asset.assetId;
 									const busy = !!busyById[assetId];
+									const price = asset?.overview?.market?.close || 0;
+									const isEditing = editingId === assetId;
+									const draftValue = holdingsDraft[assetId] ?? String(asset?.holdings ?? '0');
+
 									return (
 										<TableRow key={asset.assetId} className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors">
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
@@ -181,17 +270,45 @@ const WatchlistPortfolio = () => {
 												{formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-												<button
-													onClick={() => handleRemove(asset)}
-													disabled={busy}
-													className="cursor-pointer relative grid place-items-center h-6 w-6 rounded disabled:opacity-60 disabled:cursor-not-allowed"
-												>
-													{busy ? (
-														<span className="h-4 w-4 animate-spin border-2 border-yellow-500 border-t-transparent rounded-full" />
-													) : (
-														<Trash2Icon className="w-4 h-4" />
-													)}
-												</button>
+												<EditableHoldingsCell
+													value={draftValue}
+													usdValue={price}
+													editing={isEditing}
+													onChangeValue={(v) =>
+														setHoldingsDraft((s) => ({ ...s, [assetId]: v }))
+													}
+													onCommit={() => commitEdit(assetId)}
+												/>
+											</TableCell>
+											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+												<div className="flex items-center gap-2">
+													<button
+														onMouseDown={(e) => e.preventDefault()}
+														onClick={() => {
+															if (!isEditing) {
+																startEdit(assetId, String(asset?.holdings ?? '0'));
+															} else {
+																commitEdit(assetId);
+															}
+														}}
+														className="cursor-pointer relative grid place-items-center h-6 w-6 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+														title={isEditing ? 'Save holdings' : 'Edit holdings'}
+													>
+														<PlusCircle className="w-4 h-4" />
+													</button>
+													<button
+														onMouseDown={(e) => e.preventDefault()}
+														onClick={() => handleRemove(asset)}
+														disabled={busy}
+														className="cursor-pointer relative grid place-items-center h-6 w-6 rounded-full disabled:opacity-60 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+													>
+														{busy ? (
+															<span className="h-4 w-4 animate-spin border-2 border-yellow-500 border-t-transparent rounded-full" />
+														) : (
+															<Trash2Icon className="w-4 h-4" />
+														)}
+													</button>
+												</div>
 											</TableCell>
 										</TableRow>
 									)

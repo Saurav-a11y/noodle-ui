@@ -1,4 +1,8 @@
+import { upsertHoldingsApi } from '@/apis';
 import { useQuery, useQueryClient, useMutation, useInfiniteQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+
+type UpsertVars = { userId: string; assetId: string; holdings: number };
 
 export const useWatchlistStatus = (params: {
 	userId?: string;
@@ -181,3 +185,46 @@ export const useGetStableCoins = (enabled = true) => {
 		refetchOnMount: false,         // nếu đã có cache
 	});
 };
+
+export function useUpsertHoldings(userId: string | undefined) {
+	const qc = useQueryClient();
+
+	return useMutation({
+		mutationFn: (vars: UpsertVars) => upsertHoldingsApi(vars),
+		onMutate: async ({ assetId, holdings }) => {
+			if (!userId) return;
+			const qk = ['watchlist', userId];
+
+			// cancel queries để tránh ghi đè
+			await qc.cancelQueries({ queryKey: qk });
+			const previous = qc.getQueryData<any>(qk);
+
+			// optimistic update: set holdings cho item tương ứng
+			qc.setQueryData(qk, (old: any) => {
+				if (!old?.data?.items) return old;
+				const items = old.data.items.map((it: any) =>
+					String(it.assetId ?? it.id) === String(assetId)
+						? { ...it, holdings }
+						: it
+				);
+				return { ...old, data: { ...old.data, items } };
+			});
+
+			return { previous, qk };
+		},
+		onSuccess: () => {
+			toast.success("Holdings updated successfully");
+		},
+		onError: (_err, _vars, ctx) => {
+			if (ctx?.previous) {
+				// rollback nếu lỗi
+				qc.setQueryData(ctx.qk!, ctx.previous);
+			}
+			toast.error("Failed to update holdings");
+		},
+		onSettled: () => {
+			if (!userId) return;
+			qc.invalidateQueries({ queryKey: ['watchlist', userId] });
+		},
+	});
+}
