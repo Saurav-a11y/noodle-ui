@@ -81,7 +81,7 @@ const StableCoinsTable = () => {
 									{asset?.marketCap ? `${formatNumberWithCommas(asset?.marketCap)}` : '--'}
 								</TableCell>
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									{asset?.brief_information}
+									{asset?.brief_info}
 								</TableCell>
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 									{asset?.mechanism}
