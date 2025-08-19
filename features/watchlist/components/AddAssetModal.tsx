@@ -123,30 +123,30 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="sm:max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none" onOpenAutoFocus={(e) => e.preventDefault()}>
 				<DialogHeader className="p-6 pb-4">
-					<div className="flex items-center justify-between">
+					<div className="flex items-center justify-between dark:text-white">
 						<DialogTitle className="text-xl font-semibold">Add New Asset</DialogTitle>
 					</div>
 				</DialogHeader>
 
 				<div className="px-6">
 					<div className="relative">
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 dark:text-white" />
 						<Input
 							placeholder="Search coins"
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
-							className="pl-10 bg-muted/50 outline-none focus:outline-none"
+							className="pl-10 bg-muted/50 outline-none focus:outline-none dark:border-white dark:text-white"
 						/>
 					</div>
 				</div>
 
 				<div>
-					<h3 className="text-sm font-medium text-muted-foreground mb-4 px-4">Top ranking coins</h3>
+					<h3 className="text-sm font-medium mb-4 px-4 dark:text-white">Top ranking coins</h3>
 					<div ref={listRef} onScroll={handleScroll} className="max-h-80 overflow-y-auto">
 						{isLoading ? (
-							<div className="py-10 grid place-items-center text-sm opacity-70">Loading…</div>
+							<div className="py-10 grid place-items-center text-sm opacity-70 dark:text-white">Loading…</div>
 						) : flat.length === 0 ? (
-							<div className="py-10 grid place-items-center text-sm opacity-70">No results</div>
+							<div className="py-10 grid place-items-center text-sm opacity-70 dark:text-white">No results</div>
 						) : (
 							flat.map((c: any, index: number) => {
 								const keyId = c.code;
@@ -180,12 +180,12 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 												{c.logo ? (
 													<Image src={c.logo} alt={c.symbol} width={32} height={32} />
 												) : (
-													<span className="text-xs">{c.symbol?.slice(0, 2)}</span>
+													<span className="text-xs dark:text-white">{c.symbol?.slice(0, 2)}</span>
 												)}
 											</div>
 											<div>
-												<div className="text-sm font-medium">{c.name}</div>
-												<div className="text-xs opacity-60">{c.symbol}</div>
+												<div className="text-sm font-medium dark:text-white">{c.name}</div>
+												<div className="text-xs opacity-60 dark:text-white">{c.symbol}</div>
 											</div>
 										</div>
 										{c.added ? (
@@ -212,7 +212,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 						<div ref={sentinelRef} />
 
 						{isFetchingNextPage && (
-							<div className="py-4 text-center text-xs opacity-70">Loading more…</div>
+							<div className="py-4 text-center text-xs opacity-70 dark:text-white">Loading more…</div>
 						)}
 					</div>
 				</div>

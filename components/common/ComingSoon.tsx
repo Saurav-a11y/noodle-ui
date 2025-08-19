@@ -7,8 +7,8 @@ const ComingSoon = () => {
 				<span className="inline-block mr-2 gradient-letter">M</span>
 				<span className="inline-block mr-2 gradient-letter">I</span>
 				<span className="inline-block mr-2 gradient-letter">N</span>
-				<span className="inline-block mr-2 gradient-letter">G</span>
-				<span className="inline-block mr-2 gradient-letter">S</span>
+				<span className="inline-block mr-4 gradient-letter">G</span>
+				<span className="inline-block ml-4 gradient-letter">S</span>
 				<span className="inline-block mr-2 gradient-letter">O</span>
 				<span className="inline-block mr-2 gradient-letter">O</span>
 				<span className="inline-block mr-2 gradient-letter">N</span>

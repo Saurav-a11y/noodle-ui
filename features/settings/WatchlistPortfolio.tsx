@@ -71,7 +71,7 @@ const EditableHoldingsCell = ({
 					onKeyDown={(e) => { if (e.key === 'Enter') commit(); }}
 				/>
 			) : (
-				<p className="text-xs truncate max-w-[120px]">{value || '0'}</p>
+				<p className="text-xs truncate max-w-[120px]">{formatNumberWithCommas(parseFloat(value || '0'))}</p>
 			)}
 			<p className="text-[10px] opacity-50">
 				${formatNumberWithCommas(usdValue * (parseFloat(value || '0') || 0))}
@@ -113,8 +113,11 @@ const WatchlistPortfolio = () => {
 
 	const items = data?.data?.items ?? [];
 	const totalItems = data?.data?.totals?.tokens || 0
-	const totalPrices = data?.data?.totals?.close || 0
-
+	const totalPrices = items.reduce((sum, asset) => {
+		const holdings = Number(asset?.holdings ?? 0);
+		const price = Number(asset?.overview?.market?.close ?? 0);
+		return sum + holdings * price;
+	}, 0);
 	const tabs = [
 		"All Assets",
 		// "Crypto", 
@@ -160,30 +163,30 @@ const WatchlistPortfolio = () => {
 			}, 500);
 		}
 	};
-	const showEmpty = !isLoading && items.length === 0
+
 	return (
 		<div className="space-y-5 text-[#2F2F2F]">
 			<div>
-				<p className="font-medium font-space mb-1">Watchlist & Portfolio</p>
-				<p className="text-xs font-noto">Track your assets and portfolio performance</p>
+				<p className="dark:text-white font-medium font-space mb-1">Watchlist & Portfolio</p>
+				<p className="dark:text-white text-xs font-noto">Track your assets and portfolio performance</p>
 			</div>
 
 			{/* Portfolio Stats */}
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 font-noto flex justify-between">
 				<div className="flex items-center gap-20">
 					<div>
-						<div className="text-xs opacity-50 mb-2">Total Portfolio Value:</div>
-						<div className="text-xl font-semibold">${formatNumberWithCommas(totalPrices)}</div>
+						<div className="dark:text-white text-xs opacity-50 mb-2">Total Portfolio Value:</div>
+						<div className="dark:text-white text-xl font-semibold">${formatNumberWithCommas(totalPrices)}</div>
 					</div>
 					<div>
-						<div className="text-xs opacity-50 mb-2">Assets in Portfolio:</div>
-						<div className="text-xl font-semibold">{formatNumberWithCommas(totalItems)}</div>
+						<div className="dark:text-white text-xs opacity-50 mb-2">Assets in Portfolio:</div>
+						<div className="dark:text-white text-xl font-semibold">{formatNumberWithCommas(totalItems)}</div>
 					</div>
 				</div>
 				<Button
 					variant="outline"
 					size="sm"
-					className="cursor-pointer w-fit bg-[#F8F8F8] border border-[#2F2F2F] font-noto text-[#494949] font-normal text-xs"
+					className="cursor-pointer w-fit dark:bg-white bg-[#F8F8F8] border border-[#2F2F2F] font-noto text-[#494949] font-normal text-xs"
 					onClick={handleAddAsset}
 				>
 					+ Add Asset to Portfolio
@@ -193,7 +196,7 @@ const WatchlistPortfolio = () => {
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 font-noto">
 				{/* Portfolio Section */}
 				<div className="space-y-4">
-					<h3 className="text-sm font-medium">My Portfolio & Watchlist</h3>
+					<h3 className="dark:text-white text-sm font-medium">My Portfolio & Watchlist</h3>
 					{/* Tabs */}
 					<div className="flex gap-2">
 						{tabs.map((tab) => (
@@ -214,13 +217,13 @@ const WatchlistPortfolio = () => {
 						<TableHeader className="dark:bg-[#1A1A1A]">
 							<TableRow className="border-b">
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">#</TableHead>
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Asset</TableHead>
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Price</TableHead>
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Market Cap</TableHead>
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Volume(24h)</TableHead>
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Circulating Supply</TableHead>
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Holdings</TableHead>
-								<TableHead className="w-12 text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Actions</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Asset</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Price</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Market Cap</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Volume(24h)</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Circulating Supply</TableHead>
+								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Holdings</TableHead>
+								<TableHead className="w-12 text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tr-lg font-normal">Actions</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -243,7 +246,7 @@ const WatchlistPortfolio = () => {
 
 									return (
 										<TableRow key={asset.assetId} className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors">
-											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<TableCell className="dark:text-white border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 												{asset?.overview?.valuation?.crypto_total_rank}
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
@@ -251,25 +254,25 @@ const WatchlistPortfolio = () => {
 													<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
 														<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
 													</div>
-													<div className="flex-1">
+													<div className="flex-1 dark:text-white">
 														<div className="font-medium">{asset?.overview?.info?.base_currency_desc}</div>
 														<div className="text-sm text-muted-foreground">{asset?.overview?.info?.base_currency}</div>
 													</div>
 												</div>
 											</TableCell>
-											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												${formatNumberWithCommas(asset?.overview?.market?.close)}
 											</TableCell>
-											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												${formatNumberWithCommas(asset?.overview?.valuation?.market_cap_calc)}
 											</TableCell>
-											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												<div>${formatNumberWithCommas(asset?.overview?.market?.['24h_vol_cmc'])}</div>
 											</TableCell>
-											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												{formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}
 											</TableCell>
-											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												<EditableHoldingsCell
 													value={draftValue}
 													usdValue={price}
@@ -291,7 +294,7 @@ const WatchlistPortfolio = () => {
 																commitEdit(assetId);
 															}
 														}}
-														className="cursor-pointer relative grid place-items-center h-6 w-6 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+														className="cursor-pointer relative grid place-items-center h-6 w-6 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors dark:text-white"
 														title={isEditing ? 'Save holdings' : 'Edit holdings'}
 													>
 														<PlusCircle className="w-4 h-4" />
@@ -300,7 +303,7 @@ const WatchlistPortfolio = () => {
 														onMouseDown={(e) => e.preventDefault()}
 														onClick={() => handleRemove(asset)}
 														disabled={busy}
-														className="cursor-pointer relative grid place-items-center h-6 w-6 rounded-full disabled:opacity-60 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+														className="cursor-pointer relative grid place-items-center h-6 w-6 rounded-full disabled:opacity-60 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors dark:text-white"
 													>
 														{busy ? (
 															<span className="h-4 w-4 animate-spin border-2 border-yellow-500 border-t-transparent rounded-full" />
