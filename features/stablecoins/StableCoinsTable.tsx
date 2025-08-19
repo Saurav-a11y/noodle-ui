@@ -16,23 +16,26 @@ const StableCoinsTable = () => {
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">#</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Asset</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Price</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Volume(24h)</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Market Cap</TableHead>
-					{/* <TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Volume(24h)</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Circulating Supply</TableHead> */}
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Brief Introduction</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Backing Mechanism</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Best Yield</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Depegging History</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
 				{isLoading
 					? Array.from({ length: 5 }).map((_, i) => (
 						<TableRow key={i} className="animate-pulse">
-							{Array.from({ length: 7 }).map((_, j) => (
+							{Array.from({ length: 9 }).map((_, j) => (
 								<TableCell key={j} className="py-4 h-[73px] border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 									<div className="h-6 bg-gray-200 dark:bg-[#333] rounded animate-pulse w-full" />
 								</TableCell>
 							))}
 						</TableRow>
 					))
-					: data?.data?.items?.map((asset) => {
+					: data?.data?.items?.map((asset, index) => {
 						return (
 							<TableRow
 								key={asset.symbol}
@@ -40,8 +43,11 @@ const StableCoinsTable = () => {
 								onClick={() => router.push(`/cryptocurrencies/${asset?.symbol}`)}
 							>
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									{asset?.rank}
+									{index + 1}
 								</TableCell>
+								{/* <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+									{asset?.rank}
+								</TableCell> */}
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 									<div className="flex items-center gap-3">
 										<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
@@ -61,7 +67,7 @@ const StableCoinsTable = () => {
 										</div>
 										<div className="flex-1">
 											<div className="font-medium">{asset?.name}</div>
-											<div className="text-sm text-muted-foreground">{asset?.symbol}</div>
+											<div className="text-sm text-muted-foreground">{asset?.currency}</div>
 										</div>
 									</div>
 								</TableCell>
@@ -69,14 +75,23 @@ const StableCoinsTable = () => {
 									${formatNumberWithCommas(asset?.price)}
 								</TableCell>
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									{asset?.marketCap ? `${formatNumberWithCommas(asset?.marketCap)}` : '--'}
-								</TableCell>
-								{/* <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									<div>${formatNumberWithCommas(asset?.overview?.market?.['24h_vol_cmc'])}</div>
+									${formatNumberWithCommas(asset?.vol_24h)}
 								</TableCell>
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									{formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}
-								</TableCell> */}
+									{asset?.marketCap ? `${formatNumberWithCommas(asset?.marketCap)}` : '--'}
+								</TableCell>
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+									{asset?.brief_information}
+								</TableCell>
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+									{asset?.mechanism}
+								</TableCell>
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+									{asset?.best_yield?.apy}
+								</TableCell>
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+									{asset?.depegging_history}
+								</TableCell>
 							</TableRow>
 						)
 					})}
