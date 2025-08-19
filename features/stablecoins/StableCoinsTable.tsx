@@ -2,7 +2,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
 import { useGetStableCoins } from "@/hooks/useWatchlist"
-import { formatNumberWithCommas } from "@/lib/format"
+import { formatCurrency, formatNumberWithCommas } from "@/lib/format"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -13,15 +13,15 @@ const StableCoinsTable = () => {
 		<Table>
 			<TableHeader className="dark:bg-[#1A1A1A]">
 				<TableRow className="border-b">
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">#</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Asset</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Price</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Volume(24h)</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Market Cap</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Brief Introduction</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Backing Mechanism</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Best Yield</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">Depegging History</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">#</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Name</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Price</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Volume(24h)</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Market Cap</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Brief Introduction</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Backing Mechanixs</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Best Yield</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Depegging History</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -42,15 +42,15 @@ const StableCoinsTable = () => {
 								className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 								onClick={() => router.push(`/cryptocurrencies/${asset?.symbol}`)}
 							>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{index + 1}
 								</TableCell>
-								{/* <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								{/* <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{asset?.rank}
 								</TableCell> */}
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									<div className="flex items-center gap-3">
-										<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
+									<div className="flex items-center gap-3 text-xs">
+										<div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
 											{asset?.logo ? (
 												<Image
 													src={asset.logo}
@@ -67,29 +67,29 @@ const StableCoinsTable = () => {
 										</div>
 										<div className="flex-1">
 											<div className="font-medium">{asset?.name}</div>
-											<div className="text-sm text-muted-foreground">{asset?.currency}</div>
+											<div className="text-xs text-muted-foreground">{asset?.currency}</div>
 										</div>
 									</div>
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									${formatNumberWithCommas(asset?.price)}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									${formatNumberWithCommas(asset?.vol_24h)}
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+									{formatCurrency(asset?.vol_24h)}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									{asset?.marketCap ? `${formatNumberWithCommas(asset?.marketCap)}` : '--'}
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+									{asset?.marketCap ? `${formatCurrency(asset?.marketCap)}` : '--'}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{asset?.brief_info}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{asset?.mechanism}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-									{asset?.best_yield?.apy}
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+									{asset?.best_yield ? `${asset?.best_yield?.apy.toFixed(2)}%` : '--'}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{asset?.depegging_history}
 								</TableCell>
 							</TableRow>
