@@ -7,6 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/Select';
 import { SelectPortal, SelectViewport } from '@radix-ui/react-select';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
+import Image from 'next/image';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/Tooltip';
+import TooltipCommon from './TooltipCommon';
 
 function formatNumber(n?: number) {
 	if (n == null || Number.isNaN(n)) return '-';
@@ -200,10 +203,13 @@ export default function YieldsList({
 									<td className="py-3 px-3">{(page - 1) * limit + idx + 1}</td>
 									<td className="py-3 px-3">
 										<div className="flex items-center gap-2">
-											<span className="font-medium">{row.project ?? '-'}</span>
+											<Image src={`https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-8 h-8 rounded-full' />
+											<span className="font-medium capitalize">{row.project ?? '-'}</span>
 										</div>
 									</td>
-									<td className="py-3 px-3">{row.chain ?? '-'}</td>
+									<td className="py-3 px-3">
+										<TooltipCommon classNameTypo="!p-1" content={row?.chain || ''} trigger={<Image src={`https://icons.llamao.fi/icons/chains/rsz_${row.chain}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-8 h-8 rounded-full' />} />
+									</td>
 									<td className="py-3 px-3">
 										<span className="inline-block rounded-md bg-lime-100 text-lime-800 dark:bg-lime-900/40 dark:text-lime-300 px-2 py-0.5">
 											{Number(row.apy ?? 0).toFixed(2)}%

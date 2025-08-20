@@ -38,6 +38,11 @@ const nextConfig: NextConfig = {
         hostname: 'd14ciuzrn5ydd5.cloudfront.net',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'icons.llamao.fi',
+        pathname: '/**',
+      },
     ],
   },
   output: 'standalone',
