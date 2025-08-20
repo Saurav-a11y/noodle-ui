@@ -17,11 +17,11 @@ const StableCoinsTable = () => {
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Name</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Price</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Volume(24h)</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Market Cap</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs w-[120px]">Market Cap</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Brief Introduction</TableHead>
 					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Backing Mechanixs</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Best Yield</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Depegging History</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs w-[120px] text-center">Best Yield</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -67,7 +67,7 @@ const StableCoinsTable = () => {
 										</div>
 										<div className="flex-1">
 											<div className="font-medium">{asset?.name}</div>
-											<div className="text-xs text-muted-foreground">{asset?.currency}</div>
+											<div className="text-[10px] text-muted-foreground">{asset?.currency}</div>
 										</div>
 									</div>
 								</TableCell>
@@ -86,10 +86,10 @@ const StableCoinsTable = () => {
 								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{asset?.mechanism}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs text-center">
 									{asset?.best_yield ? `${asset?.best_yield?.apy.toFixed(2)}%` : '--'}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs text-center">
 									{asset?.depegging_history}
 								</TableCell>
 							</TableRow>
