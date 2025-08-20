@@ -8,7 +8,6 @@ import { SelectPortal, SelectViewport } from '@radix-ui/react-select';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import Image from 'next/image';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/Tooltip';
 import TooltipCommon from './TooltipCommon';
 
 function formatNumber(n?: number) {
