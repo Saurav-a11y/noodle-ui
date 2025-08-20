@@ -13,15 +13,15 @@ const StableCoinsTable = () => {
 		<Table>
 			<TableHeader className="dark:bg-[#1A1A1A]">
 				<TableRow className="border-b">
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">#</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Name</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Price</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Volume(24h)</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs w-[120px]">Market Cap</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Brief Introduction</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs">Backing Mechanixs</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs w-[120px] text-center">Best Yield</TableHead>
-					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Name</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Price</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Volume(24h)</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px]">Market Cap</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Brief Introduction</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Backing Mechanixs</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-center">Best Yield</TableHead>
+					<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tr-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -42,13 +42,13 @@ const StableCoinsTable = () => {
 								className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 								onClick={() => router.push(`/cryptocurrencies/${asset?.symbol}`)}
 							>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 									{index + 1}
 								</TableCell>
 								{/* <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
 									{asset?.rank}
 								</TableCell> */}
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 									<div className="flex items-center gap-3 text-xs">
 										<div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
 											{asset?.logo ? (
@@ -71,25 +71,25 @@ const StableCoinsTable = () => {
 										</div>
 									</div>
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 									${formatNumberWithCommas(asset?.price)}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 									{formatCurrency(asset?.vol_24h)}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 									{asset?.marketCap ? `${formatCurrency(asset?.marketCap)}` : '--'}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 									{asset?.brief_info}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 									{asset?.mechanism}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs text-center">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
 									{asset?.best_yield ? `${asset?.best_yield?.apy.toFixed(2)}%` : '--'}
 								</TableCell>
-								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs text-center">
+								<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
 									{asset?.depegging_history}
 								</TableCell>
 							</TableRow>
