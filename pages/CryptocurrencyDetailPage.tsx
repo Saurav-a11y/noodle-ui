@@ -14,6 +14,7 @@ import ReactQueryProvider from "@/lib/react-query-provider";
 import ProjectHeader from "@/features/cryptocurrency-detail/components/ProjectHeader";
 import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
 import { ToastContainer } from "react-toastify";
+import YieldsList from "@/components/common/YieldsList";
 
 const CryptocurrencyDetailPage = () => {
 
@@ -130,6 +131,7 @@ const CryptocurrencyDetailPage = () => {
 								</div>
 								<div className="col-span-4 md:col-span-3 space-y-5">
 									<SocialChart />
+									<YieldsList />
 									<ActivityTimeline />
 									<div className="mt-10">
 										<LiveActivity />

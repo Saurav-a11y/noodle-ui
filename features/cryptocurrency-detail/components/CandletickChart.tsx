@@ -77,7 +77,10 @@ const barsInTimeFrame = {
 const CandlestickChart = ({ utcOffset }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol = typeof communityId === 'string' ? communityId.replace('USD', '') : '';
+	const tokenSymbol =
+		typeof communityId === "string"
+			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
+			: "";
 	const { isDark } = useThemekMode();
 	const now = useMemo(() => {
 		const localNow = new Date();

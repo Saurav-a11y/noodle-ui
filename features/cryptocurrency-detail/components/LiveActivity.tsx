@@ -62,7 +62,10 @@ export const formatTweetText = (text: string): string => {
 const LiveActivity = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol = typeof communityId === 'string' ? communityId.replace('USD', '') : '';
+	const tokenSymbol =
+		typeof communityId === "string"
+			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
+			: "";
 	// "All Activity", 
 	const tabs = ["Twitter", "Reddit", "GitHub", "YouTube"];
 	const [activeTab, setActiveTab] = useState("Twitter");
