@@ -59,20 +59,20 @@ const Header = () => {
 
 									{/* Commodities */}
 									<NavigationMenuItem>
-										<a
+										<Link
 											href="/commodities"
-											className="font-medium"
+											className="font-medium transition-colors"
 										>
 											Commodities
-										</a>
+										</Link>
 									</NavigationMenuItem>
 									<NavigationMenuItem>
-										<a
+										<Link
 											href="/stablecoins"
-											className="font-medium"
+											className="font-medium transition-colors"
 										>
 											Stablecoins
-										</a>
+										</Link>
 									</NavigationMenuItem>
 								</NavigationMenuList>
 							</NavigationMenu>
