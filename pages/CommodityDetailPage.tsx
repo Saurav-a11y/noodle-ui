@@ -1,21 +1,21 @@
 'use client';
 import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
 import { AssetDetailLayout } from "@/components/common/AssetDetailLayout";
+import { CommodityHeader } from "@/features/commodity-detail/CommodityHeader";
+import CommodityMetrics from "@/features/commodity-detail/CommodityMetrics";
 import ComingSoon from "@/components/common/ComingSoon";
-import StockHeader from "@/features/stock-detail/StockHeader";
-import StockMetrics from "@/features/stock-detail/StockMetrics";
 
-const StockDetailPage = () => {
+const CommodityDetailPage = () => {
     return (
         <AssetDetailLayout>
             <>
                 <div className="flex items-center justify-between">
-                    <StockHeader />
+                    <CommodityHeader />
                     <AddToWatchlistButton />
                 </div>
                 <div className="grid grid-cols-4 gap-8">
                     <div className="col-span-4 md:col-span-1 space-y-6">
-                        <StockMetrics />
+                        <CommodityMetrics />
                     </div>
                     <div className="col-span-4 md:col-span-3 space-y-5">
                         <ComingSoon />
@@ -32,4 +32,4 @@ const StockDetailPage = () => {
     );
 };
 
-export default StockDetailPage;
+export default CommodityDetailPage;

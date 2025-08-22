@@ -12,6 +12,7 @@ import HerbsIcon from '@/icons/commodities/HerbsIcon';
 import IndustrialIcon from '@/icons/commodities/IndustrialIcon';
 import CoalIcon from '@/icons/commodities/CoalIcon';
 import { Atom, Zap, Panda, TrendingUpDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const mostTalkedProjects7d = [
 	{ rank: 1, symbol: 'LIT', name: 'Lithium', mentions: 9300, medium_logo_url: <MetalIcon /> },
@@ -22,6 +23,7 @@ const mostTalkedProjects7d = [
 ]
 
 const OverviewCard = ({ title, tooltip, isLoading, data }) => {
+	const router = useRouter();
 	const typeIcons = {
 		'metals': <MetalIcon />,
 		'energy': {
@@ -65,6 +67,7 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 						<div
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
+							onClick={() => router.push(`/commodities/${item.name_slug}`)}
 						>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{index + 1}</span>

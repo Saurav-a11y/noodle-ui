@@ -6,6 +6,7 @@ import TooltipCommon from "@/components/common/TooltipCommon";
 import { useTopGrowthStocks } from "../hooks";
 import Image from 'next/image';
 import { formatNumberShort, formatPercent } from '@/lib/format';
+import { useRouter } from 'next/navigation';
 
 const mostTalkedProjects7d = [
 	{ rank: 1, symbol: 'AAPL', name: 'Apple Inc.', mentions: 9300, logoid: 'apple' },
@@ -16,6 +17,7 @@ const mostTalkedProjects7d = [
 ]
 
 const OverviewCard = ({ title, tooltip, isLoading, data }) => {
+	const router = useRouter();
 	return (
 		<div className="bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
@@ -44,6 +46,7 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 						<div
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
+							onClick={() => router.push(`/stocks/${item.name}`)}
 						>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{index + 1}</span>

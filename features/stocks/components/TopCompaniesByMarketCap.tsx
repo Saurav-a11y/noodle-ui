@@ -1,5 +1,5 @@
 'use client'
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import TooltipCommon from "@/components/common/TooltipCommon"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
 import Image from "next/image";
@@ -15,7 +15,7 @@ const TopCompaniesByMarketCap = () => {
 		search: "",
 	})
 	const stocks = stocksHealthRanksData?.data?.stock_health_rankings;
-	// const router = useRouter();
+	const router = useRouter();
 	return (
 		<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="overflow-x-auto">
@@ -91,7 +91,7 @@ const TopCompaniesByMarketCap = () => {
 								<TableRow
 									key={index}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-								// onClick={() => router.push(`/cryptocurrencies/${stock?.symbol}`)}
+									onClick={() => router.push(`/stocks/${stock.name}`)}
 								>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">

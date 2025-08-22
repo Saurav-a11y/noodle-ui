@@ -103,7 +103,7 @@ const EnergyCommoditiesOverview = ({ data, isLoading }) => {
 								<TableRow
 									key={index}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-								// onClick={() => router.push(`/cryptocurrencies/${energy?.name_slug}`)}
+									onClick={() => router.push(`/commodities/${energy.name_slug}`)}
 								>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">

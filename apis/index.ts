@@ -191,6 +191,18 @@ export const sayHello = async () => {
 	return res.text();
 };
 
+export const fetchCommodityOverview = async ({ name_slug }: { name_slug: string }) => {
+	const res = await fetch(`${BASE_URL}/commodities-overview?name_slug=${encodeURIComponent(name_slug)}`);
+	if (!res.ok) throw new Error('Failed to fetch community overview');
+	return res.json();
+};
+
+export const fetchStockOverview = async ({ name }: { name: string }) => {
+	const res = await fetch(`${BASE_URL}/stocks-overview?name=${encodeURIComponent(name)}`);
+	if (!res.ok) throw new Error('Failed to fetch stocks overview');
+	return res.json();
+};
+
 export async function upsertHoldingsApi(input: {
 	userId: string;
 	assetId: string;
