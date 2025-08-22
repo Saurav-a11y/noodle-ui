@@ -1,6 +1,5 @@
 'use client';
 import { useCommodityOverview } from "@/hooks/useCommodities";
-import OilIcon from "@/icons/commodities/OilIcon";
 import { useParams } from "next/navigation";
 
 export const CommodityHeader = () => {
