@@ -2,6 +2,7 @@
 import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
 import { AssetDetailLayout } from "@/components/common/AssetDetailLayout";
 import ComingSoon from "@/components/common/ComingSoon";
+import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 import StockHeader from "@/features/stock-detail/StockHeader";
 import StockMetrics from "@/features/stock-detail/StockMetrics";
 
@@ -18,8 +19,8 @@ const StockDetailPage = () => {
                         <StockMetrics />
                     </div>
                     <div className="col-span-4 md:col-span-3 space-y-5">
+                        <SocialChart />
                         <ComingSoon />
-                        {/* <SocialChart /> */}
                         {/* <YieldsList /> */}
                         {/* <ActivityTimeline /> */}
                         {/* <div className="mt-10">

@@ -123,7 +123,7 @@ const MostViewedAssets = () => {
 
 	return (
 		<div className="bg-white dark:bg-black rounded-[20px] p-5 text-[#2F2F2F]">
-			<p className="font-medium font-space mb-2">Most Viewed Assets (30d)</p>
+			<p className="font-medium font-space mb-2 dark:text-white">Most Viewed Assets (30d)</p>
 			<div>
 				{/* Tabs */}
 				<div className="flex gap-2 mb-6">
@@ -143,7 +143,7 @@ const MostViewedAssets = () => {
 				{/* Assets Table */}
 				<div className="space-y-4">
 					{/* Headers */}
-					<div className="grid grid-cols-3 gap-4 text-sm pb-2 opacity-50">
+					<div className="grid grid-cols-3 gap-4 text-sm pb-2 opacity-50 dark:text-white">
 						<div>Activity</div>
 						<div>Classify</div>
 						<div>Asset</div>
@@ -152,7 +152,7 @@ const MostViewedAssets = () => {
 					{/* Asset Rows */}
 					<div className="space-y-4">
 						{assets.map((asset, index) => (
-							<div key={index} className="grid grid-cols-3 gap-4 items-center">
+							<div key={index} className="grid grid-cols-3 gap-4 items-center dark:text-white">
 								<div className="text-sm">{asset.activity}</div>
 								<div>
 									<Badge variant="secondary" className="text-xs">
@@ -177,7 +177,7 @@ const MostViewedAssets = () => {
 
 				{/* Pagination */}
 				<div className="flex justify-center mt-6">
-					<div className="flex items-center gap-2 text-sm text-muted-foreground">
+					<div className="flex items-center gap-2 text-sm text-muted-foreground dark:text-white">
 						<span>Show 1 - 10 of 400</span>
 						<div className="flex gap-1 ml-4">
 							<button className="w-6 h-6 rounded bg-primary text-primary-foreground text-xs">1</button>

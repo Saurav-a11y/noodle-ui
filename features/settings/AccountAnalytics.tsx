@@ -73,12 +73,12 @@ const AccountAnalytics = () => {
 	return (
 		<div className="space-y-5 text-[#2F2F2F]">
 			<div>
-				<p className="font-medium font-space mb-1">Account Analytics</p>
-				<p className="text-xs font-noto">Your platform usage insights and activity</p>
+				<p className="font-medium font-space mb-1 dark:text-white">Account Analytics</p>
+				<p className="text-xs font-noto dark:text-white">Your platform usage insights and activity</p>
 			</div>
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 font-noto">
-				<p className="text-sm font-medium mb-2">Usage Insights</p>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#F9F9F9] rounded-[20px] p-4">
+				<p className="text-sm font-medium mb-2 dark:text-white">Usage Insights</p>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#F9F9F9] dark:bg-dark rounded-[20px] p-4">
 					{usageInsights.map((insight, index) => (
 						<div key={index} className="space-y-2 p-4">
 							<div className="flex items-center gap-1">
@@ -93,7 +93,7 @@ const AccountAnalytics = () => {
 				</div>
 			</div>
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 font-noto">
-				<p className="text-sm font-medium">Recent Activity (24h)</p>
+				<p className="text-sm font-medium dark:text-white">Recent Activity (24h)</p>
 				<div className="text-[#1E1B39]">
 					{recentActivities.map((activity, index) => {
 						const isNewDate = index === 0 || activity.date !== recentActivities[index - 1].date;
@@ -101,11 +101,11 @@ const AccountAnalytics = () => {
 						return (
 							<div key={index}>
 								{isNewDate && (
-									<div className="text-sm opacity-50 my-3 font-reddit">
+									<div className="text-sm opacity-50 my-3 font-reddit dark:text-white">
 										{activity.date}
 									</div>
 								)}
-								<div className="flex items-center justify-between py-3 text-[#4B4A4A]">
+								<div className="flex items-center justify-between py-3 text-[#4B4A4A] dark:text-white">
 									<div className="flex items-center gap-3">
 										<span className="text-xs opacity-50 w-16">
 											{activity.time}

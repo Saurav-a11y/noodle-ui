@@ -155,11 +155,11 @@ const ProfileDetails = () => {
 	return (
 		<div className="space-y-8">
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 text-[#2F2F2F] space-y-4">
-				<p className="font-medium font-space">Profile details</p>
+				<p className="font-medium font-space dark:text-white">Profile details</p>
 				<div className="space-y-4 font-noto">
 					{/* Avatar */}
 					<div>
-						<Label className="text-xs font-normal">Avatar</Label>
+						<Label className="text-xs font-normal dark:text-white">Avatar</Label>
 						<div className="flex items-center gap-5 mt-2">
 							<div className="relative">
 								<Avatar className="w-20 h-20">
@@ -200,7 +200,7 @@ const ProfileDetails = () => {
 									size="sm"
 									onClick={onRemoveAvatar}
 									disabled={uploading || isFetching || !previewAvatar}
-									className="text-muted-foreground font-normal cursor-pointer"
+									className="text-muted-foreground font-normal cursor-pointer dark:text-white"
 								>
 									Remove
 								</Button>
@@ -212,7 +212,7 @@ const ProfileDetails = () => {
 					{/* Form Fields */}
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div className="space-y-2">
-							<Label htmlFor="displayName" className="font-normal text-xs">Display name</Label>
+							<Label htmlFor="displayName" className="font-normal text-xs dark:text-white">Display name</Label>
 							<div className="relative mt-1.5">
 								<Input
 									id="displayName"
@@ -229,7 +229,7 @@ const ProfileDetails = () => {
 						</div>
 
 						<div className="space-y-2">
-							<Label htmlFor="username" className="font-normal text-xs">Username</Label>
+							<Label htmlFor="username" className="font-normal text-xs dark:text-white">Username</Label>
 							<div className="relative mt-1.5">
 								<Input
 									id="username"
@@ -248,7 +248,7 @@ const ProfileDetails = () => {
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div className="space-y-2">
-							<Label htmlFor="email" className="font-normal text-xs">Email</Label>
+							<Label htmlFor="email" className="font-normal text-xs dark:text-white">Email</Label>
 							<div className="relative mt-1.5">
 								<Input
 									id="email"
@@ -262,7 +262,7 @@ const ProfileDetails = () => {
 						</div>
 
 						<div className="space-y-2">
-							<Label htmlFor="birthday" className="font-normal text-xs">Birthday</Label>
+							<Label htmlFor="birthday" className="font-normal text-xs dark:text-white">Birthday</Label>
 							<div className="relative mt-1.5">
 								<span className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none">
 									<CalendarIcon />
@@ -279,7 +279,7 @@ const ProfileDetails = () => {
 							</div>
 							<Dialog open={isDobOpen} onOpenChange={setIsDobOpen}>
 								<DialogContent className="sm:max-w-[360px] p-0 overflow-hidden">
-									<DialogHeader className="p-4 pb-0">
+									<DialogHeader className="p-4 pb-0 dark:text-white">
 										<DialogTitle>Select your birthday</DialogTitle>
 									</DialogHeader>
 									<div className="p-4">
@@ -314,7 +314,7 @@ const ProfileDetails = () => {
 					</div>
 
 					<div className="space-y-2">
-						<Label htmlFor="bio" className="font-normal text-xs">Bio</Label>
+						<Label htmlFor="bio" className="font-normal text-xs dark:text-white">Bio</Label>
 						<div className="relative mt-1.5">
 							<Textarea
 								id="bio"
@@ -348,15 +348,15 @@ const ProfileDetails = () => {
 
 			{/* Social Accounts */}
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 text-[#2F2F2F] space-y-5">
-				<p className="font-medium font-space">Social Accounts</p>
+				<p className="font-medium font-space dark:text-white">Social Accounts</p>
 				<div className="space-y-4 font-noto">
 					{socialAccounts.map((account, index) => (
 						<div key={index} className="flex items-center justify-between">
 							<div className="flex items-center gap-3">
 								<div className="w-12 h-12 rounded-lg bg-[#F8F8F8] flex justify-center items-center">{account.icon}</div>
 								<div>
-									<p className="font-medium text-sm">{account.name}</p>
-									<div className="text-xs opacity-50">{account.description}</div>
+									<p className="font-medium text-sm dark:text-white">{account.name}</p>
+									<div className="text-xs opacity-50 dark:text-white">{account.description}</div>
 								</div>
 							</div>
 							<Button variant="outline" size="sm" className="rounded-lg px-3 py-2 font-xs font-normal cursor-pointer">
