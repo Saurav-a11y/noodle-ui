@@ -100,7 +100,7 @@ const timezones = [
 	{ label: '(UTC+13) Tokelau', offset: 13 },
 ];
 
-const SocialChart = () => {
+const SocialChart = ({ type }) => {
 	const [currentTime, setCurrentTime] = useState('')
 	const [selectedTz, setSelectedTz] = useState<{ label: string; offset: number }>(timezones[0]);
 	const [open, setOpen] = useState(false);
@@ -131,7 +131,7 @@ const SocialChart = () => {
 			<p className="text-xl font-semibold mb-4 font-noto">
 				Social Activity vs On-Chain Behavior Correlation
 			</p>
-			<CandlestickChart utcOffset={selectedTz.offset} />
+			<CandlestickChart utcOffset={selectedTz.offset} type={type} />
 			<hr className="text-[#E8E8E8] dark:text-[#B1B1B1] mt-2" />
 			<div className="flex flex-col md:flex-row md:items-center mt-4 justify-between gap-2">
 				<div className="flex items-center gap-2 text-xs text-[#222222] dark:text-white">

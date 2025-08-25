@@ -19,7 +19,7 @@ const StockDetailPage = () => {
                         <StockMetrics />
                     </div>
                     <div className="col-span-4 md:col-span-3 space-y-5">
-                        <SocialChart />
+                        <SocialChart type="stock" />
                         <ComingSoon />
                         {/* <YieldsList /> */}
                         {/* <ActivityTimeline /> */}

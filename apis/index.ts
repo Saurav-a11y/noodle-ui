@@ -14,6 +14,7 @@ export type FetchPriceHistoryParams = {
 	startTime?: number;
 	endTime?: number;
 	interval?: string;
+	type?: string;
 }
 
 export type FetchListTweetParams = {
@@ -89,12 +90,14 @@ export const fetchPriceHistory = async ({
 	startTime,
 	endTime,
 	interval,
+	type
 }: FetchPriceHistoryParams) => {
 	const query = new URLSearchParams({
 		symbol,
 		...(startTime && { startTime: String(startTime) }),
 		...(endTime && { endTime: String(endTime) }),
 		...(interval && { interval }),
+		...(type && { type }),
 	});
 
 	const res = await fetch(`https://data-api.agentos.cloud/api/v2/crypto-token/price-history?${query}`);

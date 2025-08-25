@@ -16,9 +16,9 @@ const StockHeader = () => {
 					<div className="w-10 h-10 bg-gray-200 dark:bg-[#333] rounded-full animate-pulse" />
 				) : (
 					<div className="w-10 h-10 flex items-center justify-center font-noto bg-white rounded-full">
-						{stockOverview?.logo && (
+						{stockOverview?.logoid && (
 							<Image
-								src={stockOverview?.logo}
+								src={`https://s3-symbol-logo.tradingview.com/${stockOverview?.logoid}.svg`}
 								alt="Avatar"
 								width={40}
 								height={40}

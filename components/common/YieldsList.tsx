@@ -32,7 +32,7 @@ function LimitSelect({
 			<SelectTrigger
 				className="inline-flex min-w-[100px] items-center justify-between rounded-md border border-neutral-200 bg-white px-3 text-sm
                    hover:bg-neutral-50 focus:outline-none
-                   dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800"
+                   dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-white"
 				aria-label="Rows per page"
 			>
 				<span>{value}/page</span>
@@ -116,7 +116,7 @@ export default function YieldsList({
 			{/* Header */}
 			<div className="flex items-center justify-between gap-3">
 				<div className='flex-1'>
-					<p className="text-xl font-semibold mb-0.5 font-noto">
+					<p className="text-xl font-semibold mb-0.5 font-noto dark:text-white">
 						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{tokenSymbol.toUpperCase()}</span>
 					</p>
 					<p className="text-xs text-neutral-500">Data from DefiLlama Pools API</p>
@@ -125,13 +125,13 @@ export default function YieldsList({
 				{/* Controls */}
 				<div className="flex items-center gap-2">
 					<div className='relative'>
-						<p className="text-[11px] font-noto text-neutral-600 dark:text-neutral-300 flex-1 absolute -top-2 left-2.5 z-30 bg-white">
+						<p className="text-[11px] font-noto text-neutral-600 dark:text-neutral-300 flex-1 absolute -top-2 left-2.5 z-30 bg-white dark:bg-black">
 							Min TVL (USD)
 						</p>
 						<Input
 							type="text"
 							inputMode="numeric"
-							className="relative w-36 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2 text-sm outline-none"
+							className="relative w-36 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2 text-sm outline-none dark:text-white"
 							value={minTvlUsdInput}
 							onChange={handleMinTvlChange}
 							placeholder="e.g. 2,000,000"
@@ -159,7 +159,7 @@ export default function YieldsList({
 			<div className="overflow-x-auto">
 				<table className="w-full text-sm">
 					<thead className="text-left bg-neutral-50 dark:bg-neutral-900/60">
-						<tr className="border-b border-neutral-200 dark:border-neutral-800">
+						<tr className="border-b border-neutral-200 dark:border-neutral-800 dark:text-white">
 							<th className="py-2 px-3 font-medium">#</th>
 							<th className="py-2 px-3 font-medium">Project</th>
 							<th className="py-2 px-3 font-medium">Chain</th>
@@ -243,7 +243,7 @@ export default function YieldsList({
 				</div>
 				<div className="flex items-center gap-2">
 					<button
-						className="cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
+						className="dark:text-white cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
 						onClick={() => setPage((p) => Math.max(1, p - 1))}
 						disabled={!canPrev}
 					>
@@ -253,7 +253,7 @@ export default function YieldsList({
 						Page <b>{page}</b> / {totalPages}
 					</span>
 					<button
-						className="cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
+						className="dark:text-white cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
 						onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
 						disabled={!canNext}
 					>

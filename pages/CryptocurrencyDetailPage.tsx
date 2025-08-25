@@ -24,7 +24,7 @@ const CryptocurrencyDetailPage = () => {
 						<ProjectInfo />
 					</div>
 					<div className="col-span-4 md:col-span-3 space-y-5">
-						<SocialChart />
+						<SocialChart type="crypto" />
 						<YieldsList />
 						<ActivityTimeline />
 						<div className="mt-10">

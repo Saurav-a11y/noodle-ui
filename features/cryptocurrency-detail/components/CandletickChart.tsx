@@ -74,7 +74,7 @@ const barsInTimeFrame = {
 	'1M': 24 * 30,
 };
 
-const CandlestickChart = ({ utcOffset }) => {
+const CandlestickChart = ({ utcOffset, type }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const tokenSymbol =
@@ -96,6 +96,7 @@ const CandlestickChart = ({ utcOffset }) => {
 		startTime,
 		endTime,
 		interval: '1M',
+		type
 	});
 
 	const { data: tweets } = useListTweets({

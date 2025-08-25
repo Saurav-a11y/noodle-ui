@@ -58,7 +58,7 @@ const CommodityMetrics = () => {
                             <p className="text-xs font-reddit">Community Growth</p>
                             <TooltipCommon content="The rate at which the project’s community is growing week-over-week. Tracks new followers, members, and visibility across platforms." />
                         </div>
-                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1">{commodityOverview?.project?.community_growth?.value}{commodityOverview?.project?.community_growth?.unit} {commodityOverview?.project?.community_growth?.period}</div>}
+                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1 dark:text-white">{commodityOverview?.project?.community_growth?.value}{commodityOverview?.project?.community_growth?.unit} {commodityOverview?.project?.community_growth?.period}</div>}
                     </div>
                     <div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
                         <RecentActivityDropIcon />

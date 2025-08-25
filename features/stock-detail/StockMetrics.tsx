@@ -3,6 +3,7 @@ import { useStockOverview } from "@/hooks/useStocks";
 import AuthenticEngagementIcon from "@/icons/AuthenticEngagementIcon";
 import CommunityGrowthIcon from "@/icons/CommunityGrowthIcon";
 import RecentActivityDropIcon from "@/icons/RecentActivityDropIcon";
+import { formatNumberShort } from "@/lib/format";
 import { useParams } from "next/navigation";
 
 const StockMetrics = () => {
@@ -58,7 +59,7 @@ const StockMetrics = () => {
                             <p className="text-xs font-reddit">Community Growth</p>
                             <TooltipCommon content="The rate at which the project’s community is growing week-over-week. Tracks new followers, members, and visibility across platforms." />
                         </div>
-                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1">{stockOverview?.health_metrics?.community_growth}</div>}
+                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1 dark:text-white">{stockOverview?.health_metrics?.community_growth}</div>}
                     </div>
                     <div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
                         <RecentActivityDropIcon />
@@ -66,7 +67,7 @@ const StockMetrics = () => {
                             <p className="text-xs font-reddit">Recent Activity Drop</p>
                             <TooltipCommon content="Detects a sharp decrease in user engagement or community actions. May signal declining interest or short-term inactivity." />
                         </div>
-                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1">{stockOverview?.health_metrics?.recent_activity_drop}</div>}
+                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="dark:text-white text-sm font-medium font-noto flex items-center gap-1">{stockOverview?.health_metrics?.recent_activity_drop}</div>}
                     </div>
                 </div>
             </div>
@@ -90,7 +91,7 @@ const StockMetrics = () => {
                                 <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
                             </>
                             : <>
-                                <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{stockOverview?.core_metrics?.active_users_30d?.value}</div>
+                                <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{formatNumberShort(stockOverview?.core_metrics?.active_users_30d?.value)}</div>
                                 <p className="text-sm font-medium font-noto" style={{ color: stockOverview?.core_metrics?.active_users_30d?.trend === 'up' ? '#00B552' : '#FF0000' }}>{stockOverview?.core_metrics?.active_users_30d?.change}</p>
                             </>
                         }
@@ -123,7 +124,7 @@ const StockMetrics = () => {
                             </>
                             : <>
                                 <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{stockOverview?.core_metrics?.growth_rate_30d?.value}</div>
-                                <p className="text-sm font-medium font-noto">{stockOverview?.core_metrics?.growth_rate_30d?.trend}</p>
+                                <p className="text-sm font-medium font-noto dark:text-white">{stockOverview?.core_metrics?.growth_rate_30d?.trend}</p>
                             </>
                         }
                     </div>
@@ -148,7 +149,7 @@ const StockMetrics = () => {
                                 <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
                                     {stockOverview?.cross_platform_analytics?.twitter_mentions?.value}
                                 </p>
-                                <p className="text-sm font-medium font-noto">
+                                <p className="text-sm font-medium font-noto dark:text-white">
                                     {stockOverview?.cross_platform_analytics?.twitter_mentions?.change_percent}% {stockOverview?.cross_platform_analytics?.twitter_mentions?.comparison}
                                 </p>
                             </>
@@ -169,7 +170,7 @@ const StockMetrics = () => {
                                 <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
                                     {stockOverview?.cross_platform_analytics?.reddit_posts?.value}
                                 </p>
-                                <p className="text-sm font-medium font-noto">
+                                <p className="text-sm font-medium font-noto dark:text-white">
                                     {stockOverview?.cross_platform_analytics?.reddit_posts?.change_percent}% {stockOverview?.cross_platform_analytics?.twitter_mentions?.comparison}
                                 </p>
                             </>
@@ -190,7 +191,7 @@ const StockMetrics = () => {
                                 <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
                                     {stockOverview?.cross_platform_analytics?.youtube_videos?.value}
                                 </p>
-                                <p className="text-sm font-medium font-noto">
+                                <p className="text-sm font-medium font-noto dark:text-white">
                                     {stockOverview?.cross_platform_analytics?.youtube_videos?.change} {stockOverview?.cross_platform_analytics?.youtube_videos?.change_description}
                                 </p>
                             </>

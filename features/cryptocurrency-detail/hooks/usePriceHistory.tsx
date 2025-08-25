@@ -6,6 +6,7 @@ interface UsePriceHistoryParams {
     startTime?: number;
     endTime?: number;
     interval?: string;
+    type?: string;
 }
 
 export const usePriceHistory = ({
@@ -13,11 +14,12 @@ export const usePriceHistory = ({
     startTime,
     endTime,
     interval,
+    type,
 }: UsePriceHistoryParams) => {
     return useQuery({
-        queryKey: ['priceHistory', symbol, startTime, endTime, interval],
+        queryKey: ['priceHistory', symbol, startTime, endTime, interval, type],
         queryFn: () =>
-            fetchPriceHistory({ symbol, startTime, endTime, interval }),
+            fetchPriceHistory({ symbol, startTime, endTime, interval, type }),
         enabled: !!symbol,
         staleTime: 1000 * 60 * 5,
     });

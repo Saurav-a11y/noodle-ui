@@ -4,6 +4,7 @@ import { AssetDetailLayout } from "@/components/common/AssetDetailLayout";
 import { CommodityHeader } from "@/features/commodity-detail/CommodityHeader";
 import CommodityMetrics from "@/features/commodity-detail/CommodityMetrics";
 import ComingSoon from "@/components/common/ComingSoon";
+import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 
 const CommodityDetailPage = () => {
     return (
@@ -18,8 +19,8 @@ const CommodityDetailPage = () => {
                         <CommodityMetrics />
                     </div>
                     <div className="col-span-4 md:col-span-3 space-y-5">
+                        <SocialChart type="commodity" />
                         <ComingSoon />
-                        {/* <SocialChart /> */}
                         {/* <YieldsList /> */}
                         {/* <ActivityTimeline /> */}
                         {/* <div className="mt-10">
