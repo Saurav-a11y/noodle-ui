@@ -59,6 +59,9 @@ export const formatTweetText = (text: string): string => {
 	return formatted;
 };
 
+const decodeHtmlEntities = (url?: string) =>
+	url?.replace(/&amp;/g, '&') || '';
+
 const LiveActivity = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
@@ -452,66 +455,55 @@ const LiveActivity = () => {
 																<div className="font-noto">
 																	<div>
 																		<p className="flex items-center space-x-2 text-[#373737] dark:text-white">
-																			<span className="text-sm font-semibold">{post?.data?.subreddit_name_prefixed}</span>
+																			<span className="text-sm font-semibold">{post?.data?.author}</span>
 																			<span className="opacity-50">•</span>
 																			<span className="text-xs opacity-50">{formatTimestamp(post?.data?.created)}</span>
 																		</p>
-																		<p className="text-xs opacity-50 text-[#4B4A4A] dark:text-white">{post?.data?.author}</p>
+																		<p className="text-xs opacity-50 text-[#4B4A4A] dark:text-white">{post?.data?.subreddit_name_prefixed}</p>
 																	</div>
 																</div>
 															</div>
 															<Link href={`https://reddit.com/${post?.data?.permalink}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Reddit</Link>
 														</div>
 														{post?.data?.title && (
-															<p className="font-space text-[#373737] dark:text-white font-medium text-2xl mt-1">{post?.data?.title}</p>
+															<p className="font-space text-[#373737] dark:text-white font-medium text-xl mt-1">{post?.data?.title}</p>
 														)}
 														{post?.data?.selftext_html && (
 															<p
-																className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[#373737] dark:text-white"
+																className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[#373737] dark:text-white [&_a]:text-blue-500 [&_a]:underline"
 																dangerouslySetInnerHTML={{
 																	__html: he.decode(post?.data?.selftext_html || '')
 																}}
 															/>
 														)}
-														{post?.data?.thumbnail &&
-															/\.(jpg|jpeg|png|gif|webp)$/i.test(post.data.thumbnail) && (
-																<div className="border border-[#E9E9E9] rounded-xl my-4 text-[#373737]">
-																	<Link href={post?.data?.url} target="_blank">
-																		<div className="relative h-[450px] cursor-pointer">
-																			<Image
-																				src={post?.data?.thumbnail}
-																				alt="thumbnail"
-																				width={320}
-																				height={320}
-																				className="w-full h-full rounded-tl-lg rounded-tr-lg object-cover absolute top-0 left-0 z-10"
-																			/>
-																			<div className="bg-black z-20 absolute w-full h-full rounded-tl-lg rounded-tr-lg opacity-60"></div>
-																			<Image
-																				src={post?.data?.thumbnail}
-																				alt="thumbnail"
-																				width={320}
-																				height={320}
-																				className="w-full h-full object-contain absolute top-0 left-1/2 -translate-x-1/2 z-30"
-																			/>
-																		</div>
-																	</Link>
-																	<div className="p-4 flex justify-between items-center">
-																		<Link href={post?.data?.url} target="_blank">
-																			<p className="text-sm hover:underline cursor-pointer dark:text-white">
-																				{new URL(post?.data?.url).hostname.replace(/^www\./, '')}
-																			</p>
-																		</Link>
-																		<a
-																			href={post?.data?.url}
-																			target="_blank"
-																			rel="noopener noreferrer"
-																			className="text-sm font-medium px-4 py-1.5 border rounded-full border-gray-300 hover:bg-gray-100 transition dark:text-white"
-																		>
-																			Open
-																		</a>
+														{post?.data?.preview && (
+															<div className="border border-[#E9E9E9] rounded-xl my-4 text-[#373737]">
+																<Link href={post?.data?.url} target="_blank">
+																	<div className="relative h-[450px] cursor-pointer">
+																		<img
+																			src={decodeHtmlEntities(post?.data?.preview?.images[0].source.url)}
+																			alt="thumbnail"
+																			className="rounded-tl-lg rounded-tr-lg w-full h-full object-contain"
+																		/>
 																	</div>
+																</Link>
+																<div className="p-4 flex justify-between items-center">
+																	<Link href={post?.data?.url} target="_blank">
+																		<p className="text-sm hover:underline cursor-pointer dark:text-white">
+																			{new URL(post?.data?.url).hostname.replace(/^www\./, '')}
+																		</p>
+																	</Link>
+																	<a
+																		href={post?.data?.url}
+																		target="_blank"
+																		rel="noopener noreferrer"
+																		className="text-sm font-medium px-4 py-1.5 border rounded-full border-gray-300 hover:bg-gray-100 transition dark:text-white dark:hover:bg-gray-800"
+																	>
+																		Open
+																	</a>
 																</div>
-															)}
+															</div>
+														)}
 														{/* <hr className="text-[#C5C5C5]" /> */}
 														<div className="flex items-center gap-4 text-sm font-noto text-[#4B4A4A]">
 															<div className="flex items-center gap-2 font-medium text-xs dark:text-white">

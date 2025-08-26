@@ -43,6 +43,11 @@ const nextConfig: NextConfig = {
         hostname: 'icons.llamao.fi',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.redd.it',
+        pathname: '/**',
+      },
     ],
   },
   output: 'standalone',

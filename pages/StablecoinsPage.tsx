@@ -17,7 +17,7 @@ const StablecoinsPage = () => {
 					</div>
 				</div>
 				<div className="container mx-auto px-6 mt-10 md:mt-20 relative bg-transparent space-y-6 mb-10">
-					<p className="text-3xl font-medium font-space">Stablecoins List</p>
+					<p className="text-3xl font-medium font-space dark:text-white">Stablecoins List</p>
 					<div className="bg-white dark:bg-black rounded-[20px] p-5 font-noto">
 						<StableCoinsTable />
 					</div>
