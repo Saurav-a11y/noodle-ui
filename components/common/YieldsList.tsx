@@ -199,11 +199,11 @@ export default function YieldsList({
 									key={row.pool ?? `${row.project}-${row.chain}-${idx}`}
 									className="border-b border-neutral-100 dark:border-neutral-900 hover:bg-neutral-50/60 dark:hover:bg-neutral-900/50"
 								>
-									<td className="py-3 px-3">{(page - 1) * limit + idx + 1}</td>
+									<td className="py-3 px-3 dark:text-white">{(page - 1) * limit + idx + 1}</td>
 									<td className="py-3 px-3">
 										<div className="flex items-center gap-2">
 											<Image src={`https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-8 h-8 rounded-full' />
-											<span className="font-medium capitalize">{row.project ?? '-'}</span>
+											<span className="font-medium capitalize dark:text-white">{row.project ?? '-'}</span>
 										</div>
 									</td>
 									<td className="py-3 px-3">
@@ -214,7 +214,7 @@ export default function YieldsList({
 											{Number(row.apy ?? 0).toFixed(2)}%
 										</span>
 									</td>
-									<td className="py-3 px-3">${formatNumber(row.tvlUsd)}</td>
+									<td className="py-3 px-3 dark:text-white">${formatNumber(row.tvlUsd)}</td>
 									{/* <td className="py-3 px-3">
 										{row.pool ? (
 											<a
