@@ -583,7 +583,7 @@ const LiveActivity = () => {
 																<div className="mb-1">
 																	<p className="font-semibold font-noto text-[#373737] dark:text-white line-clamp-2">{video?.title}</p>
 																	<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white font-noto hidden md:flex mb-1">
-																		<span className="text-xs opacity-50">{video?.channelTitle}</span>
+																		<span className="text-xs opacity-50">{video?.channelId}</span>
 																		<span>•</span>
 																		<span className="text-xs font-medium">{formatNumberShort(video?.metrics?.views)} views</span>
 																		<span>•</span>
