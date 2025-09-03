@@ -27,15 +27,6 @@ const Header = () => {
 						<div className="text-black dark:text-white flex items-center gap-10">
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
-									{/* Homepage */}
-									<NavigationMenuItem>
-										<Link
-											href="/"
-											className="font-medium"
-										>
-											Homepage
-										</Link>
-									</NavigationMenuItem>
 
 									{/* Cryptocurrencies */}
 									<NavigationMenuItem>
@@ -72,6 +63,15 @@ const Header = () => {
 											className="font-medium transition-colors"
 										>
 											Stablecoins
+										</Link>
+									</NavigationMenuItem>
+									{/* About */}
+									<NavigationMenuItem>
+										<Link
+											href="/about"
+											className="font-medium"
+										>
+											About
 										</Link>
 									</NavigationMenuItem>
 								</NavigationMenuList>

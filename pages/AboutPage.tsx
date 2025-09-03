@@ -131,7 +131,7 @@ const skewFadeVariant = {
 	},
 };
 
-const HomePage = () => {
+const AboutPage = () => {
 	return (
 		<ReactQueryProvider>
 			<ToastContainer />
@@ -430,4 +430,4 @@ const HomePage = () => {
 	)
 }
 
-export default HomePage;
+export default AboutPage;
