@@ -259,7 +259,7 @@ const LiveActivity = () => {
 													</div>
 												)
 											})}
-											{!isLoadingMore && (
+											{isLoadingMore && (
 												<div className="space-y-4">
 													{[...Array(5)].map((_, i) => (
 														<TwitterCommunityLoading key={i} />
