@@ -1,5 +1,6 @@
 'use client';
 import { useStockOverview } from "@/hooks/useStocks";
+import { formatPercent } from "@/lib/format";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -52,7 +53,7 @@ const StockHeader = () => {
 							<span>•</span>
 							<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">${stockOverview?.price}</span>
 							<span>•</span>
-							<span className="text-xs font-medium text-red-500 font-noto">{(stockOverview?.percent || 0)?.toFixed(2)}</span>
+							<span className="text-xs font-medium text-red-500 font-noto">{(formatPercent(stockOverview?.percent) || 0)}</span>
 						</>
 					)}
 				</div>

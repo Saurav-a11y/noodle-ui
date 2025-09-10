@@ -7,6 +7,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { formatCurrency } from "@/lib/format";
 import { useSearchAll } from "@/hooks/useSearchAll";
+import Image from "next/image";
 
 const SkeletonItem = () => (
 	<div className="flex items-center gap-2 px-4 py-3 animate-pulse">
@@ -164,7 +165,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 										onClick={() => setOpen(false)}
 									>
 										<div className="flex items-center gap-2">
-											<img src={item.logo} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
+											<Image src={item.logo} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
 											<div>
 												<div className="text-sm dark:text-white font-noto font-semibold">{item.name}</div>
 												<div className="text-[10px] text-gray-500 font-noto">{item.symbol}</div>

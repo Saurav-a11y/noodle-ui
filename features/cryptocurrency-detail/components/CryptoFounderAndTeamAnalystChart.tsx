@@ -19,7 +19,7 @@ const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }
 	"1Y": { amount: 12, unit: "month" },
 };
 
-const FounderAndTeamAnalysis = () => {
+const CryptoFounderAndTeamAnalystChart = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const tokenSymbol =
@@ -169,4 +169,4 @@ const FounderAndTeamAnalysis = () => {
 	);
 };
 
-export default FounderAndTeamAnalysis;
+export default CryptoFounderAndTeamAnalystChart;

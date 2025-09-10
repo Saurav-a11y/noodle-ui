@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import ChatWithCryptoAssistant from "@/features/cryptocurrency-detail/components/ChatWithCryptoAssistant";
 import CryptoCommunityContributions from "@/features/cryptocurrency-detail/components/CryptoCommunityContributions";
 import BasicInformation from "@/features/cryptocurrency-detail/components/BasicInformation";
-import FounderAndTeamAnalysis from "@/features/cryptocurrency-detail/components/FounderAndTeamAnalysis";
+import CryptoFounderAndTeamAnalystChart from "@/features/cryptocurrency-detail/components/CryptoFounderAndTeamAnalystChart";
 
 const CryptocurrencyDetailPage = () => {
 	const [isChatVisible, setChatVisible] = useState(true);
@@ -128,7 +128,7 @@ const CryptocurrencyDetailPage = () => {
 								<div className="col-span-4 md:col-span-3 space-y-5">
 									<SocialChart type="crypto" />
 									<YieldsList />
-									<FounderAndTeamAnalysis />
+									<CryptoFounderAndTeamAnalystChart />
 									<div className="mt-10">
 										<CryptoCommunityContributions />
 									</div>
