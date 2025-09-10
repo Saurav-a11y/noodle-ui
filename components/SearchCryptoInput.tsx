@@ -19,7 +19,7 @@ const SkeletonItem = () => (
 	</div>
 );
 
-export const SearchInput = ({ inputClassname, popupClassname, placeholder }: { placeholder?: string, inputClassname?: string, popupClassname?: string }) => {
+const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { placeholder?: string, inputClassname?: string, popupClassname?: string }) => {
 	const listRef = useRef<HTMLDivElement | null>(null);     // <- container scroll
 	const sentinelRef = useRef<HTMLDivElement | null>(null);
 	const wrapperRef = useRef<HTMLDivElement | null>(null)
@@ -187,3 +187,5 @@ export const SearchInput = ({ inputClassname, popupClassname, placeholder }: { p
 		</div>
 	)
 }
+
+export default SearchCryptoInput

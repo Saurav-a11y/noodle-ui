@@ -6,12 +6,15 @@ import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
 import useThemekMode from '@/lib/useThemkMode';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "./ui/NavigationMenu";
 import Link from "next/link";
-import { SearchInput } from "./SearchInput";
+import SearchCryptoInput from "./SearchCryptoInput";
 import SocialWalletLogin from "./common/SocialWalletLogin";
+import { useTypeFromPath } from "@/lib/useTypeFromPath";
+import SearchStockInput from "./SearchStockInput";
+import SearchCommodityInput from "./SearchCommodityInput";
 
 const Header = () => {
 	const { isDark } = useThemekMode();
-
+	const type = useTypeFromPath();
 	return (
 		<header className="bg-white dark:bg-[#0B0B0B] shadow-md sticky top-0 z-50">
 			<div className="container mx-auto px-6 py-2">
@@ -23,11 +26,18 @@ const Header = () => {
 
 					<div className="flex items-center">
 						{/* Search Bar */}
-						<SearchInput />
+						{type === 'cryptocurrencies' && (
+							<SearchCryptoInput />
+						)}
+						{type === 'stocks' && (
+							<SearchStockInput />
+						)}
+						{type === 'commodities' && (
+							<SearchCommodityInput />
+						)}
 						<div className="text-black dark:text-white flex items-center gap-10">
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
-
 									{/* Cryptocurrencies */}
 									<NavigationMenuItem>
 										<Link

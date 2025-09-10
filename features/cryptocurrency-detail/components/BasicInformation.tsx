@@ -36,7 +36,7 @@ const communityIcons: Record<
 	Discord: { icon: <DiscordIcon />, label: "Discord" },
 };
 
-const ProjectInfo = () => {
+const BasicInformation = () => {
 	const params = useParams();
 	const popupRef = useRef<HTMLDivElement | null>(null);
 	const [showAll, setShowAll] = useState(false);
@@ -302,4 +302,4 @@ const ProjectInfo = () => {
 	);
 };
 
-export default ProjectInfo;
+export default BasicInformation;

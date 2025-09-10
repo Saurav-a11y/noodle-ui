@@ -2,25 +2,19 @@ import { useCommunityOverview } from "@/features/cryptocurrency-detail/hooks/use
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams, usePathname } from "next/navigation";
 import { useCommodityOverview } from "./useCommodities";
+import { useStockOverview } from "./useStocks";
+import { useTypeFromPath } from "@/lib/useTypeFromPath";
 
 export const useAssetOverviewData = () => {
+    const type = useTypeFromPath();
     const params = useParams();
-    const pathname = usePathname();
     const slug = params?.slug as string;
-
-    let type: "cryptocurrencies" | "stocks" | "commodities" = "cryptocurrencies";
-
-    if (pathname?.includes("/stocks")) type = "stocks";
-    else if (pathname?.includes("/commodities")) type = "commodities";
 
     // Gọi hook phù hợp
     let data, isFetching;
 
     if (type === "stocks") {
-        const result = {
-            data: [],
-            isFetching: false,
-        }
+        const result = useStockOverview(slug);
         data = result.data;
         isFetching = result.isFetching;
     } else if (type === "commodities") {

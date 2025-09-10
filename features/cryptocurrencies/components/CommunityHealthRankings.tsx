@@ -11,7 +11,7 @@ import { useCommunityHealthRanks } from "../hooks/useCommunityHealthRanks";
 import { formatCurrency, formatNumberShort, formatPercent } from "@/lib/format";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { SearchInput } from "@/components/SearchInput";
+import SearchCryptoInput from "@/components/SearchCryptoInput";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
@@ -143,7 +143,7 @@ const CommunityHealthRankings = () => {
 						{renderSelect(filterSize, 'size')}
 					</div>
 					{/* Search */}
-					<SearchInput placeholder="Search by symbol, name" inputClassname="!mx-0 max-w-xs" popupClassname="!left-0 !max-w-xs" />
+					<SearchCryptoInput placeholder="Search by symbol, name" inputClassname="!mx-0 max-w-xs" popupClassname="!left-0 !max-w-xs" />
 				</div>
 
 				{/* Table */}

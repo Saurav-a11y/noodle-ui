@@ -62,7 +62,7 @@ export const formatTweetText = (text: string): string => {
 const decodeHtmlEntities = (url?: string) =>
 	url?.replace(/&amp;/g, '&') || '';
 
-const LiveActivity = () => {
+const CryptoCommunityContributions = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const tokenSymbol =
@@ -650,4 +650,4 @@ const LiveActivity = () => {
 	);
 };
 
-export default LiveActivity;
+export default CryptoCommunityContributions;

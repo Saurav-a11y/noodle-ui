@@ -1,15 +1,12 @@
 import { useState, useLayoutEffect, useRef, useEffect, memo, useReducer } from "react";
-// import { Button } from "@/components/ui/Button";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
-// import LightIcon from "@/icons/LightIcon";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
-// import BackgroundChat from "@/icons/BackgroundChat";
 import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
 
@@ -161,7 +158,7 @@ const ChatInput = ({
 	);
 };
 
-const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
+const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 
@@ -326,4 +323,4 @@ const AICommunityAnalyst = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	);
 };
 
-export default AICommunityAnalyst;
+export default ChatWithCryptoAssistant;

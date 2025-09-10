@@ -96,7 +96,7 @@ const TopCompaniesByMarketCap = () => {
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<div className="flex items-center gap-3">
-											<div className="w-8 h-8 flex items-center justify-center font-noto border border border-[#F8F8F8] rounded-full">
+											<div className="w-8 h-8 flex items-center justify-center font-noto rounded-full">
 												<Image src={`https://s3-symbol-logo.tradingview.com/${stock?.logoid}.svg` || '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 											</div>
 											<div className="text-[#4B4A4A] dark:text-[#FFF]">

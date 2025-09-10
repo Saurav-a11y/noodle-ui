@@ -1,13 +1,10 @@
 'use client';
 import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { useCommunityTeamActivityAnalysis } from "../hooks/useCommunityTeamActivityAnalysis";
 import { useParams } from "next/navigation";
 
 const labels = [
 	{ name: 'Twitter Posts', color: '#38E1FF' },
-	{ name: 'GitHub Commits', color: '#546DF9' },
-	{ name: 'Reddit Posts', color: '#FF7D4D' },
 	{ name: 'YouTube', color: '#FF0000' },
 ]
 
@@ -19,7 +16,7 @@ const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }
 	"1Y": { amount: 12, unit: "month" },
 };
 
-const ActivityTimeline = () => {
+const StockFounderAndTeamAnalystChart = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const tokenSymbol =
@@ -31,12 +28,6 @@ const ActivityTimeline = () => {
 
 	const timeOption = timeframeOptions[selectedTimeframe];
 
-	const { data, isFetching } = useCommunityTeamActivityAnalysis({
-		communityId: tokenSymbol,
-		amount: timeOption.amount,
-		unit: timeOption.unit,
-	})
-
 	const toggleLabel = (labelName: string) => {
 		setVisibleLabels(prev =>
 			prev.includes(labelName)
@@ -44,29 +35,25 @@ const ActivityTimeline = () => {
 				: [...prev, labelName]
 		);
 	};
-
+	const isFetching = false
+	const data = { data: { totals: { twitter_posts: 0, youtube_videos: 0 }, time_series: [] } };
 	const totals = data?.data?.totals || null
 	const dataChart = data?.data?.time_series
 
 	const activeLabels = labels.filter(label => {
 		if (label.name === "Twitter Posts") return totals?.twitter_posts > 0;
-		if (label.name === "GitHub Commits") return totals?.github_commits > 0;
-		if (label.name === "Reddit Posts") return totals?.reddit_posts > 0;
 		if (label.name === "YouTube") return totals?.youtube_videos > 0;
 		return false;
 	});
 
 	useEffect(() => {
-		// Khi dữ liệu về, chỉ cho visible labels là những cái có data
-		if (totals) {
-			const newVisible: string[] = [];
-			if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
-			if (totals?.github_commits > 0) newVisible.push("GitHub Commits");
-			if (totals?.reddit_posts > 0) newVisible.push("Reddit Posts");
-			if (totals?.youtube_videos > 0) newVisible.push("YouTube");
-			setVisibleLabels(newVisible);
-		}
-	}, [totals]);
+		// if (totals) {
+		const newVisible: string[] = [];
+		if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
+		if (totals?.youtube_videos > 0) newVisible.push("YouTube");
+		setVisibleLabels(newVisible);
+	}, []);
+	// }, [totals]);
 
 	return (
 		<div className="p-6 rounded-xl bg-white dark:bg-[#1A1A1A] dark:text-white text-[#1E1B39]">
@@ -128,12 +115,6 @@ const ActivityTimeline = () => {
 								{totals?.twitter_posts > 0 && visibleLabels.includes("Twitter Posts") && (
 									<Line type="monotone" dataKey="twitter_posts" stroke="#38E1FF" strokeWidth={2} dot={false} />
 								)}
-								{totals?.github_commits > 0 && visibleLabels.includes("GitHub Commits") && (
-									<Line type="monotone" dataKey="github_commits" stroke="#546DF9" strokeWidth={2} dot={false} />
-								)}
-								{totals?.reddit_posts > 0 && visibleLabels.includes("Reddit Posts") && (
-									<Line type="monotone" dataKey="reddit_posts" stroke="#FF7D4D" strokeWidth={2} dot={false} />
-								)}
 								{totals?.youtube_videos > 0 && visibleLabels.includes("YouTube") && (
 									<Line type="monotone" dataKey="youtube_videos" stroke="#FF0000" strokeWidth={2} dot={false} />
 								)}
@@ -146,21 +127,13 @@ const ActivityTimeline = () => {
 						</div>
 					)}
 				</div>
-				<div className="grid grid-cols-1 md:grid:col-2 lg:grid-cols-4 gap-4 mt-4">
-					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
+				<div className="flex justify-center gap-5 mt-7.5">
+					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4 w-[220px]">
 						<p className="text-sm font-reddit mb-2">Total Twitter Posts</p>
 						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.twitter_posts || 0}</p>}
 					</div>
-					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
-						<p className="text-sm font-reddit mb-2">Total GitHub Commits</p>
-						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.github_commits || 0}</p>}
-					</div>
-					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
-						<p className="text-sm font-reddit mb-2">Total Reddit Posts</p>
-						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.reddit_posts || 0}</p>}
-					</div>
-					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4">
-						<p className="text-sm font-reddit mb-2">Total YouTube</p>
+					<div className="text-center flex flex-col items-center border border-[#E9E9E9] dark:border-none dark:bg-[#0B0B0B] rounded-xl p-4 w-[220px]">
+						<p className="text-sm font-reddit mb-2">Total YouTube Videos</p>
 						{isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.youtube_videos || 0}</p>}
 					</div>
 				</div>
@@ -169,4 +142,4 @@ const ActivityTimeline = () => {
 	);
 };
 
-export default ActivityTimeline;
+export default StockFounderAndTeamAnalystChart;
