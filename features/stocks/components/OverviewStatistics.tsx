@@ -1,20 +1,11 @@
 'use client'
 import _map from 'lodash/map';
-import ProjectList from "@/components/common/ProjectList";
 import StatCard from "@/components/common/StatCard";
 import TooltipCommon from "@/components/common/TooltipCommon";
 import Image from 'next/image';
 import { formatNumberShort, formatPercent } from '@/lib/format';
 import { useRouter } from 'next/navigation';
-import { useTopGrowthStocks } from '@/hooks/useStocks';
-
-const mostTalkedProjects7d = [
-	{ rank: 1, symbol: 'AAPL', name: 'Apple Inc.', mentions: 9300, logoid: 'apple' },
-	{ rank: 2, symbol: 'META', name: 'Meta Platforms, Inc.', mentions: 7200, logoid: 'meta-platforms' },
-	{ rank: 3, symbol: 'GOOG', name: 'Alphabet Inc.', mentions: 4100, logoid: 'alphabet' },
-	{ rank: 4, symbol: 'MSFT', name: 'Microsoft Corporation', mentions: 2000, logoid: 'microsoft' },
-	{ rank: 5, symbol: 'LLY', name: 'Eli Lilly and Company', mentions: 900, logoid: 'eli-lilly' },
-]
+import { useMostTalkedAboutStocks, useStockActiveUsers, useStockNumberTracked, useTopGrowthStocks } from '@/hooks/useStocks';
 
 const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 	const router = useRouter();
@@ -73,6 +64,9 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 }
 const OverviewStatistics = () => {
 	const { data: topGrowthStocksData, isLoading: isGettingTopGrowthStocks, } = useTopGrowthStocks();
+	const { data: mostTalkedAboutStocks, isLoading: isGettingMostTalkedAboutStock, } = useMostTalkedAboutStocks();
+	const { data: stockNumberTracked, isLoading: isGettingStockNumberTracked, } = useStockNumberTracked();
+	const { data: stockActiveUsers, isLoading: isGettingStockActiveUsers, } = useStockActiveUsers();
 
 	const topGrowthStocks7d = topGrowthStocksData?.data?.top_growth_stocks_7d || [];
 	return (
@@ -86,23 +80,23 @@ const OverviewStatistics = () => {
 				<OverviewCard data={topGrowthStocks7d} title="Top Growth Stocks (Growth Rate - 7d)" tooltip="The list of stocks with the highest price growth rate over the past 7 days, calculated based on percentage change." isLoading={isGettingTopGrowthStocks} />
 
 				{/* Most Talked About Projects */}
-				<OverviewCard data={mostTalkedProjects7d} title="Most Talked About Project (7D)" tooltip="Highlights the most mentioned projects across major platforms during the last 7 days. High mention volume often indicates rising interest and trending discussions." isLoading={false} />
+				<OverviewCard data={mostTalkedAboutStocks?.data} title="Most Talked About Project (7D)" tooltip="Highlights the most mentioned projects across major platforms during the last 7 days. High mention volume often indicates rising interest and trending discussions." isLoading={isGettingMostTalkedAboutStock} />
 
 				{/* Summary Stats */}
 				<div className="flex gap-4 flex-col">
 					<StatCard
 						title="Number of Tracked Stocks"
 						tooltip="The total number of crypto projects being monitored for community signals and on-chain metrics. Only projects with enough consistent data are included."
-						value={704}
-						change={{ direction: 'up', absolute: 14, percentage: 2.8 }}
-						isLoading={false}
+						value={stockNumberTracked?.data?.value}
+						change={{ direction: stockNumberTracked?.data?.direction, absolute: stockNumberTracked?.data?.absolute, percentage: stockNumberTracked?.data?.percentage }}
+						isLoading={isGettingStockNumberTracked}
 					/>
 					<StatCard
 						title="Total Active Users (7D)"
 						tooltip="Total number of unique users who engaged with tracked projects in the past 7 days. Includes social interactions, token activity, and contributions."
-						value={133000000}
-						change={{ direction: 'up', absolute: 214, percentage: 12 }}
-						isLoading={false}
+						value={stockActiveUsers?.data?.value}
+						change={{ direction: stockActiveUsers?.data?.direction, absolute: stockActiveUsers?.data?.absolute, percentage: stockActiveUsers?.data?.percentage }}
+						isLoading={isGettingStockActiveUsers}
 					/>
 				</div>
 			</div>

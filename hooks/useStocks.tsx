@@ -1,10 +1,31 @@
-import { fetchStockCommunityTeamActivityAnalysis, fetchStockOverview, fetchStocksHealthRanks, fetchTopGrowthStocks } from "@/apis";
+import { fetchMostTalkedAboutStocks, fetchStockActiveUsers, fetchStockCommunityTeamActivityAnalysis, fetchStockNumberTracked, fetchStockOverview, fetchStocksHealthRanks, fetchTopGrowthStocks } from "@/apis";
 import { useQuery } from "@tanstack/react-query";
 
 export const useTopGrowthStocks = () =>
 	useQuery({
 		queryKey: ['topGrowthStocks'],
 		queryFn: fetchTopGrowthStocks,
+		staleTime: 1000 * 60 * 5,
+	});
+
+export const useMostTalkedAboutStocks = () =>
+	useQuery({
+		queryKey: ['mostTalkedAboutStocks'],
+		queryFn: fetchMostTalkedAboutStocks,
+		staleTime: 1000 * 60 * 5,
+	});
+
+export const useStockNumberTracked = () =>
+	useQuery({
+		queryKey: ['stockNumberTracked'],
+		queryFn: fetchStockNumberTracked,
+		staleTime: 1000 * 60 * 5,
+	});
+
+export const useStockActiveUsers = () =>
+	useQuery({
+		queryKey: ['stockActiveUsers'],
+		queryFn: fetchStockActiveUsers,
 		staleTime: 1000 * 60 * 5,
 	});
 

@@ -171,6 +171,24 @@ export const fetchTopGrowthStocks = async () => {
 	return res.json();
 };
 
+export const fetchMostTalkedAboutStocks = async () => {
+	const res = await fetch(`${BASE_URL}/most-talked-about-stock`);
+	if (!res.ok) throw new Error('Failed to fetch top growth stocks');
+	return res.json();
+};
+
+export const fetchStockNumberTracked = async () => {
+	const res = await fetch(`${BASE_URL}/stock-number-tracked`);
+	if (!res.ok) throw new Error('Failed to fetch top growth stocks');
+	return res.json();
+};
+
+export const fetchStockActiveUsers = async () => {
+	const res = await fetch(`${BASE_URL}/stock-active-users`);
+	if (!res.ok) throw new Error('Failed to fetch top growth stocks');
+	return res.json();
+};
+
 export const fetchStockCommunityDataSources = async ({ symbol, platform, page }: { symbol: string, platform: string, page: string }) => {
 	const query = new URLSearchParams({ symbol, platform, page });
 
