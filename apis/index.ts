@@ -150,12 +150,13 @@ export const fetchOverviewCommoditiesStats = async () => {
 };
 
 // Stocks
-export const fetchStocksHealthRanks = async ({ limit, page, search }: { limit?: number, page?: number, search?: string }) => {
+export const fetchStocksHealthRanks = async ({ limit, page, search, groupFilter }: { limit?: number, page?: number, search?: string, groupFilter?: string }) => {
 	const query = new URLSearchParams();
 
 	if (limit) query.append('limit', String(limit));
 	if (page) query.append('page', String(page));
 	if (search) query.append('search', String(search));
+	if (groupFilter) query.append('groupFilter', String(groupFilter));
 
 	const url = `${BASE_URL}/stock-health-ranks?${query.toString()}`;
 
@@ -167,6 +168,15 @@ export const fetchStocksHealthRanks = async ({ limit, page, search }: { limit?: 
 export const fetchTopGrowthStocks = async () => {
 	const res = await fetch(`${BASE_URL}/top-growth-stocks`);
 	if (!res.ok) throw new Error('Failed to fetch top growth stocks');
+	return res.json();
+};
+
+export const fetchStockCommunityDataSources = async ({ symbol, platform, page }: { symbol: string, platform: string, page: string }) => {
+	const query = new URLSearchParams({ symbol, platform, page });
+
+	const res = await fetch(`${BASE_URL}/stock-community-data-sources?${query}`);
+
+	if (!res.ok) throw new Error('Failed to fetch Community Data Sources');
 	return res.json();
 };
 

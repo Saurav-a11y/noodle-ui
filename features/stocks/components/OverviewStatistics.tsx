@@ -3,10 +3,10 @@ import _map from 'lodash/map';
 import ProjectList from "@/components/common/ProjectList";
 import StatCard from "@/components/common/StatCard";
 import TooltipCommon from "@/components/common/TooltipCommon";
-import { useTopGrowthStocks } from "../hooks";
 import Image from 'next/image';
 import { formatNumberShort, formatPercent } from '@/lib/format';
 import { useRouter } from 'next/navigation';
+import { useTopGrowthStocks } from '@/hooks/useStocks';
 
 const mostTalkedProjects7d = [
 	{ rank: 1, symbol: 'AAPL', name: 'Apple Inc.', mentions: 9300, logoid: 'apple' },

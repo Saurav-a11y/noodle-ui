@@ -15,15 +15,13 @@ import PostAvatar from "@/components/common/PostAvatar";
 import Image from "next/image";
 import Link from "next/link";
 import _map from 'lodash/map';
-import { fetchCommunityDataSources } from "@/apis";
+import { fetchStockCommunityDataSources } from "@/apis";
 import AuthenticIcon from "@/icons/AuthenticIcon";
 import UpVoteIcon from "@/icons/UpVoteIcon";
 import DownVoteIcon from "@/icons/DownVoteIcon";
 import RewardIcon from "@/icons/RewardIcon";
 import TwitterCommunityLoading from "@/components/common/loading/TwiiterCommunityLoading";
 import { YoutubeCommunityLoading } from "@/components/common/loading/YoutubeCommunityLoading";
-import RedditCommunityLoading from "@/components/common/loading/RedditCommunityLoading";
-import GithubCommunityLoading from "@/components/common/loading/GithubCommunityLoading";
 import TooltipCommon from "@/components/common/TooltipCommon";
 
 export const formatTweetText = (text: string): string => {
@@ -73,15 +71,11 @@ const StockCommunityContributions = () => {
 	const scrollRef = useRef<HTMLDivElement>(null);
 
 	const fetchData = async (pageToFetch: number, replace = false) => {
-		const response = {
-			data: {
-				items: [],
-				summary: {
-					total_posts: 0,
-					total_videos: 0,
-				}
-			}
-		}
+		const response = await fetchStockCommunityDataSources({
+			symbol: stockId,
+			platform: activeTab,
+			page: pageToFetch.toString(),
+		});
 
 		const items = response?.data?.items || [];
 		const total = response?.data?.summary?.total_posts || response?.data?.summary?.total_videos || 0;

@@ -6,18 +6,49 @@ import Image from "next/image";
 import _get from "lodash/get";
 import _map from "lodash/map";
 import { formatCurrency, formatPercent } from "@/lib/format";
-import { useStocksHealthRanks } from "../hooks";
+import { useState } from "react";
+import { useStocksHealthRanks } from "@/hooks/useStocks";
+
+const TABS = [
+	{ key: "overview", label: "Overview" },
+	{ key: "performance", label: "Performance" },
+	{ key: "valuation", label: "Valuation" },
+	{ key: "dividends", label: "Dividends" },
+	{ key: "profitability", label: "Profitability" },
+	{ key: "income", label: "Income Statement" },
+	{ key: "balance", label: "Balance Sheet" },
+	{ key: "cashflow", label: "Cash Flow" },
+	{ key: "technicals", label: "Technicals" },
+];
 
 const TopCompaniesByMarketCap = () => {
+	const [selectedTab, setSelectedTab] = useState("overview");
 	const { data: stocksHealthRanksData, isFetching: isGettingStocks } = useStocksHealthRanks({
 		limit: 20,
 		page: 1,
 		search: "",
+		groupFilter: selectedTab
 	})
 	const stocks = stocksHealthRanksData?.data?.stock_health_rankings;
 	const router = useRouter();
+
 	return (
 		<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
+			<div className="flex gap-2 mb-4 overflow-x-auto">
+				{TABS.map((tab) => (
+					<button
+						key={tab.key}
+						onClick={() => setSelectedTab(tab.key)}
+						className={`cursor-pointer text-xs font-noto px-3 py-1 border rounded transition-all whitespace-nowrap
+        ${selectedTab === tab.key
+								? "bg-[#84EA07] text-black border-[#84EA07]"
+								: "bg-transparent text-[#4B4A4A] dark:text-white border-[#C9C9C9] dark:border-[#4A4A4A]"
+							}`}
+					>
+						{tab.label}
+					</button>
+				))}
+			</div>
 			<div className="overflow-x-auto">
 				<Table>
 					<TableHeader className="dark:bg-[#1A1A1A]">
