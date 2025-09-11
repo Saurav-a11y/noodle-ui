@@ -180,6 +180,19 @@ export const fetchStockCommunityDataSources = async ({ symbol, platform, page }:
 	return res.json();
 };
 
+export const fetchStockCommunityTeamActivityAnalysis = async ({ communityId, amount, unit }: { communityId: string, amount?: number, unit?: string }) => {
+	const query = new URLSearchParams({
+		communityId,
+		...(amount && { amount: String(amount) }),
+		...(unit && { unit: String(unit) }),
+	});
+
+	const res = await fetch(`${BASE_URL}/stock-community-team-activity-analysis?${query}`);
+
+	if (!res.ok) throw new Error('Failed to fetch Community Team Activity Analysis');
+	return res.json();
+};
+
 // Chat with AI Agent
 export const chatWithAgent = async ({
 	messages,

@@ -74,7 +74,6 @@ const CryptoCommunityContributions = () => {
 	const [activeTab, setActiveTab] = useState("Twitter");
 	const [page, setPage] = useState(1);
 	const [data, setData] = useState<any[]>([]);
-	console.log("🚀 ~ LiveActivity ~ data:", data)
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [totalItems, setTotalitems] = useState<number>(0);

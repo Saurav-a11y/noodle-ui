@@ -1,7 +1,5 @@
-import { fetchStockOverview, fetchStocksHealthRanks, fetchTopGrowthStocks } from "@/apis";
+import { fetchStockCommunityTeamActivityAnalysis, fetchStockOverview, fetchStocksHealthRanks, fetchTopGrowthStocks } from "@/apis";
 import { useQuery } from "@tanstack/react-query";
-
-const FINNHUB_API_KEY = "d30kqghr01qnmrsevdugd30kqghr01qnmrsevdv0";
 
 export const useTopGrowthStocks = () =>
 	useQuery({
@@ -16,6 +14,15 @@ export const useStocksHealthRanks = (params: { limit?: number, page?: number, se
 		queryFn: () => fetchStocksHealthRanks(params),
 		staleTime: 1000 * 60 * 5,
 	});
+
+export const useStockCommunityTeamActivityAnalysis = ({ communityId, amount, unit }: { communityId: string, amount?: number, unit?: string }) => {
+	return useQuery({
+		queryKey: ['stockCommunityTeamActivity', communityId, amount, unit],
+		queryFn: () => fetchStockCommunityTeamActivityAnalysis({ communityId, amount, unit }),
+		enabled: !!communityId,
+		staleTime: 1000 * 60 * 5,
+	});
+};
 
 export const useStockOverview = (name: string) => {
 	return useQuery({

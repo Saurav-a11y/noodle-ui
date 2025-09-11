@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useParams } from "next/navigation";
+import { useStockCommunityTeamActivityAnalysis } from "@/hooks/useStocks";
 
 const labels = [
 	{ name: 'Twitter Posts', color: '#38E1FF' },
@@ -19,10 +20,6 @@ const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }
 const StockFounderAndTeamAnalystChart = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol =
-		typeof communityId === "string"
-			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
-			: "";
 	const [selectedTimeframe, setSelectedTimeframe] = useState<keyof typeof timeframeOptions>("1M");
 	const [visibleLabels, setVisibleLabels] = useState<string[]>(labels.map(l => l.name));
 
@@ -35,8 +32,11 @@ const StockFounderAndTeamAnalystChart = () => {
 				: [...prev, labelName]
 		);
 	};
-	const isFetching = false
-	const data = { data: { totals: { twitter_posts: 0, youtube_videos: 0 }, time_series: [] } };
+	const { data, isFetching } = useStockCommunityTeamActivityAnalysis({
+		communityId,
+		amount: timeOption.amount,
+		unit: timeOption.unit,
+	})
 	const totals = data?.data?.totals || null
 	const dataChart = data?.data?.time_series
 
@@ -47,13 +47,13 @@ const StockFounderAndTeamAnalystChart = () => {
 	});
 
 	useEffect(() => {
-		// if (totals) {
-		const newVisible: string[] = [];
-		if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
-		if (totals?.youtube_videos > 0) newVisible.push("YouTube");
-		setVisibleLabels(newVisible);
-	}, []);
-	// }, [totals]);
+		if (totals) {
+			const newVisible: string[] = [];
+			if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
+			if (totals?.youtube_videos > 0) newVisible.push("YouTube");
+			setVisibleLabels(newVisible);
+		}
+	}, [totals]);
 
 	return (
 		<div className="p-6 rounded-xl bg-white dark:bg-[#1A1A1A] dark:text-white text-[#1E1B39]">
