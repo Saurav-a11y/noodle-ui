@@ -40,7 +40,7 @@ const ElectricityCommoditiesOverview = ({ data, isLoading }) => {
                             </TableHead>
                             <TableHead className="text-center border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
                                 <div className="flex items-center gap-1 text-[#4B4A4A] dark:text-[#FFF]">
-                                    <p className="text-xs font-noto">%</p>
+                                    <p className="text-xs font-noto">Percent</p>
                                     <TooltipCommon content="Shows how fast the project’s community or activity is increasing over time. A steady or rising growth rate often signals momentum or renewed interest." />
                                 </div>
                             </TableHead>

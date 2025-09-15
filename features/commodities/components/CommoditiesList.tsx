@@ -8,7 +8,7 @@ import IndustrialCommoditiesOverview from "./IndustrialCommoditiesOverview";
 import LiveStocksCommoditiesOverview from "./LiveStocksCommoditiesOverview";
 import IndexsCommoditiesOverview from "./IndexsCommoditiesOverview";
 import ElectricityCommoditiesOverview from "./ElectricityCommoditiesOverview";
-import { useCommoditiesHealthRanks } from "../hooks";
+import { useCommoditiesHealthRanks } from "@/hooks/useCommodities";
 
 const tabList = ["All", "Energy", "Metals", "Agricultural", "Industrial", "Livestock", "Index", "Electricity"];
 

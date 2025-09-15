@@ -143,12 +143,6 @@ export const fetchTopGrowthCommodities = async () => {
 	return res.json();
 };
 
-export const fetchOverviewCommoditiesStats = async () => {
-	const res = await fetch(`${BASE_URL}/overview-commodities-stats`);
-	if (!res.ok) throw new Error('Failed to fetch overview commodities stats');
-	return res.json();
-};
-
 // Stocks
 export const fetchStocksHealthRanks = async ({ limit, page, search, groupFilter }: { limit?: number, page?: number, search?: string, groupFilter?: string }) => {
 	const query = new URLSearchParams();
@@ -244,6 +238,24 @@ export const fetchCommodityOverview = async ({ name_slug }: { name_slug: string 
 export const fetchStockOverview = async ({ name }: { name: string }) => {
 	const res = await fetch(`${BASE_URL}/stocks-overview?name=${encodeURIComponent(name)}`);
 	if (!res.ok) throw new Error('Failed to fetch stocks overview');
+	return res.json();
+};
+
+export const fetchMostTalkedAboutCommodities = async () => {
+	const res = await fetch(`${BASE_URL}/most-talked-about-commodity`);
+	if (!res.ok) throw new Error('Failed to fetch top growth commodities');
+	return res.json();
+};
+
+export const fetchCommodityNumberTracked = async () => {
+	const res = await fetch(`${BASE_URL}/commodity-number-tracked`);
+	if (!res.ok) throw new Error('Failed to fetch top growth commodities');
+	return res.json();
+};
+
+export const fetchCommodityActiveUsers = async () => {
+	const res = await fetch(`${BASE_URL}/commodity-active-users`);
+	if (!res.ok) throw new Error('Failed to fetch top growth commodities');
 	return res.json();
 };
 

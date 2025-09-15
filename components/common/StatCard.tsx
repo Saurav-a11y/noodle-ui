@@ -35,7 +35,7 @@ const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
                     {isUp || isDown ? (
                         <div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
                             {icon} {isUp ? '+' : '-'}
-                            {change?.absolute}
+                            {formatNumberWithCommas(change?.absolute)}
                             {isUp || isDown ? ` (${isUp ? '+' : '-'}${change?.percentage}%)` : ''}
                         </div>
                     ) : (
