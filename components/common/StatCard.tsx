@@ -1,4 +1,4 @@
-import { formatNumberShort } from "@/lib/format";
+import { formatNumberWithCommas } from "@/lib/format";
 import TooltipCommon from "./TooltipCommon";
 
 const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
@@ -31,7 +31,7 @@ const StatCard = ({ title, tooltip, value, change, isLoading }: any) => {
                 </div>
             ) : (
                 <>
-                    <div className="text-4xl font-bold font-noto">{formatNumberShort(value)}</div>
+                    <div className="text-4xl font-bold font-noto">{formatNumberWithCommas(value)}</div>
                     {isUp || isDown ? (
                         <div className={`text-sm ${color} font-medium mt-1 font-noto flex items-center`}>
                             {icon} {isUp ? '+' : '-'}

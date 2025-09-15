@@ -151,7 +151,7 @@ const SocialChart = ({ type }) => {
 										setSelectedTz(tz);
 										setOpen(false);
 									}}
-									className={`text-sm px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${selectedTz.label === tz.label ? 'text-blue-500 font-medium' : ''
+									className={`text-sm px-3 py-2 cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 ${selectedTz.label === tz.label ? 'text-blue-500 font-medium' : ''
 										}`}
 								>
 									{tz.label}

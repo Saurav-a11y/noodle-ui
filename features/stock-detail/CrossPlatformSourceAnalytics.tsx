@@ -32,27 +32,6 @@ const CrossPlatformSourceAnalytics = ({ stockOverview, isFetching }) => {
                 </div>
                 <div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
                     <div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-                        <p className="text-xs font-reddit">Reddit Posts</p>
-                        <TooltipCommon content="Counts how many Reddit posts discussed the project in the past 24 hours. Reflects discussion volume in crypto’s most active forums." />
-                    </div>
-                    {!isFetching ? (
-                        <>
-                            <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
-                                {stockOverview?.cross_platform_analytics?.reddit_posts?.value}
-                            </p>
-                            <p className="text-sm font-medium font-noto dark:text-white">
-                                {stockOverview?.cross_platform_analytics?.reddit_posts?.change_percent}% {stockOverview?.cross_platform_analytics?.twitter_mentions?.comparison}
-                            </p>
-                        </>
-                    ) : (
-                        <>
-                            <div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
-                            <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
-                        </>
-                    )}
-                </div>
-                <div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-                    <div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
                         <p className="text-xs font-reddit">YouTube Videos</p>
                         <TooltipCommon content="Measures how many videos about the project were published in the last week. Shows how much creator interest the project is getting." />
                     </div>

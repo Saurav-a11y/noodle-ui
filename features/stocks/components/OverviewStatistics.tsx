@@ -88,14 +88,14 @@ const OverviewStatistics = () => {
 						title="Number of Tracked Stocks"
 						tooltip="The total number of crypto projects being monitored for community signals and on-chain metrics. Only projects with enough consistent data are included."
 						value={stockNumberTracked?.data?.value}
-						change={{ direction: stockNumberTracked?.data?.direction, absolute: stockNumberTracked?.data?.absolute, percentage: stockNumberTracked?.data?.percentage }}
+						change={{ direction: stockNumberTracked?.data?.change?.direction, absolute: stockNumberTracked?.data?.change?.absolute, percentage: stockNumberTracked?.data?.change?.percentage }}
 						isLoading={isGettingStockNumberTracked}
 					/>
 					<StatCard
 						title="Total Active Users (7D)"
 						tooltip="Total number of unique users who engaged with tracked projects in the past 7 days. Includes social interactions, token activity, and contributions."
 						value={stockActiveUsers?.data?.value}
-						change={{ direction: stockActiveUsers?.data?.direction, absolute: stockActiveUsers?.data?.absolute, percentage: stockActiveUsers?.data?.percentage }}
+						change={{ direction: stockActiveUsers?.data?.change?.direction, absolute: stockActiveUsers?.data?.change?.absolute, percentage: stockActiveUsers?.data?.change?.percentage }}
 						isLoading={isGettingStockActiveUsers}
 					/>
 				</div>

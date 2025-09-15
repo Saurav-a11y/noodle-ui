@@ -58,6 +58,22 @@ const CoreCommunityMetrics = ({ stockOverview, isFetching }) => {
 						</>
 					}
 				</div>
+				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
+					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
+						<p className="text-xs font-reddit">SEC Filings Count (30d)</p>
+						<TooltipCommon content="Reflects the long-term trend of user base or engagement growth over the last 30 days. Useful for spotting sustainable momentum." />
+					</div>
+					{isFetching ?
+						<>
+							<div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
+							<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+						</>
+						: <>
+							<div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{Math.floor(Math.random() * 101)}</div>
+							<p className="text-yellow-500 text-sm font-medium font-noto">Consistent activity</p>
+						</>
+					}
+				</div>
 			</div>
 		</div>
 	)

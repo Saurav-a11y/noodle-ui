@@ -11,11 +11,11 @@ const ElectricityCommoditiesOverview = ({ data, isLoading }) => {
     const router = useRouter();
     return (
         <div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
-            <p className="text-lg font-medium font-reddit mb-5">Electricity Commodities Overview</p>
+            <p className="text-lg font-medium font-reddit mb-5 dark:text-white">Electricity Commodities Overview</p>
             <div className="overflow-x-auto">
                 <Table>
                     <TableHeader className="dark:bg-[#1A1A1A]">
-                        <TableRow className="bg-[#F8F8F8] border-b border-b-[#C9C9C9]">
+                        <TableRow className="border-b border-b-[#C9C9C9]">
                             <TableHead className="w-12 text-[#4B4A4A] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg">#</TableHead>
                             <TableHead className="border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A]">
                                 <p className="text-xs text-[#4B4A4A] dark:text-[#FFF] font-noto">Electricity</p>
@@ -96,7 +96,7 @@ const ElectricityCommoditiesOverview = ({ data, isLoading }) => {
                                     <TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
                                     <TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 flex items-center justify-center font-noto">
+                                            <div className="w-8 h-8 flex items-center justify-center font-noto text-black dark:text-white">
                                                 <Zap />
                                             </div>
                                             <div className="text-[#4B4A4A] dark:text-[#FFF]">
