@@ -17,7 +17,7 @@ export const useTopGrowthCommodities = () =>
         staleTime: 1000 * 60 * 5,
     });
 
-export const useCommoditiesHealthRanks = (params: { limit?: number, page?: number, search?: string, groupFilter?: string }) =>
+export const useCommoditiesHealthRanks = (params: { limit?: number, page?: number, groupFilter?: string }) =>
     useQuery({
         queryKey: ['commoditiesHealthRanks', params],
         queryFn: () => fetchCommoditiesHealthRanks(params),
