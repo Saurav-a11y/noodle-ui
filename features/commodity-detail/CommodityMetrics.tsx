@@ -66,7 +66,7 @@ const CommodityMetrics = () => {
                             <p className="text-xs font-reddit">Recent Activity Drop</p>
                             <TooltipCommon content="Detects a sharp decrease in user engagement or community actions. May signal declining interest or short-term inactivity." />
                         </div>
-                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1">{commodityOverview?.project?.recent_activity_drop?.value}{commodityOverview?.project?.recent_activity_drop?.unit} {commodityOverview?.project?.recent_activity_drop?.period}</div>}
+                        {isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1 dark:text-white">{commodityOverview?.project?.recent_activity_drop?.value}{commodityOverview?.project?.recent_activity_drop?.unit} {commodityOverview?.project?.recent_activity_drop?.period}</div>}
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@ const CommodityMetrics = () => {
                             </>
                             : <>
                                 <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{commodityOverview?.project?.core_metrics?.engagement_rate_7d?.value}{commodityOverview?.project?.core_metrics?.engagement_rate_7d?.unit}</div>
-                                <p className="text-sm font-medium font-noto">{commodityOverview?.project?.core_metrics?.engagement_rate_7d?.change_percent}%</p>
+                                <p className="text-sm font-medium font-noto dark:text-white">{commodityOverview?.project?.core_metrics?.engagement_rate_7d?.change_percent}%</p>
                             </>
                         }
                     </div>
@@ -123,7 +123,7 @@ const CommodityMetrics = () => {
                             </>
                             : <>
                                 <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{commodityOverview?.project?.core_metrics?.growth_rate_30d?.value}{commodityOverview?.project?.core_metrics?.growth_rate_30d?.unit}</div>
-                                <p className="text-sm font-medium font-noto">{commodityOverview?.project?.core_metrics?.growth_rate_30d?.trend}</p>
+                                <p className="text-sm font-medium font-noto dark:text-white">{commodityOverview?.project?.core_metrics?.growth_rate_30d?.trend}</p>
                             </>
                         }
                     </div>
@@ -148,7 +148,7 @@ const CommodityMetrics = () => {
                                 <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
                                     {commodityOverview?.project?.cross_platform_analytics?.twitter_mentions?.value}
                                 </p>
-                                <p className="text-sm font-medium font-noto">
+                                <p className="text-sm font-medium font-noto dark:text-white">
                                     {commodityOverview?.project?.cross_platform_analytics?.twitter_mentions?.change_percent}% {commodityOverview?.project?.cross_platform_analytics?.twitter_mentions?.comparison}
                                 </p>
                             </>
@@ -169,7 +169,7 @@ const CommodityMetrics = () => {
                                 <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
                                     {commodityOverview?.project?.cross_platform_analytics?.reddit_posts?.value}
                                 </p>
-                                <p className="text-sm font-medium font-noto">
+                                <p className="text-sm font-medium font-noto dark:text-white">
                                     {commodityOverview?.project?.cross_platform_analytics?.reddit_posts?.change_percent}% {commodityOverview?.project?.cross_platform_analytics?.twitter_mentions?.comparison}
                                 </p>
                             </>
@@ -190,7 +190,7 @@ const CommodityMetrics = () => {
                                 <p className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">
                                     {commodityOverview?.project?.cross_platform_analytics?.youtube_videos?.value}
                                 </p>
-                                <p className="text-sm font-medium font-noto">
+                                <p className="text-sm font-medium font-noto dark:text-white">
                                     {commodityOverview?.project?.cross_platform_analytics?.youtube_videos?.change} {commodityOverview?.project?.cross_platform_analytics?.youtube_videos?.change_description}
                                 </p>
                             </>
