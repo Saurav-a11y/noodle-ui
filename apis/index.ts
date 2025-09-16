@@ -143,6 +143,15 @@ export const fetchTopGrowthCommodities = async () => {
 	return res.json();
 };
 
+export const fetchCommodityCommunityDataSources = async ({ symbol, platform, page }: { symbol: string, platform: string, page: string }) => {
+	const query = new URLSearchParams({ symbol, platform, page });
+
+	const res = await fetch(`${BASE_URL}/commodity-community-data-sources?${query}`);
+
+	if (!res.ok) throw new Error('Failed to fetch Community Data Sources');
+	return res.json();
+};
+
 // Stocks
 export const fetchStocksHealthRanks = async ({ limit, page, search, groupFilter }: { limit?: number, page?: number, search?: string, groupFilter?: string }) => {
 	const query = new URLSearchParams();

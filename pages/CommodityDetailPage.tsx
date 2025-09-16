@@ -2,7 +2,6 @@
 import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
 import { CommodityHeader } from "@/features/commodity-detail/CommodityHeader";
 import CommodityMetrics from "@/features/commodity-detail/CommodityMetrics";
-import ComingSoon from "@/components/common/ComingSoon";
 import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 import { useEffect, useState } from "react";
 import ReactQueryProvider from "@/lib/react-query-provider";
@@ -11,6 +10,7 @@ import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Header from "@/components/Header";
 import BackgroundPage from "@/icons/BackgroundPage";
 import ChatWithCommodityAssistant from "@/features/commodity-detail/ChatWithCommodityAssistant";
+import CommodityCommunityContributions from "@/features/commodity-detail/CommodityCommunityContributions";
 
 const CommodityDetailPage = () => {
     const [isChatVisible, setChatVisible] = useState(true);
@@ -119,12 +119,7 @@ const CommodityDetailPage = () => {
                                 </div>
                                 <div className="col-span-4 md:col-span-3 space-y-5">
                                     <SocialChart type="commodity" />
-                                    <ComingSoon />
-                                    {/* <YieldsList /> */}
-                                    {/* <ActivityTimeline /> */}
-                                    {/* <div className="mt-10">
-                            <LiveActivity />
-                        </div> */}
+                                    <CommodityCommunityContributions />
                                 </div>
                             </div>
                         </div>

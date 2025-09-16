@@ -17,8 +17,8 @@ import MetalIcon from "@/icons/commodities/MetalIcon";
 import HerbsIcon from "@/icons/commodities/HerbsIcon";
 import IndustrialIcon from "@/icons/commodities/IndustrialIcon";
 
-const tabList = ["All", "Energy", "Metals", "Agricultural", "Industrial", "Livestock", "Index", "Electricity"];
-
+const tabList = ["All", "Energy", "Metals", "Agricultural",];
+// "Industrial", "Livestock", "Index", "Electricity"
 const CommoditiesTableHeader = ({ title }) => {
 	return (
 		<TableHeader className="dark:bg-[#1A1A1A]">
