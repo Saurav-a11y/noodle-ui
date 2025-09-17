@@ -16,10 +16,19 @@ import { formatNumberWithCommas } from "@/lib/format";
 import Image from "next/image";
 import { PlusCircle, Trash2Icon } from "lucide-react";
 import AddAssetModal from "../watchlist/components/AddAssetModal";
+import MetalIcon from "@/icons/commodities/MetalIcon";
+import OilIcon from "@/icons/commodities/OilIcon";
+import HerbsIcon from "@/icons/commodities/HerbsIcon";
 
 type HoldingEditState = {
 	editing: boolean;
 };
+
+const typeIcons = {
+	'metals': <MetalIcon />,
+	'energy': <OilIcon />,
+	'agricultural': <HerbsIcon />,
+}
 
 const EditableHoldingsCell = ({
 	value,
@@ -216,7 +225,6 @@ const WatchlistPortfolio = () => {
 					<Table>
 						<TableHeader className="dark:bg-[#1A1A1A]">
 							<TableRow className="border-b">
-								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto dark:rounded-tl-lg font-normal">#</TableHead>
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Asset</TableHead>
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Price</TableHead>
 								<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal">Market Cap</TableHead>
@@ -246,17 +254,22 @@ const WatchlistPortfolio = () => {
 
 									return (
 										<TableRow key={asset.assetId} className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors">
-											<TableCell className="dark:text-white border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-												{asset?.overview?.valuation?.crypto_total_rank}
-											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 												<div className="flex items-center gap-3">
 													<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
-														<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
+														{asset?.assetType === 'cryptocurrencies' && (
+															<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
+														)}
+														{asset?.assetType === 'commodities' && (
+															typeIcons[asset?.overview?.info?.group]
+														)}
+														{asset?.assetType === 'stocks' && (
+															<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
+														)}
 													</div>
 													<div className="flex-1 dark:text-white">
-														<div className="font-medium">{asset?.overview?.info?.base_currency_desc}</div>
-														<div className="text-sm text-muted-foreground">{asset?.overview?.info?.base_currency}</div>
+														<div className="font-medium">{asset?.overview?.info?.base_currency_desc || asset?.overview?.info?.name}</div>
+														<div className="text-xs text-muted-foreground">{asset?.overview?.info?.base_currency || asset?.overview?.info?.symbol}</div>
 													</div>
 												</div>
 											</TableCell>
@@ -264,13 +277,13 @@ const WatchlistPortfolio = () => {
 												${formatNumberWithCommas(asset?.overview?.market?.close)}
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
-												${formatNumberWithCommas(asset?.overview?.valuation?.market_cap_calc)}
+												{asset?.overview?.valuation?.market_cap_calc ? `$${formatNumberWithCommas(asset?.overview?.valuation?.market_cap_calc)}` : '--'}
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
-												<div>${formatNumberWithCommas(asset?.overview?.market?.['24h_vol_cmc'])}</div>
+												<div>{asset?.overview?.market?.['24h_vol_cmc'] ? `$${formatNumberWithCommas(asset?.overview?.market?.['24h_vol_cmc'])}` : asset?.overview?.market?.volume ? `$${formatNumberWithCommas(asset?.overview?.market?.volume)}` : '--'}</div>
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
-												{formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}
+												{asset?.overview?.info?.circulating_supply ? `${formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}` : '--'}
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												<EditableHoldingsCell

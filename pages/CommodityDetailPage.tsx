@@ -119,7 +119,9 @@ const CommodityDetailPage = () => {
                                 </div>
                                 <div className="col-span-4 md:col-span-3 space-y-5">
                                     <SocialChart type="commodity" />
-                                    <CommodityCommunityContributions />
+                                    <div className="mt-10">
+                                        <CommodityCommunityContributions />
+                                    </div>
                                 </div>
                             </div>
                         </div>

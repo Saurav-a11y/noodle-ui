@@ -3,6 +3,7 @@ import { useCommodityOverview } from "@/hooks/useCommodities";
 import AuthenticEngagementIcon from "@/icons/AuthenticEngagementIcon";
 import CommunityGrowthIcon from "@/icons/CommunityGrowthIcon";
 import RecentActivityDropIcon from "@/icons/RecentActivityDropIcon";
+import { formatNumberWithCommas } from "@/lib/format";
 import { useParams } from "next/navigation";
 
 const CommodityMetrics = () => {
@@ -90,7 +91,7 @@ const CommodityMetrics = () => {
                                 <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
                             </>
                             : <>
-                                <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{commodityOverview?.project?.core_metrics?.active_users_30d?.value}</div>
+                                <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{formatNumberWithCommas(commodityOverview?.project?.core_metrics?.active_users_30d?.value)}</div>
                                 <p className="text-sm font-medium font-noto" style={{ color: commodityOverview?.project?.core_metrics?.active_users_30d?.trend === 'up' ? '#00B552' : '#FF0000' }}>{commodityOverview?.project?.core_metrics?.active_users_30d?.change} ({commodityOverview?.project?.core_metrics?.active_users_30d?.change_percent}%)</p>
                             </>
                         }
