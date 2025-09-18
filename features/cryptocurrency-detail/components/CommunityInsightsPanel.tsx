@@ -85,7 +85,7 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 							<p className="text-xs font-reddit">{metric.title}</p>
 							<TooltipCommon content={metric.content} />
 						</div>
-						{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1" style={{ color: metric?.color ? metric?.color : '' }}>{metric.value}</div>}
+						{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1" style={{ color: metric?.color ? metric?.color : 'inherit' }}>{metric.value}</div>}
 					</div>
 				))}
 			</div>

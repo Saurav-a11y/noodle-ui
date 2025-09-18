@@ -1,9 +1,6 @@
-import { Loader, MessageCircle, Bookmark, Eye } from "lucide-react";
+import { MessageCircle, Bookmark, Eye } from "lucide-react";
 import XIcon from "@/icons/XIcon";
-import he from 'he'
 import { formatDistanceToNow } from 'date-fns';
-import GithubIcon from "@/icons/GithubIcon";
-import RedditIcon from "@/icons/RedditIcon";
 // import LightIcon from "@/icons/LightIcon";
 import YoutubeIcon from "@/icons/YoutubeIcon";
 import { useState, useEffect, useRef } from "react";
@@ -17,9 +14,6 @@ import Link from "next/link";
 import _map from 'lodash/map';
 import { fetchStockCommunityDataSources } from "@/apis";
 import AuthenticIcon from "@/icons/AuthenticIcon";
-import UpVoteIcon from "@/icons/UpVoteIcon";
-import DownVoteIcon from "@/icons/DownVoteIcon";
-import RewardIcon from "@/icons/RewardIcon";
 import TwitterCommunityLoading from "@/components/common/loading/TwiiterCommunityLoading";
 import { YoutubeCommunityLoading } from "@/components/common/loading/YoutubeCommunityLoading";
 import TooltipCommon from "@/components/common/TooltipCommon";
@@ -104,10 +98,20 @@ const StockCommunityContributions = () => {
 
 	// Fetch data khi đổi tab hoặc symbol
 	useEffect(() => {
-		if (!stockId) return;
+		if (!stockId || !activeTab) return;
+
+		// Dùng AbortController để hủy gọi trước nếu đang chạy
+		let cancelled = false;
 		setIsLoading(true);
 		setPage(1);
-		fetchData(1, true).finally(() => setIsLoading(false));
+
+		fetchData(1, true).finally(() => {
+			if (!cancelled) setIsLoading(false);
+		});
+
+		return () => {
+			cancelled = true;
+		};
 	}, [stockId, activeTab]);
 
 

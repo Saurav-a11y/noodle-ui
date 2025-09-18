@@ -178,7 +178,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 								))}
 								<div ref={sentinelRef} />
 								{isFetchingNextPage && (
-									<div className="py-4 text-center text-xs opacity-70">Loading more…</div>
+									<div className="py-4 text-center text-xs opacity-70 dark:text-white">Loading more…</div>
 								)}
 							</>
 						)}
