@@ -213,8 +213,8 @@ const CommunityHealthRankings = () => {
 													<Image src={_get(project, 'medium_logo_url', '/images/icon-section-6_2.png')} alt="Symbol" width={64} height={64} className="rounded-full" />
 												</div>
 												<div className="text-[#4B4A4A] dark:text-[#FFF]">
-													<p className="font-medium text-sm font-noto">{project?.name}</p>
-													<div className="text-[10px] font-medium opacity-50 font-noto">{project?.symbol}</div>
+													<p className="font-medium text-sm font-noto">{project?.name_desc}</p>
+													<div className="text-[10px] font-medium opacity-50 font-noto">{project?.name}</div>
 												</div>
 											</div>
 										</TableCell>

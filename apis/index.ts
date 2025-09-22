@@ -1,4 +1,4 @@
-const BASE_URL = 'https://data-api.agentos.cloud/noodle';
+export const BASE_URL = 'https://data-api.agentos.cloud/noodle';
 
 export type CommunityHealthRankParams = {
 	limit?: number;

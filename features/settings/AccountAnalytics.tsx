@@ -2,8 +2,15 @@
 
 import { HelpCircle, MoreHorizontal } from "lucide-react";
 import MostViewedAssets from "./MostViewedAssets";
+import { useGetUserActivityLogs } from "@/hooks/useUserActivityLog";
 
 const AccountAnalytics = () => {
+	const { data, isLoading } = useGetUserActivityLogs({
+		userId: '1901820889840369664',
+		time: 1,
+		page: 1,
+		limit: 10,
+	});
 	const usageInsights = [
 		{
 			label: "Assets Viewed (30d)",

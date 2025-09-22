@@ -42,9 +42,9 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{index + 1}</span>
 								<div className="w-8 h-8 flex items-center justify-center text-sm">
-									<Image src={`https://s3-symbol-logo.tradingview.com/${item?.logoid}.svg` || '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
+									<Image src={item?.logo ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 								</div>
-								<span className="text-sm font-medium">{item?.name}</span>
+								<span className="text-sm font-medium">{item?.description}</span>
 							</div>
 							<div className={`text-sm`}>
 								{item?.growthRate7d && <span className='font-medium'>{formatPercent(item?.growthRate7d)}</span>}
