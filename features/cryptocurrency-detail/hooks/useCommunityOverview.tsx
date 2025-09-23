@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchCommunityOverview } from '@/apis';
 import { useQuery } from '@tanstack/react-query';
 

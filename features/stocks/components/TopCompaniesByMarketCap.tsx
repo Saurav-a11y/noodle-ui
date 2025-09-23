@@ -8,6 +8,8 @@ import _map from "lodash/map";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useState } from "react";
 import { useStocksHealthRanks } from "@/hooks/useStocks";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 const TABS = [
 	{ key: "overview", label: "Overview" },
@@ -31,7 +33,8 @@ const TopCompaniesByMarketCap = () => {
 	})
 	const stocks = stocksHealthRanksData?.data?.stock_health_rankings;
 	const router = useRouter();
-
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 	return (
 		<div className="p-5 bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="flex gap-2 mb-4 overflow-x-auto">
@@ -122,13 +125,24 @@ const TopCompaniesByMarketCap = () => {
 								<TableRow
 									key={index}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-									onClick={() => router.push(`/stocks/${stock.symbol}`)}
+									onClick={() => {
+										router.push(`/stocks/${stock.symbol}`)
+										addLog({
+											userId: userData?.data?.id,
+											type: 'view_detail',
+											assetType: 'stocks',
+											assetSymbol: stock.name,
+											assetName: stock.name_desc,
+											assetLogo: stock.logo,
+											content: `See details: '${stock.name_desc} (${stock.name}) Community'`,
+										});
+									}}
 								>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 										<div className="flex items-center gap-3">
 											<div className="w-8 h-8 flex items-center justify-center font-noto rounded-full">
-												<Image src={`https://s3-symbol-logo.tradingview.com/${stock?.logoid}.svg` || '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
+												<Image src={stock?.logo || '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 											</div>
 											<div className="text-[#4B4A4A] dark:text-[#FFF]">
 												<p className="font-medium text-sm font-noto">{stock?.description}</p>

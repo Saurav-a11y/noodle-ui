@@ -16,6 +16,8 @@ import { Atom, Panda, TrendingUpDown, Zap } from "lucide-react";
 import MetalIcon from "@/icons/commodities/MetalIcon";
 import HerbsIcon from "@/icons/commodities/HerbsIcon";
 import IndustrialIcon from "@/icons/commodities/IndustrialIcon";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 const tabList = ["All", "Energy", "Metals", "Agricultural",];
 // "Industrial", "Livestock", "Index", "Electricity"
@@ -94,6 +96,8 @@ const CommoditiesList = () => {
 		page: 1,
 		groupFilter: activeTab === 'All' ? '' : _loweCase(activeTab),
 	});
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 
 	const typeIcons = {
 		'metals': <MetalIcon />,
@@ -217,7 +221,18 @@ const CommoditiesList = () => {
 											<TableRow
 												key={index}
 												className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-												onClick={() => router.push(`/commodities/${item.name_slug}`)}
+												onClick={() => {
+													router.push(`/commodities/${item.name_slug}`)
+													addLog({
+														userId: userData?.data?.id,
+														type: 'view_detail',
+														assetType: 'commodity',
+														assetSymbol: item.symbol,
+														assetName: item.name,
+														assetLogo: '',
+														content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
+													});
+												}}
 											>
 												<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>
 												<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">

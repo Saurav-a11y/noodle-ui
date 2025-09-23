@@ -4,10 +4,13 @@ import TooltipCommon from "./TooltipCommon";
 import { formatNumberShort, formatPercent } from "@/lib/format";
 import Image from "next/image";
 import _map from 'lodash/map';
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading, hasIcon }: any) => {
     const router = useRouter();
-
+    const { data: userData } = useMe()
+    const { mutate: addLog } = useAddUserActivityLog();
     return (
         <div className="bg-white dark:bg-black rounded-xl shadow-xl">
             <div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
@@ -36,7 +39,18 @@ const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading, h
                         <div
                             key={index}
                             className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
-                            onClick={() => router.push(`/cryptocurrencies/${project.symbol}`)}
+                            onClick={() => {
+                                router.push(`/cryptocurrencies/${project.symbol}`)
+                                addLog({
+                                    userId: userData?.data?.id,
+                                    type: 'view_detail',
+                                    assetType: 'cryptocurrencies',
+                                    assetSymbol: project.name,
+                                    assetName: project.name_desc,
+                                    assetLogo: project.medium_logo_url,
+                                    content: `See details: '${project.name_desc} (${project.name}) Community'`,
+                                });
+                            }}
                         >
                             <div className="flex items-center gap-3 font-noto">
                                 <span className="text-xs font-medium w-4">{project?.rank}</span>

@@ -11,7 +11,8 @@ import { useCommunityHealthRanks } from "../hooks/useCommunityHealthRanks";
 import { formatCurrency, formatNumberShort, formatPercent } from "@/lib/format";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import SearchCryptoInput from "@/components/SearchCryptoInput";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 const CommunityHealthRankings = () => {
 	const router = useRouter();
@@ -22,6 +23,8 @@ const CommunityHealthRankings = () => {
 		score_range: 'All',
 		size: 'All',
 	});
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 	const { data, isLoading } = useCommunityHealthRanks(filters);
 
 	const rankings = _get(data, 'data.community_health_rankings', []);
@@ -143,7 +146,7 @@ const CommunityHealthRankings = () => {
 						{renderSelect(filterSize, 'size')}
 					</div>
 					{/* Search */}
-					<SearchCryptoInput placeholder="Search by symbol, name" inputClassname="!mx-0 max-w-xs" popupClassname="!left-0 !max-w-xs" />
+					{/* <SearchCryptoInput placeholder="Search by symbol, name" inputClassname="!mx-0 max-w-xs" popupClassname="!left-0 !max-w-xs" /> */}
 				</div>
 
 				{/* Table */}
@@ -204,7 +207,18 @@ const CommunityHealthRankings = () => {
 									<TableRow
 										key={project?.rank}
 										className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-										onClick={() => router.push(`/cryptocurrencies/${project?.symbol}`)}
+										onClick={() => {
+											router.push(`/cryptocurrencies/${project?.symbol}`)
+											addLog({
+												userId: userData?.data?.id,
+												type: 'view_detail',
+												assetType: 'cryptocurrencies',
+												assetSymbol: project.name,
+												assetName: project.name_desc,
+												assetLogo: project.medium_logo_url,
+												content: `See details: '${project.name_desc} (${project.name}) Community'`,
+											});
+										}}
 									>
 										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.rank}</TableCell>
 										<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">

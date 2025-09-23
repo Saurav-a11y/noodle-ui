@@ -11,6 +11,8 @@ import MetalIcon from "@/icons/commodities/MetalIcon";
 import OilIcon from "@/icons/commodities/OilIcon";
 import HerbsIcon from "@/icons/commodities/HerbsIcon";
 import IndustrialIcon from "@/icons/commodities/IndustrialIcon";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 const typeIcons = {
 	'metals': <MetalIcon />,
@@ -48,7 +50,7 @@ const SearchCommodityInput = ({
 	const [raw, setRaw] = useState('')
 	const [search, setSearch] = useState('')
 	const [open, setOpen] = useState(false)
-
+	const { data: userData } = useMe()
 	const {
 		data,
 		fetchNextPage,
@@ -57,7 +59,7 @@ const SearchCommodityInput = ({
 		refetch,
 		isLoading,
 	} = useSearchAllCommodities(search, { enabled: open });
-
+	const { mutate: addLog } = useAddUserActivityLog();
 	const handleScroll = useCallback(
 		(e: React.UIEvent<HTMLDivElement>) => {
 			const el = e.currentTarget
@@ -184,7 +186,18 @@ const SearchCommodityInput = ({
 											'block px-4 py-3 hover:bg-[#F3F3F3] dark:hover:bg-[#222] transition-colors',
 											'border-b last:border-b-0 border-[#f3f3f3] dark:border-[#222]'
 										)}
-										onClick={() => setOpen(false)}
+										onClick={() => {
+											setOpen(false)
+											addLog({
+												userId: userData?.data?.id,
+												type: 'search',
+												assetType: 'commodities',
+												assetSymbol: item.symbol,
+												assetName: item.name,
+												assetLogo: item.logo,
+												content: `Searched for: '${search} community analysis' and clicked '${item.name} (${item.exchange}:${item.symbol})'`,
+											});
+										}}
 									>
 										<div className="flex items-center gap-2">
 											<div className="w-10 h-10 rounded-full flex items-center justify-center dark:text-white">

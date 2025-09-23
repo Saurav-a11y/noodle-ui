@@ -13,9 +13,13 @@ import { Zap, Panda, TrendingUpDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCommodityActiveUsers, useCommodityNumberTracked, useMostTalkedAboutCommodities, useTopGrowthCommodities } from '@/hooks/useCommodities';
 import { formatNumberShort } from '@/lib/format';
+import { useMe } from '@/hooks/useAuth';
+import { useAddUserActivityLog } from '@/hooks/useUserActivityLog';
 
 const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 	const router = useRouter();
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 	const typeIcons = {
 		'metals': <MetalIcon />,
 		'energy': <OilIcon />,
@@ -60,7 +64,18 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 						<div
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
-							onClick={() => router.push(`/commodities/${item.name_slug}`)}
+							onClick={() => {
+								router.push(`/commodities/${item.name_slug}`)
+								addLog({
+									userId: userData?.data?.id,
+									type: 'view_detail',
+									assetType: 'commodities',
+									assetSymbol: item.symbol,
+									assetName: item.name,
+									assetLogo: '',
+									content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
+								});
+							}}
 						>
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{index + 1}</span>

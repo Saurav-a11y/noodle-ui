@@ -8,6 +8,8 @@ import clsx from "clsx";
 import { formatCurrency } from "@/lib/format";
 import { useSearchAll } from "@/hooks/useSearchAll";
 import Image from "next/image";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import { useMe } from "@/hooks/useAuth";
 
 const SkeletonItem = () => (
 	<div className="flex items-center gap-2 px-4 py-3 animate-pulse">
@@ -29,6 +31,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 	const [search, setSearch] = useState('')
 	const [open, setOpen] = useState(false)
 
+	const { data: userData } = useMe()
 	const {
 		data,
 		fetchNextPage,
@@ -37,6 +40,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 		refetch,
 		isLoading,
 	} = useSearchAll(search, { enabled: open });
+	const { mutate: addLog } = useAddUserActivityLog();
 
 	const handleScroll = useCallback(
 		(e: React.UIEvent<HTMLDivElement>) => {
@@ -162,10 +166,21 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 											'block px-4 py-3 hover:bg-[#F3F3F3] dark:hover:bg-[#222] transition-colors',
 											'border-b last:border-b-0 border-[#f3f3f3] dark:border-[#222]'
 										)}
-										onClick={() => setOpen(false)}
+										onClick={() => {
+											setOpen(false)
+											addLog({
+												userId: userData?.data?.id,
+												type: 'search',
+												assetType: 'cryptocurrencies',
+												assetSymbol: item.code,
+												assetName: item.name,
+												assetLogo: item.logo,
+												content: `Searched for: '${search} community analysis' and clicked '${item.name} (${item.code})'`,
+											});
+										}}
 									>
 										<div className="flex items-center gap-2">
-											<Image src={item.logo} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
+											<Image src={item.logo || ""} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
 											<div>
 												<div className="text-sm dark:text-white font-noto font-semibold">{item.name}</div>
 												<div className="text-[10px] text-gray-500 font-noto">{item.symbol}</div>

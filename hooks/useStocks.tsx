@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchMostTalkedAboutStocks, fetchStockActiveUsers, fetchStockCommunityTeamActivityAnalysis, fetchStockNumberTracked, fetchStockOverview, fetchStocksHealthRanks, fetchTopGrowthStocks } from "@/apis";
 import { useQuery } from "@tanstack/react-query";
 

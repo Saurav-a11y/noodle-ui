@@ -2,6 +2,8 @@
 
 import { Input } from "@/components/ui/Input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
+import { useMe } from "@/hooks/useAuth"
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog"
 import { useGetStableCoins } from "@/hooks/useWatchlist"
 import { formatCurrency, formatNumberWithCommas } from "@/lib/format"
 import { useDebounce } from "@/lib/useDebounce"
@@ -92,6 +94,8 @@ const StableCoinsTable = () => {
 	const [search, setSearch] = useState('');
 	const debouncedSearch = useDebounce(search, 300);
 	const { data, isLoading } = useGetStableCoins({ q: debouncedSearch, page, limit: LIMIT });
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 
 	const items = data?.data?.items ?? [];
 	const total = data?.data?.total ?? 0;
@@ -143,7 +147,18 @@ const StableCoinsTable = () => {
 								<TableRow
 									key={asset.symbol}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-									onClick={() => router.push(`/cryptocurrencies/${asset?.symbol}`)}
+									onClick={() => {
+										router.push(`/cryptocurrencies/${asset?.symbol}`)
+										addLog({
+											userId: userData?.data?.id,
+											type: 'view_detail',
+											assetType: 'cryptocurrencies',
+											assetSymbol: asset.currency,
+											assetName: asset.name,
+											assetLogo: asset.logo,
+											content: `See details: '${asset.name} (${asset.currency}) Community'`,
+										});
+									}}
 								>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 										{(page - 1) * LIMIT + index + 1}

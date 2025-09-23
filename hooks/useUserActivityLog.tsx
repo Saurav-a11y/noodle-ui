@@ -5,15 +5,17 @@ import qs from 'query-string';
 export interface UserActivityLog {
 	_id: string;
 	userId: string;
-	type?: string;
-	assetType?: string;
-	assetSymbol?: string;
-	assetName?: string;
+	type: string;
+	assetType: string;
+	assetSymbol: string;
+	assetName: string;
+	assetLogo: string;
 	searchQuery?: string;
 	sortBy?: string;
 	filterBy?: string;
 	content: string;
 	createdAt: string;
+	activity?: string;
 }
 
 interface GetUserActivityLogsParams {
@@ -29,13 +31,15 @@ interface GetUserActivityLogsParams {
 interface AddUserActivityLogInput {
 	userId: string;
 	type: string;
-	assetType?: string;
-	assetSymbol?: string;
-	assetName?: string;
+	assetType: string;
+	assetSymbol: string;
+	assetName: string;
+	assetLogo: string;
+	content: string;
 	searchQuery?: string;
 	sortBy?: string;
 	filterBy?: string;
-	content: string;
+	activity?: string;
 }
 
 export const useGetUserActivityLogs = (params: GetUserActivityLogsParams, enabled = true) => {
