@@ -43,15 +43,17 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
 							onClick={() => {
 								router.push(`/stocks/${item.symbol}`)
-								addLog({
-									userId: userData?.data?.id,
-									type: 'view_detail',
-									assetType: 'stocks',
-									assetSymbol: item.name,
-									assetName: item.description,
-									assetLogo: item.logo,
-									content: `See details: '${item.description} (${item.name}) Community'`,
-								});
+								if (userData?.data?.id) {
+									addLog({
+										userId: userData?.data?.id,
+										type: 'view_detail',
+										assetType: 'stocks',
+										assetSymbol: item.name,
+										assetName: item.description,
+										assetLogo: item.logo,
+										content: `See details: '${item.description} (${item.name}) Community'`,
+									});
+								}
 							}}
 						>
 							<div className="flex items-center gap-3 font-noto">

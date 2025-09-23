@@ -223,15 +223,17 @@ const CommoditiesList = () => {
 												className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 												onClick={() => {
 													router.push(`/commodities/${item.name_slug}`)
-													addLog({
-														userId: userData?.data?.id,
-														type: 'view_detail',
-														assetType: 'commodity',
-														assetSymbol: item.symbol,
-														assetName: item.name,
-														assetLogo: '',
-														content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
-													});
+													if (userData?.data?.id) {
+														addLog({
+															userId: userData?.data?.id,
+															type: 'view_detail',
+															assetType: 'commodity',
+															assetSymbol: item.symbol,
+															assetName: item.name,
+															assetLogo: '',
+															content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
+														});
+													}
 												}}
 											>
 												<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>

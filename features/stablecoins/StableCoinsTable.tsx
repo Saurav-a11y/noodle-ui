@@ -149,15 +149,17 @@ const StableCoinsTable = () => {
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 									onClick={() => {
 										router.push(`/cryptocurrencies/${asset?.symbol}`)
-										addLog({
-											userId: userData?.data?.id,
-											type: 'view_detail',
-											assetType: 'cryptocurrencies',
-											assetSymbol: asset.currency,
-											assetName: asset.name,
-											assetLogo: asset.logo,
-											content: `See details: '${asset.name} (${asset.currency}) Community'`,
-										});
+										if (userData?.data?.id) {
+											addLog({
+												userId: userData?.data?.id,
+												type: 'view_detail',
+												assetType: 'cryptocurrencies',
+												assetSymbol: asset.currency,
+												assetName: asset.name,
+												assetLogo: asset.logo,
+												content: `See details: '${asset.name} (${asset.currency}) Community'`,
+											});
+										}
 									}}
 								>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">

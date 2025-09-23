@@ -127,15 +127,17 @@ const TopCompaniesByMarketCap = () => {
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 									onClick={() => {
 										router.push(`/stocks/${stock.symbol}`)
-										addLog({
-											userId: userData?.data?.id,
-											type: 'view_detail',
-											assetType: 'stocks',
-											assetSymbol: stock.name,
-											assetName: stock.name_desc,
-											assetLogo: stock.logo,
-											content: `See details: '${stock.name_desc} (${stock.name}) Community'`,
-										});
+										if (userData?.data?.id) {
+											addLog({
+												userId: userData?.data?.id,
+												type: 'view_detail',
+												assetType: 'stocks',
+												assetSymbol: stock.name,
+												assetName: stock.name_desc,
+												assetLogo: stock.logo,
+												content: `See details: '${stock.name_desc} (${stock.name}) Community'`,
+											});
+										}
 									}}
 								>
 									<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{index + 1}</TableCell>

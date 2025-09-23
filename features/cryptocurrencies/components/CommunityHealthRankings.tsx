@@ -209,15 +209,17 @@ const CommunityHealthRankings = () => {
 										className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 										onClick={() => {
 											router.push(`/cryptocurrencies/${project?.symbol}`)
-											addLog({
-												userId: userData?.data?.id,
-												type: 'view_detail',
-												assetType: 'cryptocurrencies',
-												assetSymbol: project.name,
-												assetName: project.name_desc,
-												assetLogo: project.medium_logo_url,
-												content: `See details: '${project.name_desc} (${project.name}) Community'`,
-											});
+											if (userData?.data?.id) {
+												addLog({
+													userId: userData?.data?.id,
+													type: 'view_detail',
+													assetType: 'cryptocurrencies',
+													assetSymbol: project.name,
+													assetName: project.name_desc,
+													assetLogo: project.medium_logo_url,
+													content: `See details: '${project.name_desc} (${project.name}) Community'`,
+												});
+											}
 										}}
 									>
 										<TableCell className="font-medium text-[#4B4A4A] dark:text-[#FFF] text-xs border-b border-b-[#F3F3F3] dark:border-b-[#242424] font-noto">{project?.rank}</TableCell>

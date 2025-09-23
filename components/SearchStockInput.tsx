@@ -176,15 +176,17 @@ const SearchStockInput = ({
 										)}
 										onClick={() => {
 											setOpen(false)
-											addLog({
-												userId: userData?.data?.id,
-												type: 'search',
-												assetType: 'stocks',
-												assetSymbol: item.name,
-												assetName: item.description,
-												assetLogo: item.logo,
-												content: `Searched for: '${search} community analysis' and clicked '${item.description} (${item.name})'`,
-											});
+											if (userData?.data?.id) {
+												addLog({
+													userId: userData?.data?.id,
+													type: 'search',
+													assetType: 'stocks',
+													assetSymbol: item.name,
+													assetName: item.description,
+													assetLogo: item.logo,
+													content: `Searched for: '${search} community analysis' and clicked '${item.description} (${item.name})'`,
+												});
+											}
 										}}
 									>
 										<div className="flex items-center gap-2">

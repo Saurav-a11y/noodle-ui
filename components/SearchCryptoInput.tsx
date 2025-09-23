@@ -168,15 +168,17 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 										)}
 										onClick={() => {
 											setOpen(false)
-											addLog({
-												userId: userData?.data?.id,
-												type: 'search',
-												assetType: 'cryptocurrencies',
-												assetSymbol: item.code,
-												assetName: item.name,
-												assetLogo: item.logo,
-												content: `Searched for: '${search} community analysis' and clicked '${item.name} (${item.code})'`,
-											});
+											if (userData?.data?.id) {
+												addLog({
+													userId: userData?.data?.id,
+													type: 'search',
+													assetType: 'cryptocurrencies',
+													assetSymbol: item.code,
+													assetName: item.name,
+													assetLogo: item.logo,
+													content: `Searched for: '${search} community analysis' and clicked '${item.name} (${item.code})'`,
+												});
+											}
 										}}
 									>
 										<div className="flex items-center gap-2">

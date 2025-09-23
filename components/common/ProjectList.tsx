@@ -41,15 +41,17 @@ const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading, h
                             className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
                             onClick={() => {
                                 router.push(`/cryptocurrencies/${project.symbol}`)
-                                addLog({
-                                    userId: userData?.data?.id,
-                                    type: 'view_detail',
-                                    assetType: 'cryptocurrencies',
-                                    assetSymbol: project.name,
-                                    assetName: project.name_desc,
-                                    assetLogo: project.medium_logo_url,
-                                    content: `See details: '${project.name_desc} (${project.name}) Community'`,
-                                });
+                                if (userData?.data?.id) {
+                                    addLog({
+                                        userId: userData?.data?.id,
+                                        type: 'view_detail',
+                                        assetType: 'cryptocurrencies',
+                                        assetSymbol: project.name,
+                                        assetName: project.name_desc,
+                                        assetLogo: project.medium_logo_url,
+                                        content: `See details: '${project.name_desc} (${project.name}) Community'`,
+                                    });
+                                }
                             }}
                         >
                             <div className="flex items-center gap-3 font-noto">
