@@ -170,33 +170,6 @@ export const useAddBulkToWatchlist = () => {
 	})
 }
 
-export const useGetStableCoins = ({
-	q,
-	limit,
-	page,
-	enabled = true,
-}: { q?: string; limit?: number; page?: number; enabled?: boolean }) => {
-	return useQuery({
-		queryKey: ['stablecoins', q, limit, page],
-		queryFn: async () => {
-			const params = new URLSearchParams();
-			if (q) params.append('q', q);
-			if (limit) params.append('limit', limit.toString());
-			if (page) params.append('page', page.toString());
-
-			const url = `https://data-api.agentos.cloud/noodle/stablecoins?${params.toString()}`;
-			const res = await fetch(url);
-			if (!res.ok) throw new Error('Failed to fetch stablecoins');
-			return res.json();
-		},
-		enabled: enabled,
-		staleTime: 30_000,             // tuỳ chọn
-		gcTime: 5 * 60_000,            // tuỳ chọn
-		refetchOnWindowFocus: false,   // tránh refetch gây nháy
-		refetchOnMount: false,         // nếu đã có cache
-	});
-};
-
 export function useUpsertHoldings(userId: string | undefined) {
 	const qc = useQueryClient();
 
