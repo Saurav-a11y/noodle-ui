@@ -13,6 +13,8 @@ import HerbsIcon from "@/icons/commodities/HerbsIcon";
 import IndustrialIcon from "@/icons/commodities/IndustrialIcon";
 import { Panda, TrendingUpDown, Zap } from "lucide-react";
 import OilIcon from "@/icons/commodities/OilIcon";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 const typeIcons = {
 	'metals': <MetalIcon />,
@@ -184,6 +186,8 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useCommodityOverview(communityId);
 	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 
 	const communityOverview = {
 		projectName: data?.data?.name,
@@ -225,6 +229,17 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 						message: res || 'No response',
 						timestamp: getCurrentTime(),
 					});
+					if (userData?.data?.id) {
+						addLog({
+							userId: userData?.data?.id,
+							type: 'chat',
+							assetType: 'commodities',
+							assetSymbol: data?.data.symbol,
+							assetName: data?.data.name,
+							assetLogo: '',
+							content: `AI Chat: Asked about ${trimmed}`,
+						});
+					}
 					forceUpdate();
 				},
 				onError: (err) => {

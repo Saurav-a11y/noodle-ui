@@ -3,14 +3,16 @@
 import { useState } from 'react'
 import { useMe } from '@/hooks/useAuth'
 import HeartIcon from '@/icons/HeartIcon'
-import LoginModal from '../LoginModal'
 import { useAddToWatchlist, useRemoveFromWatchlist, useWatchlistStatus } from '@/hooks/useWatchlist'
 import { useParams, usePathname } from 'next/navigation'
 import HeartFullIcon from '@/icons/HeartFullIcon'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader } from 'lucide-react'
+import { useAddUserActivityLog } from '@/hooks/useUserActivityLog'
+import { useCommunityOverview } from '@/features/cryptocurrency-detail/hooks/useCommunityOverview'
+import LoginModal from '@/components/LoginModal'
 
-const AddToWatchlistButton = () => {
+const AddToCryptoWatchlist = () => {
 	const queryClient = useQueryClient();
 	const { data } = useMe()
 	const pathname = usePathname();
@@ -28,6 +30,10 @@ const AddToWatchlistButton = () => {
 
 	const addMutation = useAddToWatchlist();
 	const removeMutation = useRemoveFromWatchlist();
+	const { mutate: addLog } = useAddUserActivityLog();
+
+	const { data: cryptoOverviewData } = useCommunityOverview(code);
+	const cryptoOverview = cryptoOverviewData?.data || {};
 
 	const loading = statusLoading || addMutation.isPending || removeMutation.isPending;
 
@@ -53,6 +59,17 @@ const AddToWatchlistButton = () => {
 				{ userId: data?.data?.id, code, assetType },
 				{
 					onSuccess: () => {
+						if (data?.data?.id) {
+							addLog({
+								userId: data?.data?.id,
+								type: 'add_to_watchlist',
+								assetType: 'cryptocurrencies',
+								assetSymbol: cryptoOverview.project.base_currency,
+								assetName: cryptoOverview.project.name,
+								assetLogo: cryptoOverview.project.medium_logo_url,
+								content: `Added ${cryptoOverview.project.name} (${cryptoOverview.project.base_currency}) to watchlist`,
+							});
+						}
 						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
 							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
@@ -95,4 +112,4 @@ const AddToWatchlistButton = () => {
 	)
 }
 
-export default AddToWatchlistButton
+export default AddToCryptoWatchlist

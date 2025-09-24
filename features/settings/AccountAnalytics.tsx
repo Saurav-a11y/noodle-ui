@@ -1,79 +1,54 @@
 'use client'
 
-import { HelpCircle, MoreHorizontal } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import MostViewedAssets from "./MostViewedAssets";
 import { useGetUserActivityLogs } from "@/hooks/useUserActivityLog";
+import { useMe } from "@/hooks/useAuth";
+import { format } from "date-fns";
+import { useState } from "react";
 
 const AccountAnalytics = () => {
+	const limit = 10;
+	const [page, setPage] = useState(1);
+
+	const { data: userData } = useMe()
 	const { data, isLoading } = useGetUserActivityLogs({
-		userId: '1901820889840369664',
+		userId: userData?.data?.id,
 		time: 1,
-		page: 1,
-		limit: 10,
-	});
+		page,
+		limit,
+	}, !!userData?.data?.id);
+
+	const activities =
+		data?.data?.map((log: any) => {
+			const date = format(new Date(log.createdAt), "MMM dd, yyyy");
+			const time = format(new Date(log.createdAt), "HH:mm");
+			const action = log.content;
+			return { date, time, action };
+		}) ?? [];
+
+	const logs = data?.data ?? [];
+
+	const totalViewsAsset = logs.filter((log: any) => log.type === "view_asset").length;
+	const totalViewsDetail = logs.filter((log: any) => log.type === "view_detail").length;
+	const totalSearches = logs.filter((log: any) => log.type === "search").length;
+	const totalChats = logs.filter((log: any) => log.type === "chat").length;
+
+	const total = data?.metadata?.total ?? 0;
+	const totalPages = data?.metadata?.totalPages ?? 1;
+	const from = (page - 1) * limit + 1;
+	const to = Math.min(page * limit, total);
+
 	const usageInsights = [
 		{
 			label: "Assets Viewed (30d)",
-			value: "47",
+			value: totalViewsAsset + totalViewsDetail,
 			hasTooltip: true
 		},
 		{
 			label: "Searches Performed",
-			value: "156",
+			value: totalSearches + totalChats,
 			hasTooltip: true
-		}
-	];
-
-	const recentActivities = [
-		{
-			time: "8:43 PM",
-			action: "Searched for \"Bitcoin community analysis\"",
-			date: "Today, Tuesday, August 14 2025"
-		},
-		{
-			time: "9:43 PM",
-			action: "Viewed Tesla community insights",
-			date: "Today, Tuesday, August 14 2025"
-		},
-		{
-			time: "10:43 PM",
-			action: "Added Crude Oil to watchlist",
-			date: "Today, Tuesday, August 14 2025"
-		},
-		{
-			time: "11:43 PM",
-			action: "AI Chat: Asked about community health scores",
-			date: "Today, Tuesday, August 14 2025"
-		},
-		{
-			time: "8:43 PM",
-			action: "Searched for \"Bitcoin community analysis\"",
-			date: "Monday, August 13 2025"
-		},
-		{
-			time: "9:43 PM",
-			action: "Viewed Tesla community insights",
-			date: "Monday, August 13 2025"
-		},
-		{
-			time: "9:43 PM",
-			action: "Viewed Tesla community insights",
-			date: "Monday, August 13 2025"
-		},
-		{
-			time: "9:43 PM",
-			action: "Viewed Tesla community insights",
-			date: "Monday, August 13 2025"
-		},
-		{
-			time: "9:43 PM",
-			action: "Viewed Tesla community insights",
-			date: "Monday, August 13 2025"
-		},
-		{
-			time: "9:43 PM",
-			action: "Viewed Tesla community insights",
-			date: "Monday, August 13 2025"
 		}
 	];
 
@@ -102,41 +77,61 @@ const AccountAnalytics = () => {
 			<div className="bg-white dark:bg-black rounded-[20px] p-5 font-noto">
 				<p className="text-sm font-medium dark:text-white">Recent Activity (24h)</p>
 				<div className="text-[#1E1B39]">
-					{recentActivities.map((activity, index) => {
-						const isNewDate = index === 0 || activity.date !== recentActivities[index - 1].date;
-
-						return (
-							<div key={index}>
-								{isNewDate && (
-									<div className="text-sm opacity-50 my-3 font-reddit dark:text-white">
-										{activity.date}
+					{isLoading ? (
+						<p className="text-xs opacity-50 dark:text-white">Loading...</p>
+					) : (
+						activities.map((activity, index) => {
+							const isNewDate =
+								index === 0 || activity.date !== activities[index - 1].date;
+							return (
+								<div key={index}>
+									{isNewDate && (
+										<div className="text-sm opacity-50 my-3 font-reddit dark:text-white">
+											{activity.date}
+										</div>
+									)}
+									<div className="flex items-center justify-between py-3 text-[#4B4A4A] dark:text-white">
+										<div className="flex items-center gap-3">
+											<span className="text-xs opacity-50 w-16">
+												{activity.time}
+											</span>
+											<span className="text-xs">{activity.action}</span>
+										</div>
+										{/* <MoreHorizontal className="w-4 h-4 text-muted-foreground" /> */}
 									</div>
-								)}
-								<div className="flex items-center justify-between py-3 text-[#4B4A4A] dark:text-white">
-									<div className="flex items-center gap-3">
-										<span className="text-xs opacity-50 w-16">
-											{activity.time}
-										</span>
-										<span className="text-xs">{activity.action}</span>
-									</div>
-									<MoreHorizontal className="w-4 h-4 text-muted-foreground" />
 								</div>
-							</div>
-						);
-					})}
+							);
+						})
+					)}
 				</div>
 
-				<div className="mt-6">
-					<div className="flex items-center justify-between gap-2 text-xs w-full text-[#939393]">
-						<p>Show <b>1 - 10</b> of <b>400</b></p>
-						<div className="flex gap-1 ml-4">
-							<button className="w-6 h-6 rounded text-xs">1</button>
-							<button className="w-6 h-6 rounded text-xs">2</button>
-							<button className="w-6 h-6 rounded text-xs">3</button>
-							<button className="w-6 h-6 rounded text-xs">4</button>
+				{/* Pagination */}
+				{total > 0 && (
+					<div className="mt-6">
+						<div className="flex items-center justify-between gap-2 text-xs w-full text-[#939393]">
+							<p>
+								Show <b>{from}</b> - <b>{to}</b> of <b>{total}</b>
+							</p>
+							<div className="flex gap-1 ml-4">
+								{Array.from({ length: totalPages }).map((_, i) => {
+									const pageNumber = i + 1;
+									return (
+										<button
+											key={pageNumber}
+											onClick={() => setPage(pageNumber)}
+											className={`w-6 h-6 rounded text-xs ${page === pageNumber
+												? "bg-[#84EA07] text-white"
+												: "hover:bg-[#F0F0F0] dark:hover:bg-[#1A1A1A]"
+												}`}
+										>
+											{pageNumber}
+										</button>
+									);
+								})}
+							</div>
 						</div>
 					</div>
-				</div>
+				)}
 			</div>
 			<MostViewedAssets />
 		</div>

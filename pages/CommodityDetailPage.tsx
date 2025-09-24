@@ -1,5 +1,5 @@
 'use client';
-import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
+
 import { CommodityHeader } from "@/features/commodity-detail/CommodityHeader";
 import CommodityMetrics from "@/features/commodity-detail/CommodityMetrics";
 import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
@@ -11,6 +11,7 @@ import Header from "@/components/Header";
 import BackgroundPage from "@/icons/BackgroundPage";
 import ChatWithCommodityAssistant from "@/features/commodity-detail/ChatWithCommodityAssistant";
 import CommodityCommunityContributions from "@/features/commodity-detail/CommodityCommunityContributions";
+import AddToCommodityWatchlist from "@/features/commodity-detail/AddToCommodityWatchlist";
 
 const CommodityDetailPage = () => {
     const [isChatVisible, setChatVisible] = useState(true);
@@ -111,7 +112,7 @@ const CommodityDetailPage = () => {
                         <div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
                             <div className="flex items-center justify-between">
                                 <CommodityHeader />
-                                <AddToWatchlistButton />
+                                <AddToCommodityWatchlist />
                             </div>
                             <div className="grid grid-cols-4 gap-8">
                                 <div className="col-span-4 md:col-span-1 space-y-6">

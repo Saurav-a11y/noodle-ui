@@ -2,7 +2,6 @@
 import CommunityMetrics from "@/features/cryptocurrency-detail/components/CommunityMetrics";
 import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 
-import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
 import YieldsList from "@/components/common/YieldsList";
 import { AssetHeader } from "@/components/common/AssetHeader";
 import ReactQueryProvider from "@/lib/react-query-provider";
@@ -15,6 +14,7 @@ import ChatWithCryptoAssistant from "@/features/cryptocurrency-detail/components
 import CryptoCommunityContributions from "@/features/cryptocurrency-detail/components/CryptoCommunityContributions";
 import BasicInformation from "@/features/cryptocurrency-detail/components/BasicInformation";
 import CryptoFounderAndTeamAnalystChart from "@/features/cryptocurrency-detail/components/CryptoFounderAndTeamAnalystChart";
+import AddToCryptoWatchlist from "@/features/cryptocurrency-detail/components/AddToCryptoWatchlist";
 
 const CryptocurrencyDetailPage = () => {
 	const [isChatVisible, setChatVisible] = useState(true);
@@ -118,7 +118,7 @@ const CryptocurrencyDetailPage = () => {
 						<div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
 							<div className="flex items-center justify-between">
 								<AssetHeader />
-								<AddToWatchlistButton />
+								<AddToCryptoWatchlist />
 							</div>
 							<div className="grid grid-cols-4 gap-8">
 								<div className="col-span-4 md:col-span-1 space-y-6">

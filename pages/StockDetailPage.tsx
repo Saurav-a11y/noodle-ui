@@ -1,5 +1,5 @@
 'use client';
-import AddToWatchlistButton from "@/components/common/AddToWatchlistButton";
+import AddToStockWatchlist from "@/features/stock-detail/AddToStockWatchlist";
 import Header from "@/components/Header";
 import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
 import ChatWithStockAssistant from "@/features/stock-detail/ChatWithStockAssistant";
@@ -115,7 +115,7 @@ const StockDetailPage = () => {
 						<div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
 							<div className="flex items-center justify-between">
 								<StockHeader />
-								<AddToWatchlistButton />
+								<AddToStockWatchlist />
 							</div>
 							<div className="grid grid-cols-4 gap-8">
 								<div className="col-span-4 md:col-span-1 space-y-6">

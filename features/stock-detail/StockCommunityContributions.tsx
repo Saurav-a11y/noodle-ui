@@ -17,6 +17,9 @@ import AuthenticIcon from "@/icons/AuthenticIcon";
 import TwitterCommunityLoading from "@/components/common/loading/TwiiterCommunityLoading";
 import { YoutubeCommunityLoading } from "@/components/common/loading/YoutubeCommunityLoading";
 import TooltipCommon from "@/components/common/TooltipCommon";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import { useStockOverview } from "@/hooks/useStocks";
 
 export const formatTweetText = (text: string): string => {
 	if (!text) return '';
@@ -63,6 +66,11 @@ const StockCommunityContributions = () => {
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [totalItems, setTotalitems] = useState<number>(0);
 	const scrollRef = useRef<HTMLDivElement>(null);
+
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
+	const { data: stockOverviewData } = useStockOverview(stockId);
+	const stockOverview = stockOverviewData?.data || {};
 
 	const fetchData = async (pageToFetch: number, replace = false) => {
 		const response = await fetchStockCommunityDataSources({
@@ -220,7 +228,27 @@ const StockCommunityContributions = () => {
 																		</div>
 																	</div>
 																</div>
-																<Link href={`https://x.com/${tweet?.username}/status/${tweet?.id}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View on Twitter</Link>
+																<Link
+																	href={`https://x.com/${tweet?.username}/status/${tweet?.id}`}
+																	target="_blank"
+																	className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200"
+																	onClick={() => {
+																		if (userData?.data?.id) {
+																			addLog({
+																				userId: userData?.data?.id,
+																				type: 'view_asset',
+																				assetType: 'stocks',
+																				assetSymbol: stockOverview.symbol,
+																				assetName: stockOverview.name,
+																				assetLogo: `https://s3-symbol-logo.tradingview.com/${stockOverview.logoid}.svg`,
+																				content: `Viewed ${stockOverview.name} community insights`,
+																				activity: `Viewed community activity about ${stockOverview.name} (${stockOverview.symbol}) on Twitter`,
+																			});
+																		}
+																	}}
+																>
+																	View on Twitter
+																</Link>
 															</div>
 														</div>
 														<p
@@ -345,7 +373,27 @@ const StockCommunityContributions = () => {
 																	</div>
 																</div>
 															</div>
-															<Link href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">View Video</Link>
+															<Link
+																href={`https://www.youtube.com/watch?v=${video.videoId}`}
+																target="_blank"
+																className="border border-[#E8E8E8] text-xs bg-white dark:bg-[#000] dark:hover:bg-[#222] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200"
+																onClick={() => {
+																	if (userData?.data?.id) {
+																		addLog({
+																			userId: userData?.data?.id,
+																			type: 'view_asset',
+																			assetType: 'stocks',
+																			assetSymbol: stockOverview.symbol,
+																			assetName: stockOverview.name,
+																			assetLogo: `https://s3-symbol-logo.tradingview.com/${stockOverview.logoid}.svg`,
+																			content: `Viewed ${stockOverview.name} community insights`,
+																			activity: `Viewed community activity about ${stockOverview.name} (${stockOverview.symbol}) on YouTube`,
+																		});
+																	}
+																}}
+															>
+																View Video
+															</Link>
 														</div>
 														<div className="flex items-center mt-2 md:mt-4 gap-2 text-[#4B4A4A] font-noto md:hidden">
 															<span className="text-xs opacity-50">{video?.channelTitle}</span>

@@ -9,6 +9,8 @@ import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -170,6 +172,8 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useCommunityOverview(communityId);
 	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 
 	const communityOverview = {
 		projectName: data?.data?.project?.name,
@@ -212,6 +216,17 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 						message: res || 'No response',
 						timestamp: getCurrentTime(),
 					});
+					if (userData?.data?.id) {
+						addLog({
+							userId: userData?.data?.id,
+							type: 'chat',
+							assetType: 'cryptocurrencies',
+							assetSymbol: data?.data?.project?.base_currency,
+							assetName: data?.data?.project?.name,
+							assetLogo: data?.data?.project.medium_logo_url,
+							content: `AI Chat: Asked about ${trimmed}`,
+						});
+					}
 					forceUpdate();
 				},
 				onError: (err) => {

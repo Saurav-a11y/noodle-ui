@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { useMe } from "@/hooks/useAuth";
+import { useGetUserActivityLogs } from "@/hooks/useUserActivityLog";
 
 interface Asset {
 	activity: string;
@@ -14,112 +16,24 @@ interface Asset {
 }
 
 const MostViewedAssets = () => {
+	const limit = 10;
+
+	const [page, setPage] = useState(1);
 	const [activeTab, setActiveTab] = useState("All Assets");
 
-	const tabs = ["All Assets", "Crypto", "Stocks", "Commodities"];
+	const tabs = ["All Assets", "Cryptocurrencies", "Stocks", "Commodities"];
+	const assetTypeFilter =
+		activeTab === "All Assets" ? undefined : activeTab.toLowerCase();
 
-	const assets: Asset[] = [
-		{
-			activity: "12 views",
-			classify: "Crypto",
-			asset: {
-				name: "Bitcoin",
-				symbol: "BTC",
-				icon: "₿",
-				bgColor: "bg-orange-500"
-			}
-		},
-		{
-			activity: "8 views",
-			classify: "Stocks",
-			asset: {
-				name: "Tesla",
-				symbol: "TSLA",
-				icon: "T",
-				bgColor: "bg-red-500"
-			}
-		},
-		{
-			activity: "6 views",
-			classify: "Crypto",
-			asset: {
-				name: "Ethereum",
-				symbol: "ETH",
-				icon: "Ξ",
-				bgColor: "bg-gray-800"
-			}
-		},
-		{
-			activity: "+3.21% price change",
-			classify: "Stocks",
-			asset: {
-				name: "Tesla",
-				symbol: "TSLA",
-				icon: "T",
-				bgColor: "bg-red-500"
-			}
-		},
-		{
-			activity: "-4.95% 30d",
-			classify: "Crypto",
-			asset: {
-				name: "Ethereum",
-				symbol: "ETH",
-				icon: "Ξ",
-				bgColor: "bg-gray-800"
-			}
-		},
-		{
-			activity: "+4.13% week",
-			classify: "Crypto",
-			asset: {
-				name: "Solana",
-				symbol: "SOL",
-				icon: "◎",
-				bgColor: "bg-purple-600"
-			}
-		},
-		{
-			activity: "+0.35% day",
-			classify: "Commodities",
-			asset: {
-				name: "Gold",
-				symbol: "XAU",
-				icon: "⚜",
-				bgColor: "bg-yellow-500"
-			}
-		},
-		{
-			activity: "-4.83% day",
-			classify: "Commodities",
-			asset: {
-				name: "Natural Gas",
-				symbol: "ETH",
-				icon: "🔥",
-				bgColor: "bg-blue-500"
-			}
-		},
-		{
-			activity: "Highest Market Cap",
-			classify: "Stocks",
-			asset: {
-				name: "Apple Inc.",
-				symbol: "",
-				icon: "🍎",
-				bgColor: "bg-gray-900"
-			}
-		},
-		{
-			activity: "EPS Growth ↑",
-			classify: "Stocks",
-			asset: {
-				name: "Eli Lilly",
-				symbol: "LLY",
-				icon: "E",
-				bgColor: "bg-red-600"
-			}
-		}
-	];
+	const { data: userData } = useMe()
+	const { data, isLoading } = useGetUserActivityLogs({
+		userId: userData?.data?.id,
+		time: 1,
+		type: "view_asset",
+		assetType: assetTypeFilter,
+		page,
+		limit,
+	}, !!userData?.data?.id);
 
 	return (
 		<div className="bg-white dark:bg-black rounded-[20px] p-5 text-[#2F2F2F]">
@@ -150,40 +64,72 @@ const MostViewedAssets = () => {
 					</div>
 
 					{/* Asset Rows */}
+					{/* Asset Rows */}
 					<div className="space-y-4">
-						{assets.map((asset, index) => (
-							<div key={index} className="grid grid-cols-3 gap-4 items-center dark:text-white">
-								<div className="text-sm">{asset.activity}</div>
-								<div>
-									<Badge variant="secondary" className="text-xs">
-										{asset.classify}
-									</Badge>
-								</div>
-								<div className="flex items-center gap-3">
-									<div className={`w-8 h-8 rounded-full ${asset.asset.bgColor} flex items-center justify-center text-white font-bold text-sm`}>
-										{asset.asset.icon}
-									</div>
+						{isLoading ? (
+							<p className="text-xs opacity-50 dark:text-white">Loading...</p>
+						) : (
+							data?.data?.map((asset, index) => (
+								<div
+									key={index}
+									className="grid grid-cols-3 gap-4 items-center dark:text-white"
+								>
+									<div className="text-sm">{asset.activity}</div>
 									<div>
-										<div className="font-medium text-sm">{asset.asset.name}</div>
-										{asset.asset.symbol && (
-											<div className="text-xs text-muted-foreground">{asset.asset.symbol}</div>
-										)}
+										<Badge variant="secondary" className="text-xs">
+											{asset.assetType}
+										</Badge>
+									</div>
+									<div className="flex items-center gap-3">
+										<div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gray-200">
+											{asset.assetLogo ? (
+												<img
+													src={asset.assetLogo}
+													alt={asset.assetName}
+													className="w-8 h-8 rounded-full"
+												/>
+											) : (
+												<span>{asset.assetSymbol?.slice(0, 2)}</span>
+											)}
+										</div>
+										<div>
+											<div className="font-medium text-sm">{asset.assetName}</div>
+											{asset.assetSymbol && (
+												<div className="text-xs text-muted-foreground">
+													{asset.assetSymbol}
+												</div>
+											)}
+										</div>
 									</div>
 								</div>
-							</div>
-						))}
+							))
+						)}
 					</div>
 				</div>
 
 				{/* Pagination */}
 				<div className="flex justify-center mt-6">
 					<div className="flex items-center gap-2 text-sm text-muted-foreground dark:text-white">
-						<span>Show 1 - 10 of 400</span>
+						<span>
+							Show {(page - 1) * limit + 1} -{" "}
+							{Math.min(page * limit, data?.metadata?.total ?? 0)} of{" "}
+							{data?.metadata?.total ?? 0}
+						</span>
 						<div className="flex gap-1 ml-4">
-							<button className="w-6 h-6 rounded bg-primary text-primary-foreground text-xs">1</button>
-							<button className="w-6 h-6 rounded text-xs hover:bg-muted">2</button>
-							<button className="w-6 h-6 rounded text-xs hover:bg-muted">3</button>
-							<button className="w-6 h-6 rounded text-xs hover:bg-muted">4</button>
+							{Array.from({
+								length: Math.ceil((data?.metadata?.total ?? 0) / limit),
+							}).map((_, i) => (
+								<button
+									key={i}
+									onClick={() => setPage(i + 1)}
+									className={`w-6 h-6 rounded text-xs ${page === i + 1
+										? "bg-primary text-primary-foreground"
+										: "hover:bg-muted"
+										}`}
+								>
+									{i + 1}
+								</button>
+							))}
 						</div>
 					</div>
 				</div>

@@ -133,9 +133,9 @@ const TopCompaniesByMarketCap = () => {
 												type: 'view_detail',
 												assetType: 'stocks',
 												assetSymbol: stock.name,
-												assetName: stock.name_desc,
+												assetName: stock.description,
 												assetLogo: stock.logo,
-												content: `See details: '${stock.name_desc} (${stock.name}) Community'`,
+												content: `See details: '${stock.description} (${stock.name}) Community'`,
 											});
 										}
 									}}

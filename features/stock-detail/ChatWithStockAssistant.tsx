@@ -9,6 +9,8 @@ import { useParams } from "next/navigation";
 import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
 import { useStockOverview } from "@/hooks/useStocks";
+import { useMe } from "@/hooks/useAuth";
+import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -170,6 +172,8 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useStockOverview(communityId);
 	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
+	const { data: userData } = useMe()
+	const { mutate: addLog } = useAddUserActivityLog();
 
 	const communityOverview = {
 		projectName: data?.data?.name,
@@ -211,6 +215,17 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 						message: res || 'No response',
 						timestamp: getCurrentTime(),
 					});
+					if (userData?.data?.id) {
+						addLog({
+							userId: userData?.data?.id,
+							type: 'chat',
+							assetType: 'stocks',
+							assetSymbol: data?.data?.symbol,
+							assetName: data?.data?.name,
+							assetLogo: `https://s3-symbol-logo.tradingview.com/${data?.data?.logoid}.svg`,
+							content: `AI Chat: Asked about ${trimmed}`,
+						});
+					}
 					forceUpdate();
 				},
 				onError: (err) => {
