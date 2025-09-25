@@ -61,15 +61,15 @@ export const formatCurrency = (value: number) => {
     if (!value || isNaN(value)) return "$0.00";
 
     if (value >= 1e12) {
-        return `$${numeral(value / 1e12).format("0,0.00")}T`; // Trillion với dấu ,
+        return `${numeral(value / 1e12).format("0,0.00")}T`; // Trillion với dấu ,
     } else if (value >= 1e9) {
-        return `$${numeral(value / 1e9).format("0.00")}B`; // Billion
+        return `${numeral(value / 1e9).format("0.00")}B`; // Billion
     } else if (value >= 1e6) {
-        return `$${numeral(value / 1e6).format("0.00")}M`; // Million
+        return `${numeral(value / 1e6).format("0.00")}M`; // Million
     } else if (value >= 1e3) {
-        return `$${numeral(value / 1e3).format("0.00")}K`; // Thousand
+        return `${numeral(value / 1e3).format("0.00")}K`; // Thousand
     } else {
-        return `$${numeral(value).format("0,0.00")}`;
+        return `${numeral(value).format("0,0.00")}`;
     }
 };
 

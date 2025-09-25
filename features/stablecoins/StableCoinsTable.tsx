@@ -122,12 +122,13 @@ const StableCoinsTable = () => {
 					<TableRow className="border-b">
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Name</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Price</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Volume(24h)</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px]">Market Cap</TableHead>
+						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs text-center">Price</TableHead>
+						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs text-center">Volume(24h)</TableHead>
+						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-center">Market Cap</TableHead>
+						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[140px] text-end">Circulating Supply</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Brief Introduction</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Backing Mechanixs</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-center">Best Yield</TableHead>
+						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-end">Best Yield</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tr-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -188,14 +189,24 @@ const StableCoinsTable = () => {
 											</div>
 										</div>
 									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
+									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
 										${formatNumberWithCommas(asset?.price)}
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										{formatCurrency(asset?.vol_24h)}
+										<div>
+											<div className="text-end">
+												${formatNumberWithCommas(asset?.vol_24h)}
+											</div>
+											<div className="text-end">
+												{formatCurrency(asset?.vol_24h)}
+											</div>
+										</div>
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										{asset?.marketCap ? `${formatCurrency(asset?.marketCap)}` : '--'}
+										{asset?.marketCap ? `$${formatNumberWithCommas(asset?.marketCap)}` : '--'}
+									</TableCell>
+									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-end">
+										{asset?.circulating_supply ? `${formatCurrency(asset?.marketCap)} ${asset?.currency}` : '--'}
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 										{asset?.brief_info}
@@ -203,7 +214,7 @@ const StableCoinsTable = () => {
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 										{asset?.mechanism}
 									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
+									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-end">
 										{asset?.best_yield ? `${asset?.best_yield?.apy.toFixed(2)}%` : '--'}
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">

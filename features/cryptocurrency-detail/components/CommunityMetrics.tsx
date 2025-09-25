@@ -13,7 +13,7 @@ const CommunityMetrics = () => {
 
 	return (
 		<div className="space-y-5 mb-8">
-			<CommunityInsightsPanel data={{ ...data?.data?.project?.health_score, ...data?.data?.project?.badges }} isFetching={isFetching} />
+			<CommunityInsightsPanel data={{ ...data?.data?.project?.health_score, ...data?.data?.project?.badges, ...data?.data?.project }} isFetching={isFetching} />
 			<CoreCommunityMetrics data={{ ...data?.data?.project?.core_metrics }} isFetching={isFetching} />
 			<CrossPlatformSourceAnalytics data={{ ...data?.data?.project?.cross_platform_analytics }} isFetching={isFetching} />
 		</div>
