@@ -25,8 +25,6 @@ const getEngagementLabel = (score: number) => {
 }
 
 const CommunityInsightsPanel = ({ data, isFetching }) => {
-	console.log("🚀 ~ CommunityInsightsPanel ~ data:", data)
-
 	const healthMetrics = [
 		{
 			title: "Authentic Engagement",
@@ -58,11 +56,12 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 		}
 	];
 	return (
-		<div className="text-[#1E1B39">
+		<div className="text-[#1E1B39]">
+			{/* Row 1: Community Health Score */}
 			<div className="bg-white rounded-xl p-4 mb-4 dark:bg-[#1A1A1A]">
 				<div className="mb-1.5 flex items-center gap-2 dark:text-[#FFF]">
 					<p className="text-sm font-reddit font-medium">Community Health Score</p>
-					<TooltipCommon content="A score from 0 to 100 that represents the overall health of a project’s community. It’s calculated using growth, engagement, authenticity, and activity consistency." />
+					<TooltipCommon content="A score from 0 to 100 that represents the overall health of a project’s community..." />
 				</div>
 				{isFetching ? (
 					<div className="flex items-center gap-2">
@@ -76,69 +75,84 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 				)}
 			</div>
 
-			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+			{/* Row 2: Community Metrics */}
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				{healthMetrics.map((metric, index) => (
 					<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-						<div>
-							{typeof metric.icon === 'string' ? metric.icon : metric.icon}
-						</div>
+						<div>{metric.icon}</div>
 						<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
 							<p className="text-xs font-reddit">{metric.title}</p>
 							<TooltipCommon content={metric.content} />
 						</div>
-						{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="text-sm font-medium font-noto flex items-center gap-1" style={{ color: metric?.color ? metric?.color : 'inherit' }}>{metric.value}</div>}
+						{isFetching ? (
+							<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+						) : (
+							<div className="text-sm font-medium font-noto flex items-center gap-1 dark:text-white" style={{ color: metric?.color || '' }}>
+								{metric.value}
+							</div>
+						)}
 					</div>
 				))}
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">Market cap</p>
-						<TooltipCommon content="The total market value of a cryptocurrency's circulating supply. It is analogous to the free-float capitalization in the stock market. Market cap = Current price x Circulating supply" />
+			</div>
+
+			<div className="mb-1 mt-5 mb-4 flex items-center gap-2 dark:text-[#FFF]">
+				<p className="text-sm font-reddit font-medium">Market Metrics</p>
+				<TooltipCommon content="Basic market indicators like market cap, volume, and token supply details." />
+			</div>
+			{/* Row 3: Market Metrics */}
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				{[
+					{
+						label: 'Market Cap',
+						value: formatCurrency(data?.marketcap),
+						extra: formatPercent(data?.vol_change_24h_cmc),
+						tooltip: 'The total market value of a cryptocurrency’s circulating supply...'
+					},
+					{
+						label: 'FDV',
+						value: `$${formatCurrency(data?.fdv)}`,
+						tooltip: 'The market cap if the max supply was in circulation...'
+					},
+					{
+						label: 'Volume (24h)',
+						value: `$${formatCurrency(data?.vol_24h)}`,
+						tooltip: 'A measure of how much of a cryptocurrency was traded in the last 24 hours.'
+					},
+					{
+						label: 'Vol/Mkt Cap (24h)',
+						value: formatPercent(data?.vol_mkt_24h),
+						tooltip: 'Indicator of liquidity...'
+					},
+					{
+						label: 'Total Supply',
+						value: `$${formatCurrency(data?.totalSupply)}`,
+						tooltip: 'Total coins created minus burned coins...'
+					},
+					{
+						label: 'Max Supply',
+						value: data?.maxSupply > 0 ? `$${formatCurrency(data?.maxSupply)}` : '∞',
+						tooltip: 'The best approximation of the maximum amount of coins that will exist...'
+					},
+					{
+						label: 'Circulating Supply',
+						value: `$${formatCurrency(data?.circulatingSupply)}`,
+						tooltip: 'The amount of coins that are circulating in the market...'
+					}
+				].map((metric, idx) => (
+					<div key={idx} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
+						<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
+							<p className="text-xs font-reddit">{metric.label}</p>
+							<TooltipCommon content={metric.tooltip} />
+						</div>
+						{isFetching ? (
+							<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+						) : (
+							<div className="font-medium font-noto flex items-center gap-1 dark:text-white">
+								{metric.value} {metric.extra && <span className="ml-2 text-xs">{metric.extra}</span>}
+							</div>
+						)}
 					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> :
-						<div className="font-medium font-noto flex items-center gap-1 dark:text-white">{formatCurrency(data?.marketcap)} <span className="ml-2 text-xs">{formatPercent(data?.vol_change_24h_cmc)}</span></div>}
-				</div>
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">FDV</p>
-						<TooltipCommon content="The market cap if the max supply was in circulation. Fully-diluted value (FDV) = price x max supply. If max supply is null, FDV = price x total supply. if max supply and total supply are infinite or not available, fully-diluted market cap shows - -." />
-					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="font-medium font-noto flex items-center gap-1 dark:text-white">${formatCurrency(data?.fdv)}</div>}
-				</div>
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">Volume (24h)</p>
-						<TooltipCommon content="A measure of how much of a cryptocurrency was traded in the last 24 hours." />
-					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="font-medium font-noto flex items-center gap-1 dark:text-white">${formatCurrency(data?.vol_24h)}</div>}
-				</div>
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">Vol/Mkt Cap (24h)</p>
-						<TooltipCommon content="Indicator of liquidity. The higher the ratio, the more liquid the cryptocurrency is, which should make it easier for it to be bought/sold on an exchange close to its value. Cryptocurrencies with a low ratio are less liquid and most likely present less stable markets." />
-					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="font-medium font-noto flex items-center gap-1 dark:text-white">{formatPercent(data?.vol_mkt_24h)}</div>}
-				</div>
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">Total supply</p>
-						<TooltipCommon content="Total supply = Total coins created - coins that have been burned (if any) It is comparable to outstanding shares in the stock market. If the project did not submit this data nor was it verified by CoinMarketCap, total supply shows “--”." />
-					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="font-medium font-noto flex items-center gap-1 dark:text-white">${formatCurrency(data?.totalSupply)}</div>}
-				</div>
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">Max supply</p>
-						<TooltipCommon content="The best approximation of the maximum amount of coins that will exist in the forthcoming lifespan of the cryptocurrency, minus any coins that have been verifiably burned. This is also known as the theoretical max number of coins that can be minted, minus any coins that have been verifiably burned." />
-					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="font-medium font-noto flex items-center gap-1 dark:text-white">{data?.maxSupply > 0 ? `$${formatCurrency(data?.maxSupply)}` : '∞'}</div>}
-				</div>
-				<div className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-					<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
-						<p className="text-xs font-reddit">Circulating supply</p>
-						<TooltipCommon content="The amount of coins that are circulating in the market and are in public hands. It is analogous to the flowing shares in the stock market." />
-					</div>
-					{isFetching ? <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <div className="font-medium font-noto flex items-center gap-1 dark:text-white">${formatCurrency(data?.circulatingSupply)}</div>}
-				</div>
+				))}
 			</div>
 		</div>
 	)
