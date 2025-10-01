@@ -39,11 +39,11 @@ export const useWatchlistStatus = (params: {
 	});
 };
 
-export const useGetWatchlist = (userId: string, enabled = true) => {
+export const useGetWatchlist = (userId: string, assetType: string, page: number, enabled = true) => {
 	return useQuery({
-		queryKey: ['watchlist', userId],
+		queryKey: ['watchlist', userId, assetType, page],
 		queryFn: async () => {
-			const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist?userId=${userId}`);
+			const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist?userId=${userId}&assetType=${encodeURIComponent(assetType)}&page=${page}`);
 			if (!res.ok) throw new Error('Failed to fetch watchlist');
 			return res.json(); // { data: { items: [...] } | [...] } tuỳ bạn
 		},

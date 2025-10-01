@@ -36,12 +36,14 @@ const EditableHoldingsCell = ({
 	editing = false,
 	onChangeValue,
 	onCommit,      // gọi khi cần commit (blur / Enter)
+	symbol
 }: {
 	value: string;                     // <-- controlled
 	usdValue?: number;
 	editing?: boolean;
 	onChangeValue: (v: string) => void;
 	onCommit: () => void;
+	symbol?: string;
 }) => {
 	const [local, setLocal] = useState<HoldingEditState>({
 		editing,
@@ -80,7 +82,7 @@ const EditableHoldingsCell = ({
 					onKeyDown={(e) => { if (e.key === 'Enter') commit(); }}
 				/>
 			) : (
-				<p className="text-xs truncate max-w-[120px]">{formatNumberWithCommas(parseFloat(value || '0'))}</p>
+				<p className="text-xs truncate max-w-[120px]">{formatNumberWithCommas(parseFloat(value || '0'))} <span className="text-[10px]">{parseFloat(value || '0') > 0 && symbol}</span></p>
 			)}
 			<p className="text-[10px] opacity-50">
 				${formatNumberWithCommas(usdValue * (parseFloat(value || '0') || 0))}
@@ -92,14 +94,20 @@ const EditableHoldingsCell = ({
 const WatchlistPortfolio = () => {
 	const queryClient = useQueryClient();
 	const { data: userData } = useMe()
-	const { data, isLoading } = useGetWatchlist(userData?.data?.id || "");
-	const removeFromWatchlist = useRemoveFromWatchlist();
-	const upsertHoldings = useUpsertHoldings(userData?.data?.id);
 	const [busyById, setBusyById] = useState<Record<string, boolean>>({});
-	const [activeTab, setActiveTab] = useState("All Assets");
+	const [activeTab, setActiveTab] = useState("all assets");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [holdingsDraft, setHoldingsDraft] = useState<Record<string, string>>({});
+	const [page, setPage] = useState(1);
+
+	const { data, isLoading } = useGetWatchlist(userData?.data?.id || "", activeTab, page);
+	const removeFromWatchlist = useRemoveFromWatchlist();
+	const upsertHoldings = useUpsertHoldings(userData?.data?.id);
+
+	const items = data?.data?.items ?? [];
+	const totalItems = data?.data?.totals?.tokens || 0;
+	const totalPages = Math.ceil(totalItems / 10);
 
 	const startEdit = (assetId: string, initial: string) => {
 		setHoldingsDraft((s) => ({ ...s, [assetId]: initial ?? '0' }));
@@ -120,8 +128,6 @@ const WatchlistPortfolio = () => {
 		setEditingId(null);
 	};
 
-	const items = data?.data?.items ?? [];
-	const totalItems = data?.data?.totals?.tokens || 0
 	const totalPrices = items.reduce((sum, asset) => {
 		const holdings = Number(asset?.holdings ?? 0);
 		const price = Number(asset?.overview?.market?.close ?? 0);
@@ -129,9 +135,9 @@ const WatchlistPortfolio = () => {
 	}, 0);
 	const tabs = [
 		"All Assets",
-		// "Crypto", 
-		// "Stocks", 
-		// "Commodities"
+		"Cryptocurrencies",
+		"Stocks",
+		"Commodities"
 	];
 
 	const handleAddAsset = () => {
@@ -213,8 +219,11 @@ const WatchlistPortfolio = () => {
 								key={tab}
 								variant={activeTab === tab ? "default" : "ghost"}
 								size="sm"
-								onClick={() => setActiveTab(tab)}
-								className={`rounded-lg text-xs cursor-pointer ${activeTab === tab ? "bg-[#DDF346] text-black font-medium" : "bg-[#F8F8F8] font-normal"}`}
+								onClick={() => {
+									setActiveTab(tab.toLowerCase() as string)
+									setPage(1)
+								}}
+								className={`rounded-lg text-xs cursor-pointer ${activeTab === tab.toLocaleLowerCase() ? "bg-[#DDF346] text-black" : "bg-[#F8F8F8]"}`}
 							>
 								{tab}
 							</Button>
@@ -268,8 +277,24 @@ const WatchlistPortfolio = () => {
 														)}
 													</div>
 													<div className="flex-1 dark:text-white">
-														<div className="font-medium">{asset?.overview?.info?.base_currency_desc || asset?.overview?.info?.name}</div>
-														<div className="text-xs text-muted-foreground">{asset?.overview?.info?.base_currency || asset?.overview?.info?.symbol}</div>
+														{asset?.assetType === 'stocks' && (
+															<>
+																<div className="font-medium">{asset?.overview?.info?.description}</div>
+																<div className="text-xs text-muted-foreground">{asset?.overview?.info?.name}</div>
+															</>
+														)}
+														{asset?.assetType === 'commodities' && (
+															<>
+																<div className="font-medium">{asset?.overview?.info?.name}</div>
+																<div className="text-xs text-muted-foreground">{asset?.overview?.info?.symbol}</div>
+															</>
+														)}
+														{asset?.assetType === 'cryptocurrencies' && (
+															<>
+																<div className="font-medium">{asset?.overview?.info?.base_currency_desc}</div>
+																<div className="text-xs text-muted-foreground">{asset?.overview?.info?.base_currency}</div>
+															</>
+														)}
 													</div>
 												</div>
 											</TableCell>
@@ -290,6 +315,7 @@ const WatchlistPortfolio = () => {
 													value={draftValue}
 													usdValue={price}
 													editing={isEditing}
+													symbol={asset?.overview?.info?.base_currency || asset?.overview?.info?.symbol || asset?.overview?.info?.name}
 													onChangeValue={(v) =>
 														setHoldingsDraft((s) => ({ ...s, [assetId]: v }))
 													}
@@ -332,26 +358,38 @@ const WatchlistPortfolio = () => {
 						</TableBody>
 					</Table>
 					{/* Pagination */}
-					{/* <div className="mt-6">
-						<div className="flex items-center justify-between gap-2 text-xs w-full text-[#939393]">
-							<p>Show <b>1 - 10</b> of <b>{totalItems}</b></p>
+					{totalPages > 1 && (
+						<div className="flex items-center justify-between mt-6 text-xs text-[#939393]">
+							<p>
+								Page <b>{page}</b> of <b>{totalPages}</b>
+							</p>
 							<div className="flex gap-1 ml-4">
-								<button className="w-6 h-6 rounded text-xs">1</button>
-								<button className="w-6 h-6 rounded text-xs">2</button>
-								<button className="w-6 h-6 rounded text-xs">3</button>
-								<button className="w-6 h-6 rounded text-xs">4</button>
+								{Array.from({ length: totalPages }).map((_, i) => (
+									<button
+										key={i}
+										className={`min-w-[34.05px] px-3 py-1 h-full rounded text-sm font-medium cursor-pointer font-reddit ${i + 1 === page
+											? 'transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] text-[#494949] font-medium border-transparent'
+											: 'bg-white dark:bg-[#1A1A1A] text-[#494949] dark:text-white'
+											}`}
+										onClick={() => setPage(i + 1)}
+									>
+										{i + 1}
+									</button>
+								))}
 							</div>
 						</div>
-					</div> */}
+					)}
 				</div>
 			</div>
-			<AddAssetModal
-				open={isModalOpen}
-				onOpenChange={setIsModalOpen}
-				onSave={() => { }}
-				userId={userData?.data?.id || ""}
-				assetType={''}
-			/>
+			{isModalOpen && (
+				<AddAssetModal
+					open={isModalOpen}
+					onOpenChange={setIsModalOpen}
+					onSave={() => { }}
+					userId={userData?.data?.id || ""}
+					assetType={''}
+				/>
+			)}
 		</div>
 	);
 };

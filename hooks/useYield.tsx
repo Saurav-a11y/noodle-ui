@@ -1,5 +1,5 @@
 // hooks/useYields.ts
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useQuery, keepPreviousData, isCancelledError } from '@tanstack/react-query';
 
 export type YieldRow = {
     project: string | null;
@@ -52,12 +52,13 @@ async function fetchYields(symbol: string, { page = 1, limit = 10, minTvlUsd = 0
 
 /** Hook: lấy danh sách yields cho 1 symbol, phân trang, lọc theo TVL tối thiểu */
 export function useYields(symbol: string | undefined, opts: Options = {}) {
-    const { page = 1, limit = 10, minTvlUsd = 0, enabled = true } = opts;
+    const { page = 1, limit = 10, minTvlUsd = 0 } = opts;
 
     return useQuery({
         queryKey: ['yields', symbol, page, limit, minTvlUsd],
         queryFn: ({ signal }) => fetchYields(symbol!, { page, limit, minTvlUsd, signal }),
-        enabled: enabled && !!symbol,
+        enabled: !!symbol,
         placeholderData: keepPreviousData,
+        staleTime: 60 * 1000
     });
 }

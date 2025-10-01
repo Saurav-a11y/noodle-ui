@@ -121,7 +121,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none" onOpenAutoFocus={(e) => e.preventDefault()}>
+			<DialogContent className="max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none" onOpenAutoFocus={(e) => e.preventDefault()}>
 				<DialogHeader className="p-6 pb-4">
 					<div className="flex items-center justify-between dark:text-white">
 						<DialogTitle className="text-xl font-semibold">Add New Asset</DialogTitle>
