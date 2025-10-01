@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { useAddBulkToWatchlist, useCandidateTokens } from "@/hooks/useWatchlist";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
+import { Button } from "@/components/ui/Button";
 
 interface AddAssetModalProps {
 	open: boolean;
@@ -21,6 +22,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 
 	const [search, setSearch] = useState('')
 	const [selected, setSelected] = useState<Record<string, boolean>>({})
+	const [activeTab, setActiveTab] = useState("cryptocurrencies");
 
 	const {
 		data,
@@ -29,7 +31,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 		isFetchingNextPage,
 		refetch,
 		isLoading,
-	} = useCandidateTokens(userId, search);
+	} = useCandidateTokens(userId, search, activeTab);
 
 	const handleScroll = useCallback(
 		(e: React.UIEvent<HTMLDivElement>) => {
@@ -116,7 +118,11 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 			// có thể toast lỗi ở đây
 		}
 	}
-
+	const tabs = [
+		"Cryptocurrencies",
+		"Stocks",
+		"Commodities"
+	];
 	if (!open) return null
 
 	return (
@@ -127,8 +133,22 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 						<DialogTitle className="text-xl font-semibold">Add New Asset</DialogTitle>
 					</div>
 				</DialogHeader>
-
-				<div className="px-6">
+				<div className="flex gap-2 px-4">
+					{tabs.map((tab) => (
+						<Button
+							key={tab}
+							variant={activeTab === tab ? "default" : "ghost"}
+							size="sm"
+							onClick={() => {
+								setActiveTab(tab.toLowerCase() as string)
+							}}
+							className={`rounded-lg text-xs cursor-pointer ${activeTab === tab.toLocaleLowerCase() ? "bg-[#DDF346] text-black" : "bg-[#F8F8F8]"}`}
+						>
+							{tab}
+						</Button>
+					))}
+				</div>
+				<div className="px-4">
 					<div className="relative">
 						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 dark:text-white" />
 						<Input

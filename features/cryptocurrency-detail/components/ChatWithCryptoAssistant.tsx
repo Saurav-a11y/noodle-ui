@@ -176,12 +176,12 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	const { mutate: addLog } = useAddUserActivityLog();
 
 	const communityOverview = {
-		projectName: data?.data?.project?.name,
-		logo: data?.data?.project?.medium_logo_url,
-		base_currency: data?.data?.project?.base_currency,
-		price_usd: data?.data?.project?.price_usd,
-		price_change_percent: data?.data?.project?.price_change_percent,
-		symbol: data?.data?.project?.symbol,
+		projectName: data?.data?.fullname,
+		logo: data?.data?.logo,
+		base_currency: data?.data?.name,
+		price_usd: data?.data?.price,
+		price_change_percent: data?.data?.change,
+		symbol: data?.data?.symbol,
 	}
 	// const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
@@ -306,9 +306,9 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 						<div className="space-y-1">
 							<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>
 							<div className="flex items-center gap-2 text-xs">
-								<span className="font-medium font-noto">${communityOverview?.base_currency}</span>
+								<span className="font-medium font-noto">{communityOverview?.base_currency}</span>
 								<span>•</span>
-								<span className="font-medium font-noto">{formatCurrency(communityOverview?.price_usd)}</span>
+								<span className="font-medium font-noto">${formatCurrency(communityOverview?.price_usd)}</span>
 								<span>•</span>
 								<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
 							</div>

@@ -42,7 +42,7 @@ const BasicInformation = () => {
 	const [showAll, setShowAll] = useState(false);
 	const communityId = params?.slug as string;
 	const { data, isFetching } = useCommunityOverview(communityId);
-	const basicInformation = { ...data?.data?.project?.links }
+	const basicInformation = data?.data
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -67,31 +67,31 @@ const BasicInformation = () => {
 				<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
 					{/* Website */}
 					<div className="flex justify-between items-center gap-3">
-						<p className="text-sm font-medium opacity-50 font-noto">Website</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Website</p>
 						<Skeleton className="h-[31px] w-40 rounded-full w-[150px]" />
 					</div>
 					{/* Explorers */}
 					<div className="flex justify-between items-center gap-3">
-						<p className="text-sm font-medium opacity-50 font-noto">Explorers</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Explorers</p>
 						<Skeleton className="w-33 h-8 rounded-full" />
 					</div>
 					{/* Contract Address */}
 					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Contract Address</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Contract Address</p>
 						<div className="flex items-center justify-end gap-4 flex-1">
 							<Skeleton className="h-5 w-32" />
 						</div>
 					</div>
 					{/* Wallets */}
 					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Wallets</p>
 						<div className="flex items-center gap-4 flex-1 justify-end">
 							<Skeleton className="h-5 w-24" />
 						</div>
 					</div>
 					{/* Community */}
 					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Community</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Community</p>
 						<div className="flex items-center justify-end gap-4 flex-1">
 							<Skeleton className="h-5 w-36" />
 						</div>
@@ -106,7 +106,7 @@ const BasicInformation = () => {
 			<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
 				{/* Website */}
 				<div className="flex justify-between items-center gap-3">
-					<p className="text-sm font-medium opacity-50 font-noto">Website</p>
+					<p className="text-xs font-medium opacity-50 font-noto">Website</p>
 					<div className="flex flex-wrap items-center justify-end gap-4 flex-1">
 						{basicInformation?.website && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
@@ -118,10 +118,10 @@ const BasicInformation = () => {
 								</button>
 							</div>
 						)}
-						{basicInformation?.white_paper && (
+						{basicInformation?.whitepaper && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
 								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
-									<Link href={basicInformation?.white_paper || ""} target='_blank' className="flex items-center gap-1.5">
+									<Link href={basicInformation?.whitepaper || ""} target='_blank' className="flex items-center gap-1.5">
 										<Newspaper className="w-4 h-4 text-inherit" />
 										<span>
 											Whitepaper
@@ -133,31 +133,31 @@ const BasicInformation = () => {
 					</div>
 				</div>
 				{/* Explorers */}
-				{basicInformation?.explorers?.length > 0 && (
-					<DropdownCommon data={basicInformation?.explorers} title="Explorers" />
+				{basicInformation?.explorer?.length > 0 && (
+					<DropdownCommon data={basicInformation?.explorer} title="Explorers" />
 				)}
 				{/* Contract Address */}
-				{basicInformation?.contract_address?.length > 0 && (
+				{basicInformation?.contracts?.length > 0 && (
 					<div className="relative group flex justify-between">
 						<div className="flex items-center justify-between">
-							<p className="text-sm font-medium opacity-50 font-noto">Contract</p>
+							<p className="text-xs font-medium opacity-50 font-noto">Contract</p>
 						</div>
 
 						<div className="flex items-center justify-end gap-2 mt-1">
 							{/* Chỉ hiện contract đầu tiên */}
-							<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${basicInformation?.contract_address[0]?.['blockchain-id']}.svg`} alt={basicInformation?.contract_address[0]?.['blockchain-name']} width={18} height={18} className="rounded-full" />
+							<Image src={`https://s3-symbol-logo.tradingview.com/blockchain/${basicInformation?.contracts[0]?.['blockchain-id']}.svg`} alt={basicInformation?.contracts[0]?.['blockchain-name']} width={18} height={18} className="rounded-full" />
 							<a
-								href={basicInformation?.contract_address[0]?.link}
+								href={basicInformation?.contracts[0]?.link}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-sm font-medium font-noto hover:underline"
+								className="text-xs font-medium font-noto hover:underline"
 							>
-								{shortenAddress(basicInformation?.contract_address[0]?.['blockchain-name'])} {shortenAddress(basicInformation?.contract_address[0]?.contract)}
+								{shortenAddress(basicInformation?.contracts[0]?.['blockchain-name'])} {shortenAddress(basicInformation?.contracts[0]?.contract)}
 							</a>
 							<span
 								className="cursor-pointer"
 								onClick={() => {
-									navigator.clipboard.writeText(basicInformation?.contract_address[0]?.address);
+									navigator.clipboard.writeText(basicInformation?.contracts[0]?.address);
 									toast.success('Address copied!');
 								}}
 							>
@@ -172,8 +172,8 @@ const BasicInformation = () => {
 
 								{showAll && (
 									<div className="absolute right-0 z-50 mt-2 w-[300px] max-h-[300px] overflow-auto bg-white dark:bg-zinc-900 rounded-lg shadow-lg" ref={popupRef}>
-										{basicInformation?.contract_address.map((c, index) => (
-											<div key={index} className="flex items-center justify-between gap-2 text-sm font-noto hover:bg-gray-100 px-3 py-2 cursor-pointer">
+										{basicInformation?.contracts.map((c, index) => (
+											<div key={index} className="flex items-center justify-between gap-2 text-xs font-noto hover:bg-gray-100 px-3 py-2 cursor-pointer dark:hover:bg-[#222]">
 												<Link href={c.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
 													<div className="flex items-center gap-2 justify-between w-full">
 														<div className="flex items-center gap-2">
@@ -209,7 +209,7 @@ const BasicInformation = () => {
 				{/* Wallets */}
 				{basicInformation?.wallets?.length > 0 && (
 					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Wallets</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Wallets</p>
 						<NavigationMenu className='z-10'>
 							<NavigationMenuList className="flex space-x-8">
 								<NavigationMenuItem>
@@ -225,7 +225,7 @@ const BasicInformation = () => {
 													href={item.url}
 													target="_blank"
 													key={index}
-													className="w-6 h-6 flex items-center text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+													className="w-6 h-6 flex items-center text-xs hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
 												>
 													<img
 														src={imageSrc}
@@ -251,7 +251,7 @@ const BasicInformation = () => {
 														href={item.url}
 														target="_blank"
 														key={index}
-														className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+														className="flex items-center gap-3 px-3 py-2 text-xs hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
 													>
 														<img
 															src={imageSrc}
@@ -272,12 +272,12 @@ const BasicInformation = () => {
 					</div>
 				)}
 				{/* Community */}
-				{basicInformation?.community_channels?.length > 0 && (
+				{basicInformation?.community?.length > 0 && (
 					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium opacity-50 font-noto">Community</p>
+						<p className="text-xs font-medium opacity-50 font-noto">Community</p>
 						<div className="flex items-center justify-end gap-4 flex-1">
 							<div className="flex items-center gap-2">
-								{basicInformation.community_channels.map((channel, index) => {
+								{basicInformation.community.map((channel, index) => {
 									const IconComponent = communityIcons[channel.type];
 									if (!IconComponent) return null;
 									return (
@@ -286,7 +286,7 @@ const BasicInformation = () => {
 											href={channel.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="w-8 h-8 flex items-center justify-center items-center rounded-full hover:opacity-80 transition"
+											className="w-6 h-6 flex items-center justify-center items-center rounded-full hover:opacity-80 transition"
 											title={IconComponent.label}
 										>
 											{IconComponent.icon}

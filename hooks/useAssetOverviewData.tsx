@@ -28,12 +28,12 @@ export const useAssetOverviewData = () => {
     }
     // Chuẩn hoá dữ liệu đầu ra
     const overview = {
-        projectName: data?.data?.project?.name,
-        logo: data?.data?.project?.medium_logo_url || "",
-        base_currency: data?.data?.project?.base_currency || "",
-        price_usd: data?.data?.project?.price_usd ?? null,
-        price_change_percent: data?.data?.project?.price_change_percent ?? null,
-        symbol: data?.data?.project?.symbol || "",
+        projectName: data?.data?.fullname,
+        logo: data?.data?.logo || "",
+        base_currency: data?.data?.name || "",
+        price_usd: data?.data?.price ?? null,
+        price_change_percent: data?.data?.change ?? null,
+        symbol: data?.data?.symbol || "",
     };
 
     return {

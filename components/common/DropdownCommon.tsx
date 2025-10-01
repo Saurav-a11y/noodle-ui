@@ -10,7 +10,7 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 
 	return (
 		<div className="flex items-center justify-between">
-			<p className="text-sm font-medium opacity-50 font-noto">{title}</p>
+			<p className="text-xs font-medium opacity-50 font-noto">{title}</p>
 			<NavigationMenu className='z-20'>
 				<NavigationMenuList className="flex space-x-8">
 					<NavigationMenuItem>
@@ -18,7 +18,7 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 							<Link
 								href={data[0].url}
 								target="_blank"
-								className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-sm cursor-pointer font-reddit w-fit overflow-hidden whitespace-nowrap truncate"
+								className="flex items-center gap-2 bg-[#DDF346] dark:text-[#1A1A1A] px-3 py-1.5 rounded-full font-medium text-xs cursor-pointer font-reddit w-fit overflow-hidden whitespace-nowrap truncate"
 							>
 								{data[0]?.name}
 							</Link>
@@ -31,7 +31,7 @@ export default function DropdownCommon({ data, title }: { data: { name: string; 
 											href={item.url}
 											target="_blank"
 											key={index}
-											className="flex items-center gap-3 px-3 py-2 text-sm dark:text-white hover:bg-[#F3F3F3] dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+											className="flex items-center gap-3 px-3 py-2 text-xs dark:text-white hover:bg-[#F3F3F3] dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
 										>
 											<Globe className='w-4 h-4' />
 											{item?.name}

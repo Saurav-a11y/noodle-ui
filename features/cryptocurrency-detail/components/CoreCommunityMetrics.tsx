@@ -1,41 +1,33 @@
 import TooltipCommon from "@/components/common/TooltipCommon"
-import { formatNumberShort } from "@/lib/format";
+import { formatNumberShort, formatPercent } from "@/lib/format";
 
 const CoreCommunityMetrics = ({ data, isFetching }) => {
     const coreMetrics = [
         {
             title: "Active Users (30d)",
-            value: formatNumberShort(data?.active_users_30d?.value),
-            // change: `${data?.active_users_30d?.change > 0 && data?.active_users_30d?.change_percent > 0 ? "▲" : "▼"} ${data?.active_users_30d?.change > 0 && data?.active_users_30d?.change_percent > 0 ? "+" : ""}${formatNumberShort(data?.active_users_30d?.change)} (${data?.active_users_30d?.change > 0 && data?.active_users_30d?.change_percent > 0 ? "+" : ""}${data?.active_users_30d?.change_percent})`,
-            color: data?.active_users_30d?.change > 0 && data?.active_users_30d?.change_percent > 0 ? '#00B552' : '#FF0000',
+            value: formatNumberShort(data?.activeUsers),
             content: 'The number of distinct users who interacted with the project in the past 30 days. Covers social, development, and on-chain activity.'
         },
         {
             title: "Engagement Rate (7d)",
-            value: `${data?.engagement_rate_7d?.value}${data?.engagement_rate_7d?.unit}`,
-            // change: `${data?.engagement_rate_7d?.change_percent > 0 && data?.engagement_rate_7d?.change_percent > 0 ? "▲" : "▼"} ${data?.engagement_rate_7d?.change_percent > 0 && data?.engagement_rate_7d?.change_percent > 0 ? "+" : ''}${data?.engagement_rate_7d?.change_percent}${data?.engagement_rate_7d?.unit}`,
-            color: data?.engagement_rate_7d?.change_percent > 0 && data?.engagement_rate_7d?.change_percent > 0 ? '#00B552' : '#FF0000',
+            value: formatPercent(data?.engagementRate),
             content: 'The percentage of users actively participating (e.g. likes, comments, retweets) within the last 7 days. Higher rates indicate a more involved community.'
         },
         {
             title: "Growth Rate (30d)",
-            value: `${data?.growth_rate_30d?.value > 0 ? '+' : ''}${data?.growth_rate_30d?.value}${data?.growth_rate_30d?.unit}`,
-            change: data?.growth_rate_30d?.trend,
-            color: '#00B552',
+            value: formatPercent(data?.growthRate),
             content: 'Reflects the long-term trend of user base or engagement growth over the last 30 days. Useful for spotting sustainable momentum.'
         },
         {
             title: "Dev Commits (30d)",
-            value: formatNumberShort(data?.dev_commits_30d?.value),
-            change: data?.dev_commits_30d?.trend,
-            color: '#FFAB36',
+            value: formatNumberShort(data?.dev_commits.value),
+            // change: data?.dev_commits?.label,
+            // color: '#FFAB36',
             content: 'Total code commits made to the project’s repository in the past 30 days. Indicates ongoing technical progress and developer engagement.'
         },
         {
             title: "Token Holders",
-            value: formatNumberShort(data?.token_holders?.value),
-            // change: `${data?.token_holders?.change > 0 ? '▲' : '▼'} ${data?.token_holders?.change > 0 ? '+' : ''}${data?.token_holders?.change} ${data?.token_holders?.change_description}`,
-            color: data?.token_holders?.change > 0 ? '#00B552' : '#FF0000',
+            value: formatNumberShort(data?.tokenHolders),
             content: 'Shows the number of unique wallets currently holding the project’s token. Growth in holders typically reflects trust and adoption.'
         }
     ];
@@ -59,8 +51,10 @@ const CoreCommunityMetrics = ({ data, isFetching }) => {
                                 <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
                             </>
                             : <>
-                                <div className="text-xl font-semibold font-noto dark:text-[#FFF] mb-2">{metric.value}</div>
-                                <p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+                                <div className="text-sm font-semibold font-noto dark:text-[#FFF]">{metric.value}</div>
+                                {/* {metric.change && (
+                                    <p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
+                                )} */}
                             </>
                         }
                     </div>

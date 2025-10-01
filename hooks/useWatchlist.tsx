@@ -123,15 +123,16 @@ export const useRemoveFromWatchlist = () => {
 	});
 };
 
-export const useCandidateTokens = (userId: string, search: string) => {
+export const useCandidateTokens = (userId: string, search: string, activeTab: string) => {
 	return useInfiniteQuery({
-		queryKey: ['watchlist-candidates', userId, search],
+		queryKey: ['watchlist-candidates', userId, search, activeTab],
 		queryFn: async ({ pageParam = 1 }) => {
 			const url = new URL('https://data-api.agentos.cloud/noodle/watchlist/candidates');
 			url.searchParams.set('userId', userId);
 			if (search) url.searchParams.set('q', search);
 			// nếu BE nhận 'page'
 			url.searchParams.set('page', String(pageParam));
+			url.searchParams.set('type', String(activeTab));
 			// nếu BE nhận 'cursor' thì đổi dòng trên thành:
 			// url.searchParams.set('cursor', String(pageParam));
 

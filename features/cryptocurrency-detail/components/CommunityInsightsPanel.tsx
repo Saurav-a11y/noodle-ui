@@ -24,34 +24,64 @@ const getEngagementLabel = (score: number) => {
 	}
 }
 
+const getWhaleActivityLabel = (whaleVolumeShare: number, whaleTxShare: number) => {
+	if (whaleVolumeShare > 0.7 && whaleTxShare > 0.1) {
+		return {
+			name: 'Whale exit detected', color: '#FF0000'
+		};
+	}
+
+	if (whaleVolumeShare > 0.7 && whaleTxShare < 0.1) {
+		return {
+			name: 'Recent large sells', color: '#B00020'
+		};
+	}
+
+	if (whaleVolumeShare > 0.4 && whaleTxShare > 0.05) {
+		return {
+			name: 'Accumulation detected', color: '#00B552'
+		};
+	}
+
+	if (whaleVolumeShare >= 0.2 && whaleVolumeShare <= 0.7) {
+		return {
+			name: 'Balanced whale activity', color: '#FFAB36'
+		};
+	}
+
+	return {
+		name: 'No significant activity', color: '#8E8E93'
+	};
+}
+
 const CommunityInsightsPanel = ({ data, isFetching }) => {
 	const healthMetrics = [
 		{
 			title: "Authentic Engagement",
-			value: getEngagementLabel(data?.authentic_engagement).value,
+			value: getEngagementLabel(data?.authenticEngagement).value,
 			icon: <AuthenticEngagementIcon />,
-			color: getEngagementLabel(data?.authentic_engagement).color,
+			color: getEngagementLabel(data?.authenticEngagement).color,
 			content: 'Measures real, organic interactions from human users. It excludes bots, spam, and artificial behavior to reflect genuine community activity.'
 		},
 		{
 			title: "Community Growth",
-			value: formatPercent(data?.community_growth),
+			value: formatPercent(data?.communityGrowth),
 			unit: 'monthly',
 			icon: <CommunityGrowthIcon />,
 			content: `The rate at which the project’s community is growing week-over-week. Tracks new followers, members, and visibility across platforms.`
 		},
 		{
 			title: "Recent Activity Drop",
-			value: formatPercent(data?.recent_activity_drop),
+			value: formatPercent(data?.recentActivityDrop),
 			unit: 'this week',
 			icon: <RecentActivityDropIcon />,
 			content: 'Detects a sharp decrease in user engagement or community actions. May signal declining interest or short-term inactivity.'
 		},
 		{
 			title: "Whale Activity",
-			value: data?.whale_activity?.name,
+			value: getWhaleActivityLabel(data?.whaleActivity?.whaleVolumeShare, data?.whaleActivity?.whaleTxShare).name,
 			icon: <WhaleActivityIcon />,
-			color: data?.whale_activity?.color,
+			color: getWhaleActivityLabel(data?.whaleActivity?.whaleVolumeShare, data?.whaleActivity?.whaleTxShare).color,
 			content: `Monitors large token holders’ behavior, including significant buys or sells. Whale movements can influence market sentiment and community trust.`
 		}
 	];
@@ -70,7 +100,7 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 					</div>
 				) : (
 					<div className="flex items-center gap-2">
-						<p className="text-3xl font-semibold font-noto dark:text-[#FFF]">{data?.value}</p>
+						<p className="text-3xl font-semibold font-noto dark:text-[#FFF]">{data?.healthScore}</p>
 					</div>
 				)}
 			</div>
@@ -105,7 +135,7 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 					{
 						label: 'Market Cap',
 						value: formatCurrency(data?.marketcap),
-						extra: formatPercent(data?.vol_change_24h_cmc),
+						extra: formatPercent(data?.['24hVolChangeCmc']),
 						tooltip: 'The total market value of a cryptocurrency’s circulating supply...'
 					},
 					{
@@ -115,12 +145,12 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 					},
 					{
 						label: 'Volume (24h)',
-						value: `$${formatCurrency(data?.vol_24h)}`,
+						value: `$${formatCurrency(data?.['24hVolCmc'])}`,
 						tooltip: 'A measure of how much of a cryptocurrency was traded in the last 24 hours.'
 					},
 					{
 						label: 'Vol/Mkt Cap (24h)',
-						value: formatPercent(data?.vol_mkt_24h),
+						value: formatPercent(data?.['24hVolToMarketcap']),
 						tooltip: 'Indicator of liquidity...'
 					},
 					{

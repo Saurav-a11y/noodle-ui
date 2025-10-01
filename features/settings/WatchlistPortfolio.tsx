@@ -308,7 +308,7 @@ const WatchlistPortfolio = () => {
 												<div>{asset?.overview?.market?.['24h_vol_cmc'] ? `$${formatNumberWithCommas(asset?.overview?.market?.['24h_vol_cmc'])}` : asset?.overview?.market?.volume ? `$${formatNumberWithCommas(asset?.overview?.market?.volume)}` : '--'}</div>
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
-												{asset?.overview?.info?.circulating_supply ? `${formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}` : '--'}
+												{asset?.overview?.info?.circulating_supply ? `$${formatNumberWithCommas(asset?.overview?.info?.circulating_supply)}` : '--'}
 											</TableCell>
 											<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
 												<EditableHoldingsCell
