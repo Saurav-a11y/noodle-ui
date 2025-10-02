@@ -128,11 +128,8 @@ const SocialChart = ({ type }) => {
 	}, [selectedTz]);
 	return (
 		<div className="p-6 rounded-xl dark:bg-[#1A1A1A] bg-white text-[#1E1B39] dark:text-[#FFF]">
-			<p className="text-xl font-semibold mb-4 font-noto">
-				Social Activity vs On-Chain Behavior Correlation
-			</p>
 			<CandlestickChart utcOffset={selectedTz.offset} type={type} />
-			<hr className="text-[#E8E8E8] dark:text-[#B1B1B1] mt-2" />
+			{/* <hr className="text-[#E8E8E8] dark:text-[#B1B1B1] mt-2" /> */}
 			<div className="flex flex-col md:flex-row md:items-center mt-4 justify-between gap-2">
 				<div className="flex items-center gap-2 text-xs text-[#222222] dark:text-white">
 					<Popover open={open} onOpenChange={setOpen}>

@@ -469,25 +469,28 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	return (
 		<div>
 			<div className='flex items-center gap-x-6 gap-y-3 mb-4 flex-wrap  justify-between gap-1'>
-				<div className="flex items-center gap-2">
-				</div>
-				<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
-					{['1D', '3D', '7D', '1M'].map((timeFrame) => (
-						<button
-							key={timeFrame}
-							onClick={() => handleTimeFrameChange(timeFrame as any)}
-							className={`px-2.5 py-1 rounded cursor-pointer text-xs font-reddit font-medium transition-colors ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md text-[#222]' : 'hover:bg-[#F4F4F5] dark:hover:bg-[#313131]'
-								}`}
-						>
-							{timeFrame}
-						</button>
-					))}
+				<div className='flex items-center justify-between w-full'>
+					<p className="text-lg font-semibold font-noto">
+						Social Activity vs On-Chain Behavior Correlation
+					</p>
+					<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
+						{['1D', '3D', '7D', '1M'].map((timeFrame) => (
+							<button
+								key={timeFrame}
+								onClick={() => handleTimeFrameChange(timeFrame as any)}
+								className={`px-2.5 py-1 rounded cursor-pointer text-xs font-reddit font-medium transition-colors ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md text-[#222]' : 'hover:bg-[#F4F4F5] dark:hover:bg-[#313131]'
+									}`}
+							>
+								{timeFrame}
+							</button>
+						))}
+					</div>
 				</div>
 			</div>
 			<div style={{ position: 'relative' }}>
 				{/* ✅ Hiển thị loading overlay nếu đang fetch data */}
 				{isLoading && (
-					<div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[3] rounded-2xl border dark:border-borderPrimary flex-col gap-3'>
+					<div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[3] flex-col gap-3'>
 						<div className='w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin'></div>
 						<div>
 							<p className='text-white text-center text-lg font-semibold'>Loading Data</p>
@@ -509,7 +512,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 				<div
 					ref={chartContainerRef}
 					id='chart'
-					className='w-full h-[500px] rounded-2xl'
+					className='w-full h-[500px]'
 					style={{ overflow: 'hidden' }}
 				/>
 				<div

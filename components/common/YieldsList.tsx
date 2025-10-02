@@ -10,14 +10,6 @@ import { Button } from '../ui/Button';
 import Image from 'next/image';
 import TooltipCommon from './TooltipCommon';
 
-function formatNumber(n?: number) {
-	if (n == null || Number.isNaN(n)) return '-';
-	if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2) + 'B';
-	if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M';
-	if (n >= 1_000) return (n / 1_000).toFixed(2) + 'K';
-	return n.toLocaleString();
-}
-
 function LimitSelect({
 	value,
 	onChange,
@@ -112,10 +104,10 @@ export default function YieldsList({
 			{/* Header */}
 			<div className="flex items-center justify-between gap-3">
 				<div className='flex-1'>
-					<p className="text-xl font-semibold mb-0.5 font-noto dark:text-white">
+					<p className="text-lg font-semibold mb-0.5 font-noto dark:text-white">
 						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{communityId && communityId.toUpperCase()}</span>
 					</p>
-					<p className="text-xs text-neutral-500">Data from DefiLlama Pools API</p>
+					<p className="text-[11px] text-neutral-500">Data from DefiLlama Pools API</p>
 				</div>
 
 				{/* Controls */}
@@ -198,19 +190,19 @@ export default function YieldsList({
 									<td className="py-3 px-3 dark:text-white">{(page - 1) * limit + idx + 1}</td>
 									<td className="py-3 px-3">
 										<div className="flex items-center gap-2">
-											<Image src={`https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-8 h-8 rounded-full' />
-											<span className="font-medium capitalize dark:text-white">{row.project ?? '-'}</span>
+											<Image src={`https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />
+											<span className="text-xs font-medium capitalize dark:text-white">{row.project ?? '-'}</span>
 										</div>
 									</td>
 									<td className="py-3 px-3">
-										<TooltipCommon classNameTypo="!p-1" content={row?.chain || ''} trigger={<Image src={`https://icons.llamao.fi/icons/chains/rsz_${row.chain}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-8 h-8 rounded-full' />} />
+										<TooltipCommon classNameTypo="!p-1" content={row?.chain || ''} trigger={<Image src={`https://icons.llamao.fi/icons/chains/rsz_${row.chain}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />} />
 									</td>
 									<td className="py-3 px-3">
-										<span className="inline-block rounded-md bg-lime-100 text-lime-800 dark:bg-lime-900/40 dark:text-lime-300 px-2 py-0.5">
+										<span className="inline-block text-xs rounded-md bg-lime-100 text-lime-800 dark:bg-lime-900/40 dark:text-lime-300 px-2 py-0.5">
 											{Number(row.apy ?? 0).toFixed(2)}%
 										</span>
 									</td>
-									<td className="py-3 px-3 dark:text-white">${formatNumber(row.tvlUsd)}</td>
+									<td className="py-3 px-3 dark:text-white text-xs">${formatWithComma(String(row.tvlUsd))}</td>
 									{/* <td className="py-3 px-3">
 										{row.pool ? (
 											<a
