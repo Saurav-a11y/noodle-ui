@@ -19,6 +19,7 @@ import useThemekMode from '@/lib/useThemkMode';
 import { usePriceHistory } from '../hooks/usePriceHistory';
 import { useParams } from 'next/navigation';
 import { useListTweets } from '../hooks/useListTweets';
+import { useCommunityOverview } from '../hooks/useCommunityOverview';
 // import IconifyIcon from '@/components/common/IconifyIcon';
 
 // const COMMUNITIES_STATUS = {
@@ -77,6 +78,7 @@ const barsInTimeFrame = {
 const CandlestickChart = ({ utcOffset, type }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
+	const { data } = useCommunityOverview(communityId);
 	const { isDark } = useThemekMode();
 	const now = useMemo(() => {
 		const localNow = new Date();
@@ -88,7 +90,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	const endTime = useMemo(() => getTime(now), [now]);
 
 	const { data: priceHistoryToken, isLoading, error } = usePriceHistory({
-		symbol: communityId,
+		symbol: data?.data?.symbol,
 		startTime,
 		endTime,
 		interval: '1M',
@@ -96,7 +98,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	});
 
 	const { data: tweets } = useListTweets({
-		symbol: communityId,
+		symbol: data?.data?.symbol,
 		timeRange: '30d',
 	});
 
@@ -524,7 +526,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 				classNameChildren='overflow-y-auto overflow-x-hidden rounded-none hidden-scrollbar max-h-[80vh]'
 				classNameContent='sm:w-full w-[96vw] max-w-screen-sm'
 			>
-				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={communityId} utcOffset={utcOffset} />
+				<TweetList tweets={activeHourTweets || []} isParseUTC symbol={data?.data?.symbol} utcOffset={utcOffset} />
 			</ModalCommon>
 		</div>
 	);
