@@ -40,7 +40,7 @@ export const useAssetOverviewData = () => {
         isFetching,
         overview,
         formatted: {
-            priceUsd: formatCurrency(overview.price_usd),
+            priceUsd: overview.price_usd,
             priceChange: formatPercent(overview.price_change_percent),
         },
     };

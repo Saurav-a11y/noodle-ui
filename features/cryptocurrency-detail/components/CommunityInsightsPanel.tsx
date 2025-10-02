@@ -134,18 +134,18 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 				{[
 					{
 						label: 'Market Cap',
-						value: `$${formatCurrency(data?.marketcap)}`,
-						extra: formatPercent(data?.['24hVolChangeCmc']),
+						value: `${formatCurrency(data?.marketcap)}`,
+						extra: data?.['24hVolChangeCmc'] ? formatPercent(data?.['24hVolChangeCmc']) : '',
 						tooltip: 'The total market value of a cryptocurrency’s circulating supply...'
 					},
 					{
 						label: 'FDV',
-						value: `$${formatCurrency(data?.fdv)}`,
+						value: `${formatCurrency(data?.fdv)}`,
 						tooltip: 'The market cap if the max supply was in circulation...'
 					},
 					{
 						label: 'Volume (24h)',
-						value: `$${formatCurrency(data?.['24hVolCmc'])}`,
+						value: `${formatCurrency(data?.['24hVolCmc'])}`,
 						tooltip: 'A measure of how much of a cryptocurrency was traded in the last 24 hours.'
 					},
 					{
@@ -155,17 +155,17 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 					},
 					{
 						label: 'Total Supply',
-						value: `$${formatCurrency(data?.totalSupply)}`,
+						value: `${formatCurrency(data?.totalSupply)}`,
 						tooltip: 'Total coins created minus burned coins...'
 					},
 					{
 						label: 'Max Supply',
-						value: data?.maxSupply > 0 ? `$${formatCurrency(data?.maxSupply)}` : '∞',
+						value: data?.maxSupply > 0 ? `${formatCurrency(data?.maxSupply)}` : '∞',
 						tooltip: 'The best approximation of the maximum amount of coins that will exist...'
 					},
 					{
 						label: 'Circulating Supply',
-						value: `$${formatCurrency(data?.circulatingSupply)}`,
+						value: `${formatCurrency(data?.circulatingSupply)}`,
 						tooltip: 'The amount of coins that are circulating in the market...'
 					}
 				].map((metric, idx) => (

@@ -562,7 +562,7 @@ const CryptoCommunityContributions = () => {
 															</div>
 														)}
 														{/* <hr className="text-[#C5C5C5]" /> */}
-														<div className="flex items-center gap-4 text-sm font-noto text-[#4B4A4A]">
+														<div className="flex items-center gap-4 text-sm font-noto text-[#4B4A4A] mt-4">
 															<div className="flex items-center gap-2 font-medium text-xs dark:text-white">
 																<UpVoteIcon />
 																{formatNumberShort(post?.data?.ups)}

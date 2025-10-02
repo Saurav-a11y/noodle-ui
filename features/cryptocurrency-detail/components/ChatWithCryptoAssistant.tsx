@@ -308,7 +308,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 							<div className="flex items-center gap-2 text-xs">
 								<span className="font-medium font-noto">{communityOverview?.base_currency}</span>
 								<span>•</span>
-								<span className="font-medium font-noto">${formatCurrency(communityOverview?.price_usd)}</span>
+								<span className="font-medium font-noto">${communityOverview?.price_usd}</span>
 								<span>•</span>
 								<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
 							</div>
