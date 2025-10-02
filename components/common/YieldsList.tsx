@@ -113,7 +113,7 @@ export default function YieldsList({
 			<div className="flex items-center justify-between gap-3">
 				<div className='flex-1'>
 					<p className="text-xl font-semibold mb-0.5 font-noto dark:text-white">
-						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{communityId.toUpperCase()}</span>
+						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{communityId && communityId.toUpperCase()}</span>
 					</p>
 					<p className="text-xs text-neutral-500">Data from DefiLlama Pools API</p>
 				</div>

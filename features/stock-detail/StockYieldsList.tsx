@@ -83,7 +83,6 @@ export default function StockYieldsList({
 	);
 
 	const { data, isLoading, isError, isFetching } = useDividendYieldStock(communityId);
-	console.log("🚀 ~ StockYieldsList ~ data:", data)
 
 	const total = 0;
 
