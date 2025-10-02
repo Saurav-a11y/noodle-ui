@@ -48,6 +48,11 @@ const nextConfig: NextConfig = {
         hostname: 'i.redd.it',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        pathname: '/**',
+      },
     ],
   },
   output: 'standalone',

@@ -28,6 +28,46 @@ import GithubCommunityLoading from "@/components/common/loading/GithubCommunityL
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
+import _isEmpty from "lodash/isEmpty";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
+type CommitMessageViewerProps = {
+	message: string;
+};
+
+function getRepoNameFromCommitUrl(commitUrl: string): string | null {
+	try {
+		const url = new URL(commitUrl);
+		const segments = url.pathname.split('/').filter(Boolean);
+		const repoIndex = segments.indexOf('commit') - 1;
+		if (repoIndex >= 0) {
+			return segments[repoIndex];
+		}
+		return null;
+	} catch (error) {
+		return null;
+	}
+}
+
+const CommitMessageViewer = ({ message }: CommitMessageViewerProps) => {
+	return (
+		<div className="bg-[#0D1117] text-[#c9d1d9] font-mono text-sm p-4 rounded-md whitespace-pre-wrap border border-[#30363d]">
+			<ReactMarkdown
+				remarkPlugins={[remarkGfm]}
+				components={{
+					a: ({ node, ...props }) => (
+						<a {...props} className="text-[#58a6ff] underline" target="_blank" rel="noopener noreferrer" />
+					),
+					h2: ({ node, ...props }) => <h2 className="text-base font-boll" {...props} />,
+					p: ({ node, ...props }) => <p {...props} />,
+				}}
+			>
+				{message}
+			</ReactMarkdown>
+		</div>
+	);
+};
 
 export const formatTweetText = (text: string): string => {
 	if (!text) return '';
@@ -123,7 +163,6 @@ const CryptoCommunityContributions = () => {
 		setPage(1);
 		fetchData(1, true).finally(() => setIsLoading(false));
 	}, [communityId, activeTab]);
-
 
 	return (
 		<div className="text-[#1E1B39] dark:text-white">
@@ -240,11 +279,11 @@ const CryptoCommunityContributions = () => {
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
 																				assetType: 'cryptocurrencies',
-																				assetSymbol: cryptoOverview.project.base_currency,
-																				assetName: cryptoOverview.project.name,
-																				assetLogo: cryptoOverview.project.medium_logo_url,
-																				content: `Viewed ${cryptoOverview.project.name} community insights`,
-																				activity: `Viewed community activity about ${cryptoOverview.project.name} (${cryptoOverview.project.base_currency}) on Twitter`,
+																				assetSymbol: cryptoOverview.base_currency,
+																				assetName: cryptoOverview.name,
+																				assetLogo: cryptoOverview.logo,
+																				content: `Viewed ${cryptoOverview.name} community insights`,
+																				activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on Twitter`,
 																			});
 																		}
 																	}}
@@ -339,22 +378,22 @@ const CryptoCommunityContributions = () => {
 															</div>
 															<div className="flex-1">
 																<div>
-																	<p className="text-sm font-semibold mb-1">{item.repo}</p>
+																	<p className="text-sm font-semibold mb-1">{_isEmpty(item?.repo) ? getRepoNameFromCommitUrl(item?.html_url) : item?.repo}</p>
 																	<div className="flex items-center gap-2 text-[#4B4A4A] dark:text-white">
 																		<span className="text-xs opacity-50">
-																			{item?.created_at
-																				? formatDistanceToNow(new Date(item.created_at), { addSuffix: true, })
+																			{item?.commit?.committer?.date
+																				? formatDistanceToNow(new Date(item?.commit?.committer?.date), { addSuffix: true, })
 																				: 'Unknown'}
 																		</span>
 																	</div>
 																</div>
 															</div>
 															<div className="flex items-center gap-3">
-																{item?.type === 'PushEvent' && <p className={`text-xs text-white bg-[#1b7f37] w-fit px-2 py-1 rounded-full`}>Committed</p>}
-																{item?.type === 'PullRequestEvent' && (<p className={`text-xs text-white ${item?.payload?.pull_request?.merged ? 'bg-[#8250df]' : 'bg-[#1b7f37]'} px-2 py-1 rounded-full flex items-center`}>{item?.payload?.pull_request?.merged ? 'Merged' : 'Merge'}</p>)}
-																{item?.type === 'IssuesEvent' && (<p className="text-xs dark:text-black bg-gray-200 px-2.5 py-1 rounded-full flex items-center">Issue</p>)}
+																{item?.commit?.verification?.verified && (
+																	<p className="border border-[#238636] rounded-full px-2 py-1 text-xs font-reddit text-[#238636] font-medium">Verified</p>
+																)}
 																<Link
-																	href={`https://github.com/${item.repo}/${item?.type === 'IssuesEvent' && 'issues' || item?.type === 'PullRequestEvent' && 'pull' || item?.type === 'PushEvent' && 'commit'}/${item?.payload?.issue?.number || item?.payload?.pull_request?.number || item?.payload?.head}`}
+																	href={item?.html_url || ''}
 																	target="_blank"
 																	onClick={() => {
 																		if (userData?.data?.id) {
@@ -362,11 +401,11 @@ const CryptoCommunityContributions = () => {
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
 																				assetType: 'cryptocurrencies',
-																				assetSymbol: cryptoOverview.project.base_currency,
-																				assetName: cryptoOverview.project.name,
-																				assetLogo: cryptoOverview.project.medium_logo_url,
-																				content: `Viewed ${cryptoOverview.project.name} community insights`,
-																				activity: `Viewed community activity about ${cryptoOverview.project.name} (${cryptoOverview.project.base_currency}) on GitHub`,
+																				assetSymbol: cryptoOverview.base_currency,
+																				assetName: cryptoOverview.name,
+																				assetLogo: cryptoOverview.logo,
+																				content: `Viewed ${cryptoOverview.name} community insights`,
+																				activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on GitHub`,
 																			});
 																		}
 																	}}
@@ -376,59 +415,16 @@ const CryptoCommunityContributions = () => {
 															</div>
 														</div>
 														<div className="font-reddit text-[#373737]">
-															{item?.type === 'IssuesEvent' && (
-																<div className="flex gap-2 items-start">
-																	<p className="mt-1">
-																		{item?.payload?.action === 'opened' && (
-																			<svg color="open.fg" aria-hidden="true" focusable="false" aria-label="" className="octicon octicon-issue-opened Octicon-sc-9kayk9-0 cRyBKI" viewBox="0 0 16 16" width="16" height="16" fill="#1b7f37" display="inline-block" overflow="visible" style={{ verticalAlign: 'text-bottom' }}><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path></svg>
-																		)}
-																		{item?.payload?.action === 'closed' && (
-																			<svg color="done.fg" aria-hidden="true" focusable="false" aria-label="" className="octicon octicon-issue-closed Octicon-sc-9kayk9-0 hjIZXg" viewBox="0 0 16 16" width="16" height="16" fill="#8250df" display="inline-block" overflow="visible" style={{ verticalAlign: 'text-bottom' }}><path d="M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z"></path><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z"></path></svg>
-																		)}
-																	</p>
-																	<div>
-																		<p className="font-medium mb-1 dark:text-white">{item?.payload?.issue?.title}</p>
-
-																		<div className="flex items-center text-xs opacity-70 space-x-1 dark:text-white">
-																			<p>#{item?.payload?.issue?.number}</p>
-																			<p>·</p>
-																			<p><strong>{item?.actor}</strong> {item?.payload?.action} {item?.created_at
-																				? formatDistanceToNow(new Date(item?.created_at), { addSuffix: true, })
-																				: 'Unknown'}</p>
-																			<p>·</p>
-																			<Link target="_blank" href={`https://github.com/${item.repo}/milestone/${item?.payload?.issue?.milestone?.number}`} className="flex items-center gap-1 hover:text-[#0969da]">
-																				<svg aria-hidden="true" focusable="false" className="octicon octicon-milestone Octicon-sc-9kayk9-0" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" display="inline-block" overflow="visible" style={{ verticalAlign: 'text-bottom' }}><path d="M7.75 0a.75.75 0 0 1 .75.75V3h3.634c.414 0 .814.147 1.13.414l2.07 1.75a1.75 1.75 0 0 1 0 2.672l-2.07 1.75a1.75 1.75 0 0 1-1.13.414H8.5v5.25a.75.75 0 0 1-1.5 0V10H2.75A1.75 1.75 0 0 1 1 8.25v-3.5C1 3.784 1.784 3 2.75 3H7V.75A.75.75 0 0 1 7.75 0Zm4.384 8.5a.25.25 0 0 0 .161-.06l2.07-1.75a.248.248 0 0 0 0-.38l-2.07-1.75a.25.25 0 0 0-.161-.06H2.75a.25.25 0 0 0-.25.25v3.5c0 .138.112.25.25.25h9.384Z"></path></svg>
-																				{item?.payload?.issue?.milestone?.title}
-																			</Link>
-																		</div>
-																	</div>
-																</div>
-															)}
-															{item?.type === 'PullRequestEvent' && (
-																<div>
-																	<p className="font-medium mb-1.5 dark:text-white">{item?.payload?.pull_request?.title}</p>
-																	<div className="flex items-center text-xs opacity-70 space-x-1 dark:text-white">
-																		<p>#{item?.payload?.pull_request?.number}</p>
-																		<p>·</p>
-																		<p><strong>{item?.payload?.pull_request?.merged_by?.login}</strong> {item?.payload?.pull_request?.merged ? 'merged' : 'merge'} {item?.payload?.pull_request?.commits} commits into <Link target="_blank" href={`https://github.com/${item.repo}/tree/${item?.payload?.pull_request?.base?.ref}`} className="text-[#0969da] bg-[#def4ff] px-1.5 py-0.5 rounded">{item?.payload?.pull_request?.base?.ref}</Link> from <Link target="_blank" href={`https://github.com/${item.repo}/tree/${item?.payload?.pull_request?.head?.ref}`} className="text-[#0969da] bg-[#def4ff] px-1.5 py-0.5 rounded">{item?.payload?.pull_request?.head?.ref}</Link>
-																		</p>
-																	</div>
-																</div>
-															)}
-															{item?.type === 'PushEvent' && (
-																<div>
-																	<div>
-																		{item?.payload?.commits[0]?.message.split('\n').map((line, index) => (
-																			<p className="font-medium dark:text-white" key={index}>{line}</p>
-																		))}
-																	</div>
-																	<div className="flex items-center text-xs opacity-80 space-x-1 mt-2 dark:text-white">
-																		<p>{item?.payload?.commits[0]?.author?.name} commited {item?.created_at
-																			? formatDistanceToNow(new Date(item?.created_at), { addSuffix: true, })
+															<div>
+																<CommitMessageViewer message={item?.commit?.message} />
+																<div className="flex items-center text-xs opacity-80 space-x-1.5 mt-4 dark:text-white">
+																	<Image src={item?.author?.avatar_url ?? "/images/github.png"} alt='logo github' width={16} height={16} className="rounded-full" />
+																	<p>
+																		<Link className="hover:underline" target="_blank" href={`https://github.com/circlefin/stablecoin-evm/commits?author=${item?.author?.login}`}>{item?.author?.login}</Link> commited {item?.commit?.committer?.date
+																			? formatDistanceToNow(new Date(item?.commit?.committer?.date), { addSuffix: true, })
 																			: 'Unknown'}</p>
-																	</div>
 																</div>
-															)}
+															</div>
 														</div>
 													</div>
 												</div>
@@ -510,11 +506,11 @@ const CryptoCommunityContributions = () => {
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
 																			assetType: 'cryptocurrencies',
-																			assetSymbol: cryptoOverview.project.base_currency,
-																			assetName: cryptoOverview.project.name,
-																			assetLogo: cryptoOverview.project.medium_logo_url,
-																			content: `Viewed ${cryptoOverview.project.name} community insights`,
-																			activity: `Viewed community activity about ${cryptoOverview.project.name} (${cryptoOverview.project.base_currency}) on Reddit`,
+																			assetSymbol: cryptoOverview.base_currency,
+																			assetName: cryptoOverview.name,
+																			assetLogo: cryptoOverview.logo,
+																			content: `Viewed ${cryptoOverview.name} community insights`,
+																			activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on Reddit`,
 																		});
 																	}
 																}}
@@ -674,11 +670,11 @@ const CryptoCommunityContributions = () => {
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
 																			assetType: 'cryptocurrencies',
-																			assetSymbol: cryptoOverview.project.base_currency,
-																			assetName: cryptoOverview.project.name,
-																			assetLogo: cryptoOverview.project.medium_logo_url,
-																			content: `Viewed ${cryptoOverview.project.name} community insights`,
-																			activity: `Viewed community activity about ${cryptoOverview.project.name} (${cryptoOverview.project.base_currency}) on YouTube`,
+																			assetSymbol: cryptoOverview.base_currency,
+																			assetName: cryptoOverview.name,
+																			assetLogo: cryptoOverview.logo,
+																			content: `Viewed ${cryptoOverview.name} community insights`,
+																			activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on YouTube`,
 																		});
 																	}
 																}}
