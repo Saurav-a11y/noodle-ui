@@ -77,10 +77,6 @@ const barsInTimeFrame = {
 const CandlestickChart = ({ utcOffset, type }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol =
-		typeof communityId === "string"
-			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
-			: "";
 	const { isDark } = useThemekMode();
 	const now = useMemo(() => {
 		const localNow = new Date();
@@ -100,7 +96,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	});
 
 	const { data: tweets } = useListTweets({
-		symbol: tokenSymbol,
+		symbol: communityId,
 		timeRange: '30d',
 	});
 

@@ -22,17 +22,13 @@ const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }
 const CryptoFounderAndTeamAnalystChart = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol =
-		typeof communityId === "string"
-			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
-			: "";
 	const [selectedTimeframe, setSelectedTimeframe] = useState<keyof typeof timeframeOptions>("1M");
 	const [visibleLabels, setVisibleLabels] = useState<string[]>(labels.map(l => l.name));
 
 	const timeOption = timeframeOptions[selectedTimeframe];
 
 	const { data, isFetching } = useCommunityTeamActivityAnalysis({
-		communityId: tokenSymbol,
+		communityId,
 		amount: timeOption.amount,
 		unit: timeOption.unit,
 	})

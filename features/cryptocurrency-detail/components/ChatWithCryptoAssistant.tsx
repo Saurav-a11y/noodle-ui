@@ -180,7 +180,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		logo: data?.data?.logo,
 		base_currency: data?.data?.name,
 		price_usd: data?.data?.price,
-		price_change_percent: data?.data?.change,
+		price_change_percent: data?.data?.change ?? 0,
 		symbol: data?.data?.symbol,
 	}
 	// const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);

@@ -40,7 +40,7 @@ const ProjectList = ({ title, tooltip, data, valueKey, valueSuffix, isLoading, h
                             key={index}
                             className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
                             onClick={() => {
-                                router.push(`/cryptocurrencies/${project.symbol}`)
+                                router.push(`/cryptocurrencies/${project.name}`)
                                 if (userData?.data?.id) {
                                     addLog({
                                         userId: userData?.data?.id,

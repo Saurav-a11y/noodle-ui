@@ -134,7 +134,7 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 				{[
 					{
 						label: 'Market Cap',
-						value: formatCurrency(data?.marketcap),
+						value: `$${formatCurrency(data?.marketcap)}`,
 						extra: formatPercent(data?.['24hVolChangeCmc']),
 						tooltip: 'The total market value of a cryptocurrency’s circulating supply...'
 					},

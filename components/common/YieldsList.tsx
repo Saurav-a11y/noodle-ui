@@ -67,10 +67,6 @@ export default function YieldsList({
 }) {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol =
-		typeof communityId === "string"
-			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
-			: "";
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(initialLimit);
 	const [minTvlUsd, setMinTvlUsd] = useState<number>(initialMinTvlUsd);
@@ -78,7 +74,7 @@ export default function YieldsList({
 		initialMinTvlUsd.toLocaleString("en-US")
 	);
 
-	const { data, isLoading, isError, isFetching } = useYields(tokenSymbol, {
+	const { data, isLoading, isError, isFetching } = useYields(communityId, {
 		page,
 		limit,
 		minTvlUsd,
@@ -117,7 +113,7 @@ export default function YieldsList({
 			<div className="flex items-center justify-between gap-3">
 				<div className='flex-1'>
 					<p className="text-xl font-semibold mb-0.5 font-noto dark:text-white">
-						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{tokenSymbol.toUpperCase()}</span>
+						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{communityId.toUpperCase()}</span>
 					</p>
 					<p className="text-xs text-neutral-500">Data from DefiLlama Pools API</p>
 				</div>

@@ -149,7 +149,7 @@ const StableCoinsTable = () => {
 									key={asset.symbol}
 									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 									onClick={() => {
-										router.push(`/cryptocurrencies/${asset?.symbol}`)
+										router.push(`/cryptocurrencies/${asset?.currency}`)
 										if (userData?.data?.id) {
 											addLog({
 												userId: userData?.data?.id,

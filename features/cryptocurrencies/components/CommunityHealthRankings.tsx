@@ -208,7 +208,7 @@ const CommunityHealthRankings = () => {
 										key={project?.rank}
 										className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
 										onClick={() => {
-											router.push(`/cryptocurrencies/${project?.symbol}`)
+											router.push(`/cryptocurrencies/${project?.name}`)
 											if (userData?.data?.id) {
 												addLog({
 													userId: userData?.data?.id,

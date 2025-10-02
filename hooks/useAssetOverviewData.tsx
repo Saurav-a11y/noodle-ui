@@ -32,7 +32,7 @@ export const useAssetOverviewData = () => {
         logo: data?.data?.logo || "",
         base_currency: data?.data?.name || "",
         price_usd: data?.data?.price ?? null,
-        price_change_percent: data?.data?.change ?? null,
+        price_change_percent: data?.data?.change ?? 0,
         symbol: data?.data?.symbol || "",
     };
 

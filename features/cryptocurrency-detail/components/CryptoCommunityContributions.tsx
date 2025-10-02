@@ -68,10 +68,7 @@ const decodeHtmlEntities = (url?: string) =>
 const CryptoCommunityContributions = () => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const tokenSymbol =
-		typeof communityId === "string"
-			? communityId.slice(0, -3) // bỏ 3 ký tự cuối
-			: "";
+
 	// "All Activity", 
 	const tabs = ["Twitter", "Reddit", "GitHub", "YouTube"];
 	const [activeTab, setActiveTab] = useState("Twitter");
@@ -89,7 +86,7 @@ const CryptoCommunityContributions = () => {
 
 	const fetchData = async (pageToFetch: number, replace = false) => {
 		const response = await fetchCommunityDataSources({
-			symbol: tokenSymbol,
+			symbol: communityId,
 			platform: activeTab,
 			page: pageToFetch.toString(),
 		});
@@ -121,11 +118,11 @@ const CryptoCommunityContributions = () => {
 
 	// Fetch data khi đổi tab hoặc symbol
 	useEffect(() => {
-		if (!tokenSymbol) return;
+		if (!communityId) return;
 		setIsLoading(true);
 		setPage(1);
 		fetchData(1, true).finally(() => setIsLoading(false));
-	}, [tokenSymbol, activeTab]);
+	}, [communityId, activeTab]);
 
 
 	return (
