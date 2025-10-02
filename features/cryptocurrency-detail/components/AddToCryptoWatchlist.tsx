@@ -64,10 +64,10 @@ const AddToCryptoWatchlist = () => {
 								userId: data?.data?.id,
 								type: 'add_to_watchlist',
 								assetType: 'cryptocurrencies',
-								assetSymbol: cryptoOverview.base_currency,
-								assetName: cryptoOverview.name,
+								assetSymbol: cryptoOverview.name,
+								assetName: cryptoOverview.fullname,
 								assetLogo: cryptoOverview.logo,
-								content: `Added ${cryptoOverview.name} (${cryptoOverview.base_currency}) to watchlist`,
+								content: `Added ${cryptoOverview.fullname} (${cryptoOverview.name}) to watchlist`,
 							});
 						}
 						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });

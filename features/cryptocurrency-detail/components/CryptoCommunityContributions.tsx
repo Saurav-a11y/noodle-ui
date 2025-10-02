@@ -279,11 +279,11 @@ const CryptoCommunityContributions = () => {
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
 																				assetType: 'cryptocurrencies',
-																				assetSymbol: cryptoOverview.base_currency,
-																				assetName: cryptoOverview.name,
+																				assetSymbol: cryptoOverview.name,
+																				assetName: cryptoOverview.fullname,
 																				assetLogo: cryptoOverview.logo,
 																				content: `Viewed ${cryptoOverview.name} community insights`,
-																				activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on Twitter`,
+																				activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on Twitter`,
 																			});
 																		}
 																	}}
@@ -401,11 +401,11 @@ const CryptoCommunityContributions = () => {
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
 																				assetType: 'cryptocurrencies',
-																				assetSymbol: cryptoOverview.base_currency,
-																				assetName: cryptoOverview.name,
+																				assetSymbol: cryptoOverview.name,
+																				assetName: cryptoOverview.fullname,
 																				assetLogo: cryptoOverview.logo,
 																				content: `Viewed ${cryptoOverview.name} community insights`,
-																				activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on GitHub`,
+																				activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on GitHub`,
 																			});
 																		}
 																	}}
@@ -506,11 +506,11 @@ const CryptoCommunityContributions = () => {
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
 																			assetType: 'cryptocurrencies',
-																			assetSymbol: cryptoOverview.base_currency,
-																			assetName: cryptoOverview.name,
+																			assetSymbol: cryptoOverview.name,
+																			assetName: cryptoOverview.fullname,
 																			assetLogo: cryptoOverview.logo,
 																			content: `Viewed ${cryptoOverview.name} community insights`,
-																			activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on Reddit`,
+																			activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on Reddit`,
 																		});
 																	}
 																}}
@@ -670,11 +670,11 @@ const CryptoCommunityContributions = () => {
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
 																			assetType: 'cryptocurrencies',
-																			assetSymbol: cryptoOverview.base_currency,
-																			assetName: cryptoOverview.name,
+																			assetSymbol: cryptoOverview.name,
+																			assetName: cryptoOverview.fullname,
 																			assetLogo: cryptoOverview.logo,
 																			content: `Viewed ${cryptoOverview.name} community insights`,
-																			activity: `Viewed community activity about ${cryptoOverview.name} (${cryptoOverview.base_currency}) on YouTube`,
+																			activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on YouTube`,
 																		});
 																	}
 																}}
