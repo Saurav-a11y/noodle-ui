@@ -45,9 +45,9 @@ const ChatBubble = memo(({ chat }: { chat: any }) => {
 			{chat.type === "user" && (
 				<div className="w-full flex justify-end">
 					<div className="bg-[#FAFFD9] rounded-xl p-4 max-w-[90%] w-fit">
-						<pre className="text-[#373737] text-right whitespace-pre-wrap text-sm">
+						<p className="text-[#373737] whitespace-pre-wrap text-sm">
 							{chat.message}
-						</pre>
+						</p>
 						<p className="text-xs text-gray-500 mt-1 text-right opacity-50 font-reddit">
 							{chat.timestamp}
 						</p>
@@ -115,7 +115,7 @@ const ChatInput = ({
 
 	return (
 		<div className="p-4 border-t border-[#E9E9E9] dark:border-t-[#B1B1B1]">
-			<div className="flex items-center justify-between w-full max-w-xl px-3 py-2 border border-[#E9E9E9] rounded-full bg-white">
+			<div className="flex items-center justify-between w-full px-3 py-2 border border-[#E9E9E9] rounded-full bg-white">
 				<StarIcon />
 				<textarea
 					ref={textareaRef}

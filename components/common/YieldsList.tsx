@@ -52,7 +52,7 @@ function LimitSelect({
 
 export default function YieldsList({
 	initialMinTvlUsd = 0,
-	initialLimit = 10,
+	initialLimit = 5,
 }: {
 	initialMinTvlUsd?: number;
 	initialLimit?: number;

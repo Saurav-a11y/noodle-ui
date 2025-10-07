@@ -14,4 +14,7 @@ export const useSayHello = ({ symbol }) =>
 		queryFn: () => sayHello(),
 		enabled: !!symbol,
 		staleTime: 1000 * 60 * 5,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchOnMount: false,
 	});
