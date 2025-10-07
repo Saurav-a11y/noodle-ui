@@ -4,46 +4,53 @@ import Image from "next/image";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
-import { formatCurrency, formatPercent } from "@/lib/format";
+import { formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
 const ChatBubble = memo(({ chat }: { chat: any }) => {
-	const lines = chat.message.split('\n').filter(Boolean);
-
 	return (
 		<div className="space-y-2">
-			{chat.type === 'assistant' && (
+			{chat.type === "assistant" && (
 				<div className="w-full flex justify-start">
 					<div className="bg-[#FBFBFB] rounded-xl p-4 max-w-[90%] w-fit">
-						{lines.map((line, idx) => (
-							<motion.pre
-								key={idx}
-								initial={{ opacity: 0, y: 6 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: idx * 0.1, duration: 0.3 }}
-								className="text-sm text-[#373737] whitespace-pre-wrap"
-							>
-								{line}
-							</motion.pre>
-						))}
-						<p className="text-xs text-gray-500 mt-1 font-reddit">{chat.timestamp}</p>
+						<motion.div
+							initial={{ opacity: 0, y: 6 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.3 }}
+							className="text-sm text-[#373737] prose prose-slate dark:prose-invert leading-relaxed
+							 max-w-none"
+						>
+							<ReactMarkdown remarkPlugins={[remarkGfm]}>
+								{chat.message}
+							</ReactMarkdown>
+						</motion.div>
+						<p className="text-xs text-gray-500 mt-1 font-reddit">
+							{chat.timestamp}
+						</p>
 					</div>
 				</div>
 			)}
-			{chat.type === 'user' && (
+
+			{chat.type === "user" && (
 				<div className="w-full flex justify-end">
 					<div className="bg-[#FAFFD9] rounded-xl p-4 max-w-[90%] w-fit">
-						<pre className="text-[#373737] text-right whitespace-pre-wrap text-sm">{chat.message}</pre>
-						<p className="text-xs text-gray-500 mt-1 text-right opacity-50 font-reddit">{chat.timestamp}</p>
+						<pre className="text-[#373737] text-right whitespace-pre-wrap text-sm">
+							{chat.message}
+						</pre>
+						<p className="text-xs text-gray-500 mt-1 text-right opacity-50 font-reddit">
+							{chat.timestamp}
+						</p>
 					</div>
 				</div>
 			)}
@@ -63,48 +70,25 @@ const TypingIndicator = () => (
 	</div>
 );
 
-// const QuickQuestions = ({ selected, onSelect }: { selected: string | null, onSelect: (q: string) => void }) => {
-// 	const questions = [
-// 		"Explain health score",
-// 		"Why the alerts?",
-// 		"Compare to DOGE",
-// 		"Investment advice",
-// 		"Bot detection",
-// 		"Whale impact"
-// 	];
-
-// 	return (
-// 		<div className="p-4 border-b border-[#E9E9E9] dark:border-[#B1B1B1]">
-// 			<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
-// 			<div className="flex flex-wrap gap-2">
-// 				{questions.map((question, index) => (
-// 					<Button
-// 						key={index}
-// 						variant="outline"
-// 						size="sm"
-// 						className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selected === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'}`}
-// 						onClick={() => onSelect(question)}
-// 					>
-// 						{question}
-// 					</Button>
-// 				))}
-// 			</div>
-// 		</div>
-// 	);
-// };
-
 const ChatMessages = memo(({ chatHistory, isLoading }: {
 	chatHistory: any[],
 	isLoading: boolean
 }) => {
+	const scrollRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [chatHistory.length, isLoading]);
+
 	return (
 		<div className="flex-1 p-4 space-y-4 overflow-y-auto">
 			{chatHistory.map((chat) => (
 				<ChatBubble key={chat.id} chat={chat} />
 			))}
 			{isLoading && <TypingIndicator />}
+			<div ref={scrollRef} />
 		</div>
-	)
+	);
 });
 
 const ChatInput = ({
@@ -164,15 +148,14 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	const params = useParams();
 	const communityId = params?.slug as string;
 
-	const [userInput, setUserInput] = useState('');
+	const [userInput, setUserInput] = useState("");
 	const chatHistoryRef = useRef<any[]>([]);
-	const [_, forceUpdate] = useReducer((x) => x + 1, 0)
-	const scrollRef = useRef<HTMLDivElement>(null);
+	const [_, forceUpdate] = useReducer((x) => x + 1, 0);
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useCommunityOverview(communityId);
 	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
-	const { data: userData } = useMe()
+	const { data: userData } = useMe();
 	const { mutate: addLog } = useAddUserActivityLog();
 
 	const communityOverview = {
@@ -182,13 +165,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		price_usd: data?.data?.price,
 		price_change_percent: data?.data?.change ?? 0,
 		symbol: data?.data?.symbol,
-	}
-	// const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
-
-	// const handleQuickQuestion = (question: string) => {
-	// 	setSelectedQuestion(question);
-	// 	console.log("Quick question:", question);
-	// };
+	};
 
 	const handleSendMessage = () => {
 		const trimmed = userInput.trim();
@@ -199,56 +176,50 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 
 		chatHistoryRef.current.push({
 			id,
-			type: 'user',
+			type: "user",
 			message: trimmed,
 			timestamp,
 		});
 		forceUpdate();
-		setUserInput('');
+		setUserInput("");
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }] },
+			{ messages: [{ ai: false, text: trimmed }], assetType: "cryptocurrencies" },
 			{
 				onSuccess: (res) => {
 					chatHistoryRef.current.push({
 						id: Date.now() + Math.random(),
-						type: 'assistant',
-						message: res || 'No response',
+						type: "assistant",
+						message: res || "No response",
 						timestamp: getCurrentTime(),
 					});
 					if (userData?.data?.id) {
 						addLog({
 							userId: userData?.data?.id,
-							type: 'chat',
-							assetType: 'cryptocurrencies',
-							assetSymbol: data?.data?.project?.base_currency,
-							assetName: data?.data?.project?.name,
-							assetLogo: data?.data?.project.medium_logo_url,
+							type: "chat",
+							assetType: "cryptocurrencies",
+							assetSymbol: data?.data?.name,
+							assetName: data?.data?.fullname,
+							assetLogo: data?.data?.logo,
 							content: `AI Chat: Asked about ${trimmed}`,
 						});
 					}
 					forceUpdate();
 				},
-				onError: (err) => {
-					console.error('Error sending message:', err);
-				},
+				onError: (err) => console.error("Error sending message:", err),
 			}
 		);
 	};
 
-	// 👇 Auto scroll to bottom when chat updates
-	useEffect(() => {
-		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-	}, [chatHistoryRef.current.length, isPending]);
+	const greetingText = Array.isArray(initialGreeting)
+		? initialGreeting[0]
+		: initialGreeting;
 
-	const greetingText = Array.isArray(initialGreeting) ? initialGreeting[0] : initialGreeting;
-
-	// 👇 Greeting once
 	useEffect(() => {
 		if (greetingText && chatHistoryRef.current.length === 0) {
 			chatHistoryRef.current.push({
 				id: Date.now(),
-				type: 'assistant',
+				type: "assistant",
 				message: greetingText,
 				timestamp: getCurrentTime(),
 			});
@@ -259,23 +230,22 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	return (
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
-			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
-				<div className="w-full h-[90px] absolute top-0 left-12">
-					{/* <BackgroundChat /> */}
-				</div>
+			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden">
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
 						<NoodlesMiniLogo />
 					</div>
 					<div className="relative z-20">
 						<p className="text-lg font-bold font-noto">AI Community Analyst</p>
-						<p className="text-xs font-reddit">Your intelligent crypto research companion</p>
+						<p className="text-xs font-reddit">
+							Your intelligent crypto, stock & commodity companion
+						</p>
 					</div>
 				</div>
-				<span className="absolute top-2 right-2 cursor-pointer z-20" onClick={() => {
-					handleCloseChat()
-					console.log("Close chat clicked");
-				}}>
+				<span
+					className="absolute top-2 right-2 cursor-pointer z-20"
+					onClick={handleCloseChat}
+				>
 					<MiniMumIcon />
 				</span>
 			</div>
@@ -292,46 +262,49 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 					</div>
 				) : (
 					<div className="flex items-center gap-3">
-						<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-							{communityOverview?.logo && (
-								<Image
-									src={communityOverview?.logo || ""}
-									alt="Avatar"
-									width={40}
-									height={40}
-									className="rounded-full"
-								/>
-							)}
-						</div>
+						{communityOverview.logo && (
+							<Image
+								src={communityOverview.logo}
+								alt="Logo"
+								width={40}
+								height={40}
+								className="rounded-full"
+							/>
+						)}
 						<div className="space-y-1">
-							<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>
+							<p className="text-xl font-semibold font-noto">
+								{communityOverview.projectName} Community
+							</p>
 							<div className="flex items-center gap-2 text-xs">
-								<span className="font-medium font-noto">{communityOverview?.base_currency}</span>
+								<span className="font-medium font-noto">
+									{communityOverview.base_currency}
+								</span>
 								<span>•</span>
-								<span className="font-medium font-noto">${communityOverview?.price_usd}</span>
+								<span className="font-medium font-noto">
+									${communityOverview.price_usd}
+								</span>
 								<span>•</span>
-								<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
+								<span className="text-red-500 font-medium font-noto">
+									{formatPercent(communityOverview.price_change_percent)}
+								</span>
 							</div>
 						</div>
 					</div>
 				)}
 			</div>
 
-			{/* Quick Questions */}
-			{/* <QuickQuestions selected={selectedQuestion} onSelect={handleQuickQuestion} /> */}
-
-			{/* Chat Messages */}
+			{/* Chat Section */}
 			<ChatMessages
 				chatHistory={[...chatHistoryRef.current]}
 				isLoading={isPending || isFetching}
 			/>
 
-			{/* Input Area */}
+			{/* Input */}
 			<ChatInput
 				userInput={userInput}
 				setUserInput={setUserInput}
 				onSend={handleSendMessage}
-				placeholder={`Ask me anything about ${communityOverview.projectName}’s community data`}
+				placeholder={`Ask me anything about ${communityOverview.projectName}, or any token, stock, or commodity`}
 				loading={isPending}
 			/>
 		</div>

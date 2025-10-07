@@ -3,8 +3,8 @@ import { chatWithAgent, sayHello } from '@/apis';
 
 export const useSendChatMessage = () => {
 	return useMutation({
-		mutationFn: ({ messages }: { messages: { ai: boolean; text: string }[] }) =>
-			chatWithAgent({ messages }),
+		mutationFn: ({ messages, assetType }: { messages: { ai: boolean; text: string }[], assetType: string }) =>
+			chatWithAgent({ messages, assetType }),
 	});
 };
 

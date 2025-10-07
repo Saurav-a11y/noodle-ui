@@ -217,11 +217,14 @@ export const fetchStockCommunityTeamActivityAnalysis = async ({ communityId, amo
 // Chat with AI Agent
 export const chatWithAgent = async ({
 	messages,
+	assetType
 }: {
 	messages: { ai: boolean; text: string }[];
+	assetType: string;
 }) => {
 	const query = new URLSearchParams();
 	query.append('messages', JSON.stringify(messages));
+	query.append('assetType', JSON.stringify(assetType));
 
 	const url = `${BASE_URL}/chat-gpt-request?${query.toString()}`;
 

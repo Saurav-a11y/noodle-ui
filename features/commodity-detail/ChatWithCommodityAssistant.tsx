@@ -220,7 +220,7 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 		setUserInput('');
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }] },
+			{ messages: [{ ai: false, text: trimmed }], assetType: 'commodities' },
 			{
 				onSuccess: (res) => {
 					chatHistoryRef.current.push({

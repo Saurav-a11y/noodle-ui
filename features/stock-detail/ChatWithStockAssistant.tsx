@@ -206,7 +206,7 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 		setUserInput('');
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }] },
+			{ messages: [{ ai: false, text: trimmed }], assetType: 'stocks' },
 			{
 				onSuccess: (res) => {
 					chatHistoryRef.current.push({
