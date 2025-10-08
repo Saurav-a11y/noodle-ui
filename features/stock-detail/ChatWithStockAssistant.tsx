@@ -6,11 +6,12 @@ import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
-import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
+import { useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
 import { useStockOverview } from "@/hooks/useStocks";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import { InfiniteData } from "@tanstack/react-query";
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -63,46 +64,34 @@ const TypingIndicator = () => (
 	</div>
 );
 
-// const QuickQuestions = ({ selected, onSelect }: { selected: string | null, onSelect: (q: string) => void }) => {
-// 	const questions = [
-// 		"Explain health score",
-// 		"Why the alerts?",
-// 		"Compare to DOGE",
-// 		"Investment advice",
-// 		"Bot detection",
-// 		"Whale impact"
-// 	];
-
-// 	return (
-// 		<div className="p-4 border-b border-[#E9E9E9] dark:border-[#B1B1B1]">
-// 			<p className="text-sm font-medium text-[#373737] dark:text-white mb-3 font-noto">Quick Questions:</p>
-// 			<div className="flex flex-wrap gap-2">
-// 				{questions.map((question, index) => (
-// 					<Button
-// 						key={index}
-// 						variant="outline"
-// 						size="sm"
-// 						className={`cursor-pointer text-xs h-7 px-2 rounded-full border-[#37373733] font-reddit transition-colors ${selected === question ? 'bg-[#DDF346] border-transparent' : 'hover:bg-[#F6F6F6]'}`}
-// 						onClick={() => onSelect(question)}
-// 					>
-// 						{question}
-// 					</Button>
-// 				))}
-// 			</div>
-// 		</div>
-// 	);
-// };
-
-const ChatMessages = memo(({ chatHistory, isLoading }: {
-	chatHistory: any[],
-	isLoading: boolean
+const ChatMessages = memo(({ chatHistory, isLoading, onLoadMore, hasMore, }: {
+	chatHistory: any[];
+	isLoading: boolean;
+	onLoadMore: () => void;
+	hasMore: boolean;
 }) => {
+	const scrollRef = useRef<HTMLDivElement>(null);
+
+	const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+		if (e.currentTarget.scrollTop === 0 && hasMore && !isLoading) {
+			onLoadMore();
+		}
+	};
+
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [chatHistory.length, isLoading]);
+
 	return (
-		<div className="flex-1 p-4 space-y-4 overflow-y-auto">
+		<div
+			className="flex-1 p-4 space-y-4 overflow-y-auto"
+			onScroll={handleScroll}
+		>
 			{chatHistory.map((chat) => (
 				<ChatBubble key={chat.id} chat={chat} />
 			))}
 			{isLoading && <TypingIndicator />}
+			<div ref={scrollRef} />
 		</div>
 	)
 });
@@ -165,14 +154,28 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 	const communityId = params?.slug as string;
 
 	const [userInput, setUserInput] = useState('');
+	const [chatHistory, setChatHistory] = useState<any[]>([]);
 	const chatHistoryRef = useRef<any[]>([]);
 	const [_, forceUpdate] = useReducer((x) => x + 1, 0)
 	const scrollRef = useRef<HTMLDivElement>(null);
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useStockOverview(communityId);
-	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
 	const { data: userData } = useMe()
+	const {
+		data: rawMessagesData,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+	} = useGetMessages({
+		userId: userData?.data?.id,
+		symbol: communityId,
+		limit: 20,
+	});
+	const messagesData = rawMessagesData as InfiniteData<GetMessagesResponse> | undefined;
+
+	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'stocks', symbol: communityId, data: messagesData?.pages?.[0]?.messages?.length });
+
 	const { mutate: addLog } = useAddUserActivityLog();
 
 	const communityOverview = {
@@ -182,12 +185,23 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 		price_change_percent: data?.data?.percent,
 		symbol: data?.data?.symbol,
 	}
-	// const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
-	// const handleQuickQuestion = (question: string) => {
-	// 	setSelectedQuestion(question);
-	// 	console.log("Quick question:", question);
-	// };
+	const dbMessages =
+		messagesData?.pages?.flatMap((page) =>
+			page.messages.map((m) => ({
+				id: m.id,
+				type: m.ai ? "assistant" : "user",
+				message: m.text,
+				timestamp: new Date(m.timestamp).toLocaleTimeString(),
+			}))
+		) || [];
+
+	const allMessages = [...dbMessages, ...chatHistory];
+
+	const pushMessage = (msg: any) => {
+		chatHistoryRef.current = [...chatHistoryRef.current, msg];
+		setChatHistory([...chatHistoryRef.current]);
+	};
 
 	const handleSendMessage = () => {
 		const trimmed = userInput.trim();
@@ -196,25 +210,22 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 		const id = Date.now();
 		const timestamp = getCurrentTime();
 
-		chatHistoryRef.current.push({
-			id,
-			type: 'user',
-			message: trimmed,
-			timestamp,
-		});
+		const userMsg = { id, type: "user", message: trimmed, timestamp };
 		forceUpdate();
-		setUserInput('');
+		pushMessage(userMsg);
+		setUserInput("");
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }], assetType: 'stocks' },
+			{ messages: [{ ai: false, text: trimmed }], assetType: "stocks", userId: userData?.data?.id || "", symbol: communityId },
 			{
 				onSuccess: (res) => {
-					chatHistoryRef.current.push({
+					const aiMsg = {
 						id: Date.now() + Math.random(),
-						type: 'assistant',
-						message: res || 'No response',
+						type: "assistant",
+						message: res || "No response",
 						timestamp: getCurrentTime(),
-					});
+					};
+					pushMessage(aiMsg);
 					if (userData?.data?.id) {
 						addLog({
 							userId: userData?.data?.id,
@@ -235,25 +246,17 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 		);
 	};
 
-	// 👇 Auto scroll to bottom when chat updates
 	useEffect(() => {
-		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-	}, [chatHistoryRef.current.length, isPending]);
-
-	const greetingText = Array.isArray(initialGreeting) ? initialGreeting[0] : initialGreeting;
-
-	// 👇 Greeting once
-	useEffect(() => {
-		if (greetingText && chatHistoryRef.current.length === 0) {
-			chatHistoryRef.current.push({
+		if (initialGreeting && chatHistoryRef.current.length === 0) {
+			const greetMsg = {
 				id: Date.now(),
-				type: 'assistant',
-				message: greetingText,
+				type: "assistant",
+				message: JSON.parse(initialGreeting).greeting,
 				timestamp: getCurrentTime(),
-			});
-			forceUpdate();
+			};
+			pushMessage(greetMsg);
 		}
-	}, [greetingText]);
+	}, [initialGreeting]);
 
 	return (
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
@@ -321,8 +324,10 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 
 			{/* Chat Messages */}
 			<ChatMessages
-				chatHistory={[...chatHistoryRef.current]}
-				isLoading={isPending || isFetching}
+				chatHistory={allMessages}
+				isLoading={isFetchingNextPage || isPending || isFetching}
+				hasMore={hasNextPage}
+				onLoadMore={() => fetchNextPage()}
 			/>
 
 			{/* Input Area */}
