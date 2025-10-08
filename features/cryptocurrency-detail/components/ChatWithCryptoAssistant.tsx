@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useRef, useEffect, memo, useReducer } from "react";
+import { useState, useLayoutEffect, useRef, useEffect, memo, useReducer, useMemo } from "react";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Image from "next/image";
 import StarIcon from "@/icons/StarIcon";
@@ -7,12 +7,13 @@ import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
-import { useSayHello, useSendChatMessage } from "@/features/commodities/hooks";
+import { useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { InfiniteData } from "@tanstack/react-query";
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -70,18 +71,29 @@ const TypingIndicator = () => (
 	</div>
 );
 
-const ChatMessages = memo(({ chatHistory, isLoading }: {
-	chatHistory: any[],
-	isLoading: boolean
+const ChatMessages = memo(({ chatHistory, isLoading, onLoadMore, hasMore, }: {
+	chatHistory: any[];
+	isLoading: boolean;
+	onLoadMore: () => void;
+	hasMore: boolean;
 }) => {
 	const scrollRef = useRef<HTMLDivElement>(null);
 
+	const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+		if (e.currentTarget.scrollTop === 0 && hasMore && !isLoading) {
+			onLoadMore();
+		}
+	};
+
 	useEffect(() => {
-		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [chatHistory.length, isLoading]);
 
 	return (
-		<div className="flex-1 p-4 space-y-4 overflow-y-auto">
+		<div
+			className="flex-1 p-4 space-y-4 overflow-y-auto"
+			onScroll={handleScroll}
+		>
 			{chatHistory.map((chat) => (
 				<ChatBubble key={chat.id} chat={chat} />
 			))}
@@ -149,14 +161,28 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	const communityId = params?.slug as string;
 
 	const [userInput, setUserInput] = useState("");
+	const [chatHistory, setChatHistory] = useState<any[]>([]);
 	const chatHistoryRef = useRef<any[]>([]);
+
 	const [_, forceUpdate] = useReducer((x) => x + 1, 0);
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useCommunityOverview(communityId);
-	const { data: initialGreeting, isFetching } = useSayHello({ symbol: communityId });
 	const { data: userData } = useMe();
 	const { mutate: addLog } = useAddUserActivityLog();
+	const {
+		data: rawMessagesData,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		isLoading: isLoadingMessages,
+	} = useGetMessages({
+		userId: userData?.data?.id,
+		symbol: communityId,
+		limit: 20,
+	});
+	const messagesData = rawMessagesData as InfiniteData<GetMessagesResponse> | undefined;
+	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'cryptocurrencies', symbol: communityId, data: messagesData?.pages?.[0]?.messages?.length });
 
 	const communityOverview = {
 		projectName: data?.data?.fullname,
@@ -167,6 +193,23 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		symbol: data?.data?.symbol,
 	};
 
+	const dbMessages =
+		messagesData?.pages?.flatMap((page) =>
+			page.messages.map((m) => ({
+				id: m.id,
+				type: m.ai ? "assistant" : "user",
+				message: m.text,
+				timestamp: new Date(m.timestamp).toLocaleTimeString(),
+			}))
+		) || [];
+
+	const allMessages = [...dbMessages, ...chatHistory];
+
+	const pushMessage = (msg: any) => {
+		chatHistoryRef.current = [...chatHistoryRef.current, msg];
+		setChatHistory([...chatHistoryRef.current]);
+	};
+
 	const handleSendMessage = () => {
 		const trimmed = userInput.trim();
 		if (!trimmed) return;
@@ -174,25 +217,22 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		const id = Date.now();
 		const timestamp = getCurrentTime();
 
-		chatHistoryRef.current.push({
-			id,
-			type: "user",
-			message: trimmed,
-			timestamp,
-		});
+		const userMsg = { id, type: "user", message: trimmed, timestamp };
 		forceUpdate();
+		pushMessage(userMsg);
 		setUserInput("");
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }], assetType: "cryptocurrencies" },
+			{ messages: [{ ai: false, text: trimmed }], assetType: "cryptocurrencies", userId: userData?.data?.id || "", symbol: communityId },
 			{
 				onSuccess: (res) => {
-					chatHistoryRef.current.push({
+					const aiMsg = {
 						id: Date.now() + Math.random(),
 						type: "assistant",
 						message: res || "No response",
 						timestamp: getCurrentTime(),
-					});
+					};
+					pushMessage(aiMsg);
 					if (userData?.data?.id) {
 						addLog({
 							userId: userData?.data?.id,
@@ -211,21 +251,17 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		);
 	};
 
-	const greetingText = Array.isArray(initialGreeting)
-		? initialGreeting[0]
-		: initialGreeting;
-
 	useEffect(() => {
-		if (greetingText && chatHistoryRef.current.length === 0) {
-			chatHistoryRef.current.push({
+		if (initialGreeting && chatHistoryRef.current.length === 0) {
+			const greetMsg = {
 				id: Date.now(),
 				type: "assistant",
-				message: greetingText,
+				message: JSON.parse(initialGreeting).greeting,
 				timestamp: getCurrentTime(),
-			});
-			forceUpdate();
+			};
+			pushMessage(greetMsg);
 		}
-	}, [greetingText]);
+	}, [initialGreeting]);
 
 	return (
 		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
@@ -295,8 +331,10 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 
 			{/* Chat Section */}
 			<ChatMessages
-				chatHistory={[...chatHistoryRef.current]}
-				isLoading={isPending || isFetching}
+				chatHistory={allMessages}
+				isLoading={isFetchingNextPage || isPending || isFetching}
+				hasMore={hasNextPage}
+				onLoadMore={() => fetchNextPage()}
 			/>
 
 			{/* Input */}

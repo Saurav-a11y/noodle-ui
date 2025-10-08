@@ -217,14 +217,20 @@ export const fetchStockCommunityTeamActivityAnalysis = async ({ communityId, amo
 // Chat with AI Agent
 export const chatWithAgent = async ({
 	messages,
-	assetType
+	assetType,
+	userId,
+	symbol
 }: {
 	messages: { ai: boolean; text: string }[];
 	assetType: string;
+	userId: string;
+	symbol: string;
 }) => {
 	const query = new URLSearchParams();
 	query.append('messages', JSON.stringify(messages));
-	query.append('assetType', JSON.stringify(assetType));
+	query.append('assetType', assetType);
+	query.append('userId', userId);
+	query.append('symbol', symbol);
 
 	const url = `${BASE_URL}/chat-gpt-request?${query.toString()}`;
 
@@ -233,8 +239,14 @@ export const chatWithAgent = async ({
 	return res.text();
 };
 
-export const sayHello = async () => {
-	const url = `${BASE_URL}/say-hello`;
+export const sayHello = async ({ userId, username, assetType, symbol }) => {
+	const query = new URLSearchParams();
+	query.append('userId', userId);
+	query.append('username', username);
+	query.append('symbol', symbol);
+	query.append('assetType', assetType);
+
+	const url = `${BASE_URL}/say-hello?${query.toString()}`;
 
 	const res = await fetch(url);
 	if (!res.ok) throw new Error('Failed to fetch chat from agent');
