@@ -88,3 +88,14 @@ body {
   margin-top: 0.75rem !important;
   margin-bottom: 0.25rem !important;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

@@ -14,6 +14,16 @@ export interface GetMessagesResponse {
 	nextCursor: string | null;
 }
 
+export interface AISuggestion {
+	suggestions: string[];
+}
+
+interface GetAISuggestionsParams {
+	assetType: "cryptocurrencies" | "stocks" | "commodities";
+	symbol: string;
+	recentMessages?: string[];
+}
+
 export const useSendChatMessage = () => {
 	return useMutation({
 		mutationFn: ({ messages, assetType, userId, symbol }: { messages: { ai: boolean; text: string }[], assetType: string, userId: string, symbol: string }) =>
@@ -67,5 +77,32 @@ export const useGetMessages = ({
 		enabled: !!userId && !!symbol,
 		staleTime: 1000 * 60 * 2, // cache 2 phút
 		initialPageParam: "1",
+	});
+};
+
+export const useGetAISuggestions = ({
+	assetType,
+	symbol,
+	recentMessages = [],
+}: GetAISuggestionsParams) => {
+	return useQuery<AISuggestion>({
+		queryKey: ["ai-suggestions", assetType, symbol],
+		queryFn: async () => {
+			const params = new URLSearchParams({
+				assetType,
+				symbol,
+			});
+
+			if (recentMessages.length > 0) {
+				params.append("recentMessages", JSON.stringify(recentMessages));
+			}
+
+			const res = await fetch(`https://data-api.agentos.cloud/noodle/get-suggestions?${params.toString()}`);
+			if (!res.ok) throw new Error("Failed to fetch AI suggestions");
+			return res.json();
+		},
+		enabled: !!assetType && !!symbol,
+		staleTime: Infinity, // ❗️luôn dùng cache
+		gcTime: Infinity, // giữ cache suốt phiên
 	});
 };

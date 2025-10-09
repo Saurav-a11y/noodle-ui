@@ -6,7 +6,7 @@ import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
-import { useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/features/commodities/hooks";
+import { useGetAISuggestions, useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/features/commodities/hooks";
 import { motion } from 'framer-motion';
 import { useStockOverview } from "@/hooks/useStocks";
 import { useMe } from "@/hooks/useAuth";
@@ -178,6 +178,12 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 
 	const { mutate: addLog } = useAddUserActivityLog();
 
+	const { data: aiSuggestions, isFetching: isFetchingSuggestions } = useGetAISuggestions({
+		assetType: 'stocks',
+		symbol: communityId,
+		recentMessages: chatHistoryRef.current.slice(-3).map((msg) => msg.message),
+	});
+
 	const communityOverview = {
 		projectName: data?.data?.name,
 		logo: data?.data?.logoid,
@@ -203,8 +209,8 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 		setChatHistory([...chatHistoryRef.current]);
 	};
 
-	const handleSendMessage = () => {
-		const trimmed = userInput.trim();
+	const handleSendMessage = (customMessage?: string) => {
+		const trimmed = (customMessage || userInput).trim();
 		if (!trimmed) return;
 
 		const id = Date.now();
@@ -319,9 +325,6 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 				)}
 			</div>
 
-			{/* Quick Questions */}
-			{/* <QuickQuestions selected={selectedQuestion} onSelect={handleQuickQuestion} /> */}
-
 			{/* Chat Messages */}
 			<ChatMessages
 				chatHistory={allMessages}
@@ -329,6 +332,31 @@ const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) 
 				hasMore={hasNextPage}
 				onLoadMore={() => fetchNextPage()}
 			/>
+
+			{!isFetchingSuggestions && (aiSuggestions?.suggestions ?? []).length > 0 && (
+				<div className="px-4 pb-3 border-t border-[#E9E9E9] dark:border-[#333]">
+					<p className="text-xs my-2 font-reddit dark:text-white">
+						Suggested questions
+					</p>
+
+					<div
+						className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth"
+					>
+						{(aiSuggestions?.suggestions ?? []).map((s, i) => (
+							<button
+								key={i}
+								onClick={() => handleSendMessage(s)}
+								className="flex-shrink-0 cursor-pointer text-sm bg-[#F7F7F7] dark:bg-[#2A2A2A]
+            text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full
+            hover:bg-[#EBEBEB] dark:hover:bg-[#3A3A3A] transition-all
+            border border-transparent hover:border-[#DADADA]"
+							>
+								{s}
+							</button>
+						))}
+					</div>
+				</div>
+			)}
 
 			{/* Input Area */}
 			<ChatInput
