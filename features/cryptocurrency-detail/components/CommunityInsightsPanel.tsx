@@ -177,8 +177,8 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 						{isFetching ? (
 							<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
 						) : (
-							<div className="font-medium font-noto flex items-center gap-1 dark:text-white">
-								{metric.value} {metric.extra && <span className="ml-2 text-xs">{metric.extra}</span>}
+							<div className="font-medium font-noto flex flex-col 2xl:flex-row 2xl:items-center gap-1 dark:text-white">
+								{metric.value} {metric.extra && <span className="2xl:ml-2 text-xs">{metric.extra}</span>}
 							</div>
 						)}
 					</div>
