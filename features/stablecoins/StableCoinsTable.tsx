@@ -218,7 +218,7 @@ const StableCoinsTable = () => {
 										{asset?.best_yield ? `${asset?.best_yield?.apy.toFixed(2)}%` : '--'}
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
-										{asset?.depegging_history}
+										{asset?.depegging_history ? asset?.depegging_history : 'Unkown'}
 									</TableCell>
 								</TableRow>
 							)
