@@ -1,5 +1,5 @@
 'use client'
-import { Search } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
 import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
@@ -20,21 +20,10 @@ const Header = () => {
 			<div className="container mx-auto px-6 py-2">
 				<div className="flex items-center justify-between">
 					{/* Logo */}
-					<Link className="cursor-pointer" href='/'>
-						{isDark ? <DarkNoodlesLogo /> : <NoodlesLogo />}
-					</Link>
-
-					<div className="flex items-center">
-						{/* Search Bar */}
-						{type === 'cryptocurrencies' && (
-							<SearchCryptoInput />
-						)}
-						{type === 'stocks' && (
-							<SearchStockInput />
-						)}
-						{type === 'commodities' && (
-							<SearchCommodityInput />
-						)}
+					<div className="flex items-center gap-10">
+						<Link className="cursor-pointer" href='/'>
+							{isDark ? <DarkNoodlesLogo /> : <NoodlesLogo />}
+						</Link>
 						<div className="text-black dark:text-white flex items-center gap-10">
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
@@ -79,7 +68,7 @@ const Header = () => {
 									<NavigationMenuItem>
 										<Link
 											href="/about"
-											className="font-medium"
+											className="font-medium dark:text-white transition-colors"
 										>
 											About
 										</Link>
@@ -88,8 +77,27 @@ const Header = () => {
 							</NavigationMenu>
 						</div>
 					</div>
-					{/* Launch App Button */}
-					<SocialWalletLogin />
+					<div className="flex items-center gap-5">
+						{/* Search Bar */}
+						{type === 'cryptocurrencies' && (
+							<SearchCryptoInput />
+						)}
+						{type === 'stocks' && (
+							<SearchStockInput />
+						)}
+						{type === 'commodities' && (
+							<SearchCommodityInput />
+						)}
+						<Link
+							href="/settings/watchlist"
+							className="font-medium dark:text-white transition-colors flex items-center gap-2"
+						>
+							<Star size={16} />
+							Watchlist
+						</Link>
+						{/* Launch App Button */}
+						<SocialWalletLogin />
+					</div>
 				</div>
 				<div className="flex-1 mt-4 w-full block md:hidden">
 					<div className="relative">

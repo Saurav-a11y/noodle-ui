@@ -31,11 +31,11 @@ export const useSendChatMessage = () => {
 	});
 };
 
-export const useSayHello = ({ userId, username, assetType, symbol, data }) =>
+export const useSayHello = ({ userId, username, assetType, symbol, isCall }) =>
 	useQuery({
 		queryKey: ['say-hello', userId, username, assetType, symbol],
 		queryFn: () => sayHello({ userId, username, assetType, symbol }),
-		enabled: data?.length > 0 && !!userId && !!symbol,
+		enabled: isCall && !!userId && !!symbol,
 		staleTime: 1000 * 60 * 5,
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,

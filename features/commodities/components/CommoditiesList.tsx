@@ -8,16 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import TooltipCommon from "@/components/common/TooltipCommon";
 import { useRouter } from "next/navigation";
 import { formatNumberShort } from "@/lib/format";
-import OilIcon from "@/icons/commodities/OilIcon";
-import GasIcon from "@/icons/commodities/GasIcon";
-import EthanolIcon from "@/icons/commodities/EthanolIcon";
-import CoalIcon from "@/icons/commodities/CoalIcon";
-import { Atom, Panda, TrendingUpDown, Zap } from "lucide-react";
-import MetalIcon from "@/icons/commodities/MetalIcon";
-import HerbsIcon from "@/icons/commodities/HerbsIcon";
-import IndustrialIcon from "@/icons/commodities/IndustrialIcon";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import Image from "next/image";
 
 const tabList = ["All", "Energy", "Metals", "Agricultural",];
 // "Industrial", "Livestock", "Index", "Electricity"
@@ -98,22 +91,6 @@ const CommoditiesList = () => {
 	});
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
-
-	const typeIcons = {
-		'metals': <MetalIcon />,
-		'energy': {
-			'Oil': <OilIcon />,
-			'Gas': <GasIcon />,
-			'Ethanol': <EthanolIcon />,
-			'Coal': <CoalIcon />,
-			'Nuclear': <Atom />
-		},
-		'agricultural': <HerbsIcon />,
-		'industrial': <IndustrialIcon />,
-		'livestock': <Panda />,
-		'index': <TrendingUpDown />,
-		'electricity': <Zap />
-	}
 
 	return (
 		<>
@@ -230,7 +207,7 @@ const CommoditiesList = () => {
 															assetType: 'commodity',
 															assetSymbol: item.symbol,
 															assetName: item.name,
-															assetLogo: '',
+															assetLogo: item.medium_logo_url,
 															content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
 														});
 													}
@@ -240,9 +217,7 @@ const CommoditiesList = () => {
 												<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
 													<div className="flex items-center gap-3">
 														<div className="w-8 h-8 flex items-center justify-center font-noto text-black dark:text-white">
-															{item?.group === 'energy'
-																? typeIcons.energy[item?.energyType]
-																: typeIcons[item?.group]}
+															<Image src={item?.medium_logo_url ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 														</div>
 														<div className="text-[#4B4A4A] dark:text-[#FFF]">
 															<p className="font-medium text-sm font-noto">{item?.name}</p>

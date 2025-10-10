@@ -181,7 +181,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		limit: 20,
 	});
 	const messagesData = rawMessagesData as InfiniteData<GetMessagesResponse> | undefined;
-	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'cryptocurrencies', symbol: communityId, data: messagesData?.pages?.[0]?.messages?.length });
+	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'cryptocurrencies', symbol: communityId, isCall: messagesData?.pages?.[0]?.messages?.length === 0 });
 
 	const { data: aiSuggestions, isFetching: isFetchingSuggestions } = useGetAISuggestions({
 		assetType: 'cryptocurrencies',

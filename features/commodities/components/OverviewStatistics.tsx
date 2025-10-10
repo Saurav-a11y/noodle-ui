@@ -2,40 +2,18 @@
 import _map from 'lodash/map';
 import StatCard from "@/components/common/StatCard";
 import TooltipCommon from "@/components/common/TooltipCommon";
-// import EthanolIcon from "@/icons/commodities/EthanolIcon";
-// import GasIcon from "@/icons/commodities/GasIcon";
-import MetalIcon from "@/icons/commodities/MetalIcon";
-import OilIcon from "@/icons/commodities/OilIcon";
-import HerbsIcon from '@/icons/commodities/HerbsIcon';
-import IndustrialIcon from '@/icons/commodities/IndustrialIcon';
-// import CoalIcon from '@/icons/commodities/CoalIcon';
-import { Zap, Panda, TrendingUpDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCommodityActiveUsers, useCommodityNumberTracked, useMostTalkedAboutCommodities, useTopGrowthCommodities } from '@/hooks/useCommodities';
 import { formatNumberShort } from '@/lib/format';
 import { useMe } from '@/hooks/useAuth';
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog';
+import Image from 'next/image';
 
 const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 	const router = useRouter();
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
-	const typeIcons = {
-		'metals': <MetalIcon />,
-		'energy': <OilIcon />,
-		// 'energy': {
-		// 	'Oil': <OilIcon />,
-		// 	'Gas': <GasIcon />,
-		// 	'Ethanol': <EthanolIcon />,
-		// 	'Coal': <CoalIcon />,
-		// 	'Nuclear': <Atom />
-		// },
-		'agricultural': <HerbsIcon />,
-		'industrial': <IndustrialIcon />,
-		'livestock': <Panda />,
-		'index': <TrendingUpDown />,
-		'electricity': <Zap />
-	}
+
 	return (
 		<div className="bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
@@ -73,7 +51,7 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 										assetType: 'commodities',
 										assetSymbol: item.symbol,
 										assetName: item.name,
-										assetLogo: '',
+										assetLogo: item.medium_logo_url,
 										content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
 									});
 								}
@@ -82,8 +60,7 @@ const OverviewCard = ({ title, tooltip, isLoading, data }) => {
 							<div className="flex items-center gap-3 font-noto">
 								<span className="text-xs font-medium w-4">{index + 1}</span>
 								<div className="w-8 h-8 flex items-center justify-center text-sm">
-									{/* {typeIcons[item?.group] === 'energy' ? typeIcons[item?.group][item?.energyType] : typeIcons[item?.group]} */}
-									{typeIcons[item?.group]}
+									<Image src={item?.medium_logo_url ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 								</div>
 								<span className="text-sm font-medium">{item?.name}</span>
 							</div>

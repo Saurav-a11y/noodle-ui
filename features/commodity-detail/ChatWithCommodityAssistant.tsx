@@ -16,6 +16,7 @@ import OilIcon from "@/icons/commodities/OilIcon";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 import { InfiniteData } from "@tanstack/react-query";
+import Image from "next/image";
 
 const typeIcons = {
 	'metals': <MetalIcon />,
@@ -172,10 +173,10 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 	const chatHistoryRef = useRef<any[]>([]);
 
 	const [_, forceUpdate] = useReducer((x) => x + 1, 0)
-	const scrollRef = useRef<HTMLDivElement>(null);
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useCommodityOverview(communityId);
+	console.log("🚀 ~ ChatWithCommodityAssistant ~ data:", data)
 	const { data: userData } = useMe()
 	const {
 		data: rawMessagesData,
@@ -188,7 +189,7 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 		limit: 20,
 	});
 	const messagesData = rawMessagesData as InfiniteData<GetMessagesResponse> | undefined;
-	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'commodities', symbol: communityId, data: messagesData?.pages?.[0]?.messages?.length });
+	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'commodities', symbol: communityId, isCall: messagesData?.pages?.[0]?.messages?.length === 0 });
 	const { mutate: addLog } = useAddUserActivityLog();
 
 	const { data: aiSuggestions, isFetching: isFetchingSuggestions } = useGetAISuggestions({
@@ -314,7 +315,7 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 				) : (
 					<div className="flex items-center gap-3">
 						<div className="w-10 h-10 rounded-full flex items-center justify-center">
-							{typeIcons[communityOverview?.group]}
+							<Image src={data?.data?.medium_logo_url ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 						</div>
 						<div className="space-y-1 flex-1">
 							<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>

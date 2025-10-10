@@ -20,6 +20,8 @@ import { usePriceHistory } from '../hooks/usePriceHistory';
 import { useParams } from 'next/navigation';
 import { useListTweets } from '../hooks/useListTweets';
 import { useCommunityOverview } from '../hooks/useCommunityOverview';
+import { useStockOverview } from '@/hooks/useStocks';
+import { useCommodityOverview } from '@/hooks/useCommodities';
 // import IconifyIcon from '@/components/common/IconifyIcon';
 
 // const COMMUNITIES_STATUS = {
@@ -75,10 +77,17 @@ const barsInTimeFrame = {
 	'1M': 24 * 30,
 };
 
+const useAssetOverview = (type: string, symbol: string) => {
+	if (type === "crypto") return useCommunityOverview(symbol);
+	if (type === "stock") return useStockOverview(symbol);
+	if (type === "commodity") return useCommodityOverview(symbol);
+	return { data: null };
+};
+
 const CandlestickChart = ({ utcOffset, type }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
-	const { data } = useCommunityOverview(communityId);
+	const { data } = useAssetOverview(type, communityId);
 	const { isDark } = useThemekMode();
 	const now = useMemo(() => {
 		const localNow = new Date();
@@ -90,7 +99,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	const endTime = useMemo(() => getTime(now), [now]);
 
 	const { data: priceHistoryToken, isLoading, error } = usePriceHistory({
-		symbol: data?.data?.symbol,
+		symbol: type === 'commodity' ? communityId : data?.data?.symbol,
 		startTime,
 		endTime,
 		interval: '1M',
