@@ -81,14 +81,24 @@ export const formatPercent = (value: number | null | undefined) => {
     if (value === 0) return "0%";
 
     const absValue = Math.abs(value);
-    const colorClass = value > 0 ? 'text-green-500' : 'text-red-500';
-    const arrow = value > 0 ? '▲' : '▼';
+    const colorClass = value > 0 ? "text-green-500" : "text-red-500";
+    const arrow = value > 0 ? "▲" : "▼";
+
+    // Helper: loại bỏ số 0 thừa sau phần thập phân
+    const trimTrailingZeros = (num: number, decimals = 3) => {
+        let str = num.toFixed(decimals);
+        str = str.replace(/(\.\d*?[1-9])0+$/, "$1"); // bỏ 0 dư
+        str = str.replace(/\.0+$/, ""); // bỏ .0
+        return str;
+    };
 
     if (absValue >= 1e12) {
         return (
             <p className={`flex items-center gap-1 ${colorClass}`}>
                 {arrow}
-                <span className="font-semibold">{numeral(absValue / 1e12).format("0.00")}T%</span>
+                <span className="font-semibold">
+                    {trimTrailingZeros(absValue / 1e12, 2)}T%
+                </span>
             </p>
         );
     }
@@ -97,7 +107,9 @@ export const formatPercent = (value: number | null | undefined) => {
         return (
             <p className={`flex items-center gap-1 ${colorClass}`}>
                 {arrow}
-                <span className="font-semibold">{numeral(absValue / 1e9).format("0.00")}B%</span>
+                <span className="font-semibold">
+                    {trimTrailingZeros(absValue / 1e9, 2)}B%
+                </span>
             </p>
         );
     }
@@ -106,7 +118,9 @@ export const formatPercent = (value: number | null | undefined) => {
         return (
             <p className={`flex items-center gap-1 ${colorClass}`}>
                 {arrow}
-                <span className="font-semibold">{numeral(absValue / 1e6).format("0.00")}M%</span>
+                <span className="font-semibold">
+                    {trimTrailingZeros(absValue / 1e6, 2)}M%
+                </span>
             </p>
         );
     }
@@ -115,7 +129,7 @@ export const formatPercent = (value: number | null | undefined) => {
         return (
             <p className={`flex items-center gap-1 ${colorClass}`}>
                 {arrow}
-                <span className="font-semibold">{numeral(absValue).format("0,0.00")}%</span>
+                <span className="font-semibold">{trimTrailingZeros(absValue, 2)}%</span>
             </p>
         );
     }
@@ -124,12 +138,12 @@ export const formatPercent = (value: number | null | undefined) => {
         return (
             <p className={`flex items-center gap-1 ${colorClass}`}>
                 {arrow}
-                <span className="font-semibold">{numeral(absValue).format("0.000")}%</span>
+                <span className="font-semibold">{trimTrailingZeros(absValue, 3)}%</span>
             </p>
         );
     }
 
-    // Giá trị quá nhỏ, hiển thị dạng 0.0(n)xx%
+    // Giá trị cực nhỏ
     const fixedValue = absValue.toExponential(12);
     const match = fixedValue.match(/^(\d(?:\.\d+))e-(\d+)$/);
 
@@ -139,11 +153,12 @@ export const formatPercent = (value: number | null | undefined) => {
         const zeroCount = parseInt(match[2], 10) - 1;
         formattedValue = (
             <>
-                0.0<sub className="text-xs">({zeroCount})</sub>{significantDigits}%
+                0.0<sub className="text-xs">({zeroCount})</sub>
+                {significantDigits}%
             </>
         );
     } else {
-        formattedValue = numeral(absValue).format("0.0000") + "%";
+        formattedValue = `${trimTrailingZeros(absValue, 4)}%`;
     }
 
     return (

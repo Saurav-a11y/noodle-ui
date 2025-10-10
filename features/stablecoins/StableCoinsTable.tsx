@@ -127,7 +127,7 @@ const StableCoinsTable = () => {
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-center">Market Cap</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[140px] text-end">Circulating Supply</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Brief Introduction</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Backing Mechanixs</TableHead>
+						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Backing Mechanism</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-end">Best Yield</TableHead>
 						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tr-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
 					</TableRow>
@@ -206,7 +206,7 @@ const StableCoinsTable = () => {
 										{asset?.marketCap ? `$${formatNumberWithCommas(asset?.marketCap)}` : '--'}
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-end">
-										{asset?.circulating_supply ? `${formatCurrency(asset?.marketCap)} ${asset?.currency}` : '--'}
+										{asset?.circulating_supply ? `${formatCurrency(asset?.marketCap)} ${asset?.currency}` : `0 ${asset?.currency}`}
 									</TableCell>
 									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
 										{asset?.brief_info}
