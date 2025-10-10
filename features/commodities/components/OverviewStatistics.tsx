@@ -97,7 +97,7 @@ const OverviewStatistics = () => {
 			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-[#1E1B39]">
 				{/* Top Growth Commodities */}
-				<OverviewCard data={topGrowthCommodities7d} title="Top Growth Commodities (Growth Rate - 7d)" tooltip="The list of commodities with the highest price growth rate over the past 7 days, calculated based on percentage change." isLoading={isGettingTopGrowthCommodities} />
+				<OverviewCard data={topGrowthCommodities7d} title="Top Gaining Project (Growth Rate - 7d)" tooltip="The list of commodities with the highest price growth rate over the past 7 days, calculated based on percentage change." isLoading={isGettingTopGrowthCommodities} />
 
 				{/* Most Talked About Projects */}
 				<OverviewCard data={mostTalkedAboutCommodities?.data} title="Most Talked About Project (7D)" tooltip="Highlights the most mentioned projects across major platforms during the last 7 days. High mention volume often indicates rising interest and trending discussions." isLoading={isGettingMostTalkedAboutCommodity} />

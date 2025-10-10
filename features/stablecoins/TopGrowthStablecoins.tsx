@@ -19,7 +19,7 @@ const TopGrowthStablecoins = () => {
 	return (
 		<div className="bg-white dark:bg-black rounded-xl shadow-xl">
 			<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
-				<h3 className="font-reddit">Top Growth Stablecoins (Growth Rate - 7d)</h3>
+				<h3 className="font-reddit">Top Gaining Project (Growth Rate - 7d)</h3>
 				<TooltipCommon content="The list of stocks with the highest price growth rate over the past 7 days, calculated based on percentage change." />
 			</div>
 			<div className="text-[#4B4A4A] dark:text-white pb-3">
