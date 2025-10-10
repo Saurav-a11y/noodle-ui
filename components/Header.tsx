@@ -1,5 +1,5 @@
 'use client'
-import { Search, Star } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
 import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
@@ -88,13 +88,13 @@ const Header = () => {
 						{type === 'commodities' && (
 							<SearchCommodityInput />
 						)}
-						<Link
+						{/* <Link
 							href="/settings/watchlist"
 							className="font-medium dark:text-white transition-colors flex items-center gap-2"
 						>
 							<Star size={16} />
 							Watchlist
-						</Link>
+						</Link> */}
 						{/* Launch App Button */}
 						<SocialWalletLogin />
 					</div>
