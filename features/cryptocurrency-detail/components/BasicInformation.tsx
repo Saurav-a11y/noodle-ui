@@ -1,6 +1,6 @@
 'use client';
 
-import DropdownCommon from "@/components/common/DropdownCommon";
+import DropdownCommon, { DropdownCategories } from "@/components/common/DropdownCommon";
 import DiscordIcon from "@/icons/DiscordIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import XIcon from "@/icons/XIcon";
@@ -270,6 +270,12 @@ const BasicInformation = () => {
 							</NavigationMenuList>
 						</NavigationMenu>
 					</div>
+				)}
+				{basicInformation?.categories?.length > 0 && (
+					<DropdownCategories data={basicInformation?.categories} title="Categories" />
+				)}
+				{basicInformation?.chains?.length > 0 && (
+					<DropdownCategories data={basicInformation?.chains} title="Chains" />
 				)}
 				{/* Community */}
 				{basicInformation?.community?.length > 0 && (
