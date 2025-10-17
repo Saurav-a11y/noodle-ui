@@ -28,34 +28,34 @@ const Header = () => {
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
 									{/* Cryptocurrencies */}
-									<NavigationMenuItem>
+									{/* <NavigationMenuItem>
 										<Link
 											href="/cryptocurrencies"
 											className="font-medium"
 										>
 											Cryptocurrencies
 										</Link>
-									</NavigationMenuItem>
+									</NavigationMenuItem> */}
 
 									{/* Stocks */}
-									<NavigationMenuItem>
+									{/* <NavigationMenuItem>
 										<Link
 											href="/stocks"
 											className="font-medium transition-colors"
 										>
 											Stocks
 										</Link>
-									</NavigationMenuItem>
+									</NavigationMenuItem> */}
 
 									{/* Commodities */}
-									<NavigationMenuItem>
+									{/* <NavigationMenuItem>
 										<Link
 											href="/commodities"
 											className="font-medium transition-colors"
 										>
 											Commodities
 										</Link>
-									</NavigationMenuItem>
+									</NavigationMenuItem> */}
 									<NavigationMenuItem>
 										<Link
 											href="/stablecoins"
