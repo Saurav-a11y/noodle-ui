@@ -1,17 +1,9 @@
 'use client';
-
-// import IconifyIcon from '@/components/common/IconifyIcon';
-// import PremiumFeatureLink, { PremiumFeatureLinkRef } from '@/components/common/PremiumFeatureLink';
-// import { useAppDispatch, useAppSelector } from '@/hooks';
-// import useAuthenticate from '@/hooks/useAuthenticate';
-// import { getPriceHistory, resetPriceHistory } from '@/store/community/communitySlice';
 import { getTime, subMonths } from 'date-fns';
 import { ColorType, createChart, PriceScaleMode } from 'lightweight-charts';
 import { forEach, isEmpty, map } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import '@/styles/chartStyles.scss';
-// import TweetList from './TweetList';
-// import formatNumberWithDecimal from '@/lib/format';
 import ModalCommon from './ModalCommon';
 import TweetList from './TweetList';
 import { formattedDate } from '@/lib/format';
@@ -22,20 +14,6 @@ import { useListTweets } from '../hooks/useListTweets';
 import { useCommunityOverview } from '../hooks/useCommunityOverview';
 import { useStockOverview } from '@/hooks/useStocks';
 import { useCommodityOverview } from '@/hooks/useCommodities';
-// import IconifyIcon from '@/components/common/IconifyIcon';
-
-// const COMMUNITIES_STATUS = {
-// 	LISTED: 'listed',
-// 	UNLISTED: 'unlisted',
-// };
-
-const platforms = [
-	{ name: "All", active: true },
-	{ name: "Twitter", active: false },
-	{ name: "Reddit", active: false },
-	{ name: "Github", active: false },
-	{ name: "Youtube", active: false },
-];
 
 interface TweetInfo {
 	author_id: string;
@@ -75,6 +53,17 @@ const barsInTimeFrame = {
 	'3D': 24 * 7,
 	'7D': 24 * 14,
 	'1M': 24 * 30,
+	'3M': 24 * 90,
+	'1Y': 24 * 365,
+};
+
+const timeFrameMap: Record<string, string> = {
+	"1D": "1d",
+	"3D": "3d",
+	"7D": "7d",
+	"1M": "30d",
+	"3M": "90d",
+	"1Y": "365d",
 };
 
 const useAssetOverview = (type: string, symbol: string) => {
@@ -98,21 +87,22 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	const startTime = useMemo(() => getTime(subMonths(now, 1)), [now]);
 	const endTime = useMemo(() => getTime(now), [now]);
 
+	// ✅ State lưu thời gian từ
+	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3M');
+	const [apiTimeFrame, setApiTimeFrame] = useState("90d");
+
 	const { data: priceHistoryToken, isLoading, error } = usePriceHistory({
 		symbol: type === 'commodity' ? communityId : data?.data?.symbol,
 		startTime,
 		endTime,
-		interval: '1M',
+		interval: '3M',
 		type
 	});
 
 	const { data: tweets } = useListTweets({
-		symbol: data?.data?.symbol,
-		timeRange: '30d',
+		symbol: communityId,
+		timeRange: apiTimeFrame,
 	});
-
-	// ✅ State lưu thời gian từ
-	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3D');
 
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 	const markerContainerRef = useRef<HTMLDivElement>(null);
@@ -450,10 +440,11 @@ const CandlestickChart = ({ utcOffset, type }) => {
 		return `${count} ${count === 1 ? 'tweet' : 'tweets'} posted at ${time}`;
 	};
 
-	const handleTimeFrameChange = (timeFrame: '1D' | '3D' | '7D' | '1M') => {
+	const handleTimeFrameChange = (timeFrame: '1D' | '3D' | '7D' | '1M' | '3M' | '1Y') => {
 		if (!chartInstance) return;
 		const { chart } = chartInstance;
 		setSelectedTimeFrame(timeFrame);
+		setApiTimeFrame(timeFrameMap[timeFrame]);
 		if (timeFrame === '1M') {
 			chart.timeScale().applyOptions({
 				rightOffset: 30,
@@ -483,7 +474,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 						Social Activity vs On-Chain Behavior Correlation
 					</p>
 					<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
-						{['1D', '3D', '7D', '1M'].map((timeFrame) => (
+						{['1D', '3D', '7D', '1M', '3M', '1Y'].map((timeFrame) => (
 							<button
 								key={timeFrame}
 								onClick={() => handleTimeFrameChange(timeFrame as any)}

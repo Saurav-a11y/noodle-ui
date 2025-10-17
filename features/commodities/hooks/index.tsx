@@ -33,9 +33,9 @@ export const useSendChatMessage = () => {
 
 export const useSayHello = ({ userId, username, assetType, symbol, isCall }) =>
 	useQuery({
-		queryKey: ['say-hello', userId, username, assetType, symbol],
+		queryKey: ['say-hello', username, assetType, symbol],
 		queryFn: () => sayHello({ userId, username, assetType, symbol }),
-		enabled: isCall && !!userId && !!symbol,
+		enabled: isCall && !!symbol,
 		staleTime: 1000 * 60 * 5,
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,

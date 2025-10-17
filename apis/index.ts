@@ -115,7 +115,7 @@ export const fetchListTweets = async ({
 		...(timeRange && { timeRange: String(timeRange) }),
 	});
 
-	const res = await fetch(`https://data-api.agentos.cloud/api/v3/x-interaction/tweets/by-symbol?${query}`);
+	const res = await fetch(`https://data-api.agentos.cloud/api/v3/x-interaction/noodle/tweets/by-symbol?${query}`);
 
 	if (!res.ok) throw new Error('Failed to fetch list of tweets');
 	return res.json();
