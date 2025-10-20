@@ -110,7 +110,7 @@ const CryptoFounderAndTeamAnalystChart = () => {
 					{isFetching ? (
 						// Loading skeleton
 						<div className="flex items-center justify-center h-[300px]">
-							<div className="w-full h-full bg-gray-100 dark:bg-[#1A1A1A] rounded-xl animate-pulse flex items-center justify-center">
+							<div className="w-full h-full bg-[var(--bg-block)] rounded-xl animate-pulse flex items-center justify-center">
 								<span className="text-gray-400 dark:text-gray-600 text-lg">Loading chart...</span>
 							</div>
 						</div>
@@ -137,7 +137,7 @@ const CryptoFounderAndTeamAnalystChart = () => {
 						</ResponsiveContainer>
 					) : (
 						// No data UI
-						<div className="flex items-center justify-center h-[300px] bg-gray-50 dark:bg-[#181818] rounded-xl">
+						<div className="flex items-center justify-center h-[300px] bg-[var(--bg-block)] rounded-xl">
 							<span className="text-gray-400 dark:text-gray-600 text-lg font-medium">No activity data available for this timeframe.</span>
 						</div>
 					)}
