@@ -1,21 +1,42 @@
-import { useEffect, useState } from 'react';
+"use client";
+import { createContext, useContext, useEffect, useState } from "react";
 
-export default function useThemekMode() {
-    const [isDark, setIsDark] = useState(false);
+type ThemeContextType = {
+	isDark: boolean;
+	toggleTheme: () => void;
+};
 
-    useEffect(() => {
-        const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setIsDark(dark);
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
-        const listener = (e: MediaQueryListEvent) => {
-            setIsDark(e.matches);
-        };
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+	const [isDark, setIsDark] = useState(false);
 
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listener);
-        return () => {
-            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', listener);
-        };
-    }, []);
+	useEffect(() => {
+		const storedTheme = localStorage.getItem("theme");
+		const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		const initialDark = storedTheme ? storedTheme === "dark" : systemPrefersDark;
+		setIsDark(initialDark);
+		document.documentElement.classList.toggle("dark", initialDark);
+	}, []);
 
-    return { isDark };
+	const toggleTheme = () => {
+		setIsDark((prev) => {
+			const newDark = !prev;
+			document.documentElement.classList.toggle("dark", newDark);
+			localStorage.setItem("theme", newDark ? "dark" : "light");
+			return newDark;
+		});
+	};
+
+	return (
+		<ThemeContext.Provider value={{ isDark, toggleTheme }}>
+			{children}
+		</ThemeContext.Provider>
+	);
+};
+
+export default function useThemeMode() {
+	const ctx = useContext(ThemeContext);
+	if (!ctx) throw new Error("useThemeMode must be used inside <ThemeProvider>");
+	return ctx;
 }

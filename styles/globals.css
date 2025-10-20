@@ -1,8 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f9f9f9;
+  --bg-hover: #f9f9f9;
+  --bg-hover-2: #F4F4F5;
+  --bg-header: #ffff;
+  --bg-block: #ffff;
+  --bg-card: #ffffff;
+  --bg-post: #F6F6F6;
+  --bg-messages: #FBFBFB;
+  --bg-chat: #ffffff;
+  --bg-input: #F8F8F8;
+  --bg-input-chat: #F8F8F8;
+  --bg-button: #F8FAFD;
+  --bg-list-btn: #F9F9F9;
+  --bg-apply: #171717;
+  --text: #4b4a4a;
+  --text-2: #fff;
+  --text-table: #686868;
+  --text-chip: #000;
+  --text-info: #373737;
+  --border: #C9C9C9;
+  --border-popover: #f3f3f3;
   --foreground: #171717;
+  --loading: #ebe6e7;
 }
 
 @theme inline {
@@ -13,11 +34,30 @@
   --font-space: var(--font-space);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #fff;
-    --foreground: #000;
-  }
+:root.dark {
+  --background: #0B0B0B;
+  --bg-hover: #1A1A1A;
+  --bg-hover-2: #313131;
+  --bg-header: #0B0B0B;
+  --bg-block: #1A1A1A;
+  --bg-card: #000;
+  --bg-post: #1A1A1A;
+  --bg-messages: #000;
+  --bg-chat: #1a1a1a;
+  --bg-button: #222;
+  --bg-list-btn: #313131;
+  --bg-apply: #f5f5f5;
+  --bg-input: #1a1a1a;
+  --bg-input-chat: #000;
+  --text: #ffffff;
+  --text-2: #000;
+  --text-table: #fff;
+  --text-chip: #000;
+  --text-info: #ffff;
+  --border: #4A4A4A;
+  --border-popover: #222;
+  --foreground: #fff;
+  --loading: #333;
 }
 
 body {

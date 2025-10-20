@@ -62,7 +62,7 @@ export default function ModalCommon({
 
 	const titleComponent = (
 		<div
-			className={cn('text-lg font-bold font-reddit', {
+			className={cn('text-[var(--text)] text-lg font-bold font-reddit', {
 				'text-center': isCenterTitle,
 			})}
 		>
@@ -171,7 +171,7 @@ export default function ModalCommon({
 					>
 						{hiddenComponent}
 						{header}
-						<div className={cn('rounded-[20px] dark:bg-[#1A1A1A]', classNameChildren)}>{children}</div>
+						<div className={cn('rounded-[20px] bg-[var(--bg-block)]', classNameChildren)}>{children}</div>
 					</DialogContent>
 				</Dialog>
 			)}

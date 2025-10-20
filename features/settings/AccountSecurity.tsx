@@ -39,19 +39,19 @@ const AccountSecurity = () => {
 	];
 
 	return (
-		<div className="bg-white dark:bg-black rounded-[20px] p-5 text-[#2F2F2F] space-y-5">
-			<div className="flex items-center gap-2 dark:text-white">
+		<div className="bg-[var(--bg-card)] rounded-[20px] p-5 text-[var(--text)] space-y-5">
+			<div className="flex items-center gap-2">
 				<p className="font-medium font-space">Account Security</p>
-				<p className="bg-[#EBEBEB] px-2 py-0.5 rounded-full text-[#494949] opacity-50 text-[10px] font-medium">Coming soon</p>
+				<p className="bg-[var(--bg-post)] px-2 py-0.5 rounded-full text-[var(--text)] opacity-50 text-[10px] font-medium">Coming soon</p>
 			</div>
 			<div className="space-y-4 font-noto">
 				{securityFeatures.map((account, index) => (
 					<div key={index} className="flex items-center justify-between opacity-50">
 						<div className="flex items-center gap-3">
-							<div className="w-12 h-12 rounded-lg bg-[#F8F8F8] flex justify-center items-center">{account.icon}</div>
+							<div className="w-12 h-12 rounded-lg bg-[var(--bg-input)] flex justify-center items-center">{account.icon}</div>
 							<div className="flex-1">
-								<p className="font-medium text-sm dark:text-white">{account.title}</p>
-								<div className="text-xs opacity-50 dark:text-white">{account.description}</div>
+								<p className="font-medium text-sm">{account.title}</p>
+								<div className="text-xs opacity-50">{account.description}</div>
 							</div>
 						</div>
 						<Button variant="outline" size="sm" className="rounded-lg px-3 py-2 font-xs font-normal cursor-pointer">

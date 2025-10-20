@@ -29,22 +29,22 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-lg w-full">
+			<DialogContent className="sm:max-w-lg w-full bg-[var(--bg-card)]">
 				<DialogHeader>
-					<DialogTitle className="text-center text-xl font-semibold text-reddit text-[#494949] dark:text-white">
+					<DialogTitle className="text-center text-xl font-semibold text-reddit text-[var(--text)]">
 						Select your login method
 					</DialogTitle>
 				</DialogHeader>
-				<div className="space-y-6 px-6 pb-6 text-[#494949]">
+				<div className="space-y-6 px-6 pb-6 text-[var(--text)]">
 					{/* Social Login */}
 					<div>
-						<h3 className="text-sm font-medium text-muted-foreground mb-3 dark:text-white">
+						<h3 className="text-sm font-medium text-muted-foreground mb-3 text-[var(--text)]">
 							With social account
 						</h3>
 						<div className="space-y-3">
 							<button
 								onClick={() => startTwitterLogin()}
-								className="w-full hover:bg-[#F8FAFD] dark:hover:bg-[#222] cursor-pointer text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 dark:text-white"
+								className="w-full hover:bg-[var(--bg-button)] cursor-pointer text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 text-[var(--text)]"
 							>
 								<TwitterIcon />
 								<span>Continue with X (Twitter)</span>
@@ -53,7 +53,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 								<button
 									key={provider.name}
 									disabled
-									className="w-full text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 dark:text-white cursor-not-allowed opacity-60"
+									className="w-full hover:bg-[var(--bg-button)] text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 text-[var(--text)] cursor-not-allowed opacity-60"
 								>
 									<span>{provider.icon}</span>
 									<span>Continue with {provider.name} (Coming Soon)</span>
@@ -68,7 +68,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 							<span className="w-full border-t text-[#EFF2F5]" />
 						</div>
 						<div className="relative flex justify-center text-xs uppercase">
-							<span className="bg-background dark:bg-[#1a1a1a] px-2 text-muted-foreground font-semibold dark:text-white">
+							<span className="bg-[var(--bg-card)] px-2 text-muted-foreground font-semibold text-[var(--text)]">
 								Or
 							</span>
 						</div>
@@ -76,7 +76,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 
 					{/* Wallet Login */}
 					<div>
-						<h3 className="text-sm font-medium text-muted-foreground mb-3 dark:text-white">
+						<h3 className="text-sm font-medium text-muted-foreground mb-3 text-[var(--text)]">
 							With wallet
 						</h3>
 						<div className="space-y-3">
@@ -84,7 +84,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 								<button
 									key={provider.name}
 									disabled
-									className="w-full text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 dark:text-white cursor-not-allowed opacity-60"
+									className="w-full hover:bg-[var(--bg-button)] text-sm font-semibold border border-[#CFD6E4] p-3 rounded-lg flex justify-center items-center gap-2 text-[var(--text)] cursor-not-allowed opacity-60"
 								>
 									<span>{provider.icon}</span>
 									<span>Connect with {provider.name} (Coming Soon)</span>

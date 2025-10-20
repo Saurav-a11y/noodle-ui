@@ -24,19 +24,19 @@ const ChatBubble = memo(({ chat }: { chat: any }) => {
 		<div className="space-y-2">
 			{chat.type === "assistant" && (
 				<div className="w-full flex justify-start">
-					<div className="bg-[#FBFBFB] rounded-xl p-4 max-w-[90%] w-fit">
+					<div className="bg-[var(--bg-messages)] rounded-xl p-4 max-w-[90%] w-fit">
 						<motion.div
 							initial={{ opacity: 0, y: 6 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.3 }}
-							className="text-sm text-[#373737] prose prose-slate dark:prose-invert leading-relaxed
+							className="text-sm text-[var(--text)] prose prose-slate dark:prose-invert leading-relaxed
 							 max-w-none"
 						>
 							<ReactMarkdown remarkPlugins={[remarkGfm]}>
 								{chat.message}
 							</ReactMarkdown>
 						</motion.div>
-						<p className="text-xs text-gray-500 mt-1 font-reddit">
+						<p className="text-xs text-[var(--text)] opacity-50 mt-1 font-reddit">
 							{chat.timestamp}
 						</p>
 					</div>
@@ -126,8 +126,8 @@ const ChatInput = ({
 	}, [userInput]);
 
 	return (
-		<div className="p-4 border-t border-[#E9E9E9] dark:border-t-[#B1B1B1]">
-			<div className="flex items-center justify-between w-full px-3 py-2 border border-[#E9E9E9] rounded-full bg-white">
+		<div className="p-4 border-t border-[var(--border-popover)] bg-[var(--bg-chat)]">
+			<div className={`flex items-center justify-between w-full px-3 py-2 rounded-full bg-[var(--bg-input-chat)]`}>
 				<StarIcon />
 				<textarea
 					ref={textareaRef}
@@ -271,14 +271,14 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	}, [initialGreeting]);
 
 	return (
-		<div className="h-full flex flex-col bg-white dark:bg-[#1A1A1A] drop-shadow-xl rounded-xl overflow-hidden">
+		<div className="h-full flex flex-col bg-[var(--bg-chat)] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden">
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
 						<NoodlesMiniLogo />
 					</div>
-					<div className="relative z-20">
+					<div className="text-[#1E1B39] relative z-20">
 						<p className="text-lg font-bold font-noto">AI Community Analyst</p>
 						<p className="text-xs font-reddit">
 							Your intelligent crypto, stock & commodity companion
@@ -294,13 +294,13 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 			</div>
 
 			{/* Project Info */}
-			<div className="p-4 border-b border-b-[#E9E9E9] dark:border-b-[#B1B1B1] text-[#4B4A4A] dark:text-white">
+			<div className="p-4 border-b border-b-[var(--border-popover)] text-[#4B4A4A] text-[var(--text)]">
 				{isGettingCommunity ? (
 					<div className="flex items-center gap-3 animate-pulse">
-						<div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full" />
+						<div className="w-10 h-10 bg-[var(--loading)] rounded-full" />
 						<div className="space-y-2">
-							<div className="w-40 h-6 bg-gray-200 dark:bg-gray-700 rounded" />
-							<div className="w-24 h-4 bg-gray-200 dark:bg-gray-700 rounded" />
+							<div className="w-40 h-6 bg-[var(--loading)] rounded" />
+							<div className="w-24 h-4 bg-[var(--loading)] rounded" />
 						</div>
 					</div>
 				) : (
@@ -345,7 +345,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 			/>
 
 			{!isFetchingSuggestions && (aiSuggestions?.suggestions ?? []).length > 0 && (
-				<div className="px-4 pb-3 border-t border-[#E9E9E9] dark:border-[#333]">
+				<div className="px-4 pb-3 border-t border-[var(--border-popover)]">
 					<p className="text-xs my-2 font-reddit dark:text-white">
 						Suggested questions
 					</p>
@@ -357,10 +357,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 							<button
 								key={i}
 								onClick={() => handleSendMessage(s)}
-								className="flex-shrink-0 cursor-pointer text-sm bg-[#F7F7F7] dark:bg-[#2A2A2A]
-            text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full
-            hover:bg-[#EBEBEB] dark:hover:bg-[#3A3A3A] transition-all
-            border border-transparent hover:border-[#DADADA]"
+								className="flex-shrink-0 cursor-pointer text-sm px-3 py-1.5 rounded-full transition-all border border-[var(--border)]"
 							>
 								{s}
 							</button>

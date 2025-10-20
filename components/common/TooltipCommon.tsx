@@ -11,7 +11,7 @@ const TooltipCommon = ({ content = contentTooltip, trigger, classNameTypo }: { c
                 <TooltipTrigger>
                     {trigger ?? <QuestionIcon />}
                 </TooltipTrigger>
-                <TooltipContent className="max-w-md dark:bg-[#1A1A1A] dark:text-white">
+                <TooltipContent className="max-w-md bg-[var(--bg-block)] text-[var(--text)]">
                     <p className={`p-1.5 ${classNameTypo}`}>{content}</p>
                 </TooltipContent>
             </Tooltip>

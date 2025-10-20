@@ -1,6 +1,6 @@
 const ComingSoon = () => {
 	return (
-		<div className="bg-white dark:bg-black h-[350px] rounded-xl flex justify-center items-center">
+		<div className="bg-[var(--bg-card)] h-[350px] rounded-xl flex justify-center items-center">
 			<div className="font-reddit text-5xl font-semibold text-center loading gradient-text">
 				<span className="inline-block mr-2 gradient-letter">C</span>
 				<span className="inline-block mr-2 gradient-letter">O</span>

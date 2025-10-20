@@ -7,7 +7,7 @@ import '@/styles/chartStyles.scss';
 import ModalCommon from './ModalCommon';
 import TweetList from './TweetList';
 import { formattedDate } from '@/lib/format';
-import useThemekMode from '@/lib/useThemkMode';
+import useThemeMode from '@/lib/useThemkMode';
 import { usePriceHistory } from '../hooks/usePriceHistory';
 import { useParams } from 'next/navigation';
 import { useListTweets } from '../hooks/useListTweets';
@@ -77,7 +77,8 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 	const { data } = useAssetOverview(type, communityId);
-	const { isDark } = useThemekMode();
+	const { isDark } = useThemeMode();
+
 	const now = useMemo(() => {
 		const localNow = new Date();
 		const utcTime = localNow.getTime() + localNow.getTimezoneOffset() * 60000;
@@ -91,7 +92,7 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3M');
 	const [apiTimeFrame, setApiTimeFrame] = useState("90d");
 
-	const { data: priceHistoryToken, isLoading, error } = usePriceHistory({
+	const { data: priceHistoryToken, isLoading } = usePriceHistory({
 		symbol: type === 'commodity' ? communityId : data?.data?.symbol,
 		startTime,
 		endTime,
@@ -106,9 +107,13 @@ const CandlestickChart = ({ utcOffset, type }) => {
 
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 	const markerContainerRef = useRef<HTMLDivElement>(null);
-	const [chartInstance, setChartInstance] = useState<{ chart: any; candlestickSeries: any; formattedData: PricePoint[] } | null>(null);
-	const markerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+	const [chartInstance, setChartInstance] = useState<{
+		chart: any;
+		candlestickSeries: any;
+		formattedData: PricePoint[]
+	} | null>(null);
 
+	const markerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 	const [activeHourTweets, setActiveHourTweets] = useState<TweetInfo[]>([]);
 	const [isShowModalTweet, setIsShowModalTweet] = useState(false);
 
@@ -468,17 +473,17 @@ const CandlestickChart = ({ utcOffset, type }) => {
 
 	return (
 		<div>
-			<div className='flex items-center gap-x-6 gap-y-3 mb-4 flex-wrap  justify-between gap-1'>
+			<div className='flex items-center gap-x-6 gap-y-3 mb-4 flex-wrap justify-between gap-1'>
 				<div className='flex items-center justify-between w-full'>
 					<p className="text-lg font-semibold font-noto">
 						Social Activity vs On-Chain Behavior Correlation
 					</p>
-					<div className='flex items-center bg-[#F9F9F9] dark:bg-[#313131] p-1.5 rounded'>
+					<div className='flex items-center bg-[var(--bg-list-btn)] p-1.5 rounded'>
 						{['1D', '3D', '7D', '1M', '3M', '1Y'].map((timeFrame) => (
 							<button
 								key={timeFrame}
 								onClick={() => handleTimeFrameChange(timeFrame as any)}
-								className={`px-2.5 py-1 rounded cursor-pointer text-xs font-reddit font-medium transition-colors ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md text-[#222]' : 'hover:bg-[#F4F4F5] dark:hover:bg-[#313131]'
+								className={`px-2.5 py-1 rounded cursor-pointer text-xs font-reddit font-medium transition-colors ${selectedTimeFrame === timeFrame ? 'bg-[#DDF346] rounded-md text-[#222]' : 'hover:bg-[var(--bg-hover-2)]'
 									}`}
 							>
 								{timeFrame}

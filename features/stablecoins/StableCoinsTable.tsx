@@ -57,7 +57,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 				<button
 					disabled={currentPage === 1}
 					onClick={() => onPageChange(currentPage - 1)}
-					className="relative bg-white dark:bg-[#1A1A1A] dark:text-[#FFFFFF] cursor-pointer rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
+					className="relative bg-[var(--bg-hover)] text-[var(--text)] cursor-pointer rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
 					<ChevronLeft className="w-4" />
 				</button>
 			</div>
@@ -67,8 +67,8 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 					<button
 						key={i}
 						className={`min-w-[34.05px] px-3 py-1 h-full rounded text-sm font-medium cursor-pointer font-reddit ${page === currentPage
-							? 'transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] text-[#494949] font-medium border-transparent'
-							: 'bg-white dark:bg-[#1A1A1A] text-[#494949] dark:text-white'
+							? 'transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] text-[var(--text)] font-medium border-transparent'
+							: 'bg-[var(--bg-hover)] text-[var(--text)]'
 							}`}
 						onClick={() => handlePageClick(page)}
 					>
@@ -80,7 +80,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 				<button
 					onClick={() => onPageChange(currentPage + 1)}
 					disabled={currentPage === totalPages}
-					className="relative bg-white dark:bg-[#1A1A1A] cursor-pointer dark:text-[#FFFFFF] rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
+					className="relative bg-[var(--bg-hover)] text-[var(--text)] cursor-pointer rounded px-3 py-1 font-medium flex items-center gap-2 h-full">
 					<ChevronRight className="w-4" />
 				</button>
 			</div>
@@ -104,7 +104,7 @@ const StableCoinsTable = () => {
 	return (
 		<div>
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-full w-[320px] mb-4">
-				<div className="relative rounded-full bg-[#f9f9f9] dark:bg-[#1A1A1A] dark:text-[#FFFFFF]">
+				<div className="relative rounded-full bg-[var(--bg-hover)] text-[var(--text)]">
 					<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
 					<Input
 						placeholder={"Search..."}
@@ -113,119 +113,154 @@ const StableCoinsTable = () => {
 							setSearch(e.target.value);
 							setPage(1); // reset page khi search
 						}}
-						className="pl-10 py-2 max-w-xs w-fit bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit dark:text-[#FFFFFF]"
+						className="pl-10 py-2 max-w-xs w-fit bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit text-[var(--text)"
 					/>
 				</div>
 			</div>
 			<Table>
-				<TableHeader className="dark:bg-[#1A1A1A]">
-					<TableRow className="border-b">
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Name</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs text-center">Price</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs text-center">Volume(24h)</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-center">Market Cap</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[140px] text-end">Circulating Supply</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Brief Introduction</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs">Backing Mechanism</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto font-normal text-xs w-[120px] text-end">Best Yield</TableHead>
-						<TableHead className="text-[#686868] dark:text-[#FFF] border-b border-b-[#C9C9C9] dark:border-b-[#4A4A4A] font-noto rounded-tr-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
+				<TableHeader className="bg-[var(--bg-hover)]">
+					<TableRow className="border-b-[var(--border)]">
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Name</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center">Price</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center">Volume(24h)</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs w-[120px] text-center">Market Cap</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs w-[140px] text-end">Circulating Supply</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Brief Introduction</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Backing Mechanism</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs w-[120px] text-end">Best Yield</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto rounded-tr-lg font-normal text-xs w-[164px] text-center">Depegging History</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{isLoading
-						? Array.from({ length: 5 }).map((_, i) => (
+					{isLoading &&
+						Array.from({ length: 5 }).map((_, i) => (
 							<TableRow key={i} className="animate-pulse">
 								{Array.from({ length: 10 }).map((_, j) => (
-									<TableCell key={j} className="py-4 h-[73px] border-b border-b-[#F3F3F3] dark:border-b-[#242424]">
-										<div className="h-6 bg-gray-200 dark:bg-[#333] rounded animate-pulse w-full" />
+									<TableCell
+										key={j}
+										className="py-4 h-[73px] border-b border-b-[var(--border)]"
+									>
+										<div className="h-6 bg-[var(--loading)] rounded animate-pulse w-full" />
 									</TableCell>
 								))}
 							</TableRow>
-						))
-						: items?.map((asset, index) => {
-							return (
-								<TableRow
-									key={asset.symbol}
-									className="hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors"
-									onClick={() => {
-										router.push(`/cryptocurrencies/${asset?.currency}`)
-										if (userData?.data?.id) {
-											addLog({
-												userId: userData?.data?.id,
-												type: 'view_detail',
-												assetType: 'cryptocurrencies',
-												assetSymbol: asset.currency,
-												assetName: asset.name,
-												assetLogo: asset.logo,
-												content: `See details: '${asset.name} (${asset.currency}) Community'`,
-											});
-										}
-									}}
-								>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										{(page - 1) * LIMIT + index + 1}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] dark:text-white">
-										<div className="flex items-center gap-3 text-xs">
-											<div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
-												{asset?.logo ? (
-													<Image
-														src={asset.logo}
-														alt={asset?.symbol ?? 'token'}
-														width={64}
-														height={64}
-														className="rounded-full"
-													/>
-												) : (
-													<span className="text-xs text-white">
-														{(asset?.symbol ?? '?').slice(0, 2)}
-													</span>
-												)}
-											</div>
-											<div className="flex-1">
-												<div className="font-medium">{asset?.name}</div>
-												<div className="text-[10px] text-muted-foreground">{asset?.currency}</div>
+						))}
+					{/* 🟢 Empty state */}
+					{!isLoading && items.length === 0 && (
+						<TableRow>
+							<TableCell
+								colSpan={10}
+								className="text-center py-10 text-[var(--text)] text-sm font-medium"
+							>
+								<div className="flex flex-col items-center justify-center opacity-80">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="36"
+										height="36"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										className="text-[var(--text)] mb-2"
+									>
+										<circle cx="12" cy="12" r="10" />
+										<line x1="9" y1="9" x2="15" y2="15" />
+										<line x1="15" y1="9" x2="9" y2="15" />
+									</svg>
+									<p>No data found</p>
+									<p className="text-xs opacity-70">Try adjusting your search or filters</p>
+								</div>
+							</TableCell>
+						</TableRow>
+					)}
+
+					{/* 🟢 Table data */}
+					{!isLoading &&
+						items.map((asset, index) => (
+							<TableRow
+								key={asset.symbol}
+								className="hover:bg-[var(--bg-hover)] cursor-pointer transition-colors"
+								onClick={() => {
+									router.push(`/cryptocurrencies/${asset?.currency}`)
+									if (userData?.data?.id) {
+										addLog({
+											userId: userData?.data?.id,
+											type: 'view_detail',
+											assetType: 'cryptocurrencies',
+											assetSymbol: asset.currency,
+											assetName: asset.name,
+											assetLogo: asset.logo,
+											content: `See details: '${asset.name} (${asset.currency}) Community'`,
+										});
+									}
+								}}
+							>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
+									{(page - 1) * LIMIT + index + 1}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-[var(--text)]">
+									<div className="flex items-center gap-3 text-xs">
+										<div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold overflow-hidden">
+											{asset?.logo ? (
+												<Image
+													src={asset.logo}
+													alt={asset?.symbol ?? 'token'}
+													width={24}
+													height={24}
+													className="rounded-full"
+												/>
+											) : (
+												<span className="text-xs text-white">
+													{(asset?.symbol ?? '?').slice(0, 2)}
+												</span>
+											)}
+										</div>
+										<div className="flex-1">
+											<div className="font-medium">{asset?.name}</div>
+											<div className="text-[10px] text-muted-foreground">
+												{asset?.currency}
 											</div>
 										</div>
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
-										${formatNumberWithCommas(asset?.price)}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										<div>
-											<div className="text-end">
-												${formatNumberWithCommas(asset?.vol_24h)}
-											</div>
-											<div className="text-end">
-												{formatCurrency(asset?.vol_24h)}
-											</div>
-										</div>
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										{asset?.marketCap ? `$${formatNumberWithCommas(asset?.marketCap)}` : '--'}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-end">
-										{asset?.circulating_supply ? `${formatCurrency(asset?.marketCap)} ${asset?.currency}` : `0 ${asset?.currency}`}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										{asset?.brief_info}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white">
-										{asset?.mechanism}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-end">
-										{asset?.best_yield ? `${asset?.best_yield?.apy.toFixed(2)}%` : '--'}
-									</TableCell>
-									<TableCell className="border-b border-b-[#F3F3F3] dark:border-b-[#242424] text-xs dark:text-white text-center">
-										{asset?.depegging_history ? asset?.depegging_history : 'Unkown'}
-									</TableCell>
-								</TableRow>
-							)
-						})}
+									</div>
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center">
+									${formatNumberWithCommas(asset?.price)}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-end">
+									${formatNumberWithCommas(asset?.vol_24h)}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center">
+									{asset?.marketCap
+										? `$${formatNumberWithCommas(asset?.marketCap)}`
+										: '--'}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-end">
+									{asset?.circulating_supply
+										? `${formatCurrency(asset?.circulating_supply)} ${asset?.currency}`
+										: `0 ${asset?.currency}`}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
+									{asset?.brief_info || '--'}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
+									{asset?.mechanism || '--'}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-end">
+									{asset?.best_yield
+										? `${asset?.best_yield?.apy.toFixed(2)}%`
+										: '--'}
+								</TableCell>
+								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center">
+									{asset?.depegging_history || 'Unknown'}
+								</TableCell>
+							</TableRow>
+						))}
 				</TableBody>
 			</Table>
-			{!isLoading && (
+			{!isLoading && items.length > 0 && (
 				<Pagination
 					currentPage={page}
 					totalPages={totalPages}

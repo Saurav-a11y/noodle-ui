@@ -85,7 +85,7 @@ const AddToCryptoWatchlist = () => {
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1px] rounded-lg" onClick={handleClick}>
 				<button
 					disabled={loading}
-					className="relative flex items-center gap-2 bg-white dark:bg-black px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[#494949] dark:text-[#FFF] font-noto hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+					className="relative flex items-center gap-2 bg-[var(--background)] px-4.5 py-2.5 rounded-lg font-medium text-sm cursor-pointer text-[var(--text)] font-noto hover:bg-[var(--bg-hover)] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
 				>
 					{inWatchlist ? (
 						<>

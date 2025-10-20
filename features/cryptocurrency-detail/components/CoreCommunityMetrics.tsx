@@ -32,29 +32,26 @@ const CoreCommunityMetrics = ({ data, isFetching }) => {
         }
     ];
     return (
-        <div className="text-[#1E1B39">
-            <div className="mb-4 flex items-center gap-2 dark:text-[#FFF]">
+        <div className="text-[var(--text)]">
+            <div className="mb-4 flex items-center gap-2">
                 <p className="text-sm font-noto font-meidum">Core Community Metrics</p>
                 <TooltipCommon content="Key indicators that reflect the activity and engagement levels of a project’s community. These metrics help assess how active, growing, and committed the user base is over time." />
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 {coreMetrics.map((metric, index) => (
-                    <div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-                        <div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
+                    <div key={index} className="rounded-xl p-4 space-y-1 bg-[var(--bg-block)] text-[var(--text)]">
+                        <div className="flex items-center gap-2 mb-2">
                             <p className="text-xs font-reddit">{metric.title}</p>
                             <TooltipCommon content={metric.content} />
                         </div>
                         {isFetching ?
                             <>
-                                <div className="h-7 w-1/2 bg-gray-200 dark:bg-[#333] rounded animate-pulse mb-2" />
-                                <div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+                                <div className="h-7 w-1/2 bg-[var(--loading)] rounded animate-pulse mb-2" />
+                                <div className="h-5 w-full bg-[var(--loading)] rounded animate-pulse" />
                             </>
                             : <>
-                                <div className="text-sm font-semibold font-noto dark:text-[#FFF]">{metric.value}</div>
-                                {/* {metric.change && (
-                                    <p className="text-sm font-medium font-noto" style={{ color: metric.color }}>{metric.change}</p>
-                                )} */}
+                                <div className="text-sm font-semibold font-noto">{metric.value}</div>
                             </>
                         }
                     </div>

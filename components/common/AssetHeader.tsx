@@ -7,9 +7,9 @@ export const AssetHeader = () => {
 
 	return (
 		<div className="flex items-center gap-4">
-			<div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl">
+			<div className="w-10 h-10 rounded-full flex items-center justify-center text-[var(--text)] font-bold text-xl">
 				{isFetching ? (
-					<div className="w-10 h-10 bg-gray-200 dark:bg-[#333] rounded-full animate-pulse" />
+					<div className="w-10 h-10 bg-[var(--loading)] rounded-full animate-pulse" />
 				) : (
 					overview.logo && (
 						<Image
@@ -22,10 +22,10 @@ export const AssetHeader = () => {
 					)
 				)}
 			</div>
-			<div className="text-[#4B4A4A] dark:text-[#FFF] flex flex-col gap-1">
+			<div className="text-[var(--text)] flex flex-col gap-1">
 				<h1 className="text-xl font-semibold font-noto">
 					{isFetching ? (
-						<span className="inline-block w-36 h-5 bg-gray-200 dark:bg-[#333] rounded-md animate-pulse" />
+						<span className="inline-block w-36 h-5 bg-[var(--loading)] rounded-md animate-pulse" />
 					) : (
 						<span>{overview.projectName}</span>
 					)}
@@ -33,11 +33,11 @@ export const AssetHeader = () => {
 				<div className="flex items-center gap-2 text-sm">
 					{isFetching ? (
 						<>
-							<span className="w-12 h-4 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+							<span className="w-12 h-4 bg-[var(--loading)] rounded animate-pulse" />
 							<span>•</span>
-							<span className="w-16 h-4 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+							<span className="w-16 h-4 bg-[var(--loading)] rounded animate-pulse" />
 							<span>•</span>
-							<span className="w-12 h-4 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+							<span className="w-12 h-4 bg-[var(--loading)] rounded animate-pulse" />
 						</>
 					) : (
 						<>

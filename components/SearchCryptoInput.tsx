@@ -13,12 +13,12 @@ import { useMe } from "@/hooks/useAuth";
 
 const SkeletonItem = () => (
 	<div className="flex items-center gap-2 px-4 py-3 animate-pulse">
-		<div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-[#222]" />
+		<div className="w-8 h-8 rounded-full bg-[var(--loading)]" />
 		<div className="flex-1">
-			<div className="h-3 w-24 bg-gray-200 dark:bg-[#222] rounded mb-2" />
-			<div className="h-2 w-12 bg-gray-200 dark:bg-[#222] rounded" />
+			<div className="h-3 w-24 bg-[var(--loading)] rounded mb-2" />
+			<div className="h-2 w-12 bg-[var(--loading)] rounded" />
 		</div>
-		<div className="ml-auto w-10 h-3 bg-gray-200 dark:bg-[#222] rounded" />
+		<div className="ml-auto w-10 h-3 bg-[var(--loading)] rounded" />
 	</div>
 );
 
@@ -136,13 +136,13 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 		<div ref={wrapperRef} className={`flex-1 max-w-[200px] mx-8 hidden md:block ${inputClassname}`}>
 			<div className="relative">
 				<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-full">
-					<div className="relative rounded-full bg-[#f9f9f9] dark:bg-[#1A1A1A] dark:text-[#FFFFFF]">
+					<div className="relative rounded-full bg-[var(--bg-input)] text-[var(--text)]">
 						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
 						<Input
 							placeholder={placeholder || "Search..."}
 							value={raw}
 							onChange={(e) => setRaw(e.target.value)}
-							className="pl-10 py-2 w-full bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit dark:text-[#FFFFFF]"
+							className="pl-10 py-2 w-full bg-[var(--bg-input)] border-none rounded-full focus:outline-none focus:ring-0 font-reddit text-[var(--text)]"
 						/>
 					</div>
 				</div>
@@ -150,9 +150,9 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 					<div
 						ref={listRef}
 						onScroll={handleScroll}
-						className={`absolute w-[300px] -left-1/4 right-0 top-[44px] bg-white dark:bg-[#1A1A1A] border dark:border-[#222] border-[#f3f3f3] rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto ${popupClassname}`}
+						className={`absolute w-[300px] -left-1/4 right-0 top-[44px] bg-[var(--bg-header)] rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto ${popupClassname}`}
 					>
-						{isLoading ? (
+						{!isLoading ? (
 							Array.from({ length: 6 }).map((_, idx) => <SkeletonItem key={idx} />)
 						) : flat.length === 0 ? (
 							<div className="py-10 grid place-items-center text-sm opacity-70">No results</div>
@@ -163,8 +163,8 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 										href={`/cryptocurrencies/${item.code}`}
 										key={item.symbol}
 										className={clsx(
-											'block px-4 py-3 hover:bg-[#F3F3F3] dark:hover:bg-[#222] transition-colors',
-											'border-b last:border-b-0 border-[#f3f3f3] dark:border-[#222]'
+											'block px-4 py-3 hover:bg-[var(--bg-hover)] transition-colors',
+											'border-b last:border-b-0 border-b-[var(--border-popover)]'
 										)}
 										onClick={() => {
 											setOpen(false)
@@ -184,7 +184,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 										<div className="flex items-center gap-2">
 											<Image src={item.logo || ""} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
 											<div>
-												<div className="text-sm dark:text-white font-noto font-semibold">{item.name}</div>
+												<div className="text-sm text-[var(--text)] font-noto font-semibold">{item.name}</div>
 												<div className="text-[10px] text-gray-500 font-noto">{item.symbol}</div>
 											</div>
 											<span className="ml-auto text-sm text-[#DDF346] font-semibold font-noto">
@@ -195,7 +195,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 								))}
 								<div ref={sentinelRef} />
 								{isFetchingNextPage && (
-									<div className="py-4 text-center text-xs opacity-70 dark:text-white">Loading more…</div>
+									<div className="py-4 text-center text-xs opacity-70 text-[var(--text)]">Loading more…</div>
 								)}
 							</>
 						)}

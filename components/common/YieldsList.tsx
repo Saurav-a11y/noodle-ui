@@ -9,6 +9,7 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import Image from 'next/image';
 import TooltipCommon from './TooltipCommon';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/Table';
 
 function LimitSelect({
 	value,
@@ -22,9 +23,8 @@ function LimitSelect({
 	return (
 		<Select value={String(value)} onValueChange={(v) => onChange(Number(v))}>
 			<SelectTrigger
-				className="inline-flex min-w-[100px] items-center justify-between rounded-md border border-neutral-200 bg-white px-3 text-sm
-                   hover:bg-neutral-50 focus:outline-none
-                   dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-white"
+				className="hover:cursor inline-flex min-w-[100px] items-center justify-between rounded-md px-3 text-sm focus:outline-none
+                   border border-[var(--border)] bg-[var(--bg-block)]"
 				aria-label="Rows per page"
 			>
 				<span>{value}/page</span>
@@ -32,14 +32,13 @@ function LimitSelect({
 
 			<SelectPortal>
 				<SelectContent
-					className="overflow-hidden rounded-md border border-neutral-200 bg-white shadow-lg
-                     dark:border-neutral-700 dark:bg-neutral-900"
+					className="overflow-hidden rounded-md border-none bg-[var(--bg-card)] shadow-lg"
 					position="popper"
 					sideOffset={6}
 				>
 					<SelectViewport className="p-1">
 						{options.map((n) => (
-							<SelectItem key={n} value={String(n)} className='cursor-pointer text-neutral-800 hover:bg-neutral-50 focus:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 text-sm rounded'>
+							<SelectItem key={n} value={String(n)} className='cursor-pointer text-[var(--text)] hover:bg-[var(--bg-hover)] text-sm rounded'>
 								{n}/page
 							</SelectItem>
 						))}
@@ -100,11 +99,11 @@ export default function YieldsList({
 	};
 
 	return (
-		<div className="rounded-2xl bg-white dark:bg-black p-4 md:p-6 space-y-4">
+		<div className="rounded-2xl bg-[var(--bg-block)] p-4 md:p-6 space-y-4">
 			{/* Header */}
 			<div className="flex items-center justify-between gap-3">
 				<div className='flex-1'>
-					<p className="text-lg font-semibold mb-0.5 font-noto dark:text-white">
+					<p className="text-lg font-semibold mb-0.5 font-noto text-[var(--text)]">
 						Best yields for <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#DDF346] to-[#84EA07]">{communityId && communityId.toUpperCase()}</span>
 					</p>
 					<p className="text-[11px] text-neutral-500">Data from DefiLlama Pools API</p>
@@ -113,13 +112,13 @@ export default function YieldsList({
 				{/* Controls */}
 				<div className="flex items-center gap-2">
 					<div className='relative'>
-						<p className="text-[11px] font-noto text-neutral-600 dark:text-neutral-300 flex-1 absolute -top-2 left-2.5 z-30 bg-white dark:bg-black">
+						<p className="text-[11px] font-noto text-[var(--text)] flex-1 absolute -top-2 left-2.5 z-30 bg-[var(--bg-block)]">
 							Min TVL (USD)
 						</p>
 						<Input
 							type="text"
 							inputMode="numeric"
-							className="relative w-36 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2 text-sm outline-none dark:text-white"
+							className="relative w-36 rounded-md border border-[var(--border)] bg-[var(--bg-block)] px-2 text-sm outline-none text-[var(--text)]"
 							value={minTvlUsdInput}
 							onChange={handleMinTvlChange}
 							placeholder="e.g. 2,000,000"
@@ -127,7 +126,7 @@ export default function YieldsList({
 					</div>
 					<Button
 						onClick={handleApplyFilter}
-						className="cursor-pointer rounded-md bg-neutral-900 text-white text-xs px-3 dark:bg-neutral-100 dark:text-black"
+						className="cursor-pointer rounded-md bg-[var(--bg-apply)] text-[var(--bg-card)] text-xs px-3"
 					>
 						Apply
 					</Button>
@@ -145,103 +144,88 @@ export default function YieldsList({
 
 			{/* Table */}
 			<div className="overflow-x-auto">
-				<table className="w-full text-sm">
-					<thead className="text-left bg-neutral-50 dark:bg-neutral-900/60">
-						<tr className="border-b border-neutral-200 dark:border-neutral-800 dark:text-white">
-							<th className="py-2 px-3 font-medium">#</th>
-							<th className="py-2 px-3 font-medium">Project</th>
-							<th className="py-2 px-3 font-medium">Chain</th>
-							<th className="py-2 px-3 font-medium">APY</th>
-							<th className="py-2 px-3 font-medium">TVL (USD)</th>
-							{/* <th className="py-2 px-3 font-medium">Pool</th> */}
-						</tr>
-					</thead>
+				<Table className="w-full text-sm">
+					<TableHeader className="text-left bg-[var(--bg-input-chat)]">
+						<TableRow className="border-b-[var(--border)] text-[var(--text-table)]">
+							<TableHead className="py-2 px-3 font-medium border-b-[var(--border)] rounded-tl-lg">#</TableHead>
+							<TableHead className="py-2 px-3 font-medium border-b-[var(--border)]">Project</TableHead>
+							<TableHead className="py-2 px-3 font-medium border-b-[var(--border)]">Chain</TableHead>
+							<TableHead className="py-2 px-3 font-medium border-b-[var(--border)]">APY</TableHead>
+							<TableHead className="py-2 px-3 font-medium border-b-[var(--border)] rounded-tr-lg">TVL (USD)</TableHead>
+						</TableRow>
+					</TableHeader>
 
-					<tbody>
+					<TableBody>
 						{isLoading ? (
 							// Skeleton rows
 							Array.from({ length: limit }).map((_, i) => (
-								<tr key={i} className="border-b border-neutral-100 dark:border-neutral-900">
+								<TableRow key={i} className="border-b border-b-[var(--border)]">
 									{Array.from({ length: 6 }).map((__, j) => (
-										<td key={j} className="py-3 px-3">
-											<div className="h-4 w-full max-w-[160px] animate-pulse rounded bg-neutral-200 dark:bg-neutral-800" />
-										</td>
+										<TableCell key={j} className="py-3 px-3">
+											<div className="h-4 w-full max-w-[160px] animate-pulse rounded bg-[var(--loading)]" />
+										</TableCell>
 									))}
-								</tr>
+								</TableRow>
 							))
 						) : isError ? (
-							<tr>
-								<td colSpan={6} className="py-6 px-3 text-center text-red-500">
+							<TableRow>
+								<TableCell colSpan={6} className="py-6 px-3 text-center text-red-500">
 									Failed to load yields. Please try again.
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						) : items.length === 0 ? (
-							<tr>
-								<td colSpan={6} className="py-6 px-3 text-center text-neutral-500">
+							<TableRow>
+								<TableCell colSpan={6} className="py-6 px-3 text-center text-neutral-500">
 									No pools matched your filters.
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						) : (
 							items.map((row, idx) => (
-								<tr
+								<TableRow
 									key={row.pool ?? `${row.project}-${row.chain}-${idx}`}
-									className="border-b border-neutral-100 dark:border-neutral-900 hover:bg-neutral-50/60 dark:hover:bg-neutral-900/50"
+									className="border-b border-b-[var(--border)] hover:bg-[var(--bg-hover-2)]"
 								>
-									<td className="py-3 px-3 dark:text-white">{(page - 1) * limit + idx + 1}</td>
-									<td className="py-3 px-3">
+									<TableCell className="py-3 px-3 text-[var(--text)]">{(page - 1) * limit + idx + 1}</TableCell>
+									<TableCell className="py-3 px-3">
 										<div className="flex items-center gap-2">
 											<Image src={`https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />
-											<span className="text-xs font-medium capitalize dark:text-white">{row.project ?? '-'}</span>
+											<span className="text-xs font-medium capitalize text-[var(--text)]">{row.project ?? '-'}</span>
 										</div>
-									</td>
-									<td className="py-3 px-3">
+									</TableCell>
+									<TableCell className="py-3 px-3">
 										<TooltipCommon classNameTypo="!p-1" content={row?.chain || ''} trigger={<Image src={`https://icons.llamao.fi/icons/chains/rsz_${row.chain}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />} />
-									</td>
-									<td className="py-3 px-3">
-										<span className="inline-block text-xs rounded-md bg-lime-100 text-lime-800 dark:bg-lime-900/40 dark:text-lime-300 px-2 py-0.5">
+									</TableCell>
+									<TableCell className="py-3 px-3">
+										<span className="inline-block text-xs rounded-md bg-[var(--bg-input-chat)] text-[var(--text)] px-2 py-0.5">
 											{Number(row.apy ?? 0).toFixed(2)}%
 										</span>
-									</td>
-									<td className="py-3 px-3 dark:text-white text-xs">${formatWithComma(String(row.tvlUsd))}</td>
-									{/* <td className="py-3 px-3">
-										{row.pool ? (
-											<a
-												href={row.pool}
-												target="_blank"
-												rel="noreferrer"
-												className="text-xs text-blue-600 hover:underline"
-											>
-												View pool
-											</a>
-										) : (
-											<span className="text-neutral-400">-</span>
-										)}
-									</td> */}
-								</tr>
+									</TableCell>
+									<TableCell className="py-3 px-3 text-[var(--text)] text-xs">${formatWithComma(String(row.tvlUsd))}</TableCell>
+								</TableRow>
 							))
 						)}
-					</tbody>
-				</table>
+					</TableBody>
+				</Table>
 			</div>
 
 			{/* Footer / Pagination */}
 			<div className="flex items-center justify-between">
-				<div className="text-xs text-neutral-500">
+				<div className="text-xs text-[var(--text)]">
 					{isFetching ? 'Refreshing…' : `Showing ${items.length} of ${total} pools`}
 				</div>
 				<div className="flex items-center gap-2">
 					<button
-						className="dark:text-white cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
+						className="text-[var(--text)] cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
 						onClick={() => setPage((p) => Math.max(1, p - 1))}
 						disabled={!canPrev}
 					>
 						Prev
 					</button>
-					<span className="text-xs text-neutral-600 dark:text-neutral-300">
+					<span className="text-xs text-[var(--text)]">
 						Page <b>{page}</b> / {totalPages}
 					</span>
 					<button
-						className="dark:text-white cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
+						className="text-[var(--text)] cursor-pointer h-8 px-3 rounded-md border border-neutral-200 dark:border-neutral-700 disabled:opacity-50"
 						onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
 						disabled={!canNext}
 					>

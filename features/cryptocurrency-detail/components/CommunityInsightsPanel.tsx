@@ -88,19 +88,19 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 	return (
 		<div className="text-[#1E1B39]">
 			{/* Row 1: Community Health Score */}
-			<div className="bg-white rounded-xl p-4 mb-4 dark:bg-[#1A1A1A]">
-				<div className="mb-1.5 flex items-center gap-2 dark:text-[#FFF]">
+			<div className="rounded-xl p-4 mb-4 bg-[var(--bg-block)] text-[var(--text)]">
+				<div className="mb-1.5 flex items-center gap-2">
 					<p className="text-sm font-reddit font-medium">Community Health Score</p>
 					<TooltipCommon content="A score from 0 to 100 that represents the overall health of a project’s community..." />
 				</div>
 				{isFetching ? (
 					<div className="flex items-center gap-2">
-						<div className="h-9 w-10 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
-						<div className="h-4 w-32 bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+						<div className="h-9 w-10 bg-[var(--loading)] rounded animate-pulse" />
+						<div className="h-4 w-32 bg-[var(--loading)] rounded animate-pulse" />
 					</div>
 				) : (
 					<div className="flex items-center gap-2">
-						<p className="text-3xl font-semibold font-noto dark:text-[#FFF]">{data?.healthScore}</p>
+						<p className="text-3xl font-semibold font-noto">{data?.healthScore}</p>
 					</div>
 				)}
 			</div>
@@ -108,14 +108,14 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 			{/* Row 2: Community Metrics */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				{healthMetrics.map((metric, index) => (
-					<div key={index} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
+					<div key={index} className="rounded-xl p-4 space-y-1 bg-[var(--bg-block)] text-[var(--text)]">
 						<div>{metric.icon}</div>
-						<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
+						<div className="flex items-center gap-2 mb-2">
 							<p className="text-xs font-reddit">{metric.title}</p>
 							<TooltipCommon content={metric.content} />
 						</div>
 						{isFetching ? (
-							<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+							<div className="h-5 w-full bg-[var(--loading)] rounded animate-pulse" />
 						) : (
 							<div className="text-sm font-medium font-noto flex items-center gap-1 dark:text-white" style={{ color: metric?.color || '' }}>
 								{metric.value}
@@ -125,7 +125,7 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 				))}
 			</div>
 
-			<div className="mb-1 mt-5 mb-4 flex items-center gap-2 dark:text-[#FFF]">
+			<div className="mb-1 mt-5 mb-4 flex items-center gap-2 text-[var(--text)]">
 				<p className="text-sm font-reddit font-medium">Market Metrics</p>
 				<TooltipCommon content="Basic market indicators like market cap, volume, and token supply details." />
 			</div>
@@ -169,15 +169,15 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 						tooltip: 'The amount of coins that are circulating in the market...'
 					}
 				].map((metric, idx) => (
-					<div key={idx} className="bg-white rounded-xl p-4 space-y-1 dark:bg-[#1A1A1A]">
-						<div className="flex items-center gap-2 dark:text-[#FFF] mb-2">
+					<div key={idx} className="rounded-xl p-4 space-y-1 bg-[var(--bg-block)] text-[var(--text)]">
+						<div className="flex items-center gap-2 mb-2">
 							<p className="text-xs font-reddit">{metric.label}</p>
 							<TooltipCommon content={metric.tooltip} />
 						</div>
 						{isFetching ? (
-							<div className="h-5 w-full bg-gray-200 dark:bg-[#333] rounded animate-pulse" />
+							<div className="h-5 w-full bg-[var(--loading)] rounded animate-pulse" />
 						) : (
-							<div className="font-medium font-noto flex flex-col 2xl:flex-row 2xl:items-center gap-1 dark:text-white">
+							<div className="font-medium font-noto flex flex-col 2xl:flex-row 2xl:items-center gap-1">
 								{metric.value} {metric.extra && <span className="2xl:ml-2 text-xs">{metric.extra}</span>}
 							</div>
 						)}

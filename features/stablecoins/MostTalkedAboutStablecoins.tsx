@@ -17,12 +17,12 @@ const MostTalkedAboutStablecoins = () => {
 	const mostTalkedAboutStablecoins = data?.data ?? [];
 
 	return (
-		<div className="bg-white dark:bg-black rounded-xl shadow-xl">
-			<div className="flex items-center gap-2 dark:text-white px-5 pt-5 pb-3">
+		<div className="bg-[var(--bg-card)] rounded-xl shadow-xl">
+			<div className="flex items-center gap-2 text-[var(--text)] px-5 pt-5 pb-3">
 				<h3 className="font-reddit">Most Talked About Project (7D)</h3>
 				<TooltipCommon content="The list of stocks with the highest price growth rate over the past 7 days, calculated based on percentage change." />
 			</div>
-			<div className="text-[#4B4A4A] dark:text-white pb-3">
+			<div className="text-[var(--text)] pb-3">
 				{isGettingMostTalkedAboutStablecoins ? (
 					<div className="px-5">
 						{[...Array(5)].map((_, idx) => (
@@ -31,11 +31,11 @@ const MostTalkedAboutStablecoins = () => {
 								className="flex items-center justify-between py-2 animate-pulse"
 							>
 								<div className="flex items-center gap-3">
-									<div className="h-4 w-4 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
-									<div className="w-8 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded-full" />
-									<div className="h-4 w-30 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
+									<div className="h-4 w-4 bg-[var(--loading)] rounded animate-pulse rounded" />
+									<div className="w-8 h-8 bg-[var(--loading)] rounded animate-pulse rounded-full" />
+									<div className="h-4 w-30 bg-[var(--loading)] rounded animate-pulse rounded" />
 								</div>
-								<div className="h-4 w-14 bg-gray-200 dark:bg-[#333] rounded animate-pulse rounded" />
+								<div className="h-4 w-14 bg-[var(--loading)] rounded animate-pulse rounded" />
 							</div>
 						))}
 					</div>
@@ -43,7 +43,7 @@ const MostTalkedAboutStablecoins = () => {
 					_map(mostTalkedAboutStablecoins, (item, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[#F9F9F9] dark:hover:bg-[#1A1A1A] rounded-lg transition"
+							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[var(--bg-hover)] rounded-lg transition"
 							onClick={() => {
 								router.push(`/cryptocurrencies/${item.name}`)
 								if (userData?.data?.id) {

@@ -21,7 +21,7 @@ const MostViewedAssets = () => {
 	const [page, setPage] = useState(1);
 	const [activeTab, setActiveTab] = useState("All Assets");
 
-	const tabs = ["All Assets", "Cryptocurrencies", "Stocks", "Commodities"];
+	const tabs = ["All Assets"];
 	const assetTypeFilter =
 		activeTab === "All Assets" ? undefined : activeTab.toLowerCase();
 
@@ -36,8 +36,8 @@ const MostViewedAssets = () => {
 	}, !!userData?.data?.id);
 
 	return (
-		<div className="bg-white dark:bg-black rounded-[20px] p-5 text-[#2F2F2F]">
-			<p className="font-medium font-space mb-2 dark:text-white">Most Viewed Assets (30d)</p>
+		<div className="bg-[var(--bg-card)] rounded-[20px] p-5 text-[var(--text)]">
+			<p className="font-medium font-space mb-2 text-[var(--text)]">Most Viewed Assets (30d)</p>
 			<div>
 				{/* Tabs */}
 				<div className="flex gap-2 mb-6">
@@ -57,7 +57,7 @@ const MostViewedAssets = () => {
 				{/* Assets Table */}
 				<div className="space-y-4">
 					{/* Headers */}
-					<div className="grid grid-cols-3 gap-4 text-sm pb-2 opacity-50 dark:text-white">
+					<div className="grid grid-cols-3 gap-4 text-sm pb-2 opacity-50 text-[var(--text)]">
 						<div>Activity</div>
 						<div>Classify</div>
 						<div>Asset</div>
@@ -67,12 +67,12 @@ const MostViewedAssets = () => {
 					{/* Asset Rows */}
 					<div className="space-y-4">
 						{isLoading ? (
-							<p className="text-xs opacity-50 dark:text-white">Loading...</p>
+							<p className="text-xs opacity-50 text-[var(--text)]">Loading...</p>
 						) : (
 							data?.data?.map((asset, index) => (
 								<div
 									key={index}
-									className="grid grid-cols-3 gap-4 items-center dark:text-white"
+									className="grid grid-cols-3 gap-4 items-center text-[var(--text)]"
 								>
 									<div className="text-sm">{asset.activity}</div>
 									<div>
@@ -109,7 +109,7 @@ const MostViewedAssets = () => {
 
 				{/* Pagination */}
 				<div className="flex justify-center mt-6">
-					<div className="flex items-center gap-2 text-sm text-muted-foreground dark:text-white">
+					<div className="flex items-center gap-2 text-sm text-[var(--text)]">
 						<span>
 							Show {(page - 1) * limit + 1} -{" "}
 							{Math.min(page * limit, data?.metadata?.total ?? 0)} of{" "}

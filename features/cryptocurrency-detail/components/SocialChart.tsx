@@ -127,20 +127,19 @@ const SocialChart = ({ type }) => {
 		return () => clearInterval(interval);
 	}, [selectedTz]);
 	return (
-		<div className="p-6 rounded-xl dark:bg-[#1A1A1A] bg-white text-[#1E1B39] dark:text-[#FFF]">
+		<div className="p-6 rounded-xl bg-[var(--bg-block)] text-[var(--text)]">
 			<CandlestickChart utcOffset={selectedTz.offset} type={type} />
-			{/* <hr className="text-[#E8E8E8] dark:text-[#B1B1B1] mt-2" /> */}
 			<div className="flex flex-col md:flex-row md:items-center mt-4 justify-between gap-2">
-				<div className="flex items-center gap-2 text-xs text-[#222222] dark:text-white">
+				<div className="flex items-center gap-2 text-xs text-[var(--bg-text)]">
 					<Popover open={open} onOpenChange={setOpen}>
 						<PopoverTrigger asChild >
-							<div className="cursor-pointer text-xs text-[#222222] dark:text-white flex items-center gap-2">
+							<div className="cursor-pointer text-xs text-[var(--bg-text)] flex items-center gap-2">
 								<span>
 									{currentTime} {selectedTz.label}
 								</span>
 							</div>
 						</PopoverTrigger>
-						<PopoverContent className="w-[250px] max-h-64 overflow-y-auto p-2 bg-white dark:bg-black">
+						<PopoverContent className="w-[250px] max-h-64 overflow-y-auto p-2 bg-[var(--bg-card)]">
 							{timezones.map((tz) => (
 								<div
 									key={tz.label}
@@ -148,7 +147,7 @@ const SocialChart = ({ type }) => {
 										setSelectedTz(tz);
 										setOpen(false);
 									}}
-									className={`text-sm px-3 py-2 cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 ${selectedTz.label === tz.label ? 'text-blue-500 font-medium' : ''
+									className={`text-sm px-3 py-2 cursor-pointer text-[var(--bg-text)] hover:bg-[var(--bg-hover)] ${selectedTz.label === tz.label ? 'text-blue-500 font-medium' : ''
 										}`}
 								>
 									{tz.label}

@@ -33,51 +33,51 @@ const SocialWalletLogin = () => {
 						</Avatar>
 					</div>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="center" className="bg-white w-[240px] rounded-xl p-4">
+				<DropdownMenuContent align="center" className="bg-[var(--bg-card)] w-[240px] rounded-xl p-4">
 					<div className="flex items-center gap-2">
 						<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
-							<Avatar className="h-10 w-10 bg-white">
+							<Avatar className="h-10 w-10 bg-[var(--card)]">
 								<AvatarImage src={user?.avatar} alt={user?.username} />
 								<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 							</Avatar>
 						</div>
 						<div className="space-y-1">
-							<p className="text-[#111] fonr-space text-xs font-medium">{user?.name}</p>
-							<p className="text-[10px] font-medium text-[#494949] bg-[#EBEBEB] rounded-full py-[2px] px-2 w-fit">Free Plan</p>
+							<p className="text-[var(--text)] fonr-space text-xs font-medium">{user?.name}</p>
+							<p className="text-[10px] font-medium text-[var(--text-chip)] bg-[#EBEBEB] rounded-full py-[2px] px-2 w-fit">Free Plan</p>
 						</div>
 					</div>
-					<hr className="my-3 text-[#EEEEEE]" />
+					<hr className="my-3 text-[var(--border)]" />
 					<Link href='/settings/profile'>
-						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
 							<ProfileIcon />
 							<span>My Profile</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/security'>
-						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
 							<ShieldIcon />
 							<span>Account Security</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/notifications'>
-						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
 							<NotificationIcon />
 							<span>Notification Settings</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/watchlist'>
-						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
 							<FavouriteIcon />
 							<span>Watchlist & Portfolio</span>
 						</DropdownMenuItem>
 					</Link>
 					<Link href='/settings/analytics'>
-						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
 							<AnalystIcon />
 							<span>Account Analytics</span>
 						</DropdownMenuItem>
 					</Link>
-					<DropdownMenuItem onClick={handleLogout} className="cursor-pointer space-x-2 hover:bg-[#F8F8F8] rounded-lg p-2">
+					<DropdownMenuItem onClick={handleLogout} className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
 						<LogoutIcon />
 						<span>Log Out</span>
 					</DropdownMenuItem>

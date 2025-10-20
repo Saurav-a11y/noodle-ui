@@ -1,6 +1,6 @@
 'use client';
 
-import DropdownCommon, { DropdownCategories } from "@/components/common/DropdownCommon";
+import DropdownCommon, { DropdownCategories, DropdownChains } from "@/components/common/DropdownCommon";
 import DiscordIcon from "@/icons/DiscordIcon";
 import TelegramIcon from "@/icons/TelegramIcon";
 import XIcon from "@/icons/XIcon";
@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const Skeleton = ({ className = "" }) => (
-	<div className={`bg-gray-200 dark:bg-[#333] animate-pulse rounded ${className}`} />
+	<div className={`bg-[var(--loading)] animate-pulse rounded ${className}`} />
 )
 
 const shortenAddress = (address: string): string => {
@@ -63,8 +63,8 @@ const BasicInformation = () => {
 	if (isFetching) {
 		return (
 			<div>
-				<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>
-				<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
+				<h3 className="text-sm font-medium mb-2.5 font-noto text-[var(--text)]">Basic Information</h3>
+				<div className="space-y-5 mb-6 text-[var(--text-info)]">
 					{/* Website */}
 					<div className="flex justify-between items-center gap-3">
 						<p className="text-xs font-medium opacity-50 font-noto">Website</p>
@@ -102,15 +102,15 @@ const BasicInformation = () => {
 	}
 	return (
 		<div>
-			<h3 className="text-sm font-medium mb-2.5 font-noto dark:text-[#FFF]">Basic Information</h3>
-			<div className="space-y-5 mb-6 text-[#373737] dark:text-[#FFF]">
+			<h3 className="text-sm font-medium mb-2.5 font-noto  text-[var(--text)]">Basic Information</h3>
+			<div className="space-y-5 mb-6 text-[var(--text-info)]">
 				{/* Website */}
 				<div className="flex justify-between items-center gap-3">
 					<p className="text-xs font-medium opacity-50 font-noto">Website</p>
 					<div className="flex flex-wrap items-center justify-end gap-4 flex-1">
 						{basicInformation?.website && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
-								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer text-[#494949] font-reddit w-full">
+								<button className="flex items-center gap-2 bg-[var(--bg-block)] text-[var(--text-text)] px-2.5 py-1.5 rounded-full font-medium text-xs cursor-pointer font-reddit w-full">
 									<Link href={basicInformation?.website || ""} target='_blank' className="flex items-center gap-1.5">
 										<Globe className="w-4 h-4 text-inherit" />
 										<span>Website</span>
@@ -120,7 +120,7 @@ const BasicInformation = () => {
 						)}
 						{basicInformation?.whitepaper && (
 							<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA07] p-[1.5px] rounded-full w-fit max-w-[200px]">
-								<button className="flex items-center gap-2 bg-white dark:bg-[#1A1A1A] dark:text-[#FFF] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer text-[#494949] font-reddit">
+								<button className="flex items-center gap-2 bg-[var(--bg-block)] text-[var(--text-text)] px-3 py-1.5 rounded-full w-full font-medium text-xs cursor-pointer font-reddit">
 									<Link href={basicInformation?.whitepaper || ""} target='_blank' className="flex items-center gap-1.5">
 										<Newspaper className="w-4 h-4 text-inherit" />
 										<span>
@@ -132,10 +132,6 @@ const BasicInformation = () => {
 						)}
 					</div>
 				</div>
-				{/* Explorers */}
-				{basicInformation?.explorer?.length > 0 && (
-					<DropdownCommon data={basicInformation?.explorer} title="Explorers" />
-				)}
 				{/* Contract Address */}
 				{basicInformation?.contracts?.length > 0 && (
 					<div className="relative group flex justify-between">
@@ -171,9 +167,9 @@ const BasicInformation = () => {
 								</span>
 
 								{showAll && (
-									<div className="absolute right-0 z-50 mt-2 w-[300px] max-h-[300px] overflow-auto bg-white dark:bg-zinc-900 rounded-lg shadow-lg" ref={popupRef}>
+									<div className="absolute right-0 z-90 mt-2 w-[300px] max-h-[300px] overflow-auto bg-[var(--bg-card)] text-[var(--text-text)] rounded-lg shadow-lg" ref={popupRef}>
 										{basicInformation?.contracts.map((c, index) => (
-											<div key={index} className="flex items-center justify-between gap-2 text-xs font-noto hover:bg-gray-100 px-3 py-2 cursor-pointer dark:hover:bg-[#222]">
+											<div key={index} className="flex items-center justify-between gap-2 text-xs font-noto hover:bg-[var(--bg-hover)] px-3 py-2 cursor-pointer">
 												<Link href={c.link} target="_blank" rel="noopener noreferrer" onClick={() => setShowAll(false)}>
 													<div className="flex items-center gap-2 justify-between w-full">
 														<div className="flex items-center gap-2">
@@ -205,6 +201,16 @@ const BasicInformation = () => {
 							</div>
 						</div>
 					</div>
+				)}
+				{/* Explorers */}
+				{basicInformation?.explorer?.length > 0 && (
+					<DropdownCommon data={basicInformation?.explorer} title="Explorers" />
+				)}
+				{basicInformation?.categories?.length > 0 && (
+					<DropdownCategories data={basicInformation?.categories} title="Categories" />
+				)}
+				{basicInformation?.chains?.length > 0 && (
+					<DropdownChains data={basicInformation?.chains} title="Chains" />
 				)}
 				{/* Wallets */}
 				{basicInformation?.wallets?.length > 0 && (
@@ -239,7 +245,7 @@ const BasicInformation = () => {
 										})}
 									</NavigationMenuTrigger>
 									<NavigationMenuContent>
-										<div className="w-[232px] p-2 bg-white dark:bg-[#1A1A1A] rounded-xl shadow-lg z-80">
+										<div className="w-[232px] p-2 bg-[var(--bg-card)] text-[var(--text-text)] rounded-xl shadow-lg z-80">
 											{basicInformation?.wallets.map((item, index) => {
 												const isValidUrl = item.logo?.startsWith('http');
 												const imageSrc = isValidUrl
@@ -251,7 +257,7 @@ const BasicInformation = () => {
 														href={item.url}
 														target="_blank"
 														key={index}
-														className="flex items-center gap-3 px-3 py-2 text-xs hover:bg-[#F3F3F3] dark:text-white dark:hover:bg-[#222] hover:font-medium rounded-md cursor-pointer transition-colors"
+														className="flex items-center gap-3 px-3 py-2 text-xs hover:bg-[var(--bg-hover)] text-[var(--text-text)] hover:font-medium rounded-md cursor-pointer transition-colors"
 													>
 														<img
 															src={imageSrc}
@@ -270,12 +276,6 @@ const BasicInformation = () => {
 							</NavigationMenuList>
 						</NavigationMenu>
 					</div>
-				)}
-				{basicInformation?.categories?.length > 0 && (
-					<DropdownCategories data={basicInformation?.categories} title="Categories" />
-				)}
-				{basicInformation?.chains?.length > 0 && (
-					<DropdownCategories data={basicInformation?.chains} title="Chains" />
 				)}
 				{/* Community */}
 				{basicInformation?.community?.length > 0 && (
