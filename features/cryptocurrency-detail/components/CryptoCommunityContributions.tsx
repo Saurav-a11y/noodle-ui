@@ -350,10 +350,10 @@ const CryptoCommunityContributions = () => {
 											width={220}
 											height={220}
 										/>
-										<p className="text-base text-[#4B4A4A] dark:text-gray-300 font-medium font-reddit">
+										<p className="text-base text-[var(--text)] font-medium font-reddit">
 											GitHub activity isn’t available yet.
 										</p>
-										<p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+										<p className="text-sm text-[var(--text)] max-w-sm">
 											We couldn't display GitHub contributions for this community at the moment.
 										</p>
 									</div>
@@ -589,13 +589,7 @@ const CryptoCommunityContributions = () => {
 								{!isLoading && data?.length === 0 && (
 									<div className="py-20 animate-fade-in">
 										<div className="flex flex-col items-center">
-											<Image
-												src="/images/youtube-notfound.png"
-												alt="YouTube activity not available"
-												width={180}
-												height={180}
-												className="opacity-90"
-											/>
+											<YoutubeIcon width={180} height={180} fill="currentColor" />
 											<h3 className="text-lg font-semibold text-[var(--text)] mb-2">
 												YouTube activity isn’t available yet.
 											</h3>
@@ -609,7 +603,7 @@ const CryptoCommunityContributions = () => {
 									<div className="bg-[var(--bg-post)] p-4 rounded-xl">
 										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 											<div className="flex items-center gap-2">
-												<YoutubeIcon width={24} height={24} fill="#000" />
+												<YoutubeIcon width={24} height={24} fill="currentColor" />
 												<p className="font-semibold font-noto">YouTube Community Content</p>
 												<div className="border-l h-4 border-l-[var(--bg-apply)] opacity-50 mx-2" />
 												<span className="text-xs text-[var(--text)] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> videos</span>

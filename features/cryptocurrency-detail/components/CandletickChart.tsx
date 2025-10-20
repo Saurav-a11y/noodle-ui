@@ -495,11 +495,11 @@ const CandlestickChart = ({ utcOffset, type }) => {
 			<div style={{ position: 'relative' }}>
 				{/* ✅ Hiển thị loading overlay nếu đang fetch data */}
 				{isLoading && (
-					<div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[3] flex-col gap-3'>
+					<div className='absolute inset-0 flex items-center justify-center bg-[var(--bg-hover-2)] bg-opacity-50 z-[3] flex-col gap-3'>
 						<div className='w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin'></div>
 						<div>
-							<p className='text-white text-center text-lg font-semibold'>Loading Data</p>
-							<p className='text-white text-center'>Please wait a moment</p>
+							<p className='text-[var(--text)] text-center text-lg font-semibold'>Loading Data</p>
+							<p className='text-[var(--text)] text-center'>Please wait a moment</p>
 						</div>
 					</div>
 				)}
