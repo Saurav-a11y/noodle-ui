@@ -160,7 +160,7 @@ export default function YieldsList({
 							// Skeleton rows
 							Array.from({ length: limit }).map((_, i) => (
 								<TableRow key={i} className="border-b border-b-[var(--border)]">
-									{Array.from({ length: 6 }).map((__, j) => (
+									{Array.from({ length: 5 }).map((__, j) => (
 										<TableCell key={j} className="py-3 px-3">
 											<div className="h-4 w-full max-w-[160px] animate-pulse rounded bg-[var(--loading)]" />
 										</TableCell>
