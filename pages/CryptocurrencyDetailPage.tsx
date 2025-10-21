@@ -16,6 +16,7 @@ import BasicInformation from "@/features/cryptocurrency-detail/components/BasicI
 import CryptoFounderAndTeamAnalystChart from "@/features/cryptocurrency-detail/components/CryptoFounderAndTeamAnalystChart";
 import AddToCryptoWatchlist from "@/features/cryptocurrency-detail/components/AddToCryptoWatchlist";
 import { ThemeProvider } from "@/lib/useThemkMode";
+import MarketInfoCard from "@/features/cryptocurrency-detail/components/MarketInfoCard";
 
 const CryptocurrencyDetailPage = () => {
 	const [isChatVisible, setChatVisible] = useState(true);
@@ -130,6 +131,7 @@ const CryptocurrencyDetailPage = () => {
 									<div className="col-span-4 md:col-span-3 space-y-5">
 										<SocialChart type="crypto" />
 										<YieldsList />
+										<MarketInfoCard />
 										<CryptoFounderAndTeamAnalystChart />
 										<div className="mt-10">
 											<CryptoCommunityContributions />
