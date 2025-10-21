@@ -133,7 +133,7 @@ export default function MarketTable() {
 				<Table className="min-w-full text-sm">
 					<TableHeader className="bg-[var(--bg-input-chat)]">
 						<TableRow className="border-b-[var(--border)] text-[var(--text-table)]">
-							{["#", "Exchange", "Pair", "Price", "Spread", "24h Volume", "Trust Score",].map((h) => (
+							{["#", "Exchange", "Pair", "Price", "Spread", "+2% Depth", "-2% Depth", "24h Volume", "Volume %", "Trust Score",].map((h) => (
 								<TableHead key={h} className="py-2 px-3 font-medium text-left border-b-[var(--border)]">
 									{h}
 								</TableHead>
@@ -168,7 +168,16 @@ export default function MarketTable() {
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{formatCurrency(m.price)}</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{formatPercent(m.spread)}</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
+									${formatNumberWithCommas(m.depth_plus_2_percent)}
+								</TableCell>
+								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
+									${formatNumberWithCommas(m.depth_minus_2_percent)}
+								</TableCell>
+								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
 									${formatNumberWithCommas(m.volume_24h_usd)}
+								</TableCell>
+								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
+									{m.volume_percent}%
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
 									<p
@@ -179,9 +188,6 @@ export default function MarketTable() {
 									>
 									</p>
 								</TableCell>
-								{/* <TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
-									<span className="font-medium">{m.market_type}</span>
-								</TableCell> */}
 							</TableRow>
 						))}
 					</TableBody>
