@@ -7,6 +7,9 @@ import { Toaster } from 'react-hot-toast';
 export const metadata: Metadata = {
   title: "Noodle",
   description: "Your ultimate crypto research assistant powered by AI.",
+  icons: {
+    icon: '/favicon.png', // hoặc '/logo.png'
+  },
 };
 
 export default function RootLayout({
