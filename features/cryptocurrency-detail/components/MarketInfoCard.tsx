@@ -87,7 +87,7 @@ export default function MarketTable() {
 	}
 
 	const markets = data?.markets || [];
-	const totalPages = data.totalPages || 1;
+	const totalPages = data?.totalPages || 1;
 
 	return (
 		<div className="rounded-2xl bg-[var(--bg-block)] p-4 md:p-6 space-y-4">
@@ -142,21 +142,21 @@ export default function MarketTable() {
 					</TableHeader>
 					<TableBody>
 						{markets.map((m) => (
-							<TableRow key={m.rank} className="hover:bg-[var(--bg-hover-2)] transition">
-								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{m.rank}</TableCell>
+							<TableRow key={m?.rank} className="hover:bg-[var(--bg-hover-2)] transition">
+								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{m?.rank}</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
 									<div className="flex items-center gap-2">
-										<Image src={m.exchange_logo} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />
-										<span className="text-xs font-medium capitalize text-[var(--text)]">{m.exchange ?? '-'}</span>
+										<Image src={m?.exchange_logo} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />
+										<span className="text-xs font-medium capitalize text-[var(--text)]">{m?.exchange ?? '-'}</span>
 									</div>
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] font-mono truncate max-w-[220px] text-xs">
 									<div className="flex items-center gap-2">
-										<span className="text-xs font-medium capitalize text-[var(--text)] truncate max-w-[140px]" title={m.exchange ?? '-'}>
-											{m.pair}
+										<span className="text-xs font-medium capitalize text-[var(--text)] truncate max-w-[140px]" title={m?.exchange ?? '-'}>
+											{m?.pair}
 										</span>
 										<Link
-											href={m.trade_url || ''}
+											href={m?.trade_url || ''}
 											target="_blank"
 											rel="noopener noreferrer"
 											className="inline-flex items-center justify-center hover:underline"
@@ -165,23 +165,23 @@ export default function MarketTable() {
 										</Link>
 									</div>
 								</TableCell>
-								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{formatCurrency(m.price)}</TableCell>
-								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{formatPercent(m.spread)}</TableCell>
+								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{formatCurrency(m?.price)}</TableCell>
+								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">{formatPercent(m?.spread)}</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
-									${formatNumberWithCommas(m.depth_plus_2_percent)}
+									${formatNumberWithCommas(m?.depth_plus_2_percent)}
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
-									${formatNumberWithCommas(m.depth_minus_2_percent)}
+									${formatNumberWithCommas(m?.depth_minus_2_percent)}
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
-									${formatNumberWithCommas(m.volume_24h_usd)}
+									${formatNumberWithCommas(m?.volume_24h_usd)}
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
-									{m.volume_percent}%
+									{m?.volume_percent}%
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
 									<p
-										className={`w-5 h-5 rounded-full text-xs ${m.trust_score === "green"
+										className={`w-5 h-5 rounded-full text-xs ${m?.trust_score === "green"
 											? "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-200"
 											: "bg-gray-200 dark:bg-gray-700"
 											}`}
