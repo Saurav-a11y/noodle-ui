@@ -156,7 +156,7 @@ export default function MarketTable() {
 											{m.pair}
 										</span>
 										<Link
-											href={m.trade_url}
+											href={m.trade_url || ''}
 											target="_blank"
 											rel="noopener noreferrer"
 											className="inline-flex items-center justify-center hover:underline"
