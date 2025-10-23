@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { useAddBulkToWatchlist, useCandidateTokens } from "@/hooks/useWatchlist";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { Button } from "@/components/ui/Button";
+// import { Button } from "@/components/ui/Button";
 
 interface AddAssetModalProps {
 	open: boolean;
@@ -118,11 +118,11 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 			// có thể toast lỗi ở đây
 		}
 	}
-	const tabs = [
-		"Cryptocurrencies",
-		// "Stocks",
-		// "Commodities"
-	];
+	// const tabs = [
+	// 	"Cryptocurrencies",
+	// 	"Stocks",
+	// 	"Commodities"
+	// ];
 	if (!open) return null
 
 	return (
@@ -133,7 +133,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 						<DialogTitle className="text-xl font-semibold">Add New Asset</DialogTitle>
 					</div>
 				</DialogHeader>
-				<div className="flex gap-2 px-4">
+				{/* <div className="flex gap-2 px-4">
 					{tabs.map((tab) => (
 						<Button
 							key={tab}
@@ -147,7 +147,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 							{tab}
 						</Button>
 					))}
-				</div>
+				</div> */}
 				<div className="px-4">
 					<div className="relative">
 						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 dark:text-white" />

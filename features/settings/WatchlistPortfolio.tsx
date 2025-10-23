@@ -16,19 +16,19 @@ import { formatNumberWithCommas } from "@/lib/format";
 import Image from "next/image";
 import { PlusCircle, Trash2Icon } from "lucide-react";
 import AddAssetModal from "../watchlist/components/AddAssetModal";
-import MetalIcon from "@/icons/commodities/MetalIcon";
-import OilIcon from "@/icons/commodities/OilIcon";
-import HerbsIcon from "@/icons/commodities/HerbsIcon";
+// import MetalIcon from "@/icons/commodities/MetalIcon";
+// import OilIcon from "@/icons/commodities/OilIcon";
+// import HerbsIcon from "@/icons/commodities/HerbsIcon";
 
 type HoldingEditState = {
 	editing: boolean;
 };
 
-const typeIcons = {
-	'metals': <MetalIcon />,
-	'energy': <OilIcon />,
-	'agricultural': <HerbsIcon />,
-}
+// const typeIcons = {
+// 	'metals': <MetalIcon />,
+// 	'energy': <OilIcon />,
+// 	'agricultural': <HerbsIcon />,
+// }
 
 const EditableHoldingsCell = ({
 	value,
@@ -133,12 +133,13 @@ const WatchlistPortfolio = () => {
 		const price = Number(asset?.overview?.market?.close ?? 0);
 		return sum + holdings * price;
 	}, 0);
-	const tabs = [
-		"All Assets",
-		// "Cryptocurrencies",
-		// "Stocks",
-		// "Commodities"
-	];
+
+	// const tabs = [
+	// 	"All Assets",
+	// 	"Cryptocurrencies",
+	// 	"Stocks",
+	// 	"Commodities"
+	// ];
 
 	const handleAddAsset = () => {
 		setIsModalOpen(true);
@@ -213,7 +214,7 @@ const WatchlistPortfolio = () => {
 				<div className="space-y-4">
 					<h3 className="text-[var(--text)] text-sm font-medium">My Portfolio & Watchlist</h3>
 					{/* Tabs */}
-					<div className="flex gap-2">
+					{/* <div className="flex gap-2">
 						{tabs.map((tab) => (
 							<Button
 								key={tab}
@@ -228,7 +229,7 @@ const WatchlistPortfolio = () => {
 								{tab}
 							</Button>
 						))}
-					</div>
+					</div> */}
 
 					{/* Assets Table */}
 					<Table>
@@ -269,12 +270,12 @@ const WatchlistPortfolio = () => {
 														{asset?.assetType === 'cryptocurrencies' && (
 															<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
 														)}
-														{asset?.assetType === 'commodities' && (
+														{/* {asset?.assetType === 'commodities' && (
 															typeIcons[asset?.overview?.info?.group]
 														)}
 														{asset?.assetType === 'stocks' && (
 															<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
-														)}
+														)} */}
 													</div>
 													<div className="flex-1 text-[var(--text)]">
 														{asset?.assetType === 'stocks' && (

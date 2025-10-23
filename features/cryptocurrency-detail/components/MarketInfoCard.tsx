@@ -181,10 +181,12 @@ export default function MarketTable() {
 								</TableCell>
 								<TableCell className="py-3 px-3 font-medium border-b border-[var(--border)] text-xs">
 									<p
-										className={`w-5 h-5 rounded-full text-xs ${m?.trust_score === "green"
-											? "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-200"
-											: "bg-gray-200 dark:bg-gray-700"
-											}`}
+										className={`w-5 h-5 rounded-full text-xs 
+											${m?.trust_score === "green" && "bg-green-100 text-green-600"} 
+											${m?.trust_score === "red" && "bg-red-600 text-red-600"}  
+											${m?.trust_score === "yellow" && "bg-yellow-600 text-yellow-600"}
+											${m?.trust_score === "unknown" && "bg-gray-200 dark:bg-gray-700"}
+											`}
 									>
 									</p>
 								</TableCell>
