@@ -127,9 +127,9 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none" onOpenAutoFocus={(e) => e.preventDefault()}>
+			<DialogContent className="max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none bg-[var(--bg-card)]" onOpenAutoFocus={(e) => e.preventDefault()}>
 				<DialogHeader className="p-6 pb-4">
-					<div className="flex items-center justify-between dark:text-white">
+					<div className="flex items-center justify-between text-[var(--text)]">
 						<DialogTitle className="text-xl font-semibold">Add New Asset</DialogTitle>
 					</div>
 				</DialogHeader>
@@ -149,24 +149,26 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 					))}
 				</div> */}
 				<div className="px-4">
-					<div className="relative">
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 dark:text-white" />
-						<Input
-							placeholder="Search coins"
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-							className="pl-10 bg-muted/50 outline-none focus:outline-none dark:border-white dark:text-white"
-						/>
+					<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-full">
+						<div className="relative rounded-full bg-[var(--bg-input)] text-[var(--text)]">
+							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
+							<Input
+								placeholder="Search coins"
+								value={search}
+								onChange={(e) => setSearch(e.target.value)}
+								className="pl-10 py-2 w-full bg-[var(--bg-input)] border-none rounded-full focus:outline-none focus:ring-0 font-reddit text-[var(--text)]"
+							/>
+						</div>
 					</div>
 				</div>
 
 				<div>
-					<h3 className="text-sm font-medium mb-4 px-4 dark:text-white">Top ranking coins</h3>
+					{/* <h3 className="text-sm font-medium mb-4 px-4 text-[var(--text)]">Top ranking coins</h3> */}
 					<div ref={listRef} onScroll={handleScroll} className="max-h-80 overflow-y-auto">
 						{isLoading ? (
-							<div className="py-10 grid place-items-center text-sm opacity-70 dark:text-white">Loading…</div>
+							<div className="py-10 grid place-items-center text-sm opacity-70 text-[var(--text)]">Loading…</div>
 						) : flat.length === 0 ? (
-							<div className="py-10 grid place-items-center text-sm opacity-70 dark:text-white">No results</div>
+							<div className="py-10 grid place-items-center text-sm opacity-70 text-[var(--text)]">No results</div>
 						) : (
 							flat.map((c: any, index: number) => {
 								const keyId = c.code;
@@ -191,21 +193,21 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 										className={[
 											"flex items-center justify-between border-b last:border-b-0 py-3 px-4",
 											"border-black/5 dark:border-white/10",
-											c.added ? "cursor-default" : "cursor-pointer hover:bg-black/5 dark:hover:bg-white/5",
+											c.added ? "cursor-default" : "cursor-pointer hover:bg-[var(--bg-hover)]",
 											checked ? "bg-black/5 dark:bg-white/5" : ""
 										].join(' ')}
 									>
 										<div className="flex items-center gap-3">
-											<div className="h-8 w-8 rounded-full overflow-hidden bg-gray-100 dark:bg-white/10 grid place-items-center">
+											<div className="h-8 w-8 rounded-full overflow-hidden bg-[var(--background)] grid place-items-center">
 												{c.logo ? (
 													<Image src={c.logo || '/images/icon-section-6_2.png'} alt={c.symbol} width={32} height={32} />
 												) : (
-													<span className="text-xs dark:text-white">{c.symbol?.slice(0, 2)}</span>
+													<span className="text-xs text-[var(--text)]">{c.symbol?.slice(0, 2)}</span>
 												)}
 											</div>
 											<div>
-												<div className="text-sm font-medium dark:text-white">{c.name}</div>
-												<div className="text-xs opacity-60 dark:text-white">{c.symbol}</div>
+												<div className="text-sm font-medium text-[var(--text)]">{c.name}</div>
+												<div className="text-xs opacity-60 text-[var(--text)]">{c.symbol}</div>
 											</div>
 										</div>
 										{c.added ? (

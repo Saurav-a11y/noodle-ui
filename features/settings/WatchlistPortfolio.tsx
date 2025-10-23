@@ -268,7 +268,7 @@ const WatchlistPortfolio = () => {
 												<div className="flex items-center gap-3">
 													<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-[var(--text)] font-bold">
 														{asset?.assetType === 'cryptocurrencies' && (
-															<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
+															<Image src={asset?.overview?.info?.base_currency_logoid ? `https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg` : '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 														)}
 														{/* {asset?.assetType === 'commodities' && (
 															typeIcons[asset?.overview?.info?.group]
