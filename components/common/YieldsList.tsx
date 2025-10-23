@@ -188,7 +188,7 @@ export default function YieldsList({
 									<TableCell className="py-3 px-3 text-[var(--text)]">{(page - 1) * limit + idx + 1}</TableCell>
 									<TableCell className="py-3 px-3">
 										<div className="flex items-center gap-2">
-											<Image src={`https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48`} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />
+											<Image src={row?.project ? `https://icons.llamao.fi/icons/protocols/${row?.project}?w=48&h=48` : '/images/icon-section-6_2.png'} alt="Logo Project" width={48} height={48} className='w-6 h-6 rounded-full' />
 											<span className="text-xs font-medium capitalize text-[var(--text)]">{row.project ?? '-'}</span>
 										</div>
 									</TableCell>

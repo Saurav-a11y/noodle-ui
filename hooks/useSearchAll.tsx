@@ -15,9 +15,8 @@ export const useSearchAll = (search: string, opts?: { enabled?: boolean }) => {
             return res.json();
         },
         getNextPageParam: (last) => {
-            const { page, limit, totals } = last.data;
-            console.log("🚀 ~ useSearchAll ~ total:", totals)
-            const totalPages = Math.ceil((totals ?? 0) / (limit || 1));
+            const { page, limit, total } = last.data;
+            const totalPages = Math.ceil((total ?? 0) / (limit || 1));
             return page < totalPages ? page + 1 : undefined;
         },
         initialPageParam: 1,

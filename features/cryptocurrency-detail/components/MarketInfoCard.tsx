@@ -129,7 +129,7 @@ export default function MarketTable() {
 				</div>
 			</div> */}
 
-			<div className="overflow-x-auto rounded-tl-xl rounded-tr-xl bg-[var(--bg-hover)]">
+			<div className="overflow-x-auto rounded-tl-xl rounded-tr-xl">
 				<Table className="min-w-full text-sm">
 					<TableHeader className="bg-[var(--bg-input-chat)]">
 						<TableRow className="border-b-[var(--border)] text-[var(--text-table)]">

@@ -521,6 +521,23 @@ const CryptoCommunityContributions = () => {
 														{post?.data?.title && (
 															<p className="font-space text-[var(--text)] font-medium text-xl mt-1">{post?.data?.title}</p>
 														)}
+														{post?.data?.crosspost_parent_list && (
+															<div className="border border-[var(--border)] rounded-xl p-4 mt-4">
+																<p className="flex items-center space-x-2 text-[var(--text)]">
+																	<span className="text-xs font-semibold">{post?.data?.crosspost_parent_list[0]?.subreddit_name_prefixed}</span>
+																	<span className="opacity-50">•</span>
+																	<span className="text-xs opacity-50">{formatTimestamp(post?.data?.crosspost_parent_list[0]?.created)}</span>
+																</p>
+																<p className="font-space text-[var(--text)] font-medium text-xl mt-1 mb-3">{post?.data?.crosspost_parent_list[0]?.title}</p>
+																<p
+																	className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[var(--text)] [&_a]:text-blue-500 [&_a]:underline opacity-50"
+																	dangerouslySetInnerHTML={{
+																		__html: he.decode(post?.data?.crosspost_parent_list[0]?.selftext_html || '')
+																	}}
+																/>
+																<p className="text-xs text-[var(--text)] opacity-50">{post?.data?.crosspost_parent_list[0]?.num_comments} comments</p>
+															</div>
+														)}
 														{post?.data?.selftext_html && (
 															<p
 																className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[var(--text)] [&_a]:text-blue-500 [&_a]:underline"

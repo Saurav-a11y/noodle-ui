@@ -8,7 +8,6 @@ export const CommodityHeader = () => {
 	const slug = params?.slug as string;
 	const { isFetching, data } = useCommodityOverview(slug);
 	const commodityOverview = data?.data || {};
-	console.log("🚀 ~ CommodityHeader ~ commodityOverview:", commodityOverview)
 
 	return (
 		<div className="flex items-center gap-4">

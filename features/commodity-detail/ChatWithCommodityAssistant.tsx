@@ -176,7 +176,6 @@ const ChatWithCommodityAssistant = ({ handleCloseChat }: { handleCloseChat?: any
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
 	const { data, isFetching: isGettingCommunity } = useCommodityOverview(communityId);
-	console.log("🚀 ~ ChatWithCommodityAssistant ~ data:", data)
 	const { data: userData } = useMe()
 	const {
 		data: rawMessagesData,

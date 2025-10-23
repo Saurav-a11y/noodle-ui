@@ -152,7 +152,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 						onScroll={handleScroll}
 						className={`absolute w-[300px] -left-1/4 right-0 top-[44px] bg-[var(--bg-header)] rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto ${popupClassname}`}
 					>
-						{!isLoading ? (
+						{isLoading ? (
 							Array.from({ length: 6 }).map((_, idx) => <SkeletonItem key={idx} />)
 						) : flat.length === 0 ? (
 							<div className="py-10 grid place-items-center text-sm opacity-70">No results</div>
@@ -182,7 +182,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 										}}
 									>
 										<div className="flex items-center gap-2">
-											<Image src={item.logo || ""} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
+											<Image src={item.logo || '/images/icon-section-6_2.png'} width={32} height={32} alt="Image Community" className="w-8 h-8 rounded-full" />
 											<div>
 												<div className="text-sm text-[var(--text)] font-noto font-semibold">{item.name}</div>
 												<div className="text-[10px] text-gray-500 font-noto">{item.symbol}</div>

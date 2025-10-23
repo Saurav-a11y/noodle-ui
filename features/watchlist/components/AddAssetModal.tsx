@@ -120,8 +120,8 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 	}
 	const tabs = [
 		"Cryptocurrencies",
-		"Stocks",
-		"Commodities"
+		// "Stocks",
+		// "Commodities"
 	];
 	if (!open) return null
 
@@ -198,7 +198,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 										<div className="flex items-center gap-3">
 											<div className="h-8 w-8 rounded-full overflow-hidden bg-gray-100 dark:bg-white/10 grid place-items-center">
 												{c.logo ? (
-													<Image src={c.logo} alt={c.symbol} width={32} height={32} />
+													<Image src={c.logo || '/images/icon-section-6_2.png'} alt={c.symbol} width={32} height={32} />
 												) : (
 													<span className="text-xs dark:text-white">{c.symbol?.slice(0, 2)}</span>
 												)}
