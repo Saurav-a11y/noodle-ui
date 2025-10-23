@@ -127,7 +127,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none bg-[var(--bg-card)]" onOpenAutoFocus={(e) => e.preventDefault()}>
+			<DialogContent className="max-w-lg p-0 w-full rounded-xl outline-none focus:outline-none bg-[var(--bg-block)] h-[574px]" onOpenAutoFocus={(e) => e.preventDefault()}>
 				<DialogHeader className="p-6 pb-4">
 					<div className="flex items-center justify-between text-[var(--text)]">
 						<DialogTitle className="text-xl font-semibold">Add New Asset</DialogTitle>
@@ -162,7 +162,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 					</div>
 				</div>
 
-				<div>
+				<div className="flex-1">
 					{/* <h3 className="text-sm font-medium mb-4 px-4 text-[var(--text)]">Top ranking coins</h3> */}
 					<div ref={listRef} onScroll={handleScroll} className="max-h-80 overflow-y-auto">
 						{isLoading ? (
@@ -193,7 +193,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 										className={[
 											"flex items-center justify-between border-b last:border-b-0 py-3 px-4",
 											"border-black/5 dark:border-white/10",
-											c.added ? "cursor-default" : "cursor-pointer hover:bg-[var(--bg-hover)]",
+											c.added ? "cursor-default" : "cursor-pointer hover:bg-[var(--bg-hover-2)]",
 											checked ? "bg-black/5 dark:bg-white/5" : ""
 										].join(' ')}
 									>

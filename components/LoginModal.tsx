@@ -29,7 +29,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-lg w-full bg-[var(--bg-card)]">
+			<DialogContent className="sm:max-w-lg w-full bg-[var(--bg-block)]">
 				<DialogHeader>
 					<DialogTitle className="text-center text-xl font-semibold text-reddit text-[var(--text)]">
 						Select your login method

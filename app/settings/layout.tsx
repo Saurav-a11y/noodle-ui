@@ -10,9 +10,9 @@ import Header from '@/components/Header';
 import ProfileIcon from '@/icons/ProfileIcon';
 import ShieldIcon from '@/icons/ShieldIcon';
 import AnalystIcon from '@/icons/AnalystIcon';
-import NotificationIcon from '@/icons/NotificationIcon';
+// import NotificationIcon from '@/icons/NotificationIcon';
 import FavouriteIcon from '@/icons/FavouriteIcon';
-import SubscriptionIcon from '@/icons/SubscriptionIcon';
+// import SubscriptionIcon from '@/icons/SubscriptionIcon';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from '@/lib/useThemkMode';
 
@@ -20,9 +20,9 @@ const SECTIONS = [
 	{ key: 'profile', label: 'Profile setting', icon: <ProfileIcon height={24} width={24} /> },
 	{ key: 'security', label: 'Account Security', icon: <ShieldIcon height={24} width={24} /> },
 	{ key: 'analytics', label: 'Account Analytics', icon: <AnalystIcon height={24} width={24} /> },
-	{ key: 'notifications', label: 'Notification', icon: <NotificationIcon height={24} width={24} /> },
+	// { key: 'notifications', label: 'Notification', icon: <NotificationIcon height={24} width={24} /> },
 	{ key: 'watchlist', label: 'Watchlist & Portfolio', icon: <FavouriteIcon height={24} width={24} /> },
-	{ key: 'subscription', label: 'Subscription', icon: <SubscriptionIcon height={24} width={24} />, badge: 'Free Plan' },
+	// { key: 'subscription', label: 'Subscription', icon: <SubscriptionIcon height={24} width={24} />, badge: 'Free Plan' },
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {

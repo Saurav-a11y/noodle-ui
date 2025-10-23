@@ -77,9 +77,42 @@ const AccountAnalytics = () => {
 			<div className="bg-[var(--bg-card)] rounded-[20px] p-5 font-noto">
 				<p className="text-sm font-medium text-[var(--text)]">Recent Activity (24h)</p>
 				<div className="text-[var(--text)]">
-					{isLoading ? (
-						<p className="text-xs opacity-50 text-[var(--text)]">Loading...</p>
-					) : (
+					{isLoading && (
+						<div className="space-y-2 mt-3">
+							{Array.from({ length: 4 }).map((_, i) => (
+								<div key={i} className="flex items-center justify-between py-3 animate-pulse">
+									<div className="flex items-center gap-3">
+										<div className="h-4 w-16 bg-[var(--loading)] rounded"></div>
+										<div className="h-4 w-40 bg-[var(--loading)] rounded"></div>
+									</div>
+									{/* <div className="h-4 w-12 bg-[var(--loading)] rounded"></div> */}
+								</div>
+							))}
+						</div>
+					)}
+					{!isLoading && activities.length === 0 && (
+						<div className="flex flex-col items-center justify-center h-full space-y-3">
+							<div className="w-12 h-12 rounded-full bg-[var(--foreground)] flex items-center justify-center">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth={1.5}
+									className="w-6 h-6 text-[var(--text-chip)]"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-8.25A3.375 3.375 0 004.5 11.625V14.25m15 0A2.25 2.25 0 0117.25 16.5h-10.5A2.25 2.25 0 014.5 14.25m15 0v4.125A2.625 2.625 0 0116.875 21h-9.75A2.625 2.625 0 014.5 18.375V14.25"
+									/>
+								</svg>
+							</div>
+							<p className="text-sm font-medium text-[var(--text)]">No assets found</p>
+							<p className="text-xs text-[var(--text-chip)]">Add assets to see them listed here.</p>
+						</div>
+					)}
+					{!isLoading && activities.length > 0 && (
 						activities.map((activity, index) => {
 							const isNewDate =
 								index === 0 || activity.date !== activities[index - 1].date;
@@ -92,9 +125,7 @@ const AccountAnalytics = () => {
 									)}
 									<div className="flex items-center justify-between py-3 text-[var(--text)]">
 										<div className="flex items-center gap-3">
-											<span className="text-xs opacity-50 w-16">
-												{activity.time}
-											</span>
+											<span className="text-xs opacity-50 w-16">{activity.time}</span>
 											<span className="text-xs">{activity.action}</span>
 										</div>
 									</div>
@@ -118,9 +149,9 @@ const AccountAnalytics = () => {
 										<button
 											key={pageNumber}
 											onClick={() => setPage(pageNumber)}
-											className={`w-6 h-6 rounded text-xs ${page === pageNumber
-												? "bg-[#84EA07] text-white"
-												: "hover:bg-[var(--bg-hover)]"
+											className={`min-w-[34.05px] px-3 py-1 h-full rounded text-sm font-medium cursor-pointer font-reddit ${page === pageNumber
+												? 'transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] text-[var(--text)] font-medium border-transparent'
+												: 'bg-[var(--bg-hover)] text-[var(--text)]'
 												}`}
 										>
 											{pageNumber}

@@ -150,7 +150,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 					<div
 						ref={listRef}
 						onScroll={handleScroll}
-						className={`absolute w-[300px] -left-1/4 right-0 top-[44px] bg-[var(--bg-header)] rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto ${popupClassname}`}
+						className={`absolute w-[300px] -left-1/4 right-0 top-[44px] bg-[var(--bg-block)] rounded-lg z-50 max-h-80 overflow-y-auto ${popupClassname}`}
 					>
 						{isLoading ? (
 							Array.from({ length: 6 }).map((_, idx) => <SkeletonItem key={idx} />)
@@ -163,7 +163,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 										href={`/cryptocurrencies/${item.code}`}
 										key={item.symbol}
 										className={clsx(
-											'block px-4 py-3 hover:bg-[var(--bg-hover)] transition-colors',
+											'block px-4 py-3 hover:bg-[var(--bg-hover-2)] transition-colors',
 											'border-b last:border-b-0 border-b-[var(--border-popover)]'
 										)}
 										onClick={() => {

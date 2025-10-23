@@ -21,8 +21,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Calendar } from "@/components/ui/Calendar";
 import { useUpdateUser } from "@/hooks/useUser";
 import { useCloudinaryUnsignedUpload } from "@/hooks/useCloudinaryUnsignedUpload";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ProfileDetails = () => {
+	const queryClient = useQueryClient();
 	const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
 	const { data, isFetching } = useMe();
 	const user = data?.data;
@@ -109,6 +111,7 @@ const ProfileDetails = () => {
 				biography: formData.bio,
 				avatar: formData.avatar
 			});
+			await queryClient.invalidateQueries({ queryKey: ['me'] });
 		} catch { }
 	};
 

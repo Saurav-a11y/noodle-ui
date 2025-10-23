@@ -105,7 +105,6 @@ const WatchlistPortfolio = () => {
 	const removeFromWatchlist = useRemoveFromWatchlist();
 	const upsertHoldings = useUpsertHoldings(userData?.data?.id);
 
-	const items = data?.data?.items ?? [];
 	const totalItems = data?.data?.totals?.tokens || 0;
 	const totalPages = Math.ceil(totalItems / 10);
 
@@ -128,7 +127,7 @@ const WatchlistPortfolio = () => {
 		setEditingId(null);
 	};
 
-	const totalPrices = items.reduce((sum, asset) => {
+	const totalPrices = data?.data?.items.reduce((sum, asset) => {
 		const holdings = Number(asset?.holdings ?? 0);
 		const price = Number(asset?.overview?.market?.close ?? 0);
 		return sum + holdings * price;
@@ -213,24 +212,6 @@ const WatchlistPortfolio = () => {
 				{/* Portfolio Section */}
 				<div className="space-y-4">
 					<h3 className="text-[var(--text)] text-sm font-medium">My Portfolio & Watchlist</h3>
-					{/* Tabs */}
-					{/* <div className="flex gap-2">
-						{tabs.map((tab) => (
-							<Button
-								key={tab}
-								variant={activeTab === tab ? "default" : "ghost"}
-								size="sm"
-								onClick={() => {
-									setActiveTab(tab.toLowerCase() as string)
-									setPage(1)
-								}}
-								className={`rounded-lg text-xs cursor-pointer ${activeTab === tab.toLocaleLowerCase() ? "bg-[#DDF346] text-black" : "bg-[#F8F8F8]"}`}
-							>
-								{tab}
-							</Button>
-						))}
-					</div> */}
-
 					{/* Assets Table */}
 					<Table>
 						<TableHeader className="bg-[var(--bg-hover)]">
@@ -245,17 +226,48 @@ const WatchlistPortfolio = () => {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{isLoading
-								? Array.from({ length: 5 }).map((_, i) => (
+							{isLoading && (
+								Array.from({ length: 5 }).map((_, i) => (
 									<TableRow key={i} className="animate-pulse">
 										{Array.from({ length: 8 }).map((_, j) => (
 											<TableCell key={j} className="py-4 h-[73px] border-b border-b-[var(--border)]">
-												<div className="h-6  bg-[var(--loading)] rounded animate-pulse w-full" />
+												<div className="h-6 bg-[var(--loading)] rounded animate-pulse w-full" />
 											</TableCell>
 										))}
 									</TableRow>
 								))
-								: items.map((asset) => {
+							)}
+							{!isLoading && data?.data?.items.length === 0 &&
+								<TableRow>
+									<TableCell
+										colSpan={8}
+										className="h-[200px] text-center text-[var(--text-muted)]"
+									>
+										<div className="flex flex-col items-center justify-center h-full space-y-3">
+											<div className="w-12 h-12 rounded-full bg-[var(--foreground)] flex items-center justify-center">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth={1.5}
+													className="w-6 h-6 text-[var(--text-chip)]"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-8.25A3.375 3.375 0 004.5 11.625V14.25m15 0A2.25 2.25 0 0117.25 16.5h-10.5A2.25 2.25 0 014.5 14.25m15 0v4.125A2.625 2.625 0 0116.875 21h-9.75A2.625 2.625 0 014.5 18.375V14.25"
+													/>
+												</svg>
+											</div>
+											<p className="text-sm font-medium text-[var(--text)]">No assets found</p>
+											<p className="text-xs text-[var(--text-chip)]">Add assets to see them listed here.</p>
+										</div>
+									</TableCell>
+								</TableRow>
+							}
+							{!isLoading && data?.data?.items.length > 0 &&
+								data?.data?.items.map((asset) => {
 									const assetId = asset.assetId;
 									const busy = !!busyById[assetId];
 									const price = asset?.overview?.market?.close || 0;
@@ -270,12 +282,6 @@ const WatchlistPortfolio = () => {
 														{asset?.assetType === 'cryptocurrencies' && (
 															<Image src={asset?.overview?.info?.base_currency_logoid ? `https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg` : '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 														)}
-														{/* {asset?.assetType === 'commodities' && (
-															typeIcons[asset?.overview?.info?.group]
-														)}
-														{asset?.assetType === 'stocks' && (
-															<Image src={`https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.logoid}.svg`} alt="Symbol" width={64} height={64} className="rounded-full" />
-														)} */}
 													</div>
 													<div className="flex-1 text-[var(--text)]">
 														{asset?.assetType === 'stocks' && (
@@ -354,7 +360,7 @@ const WatchlistPortfolio = () => {
 												</div>
 											</TableCell>
 										</TableRow>
-									)
+									);
 								})}
 						</TableBody>
 					</Table>
