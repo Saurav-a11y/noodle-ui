@@ -12,14 +12,17 @@ import AnalystIcon from "@/icons/AnalystIcon";
 import Link from "next/link";
 import ProfileIcon from "@/icons/ProfileIcon";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from '@tanstack/react-query';
 
 const SocialWalletLogin = () => {
 	const router = useRouter();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const queryClient = useQueryClient();
 	const { data } = useMe();
 	const user = data?.data;
 	const handleLogout = () => {
 		localStorage.removeItem("auth_token");
+		queryClient.removeQueries({ queryKey: ["me"] });
 		router.push("/");
 	};
 	if (user) {
