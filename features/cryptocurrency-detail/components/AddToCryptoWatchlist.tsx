@@ -19,11 +19,13 @@ const AddToCryptoWatchlist = () => {
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';
 	const code = params?.slug as string;
+	const { data: cryptoOverviewData } = useCommunityOverview(code);
+	const cryptoOverview = cryptoOverviewData?.data || {};
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const { data: inWatchlist = false, isFetching: statusLoading } = useWatchlistStatus({
 		userId: data?.data?.id,
-		code,
+		code: cryptoOverview?.symbol,
 		assetType,
 		enabled: !!data?.data?.id,
 	});
@@ -31,9 +33,6 @@ const AddToCryptoWatchlist = () => {
 	const addMutation = useAddToWatchlist();
 	const removeMutation = useRemoveFromWatchlist();
 	const { mutate: addLog } = useAddUserActivityLog();
-
-	const { data: cryptoOverviewData } = useCommunityOverview(code);
-	const cryptoOverview = cryptoOverviewData?.data || {};
 
 	const loading = statusLoading || addMutation.isPending || removeMutation.isPending;
 
@@ -44,19 +43,19 @@ const AddToCryptoWatchlist = () => {
 		}
 		if (inWatchlist) {
 			removeMutation.mutate(
-				{ userId: data?.data?.id, code },
+				{ userId: data?.data?.id, code: cryptoOverview?.symbol },
 				{
 					onSuccess: () => {
 						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
+							queryKey: ['watchlist-status', data?.data?.id, cryptoOverview?.symbol, assetType],
 						});
 					},
 				}
 			);
 		} else {
 			addMutation.mutate(
-				{ userId: data?.data?.id, code, assetType },
+				{ userId: data?.data?.id, code: cryptoOverview?.symbol, assetType },
 				{
 					onSuccess: () => {
 						if (data?.data?.id) {
@@ -72,7 +71,7 @@ const AddToCryptoWatchlist = () => {
 						}
 						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
+							queryKey: ['watchlist-status', data?.data?.id, cryptoOverview?.symbol, assetType],
 						});
 					},
 				}
