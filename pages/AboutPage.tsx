@@ -183,7 +183,7 @@ const AboutPage = () => {
 												<PlayIcon />
 											</div>
 										</motion.div>
-										<Link href="/cryptocurrencies">
+										<Link href="/stablecoins">
 											<motion.div
 												whileHover={{ scale: 1.05 }}
 												whileTap={{ scale: 0.97 }}
