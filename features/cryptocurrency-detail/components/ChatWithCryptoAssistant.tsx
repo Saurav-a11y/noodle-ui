@@ -7,7 +7,7 @@ import MiniMumIcon from "@/icons/MinimunIcon";
 import { formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
 import { useCommunityOverview } from "../hooks/useCommunityOverview";
-import { useGetAISuggestions, useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/features/commodities/hooks";
+import { useGetAISuggestions, useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/hooks/useChat";
 import { motion } from 'framer-motion';
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";

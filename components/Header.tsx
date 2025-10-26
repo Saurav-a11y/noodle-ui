@@ -9,8 +9,6 @@ import Link from "next/link";
 import SearchCryptoInput from "./SearchCryptoInput";
 import SocialWalletLogin from "./common/SocialWalletLogin";
 import { useTypeFromPath } from "@/lib/useTypeFromPath";
-import SearchStockInput from "./SearchStockInput";
-import SearchCommodityInput from "./SearchCommodityInput";
 
 const Header = () => {
 	const { isDark, toggleTheme } = useThemeMode();
@@ -51,12 +49,6 @@ const Header = () => {
 						{/* Search Bar */}
 						{type === 'cryptocurrencies' && (
 							<SearchCryptoInput />
-						)}
-						{type === 'stocks' && (
-							<SearchStockInput />
-						)}
-						{type === 'commodities' && (
-							<SearchCommodityInput />
 						)}
 						<button
 							onClick={toggleTheme}
