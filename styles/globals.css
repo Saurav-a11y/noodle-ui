@@ -1,6 +1,7 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+@import "tailwindcss";
 
 :root {
   --background: #f9f9f9;
@@ -26,15 +27,18 @@
   --border-popover: #f3f3f3;
   --foreground: #171717;
   --loading: #ebe6e7;
+  --font-noto: var(--font-noto);
+  --font-reddit: var(--font-reddit);
+  --font-space: var(--font-space);
 }
 
-/* @theme inline {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-reddit: var(--font-reddit);
   --font-noto: var(--font-noto);
   --font-space: var(--font-space);
-} */
+}
 
 :root.dark {
   --background: #0B0B0B;
