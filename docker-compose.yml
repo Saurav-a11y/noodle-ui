@@ -11,8 +11,6 @@ services:
       - NODE_ENV=${NODE_ENV:-development}
       - PORT=3000
       - MONGO_URI=mongodb://data_warehouse_user:3r7od24m5Wx426edHghpB0gNB@207.148.122.148:27017/?authSource=BitCountry-Warehouse
-    volumes:
-      - ../noodle-api:/app
     networks:
       - noodle-network
     restart: unless-stopped
@@ -34,8 +32,6 @@ services:
       - NEXT_WEBPACK_USE_TURBOPACK=0
       - NEXT_TELEMETRY_DISABLED=1
       - NEXT_PUBLIC_API_URL=http://noodle-api:3000
-    volumes:
-      - .:/app
     networks:
       - noodle-network
     restart: unless-stopped
