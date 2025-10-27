@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #f9f9f9;
@@ -26,13 +28,13 @@
   --loading: #ebe6e7;
 }
 
-@theme inline {
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-reddit: var(--font-reddit);
   --font-noto: var(--font-noto);
   --font-space: var(--font-space);
-}
+} */
 
 :root.dark {
   --background: #0B0B0B;

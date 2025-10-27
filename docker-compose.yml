@@ -1,0 +1,45 @@
+services:
+  noodle-api:
+    container_name: noodle-api
+    platform: linux/arm64
+    build:
+      context: ../noodle-api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3000
+      - MONGO_URI=mongodb://data_warehouse_user:3r7od24m5Wx426edHghpB0gNB@207.148.122.148:27017/?authSource=BitCountry-Warehouse
+    volumes:
+      - ../noodle-api:/app
+    networks:
+      - noodle-network
+    restart: unless-stopped
+
+  noodle-ui:
+    container_name: noodle-ui
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    depends_on:
+      - noodle-api
+    environment:
+      - NODE_ENV=development
+      - TAILWIND_MODE=build
+      - NEXT_DISABLE_LIGHTNINGCSS=1
+      - NEXT_WEBPACK_USE_TURBOPACK=0
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=http://noodle-api:3000
+    volumes:
+      - .:/app
+    networks:
+      - noodle-network
+    restart: unless-stopped
+
+networks:
+  noodle-network:
+    driver: bridge

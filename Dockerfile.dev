@@ -1,0 +1,26 @@
+# ---------- Base ----------
+FROM node:20-bullseye AS base
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# ---------- Dev ----------
+FROM base AS dev
+WORKDIR /app
+
+COPY . .
+
+# Copy config để PostCSS hoạt động
+COPY postcss.config.js ./postcss.config.js
+COPY tailwind.config.ts ./tailwind.config.ts
+COPY styles ./styles
+
+ENV NODE_ENV=development
+ENV NEXT_WEBPACK_USE_TURBOPACK=0
+
+# Ép build Tailwind để sinh CSS trong .next/static/css
+RUN npm run build || true
+
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
