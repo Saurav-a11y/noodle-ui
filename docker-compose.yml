@@ -4,7 +4,7 @@ services:
     platform: linux/arm64
     build:
       context: ../noodle-api
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.local
     ports:
       - "3000:3000"
     environment:
@@ -20,7 +20,7 @@ services:
     platform: linux/arm64
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.local
     ports:
       - "3001:3000"
     depends_on:
