@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/Input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
+import { useGetStableCoinsList } from "@/hooks/stablecoins/useStablecoinsList"
 import { useMe } from "@/hooks/useAuth"
 import { useGetStableCoins } from "@/hooks/useStablecoins"
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog"
@@ -93,7 +94,9 @@ const StableCoinsTable = () => {
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState('');
 	const debouncedSearch = useDebounce(search, 300);
-	const { data, isLoading } = useGetStableCoins({ q: debouncedSearch, page, limit: LIMIT });
+	// const { data, isLoading } = useGetStableCoins({ q: debouncedSearch, page, limit: LIMIT });
+	const { data, isLoading } = useGetStableCoinsList({ q: debouncedSearch, page, limit: LIMIT });
+	console.log("🚀 ~ StableCoinsTable ~ stablecoins:", data)
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
