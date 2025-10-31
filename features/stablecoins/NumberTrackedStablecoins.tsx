@@ -1,5 +1,5 @@
 import TooltipCommon from "@/components/common/TooltipCommon";
-import { useGetNumberTrackedAboutStableCoins } from "@/hooks/useStablecoins";
+import { useGetNumberTrackedAboutStableCoins } from "@/hooks/stablecoins/useGetNumberTrackedAboutStableCoins";
 import { formatNumberWithCommas } from "@/lib/format";
 
 const NumberTrackedStablecoins = () => {

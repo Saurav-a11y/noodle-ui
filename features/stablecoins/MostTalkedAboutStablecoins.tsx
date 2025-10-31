@@ -7,7 +7,7 @@ import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 import { useRouter } from "next/navigation";
 import { formatNumberWithCommas } from '@/lib/format';
-import { useGetMostTalkedAboutStableCoins } from '@/hooks/useStablecoins';
+import { useGetMostTalkedAboutStableCoins } from '@/hooks/stablecoins/useGetMostTalkedAboutStableCoins';
 
 const MostTalkedAboutStablecoins = () => {
 	const router = useRouter();

@@ -7,7 +7,7 @@ import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 import { useRouter } from "next/navigation";
 import { formatPercent } from '@/lib/format';
-import { useGetTopGrowthStableCoins } from '@/hooks/useStablecoins';
+import { useGetTopGrowthStableCoins } from '@/hooks/stablecoins/useGetTopGrowthStableCoins';
 
 const TopGrowthStablecoins = () => {
 	const router = useRouter();

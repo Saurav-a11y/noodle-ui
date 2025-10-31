@@ -1,5 +1,5 @@
 import TooltipCommon from "@/components/common/TooltipCommon";
-import { useGetTotalActiveUserStableCoins } from "@/hooks/useStablecoins";
+import { useGetTotalActiveUserStableCoins } from "@/hooks/stablecoins/useGetTotalActiveUserStableCoins";
 import { formatNumberWithCommas } from "@/lib/format";
 
 const TotalActiveUsersStablecoins = () => {
