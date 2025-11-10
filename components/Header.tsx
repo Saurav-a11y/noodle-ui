@@ -10,13 +10,12 @@ import { usePathname } from "next/navigation";
 import SearchCryptoInput from "./SearchCryptoInput";
 import SocialWalletLogin from "./common/SocialWalletLogin";
 import { useTypeFromPath } from "@/lib/useTypeFromPath";
-// import { Bitcoin, ChartCandlestick } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 const Header = () => {
 	const { isDark, toggleTheme } = useThemeMode();
 	const pathname = usePathname();
 	const type = useTypeFromPath();
-	const isFinancialActive = pathname ? ["/stocks", "/commodities", "/stablecoins"].includes(pathname) : false;
 	return (
 		<header className={`bg-[var(--bg-header)] shadow-md sticky top-0 z-50`}>
 			<div className="container mx-auto px-6 py-2">
@@ -36,29 +35,21 @@ const Header = () => {
 										</NavigationMenuTrigger>
 										<NavigationMenuContent className="!w-[200px] bg-[var(--bg-block)] rounded-xl p-3">
 											<Link href="/stocks">
-												<div className={`flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors ${pathname === "/stocks"
-													? "bg-gradient-to-br from-[#DDF346] to-[#84EA07] text-black shadow-sm"
-													: "hover:bg-[var(--bg-hover-2)]"
-													}`}>
-													{/* <ChartCandlestick /> */}
-													Stocks
+												<div className="flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-hover-2)]">
+													<span className="flex-1">Stocks</span>
+													{pathname === "/stocks" && <Check className="w-4 h-4" />}
 												</div>
 											</Link>
 											<Link href="/commodities">
-												<div className={`flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors ${pathname === "/commodities"
-													? "bg-gradient-to-br from-[#DDF346] to-[#84EA07] text-black shadow-sm"
-													: "hover:bg-[var(--bg-hover-2)]"
-													}`}>
-													Commodities
+												<div className="flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-hover-2)]">
+													<span className="flex-1">Commodities</span>
+													{pathname === "/commodities" && <Check className="w-4 h-4" />}
 												</div>
 											</Link>
 											<Link href="/stablecoins">
-												<div className={`flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors ${pathname === "/stablecoins"
-													? "bg-gradient-to-br from-[#DDF346] to-[#84EA07] text-black shadow-sm"
-													: "hover:bg-[var(--bg-hover-2)]"
-													}`}>
-													{/* <Bitcoin /> */}
-													Stablecoins
+												<div className="flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-hover-2)]">
+													<span className="flex-1">Stablecoins</span>
+													{pathname === "/stablecoins" && <Check className="w-4 h-4" />}
 												</div>
 											</Link>
 										</NavigationMenuContent>
