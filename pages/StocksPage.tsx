@@ -5,6 +5,7 @@ import TooltipCommon from "@/components/common/TooltipCommon"
 import TopGrowthList from "@/components/common/TopGrowthList"
 import TotalActiveUsersList from "@/components/common/TotalActiveUsersList"
 import Header from "@/components/Header"
+import StocksTable from "@/features/stocks/StocksTable"
 import BackgroundPage from "@/icons/BackgroundPage"
 import ReactQueryProvider from "@/lib/react-query-provider"
 import { ThemeProvider } from "@/lib/useThemkMode"
@@ -40,7 +41,7 @@ const StocksPage = () => {
                         <div className="space-y-6">
                             <p className="text-3xl font-medium font-space text-[var(--text)]">Stock List</p>
                             <div className="bg-[var(--bg-card)] rounded-[20px] p-5 font-noto">
-
+                                <StocksTable />
                             </div>
                         </div>
                     </div>
