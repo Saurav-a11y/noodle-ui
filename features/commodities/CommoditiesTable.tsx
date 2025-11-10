@@ -6,7 +6,7 @@ import _map from 'lodash/map';
 import { useCommoditiesHealthRanks } from "@/hooks/useCommodities";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import TooltipCommon from "@/components/common/TooltipCommon";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { formatNumberShort } from "@/lib/format";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
@@ -81,7 +81,7 @@ const CommoditiesTableHeader = ({ title }) => {
 	)
 }
 const CommoditiesTable = () => {
-	const router = useRouter();
+	// const router = useRouter();
 	const [activeTab, setActiveTab] = useState("All");
 
 	const { data: commoditiesData, isLoading: isGettingCommoditiesHealthRanks, } = useCommoditiesHealthRanks({
@@ -199,7 +199,7 @@ const CommoditiesTable = () => {
 												key={index}
 												className="hover:bg-[var(--bg-hover)] cursor-pointer transition-colors"
 												onClick={() => {
-													router.push(`/commodities/${item.name_slug}`)
+													// router.push(`/commodities/${item.name_slug}`)
 													if (userData?.data?.id) {
 														addLog({
 															userId: userData?.data?.id,

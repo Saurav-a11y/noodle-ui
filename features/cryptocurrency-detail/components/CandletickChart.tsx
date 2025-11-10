@@ -91,7 +91,6 @@ const CandlestickChart = ({ utcOffset, type }) => {
 	// ✅ State lưu thời gian từ
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState('3M');
 	const [apiTimeFrame, setApiTimeFrame] = useState("90d");
-
 	const { data: priceHistoryToken, isLoading } = usePriceHistory({
 		symbol: type === 'commodity' ? communityId : data?.data?.symbol,
 		startTime,

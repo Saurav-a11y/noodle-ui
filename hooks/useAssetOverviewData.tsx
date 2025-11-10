@@ -28,11 +28,11 @@ export const useAssetOverviewData = () => {
     }
     // Chuẩn hoá dữ liệu đầu ra
     const overview = {
-        projectName: data?.data?.fullname,
-        logo: data?.data?.logo || "",
+        projectName: data?.data?.fullname || data?.data?.name || "",
+        logo: data?.data?.logo || data?.data?.medium_logo_url || `https://s3-symbol-logo.tradingview.com/${data?.data?.logoid}.svg`,
         base_currency: data?.data?.name || "",
         price_usd: data?.data?.price ?? null,
-        price_change_percent: data?.data?.change ?? 0,
+        price_change_percent: data?.data?.change || data?.data?.percent,
         symbol: data?.data?.symbol || "",
     };
 
@@ -41,7 +41,7 @@ export const useAssetOverviewData = () => {
         overview,
         formatted: {
             priceUsd: overview.price_usd,
-            priceChange: formatPercent(overview.price_change_percent),
+            priceChange: typeof overview.price_change_percent === 'string' ? overview.price_change_percent : formatPercent(overview.price_change_percent),
         },
     };
 };
