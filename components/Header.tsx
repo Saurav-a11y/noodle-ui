@@ -4,15 +4,19 @@ import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
 import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
 import useThemeMode from '@/lib/useThemkMode';
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "./ui/NavigationMenu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "./ui/NavigationMenu";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import SearchCryptoInput from "./SearchCryptoInput";
 import SocialWalletLogin from "./common/SocialWalletLogin";
 import { useTypeFromPath } from "@/lib/useTypeFromPath";
+// import { Bitcoin, ChartCandlestick } from 'lucide-react';
 
 const Header = () => {
 	const { isDark, toggleTheme } = useThemeMode();
+	const pathname = usePathname();
 	const type = useTypeFromPath();
+	const isFinancialActive = pathname ? ["/stocks", "/commodities", "/stablecoins"].includes(pathname) : false;
 	return (
 		<header className={`bg-[var(--bg-header)] shadow-md sticky top-0 z-50`}>
 			<div className="container mx-auto px-6 py-2">
@@ -25,18 +29,45 @@ const Header = () => {
 						<div className={`text-[var(--text)] flex items-center gap-10`}>
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
+									{/* 🔽 Dropdown: Financial Intelligence */}
 									<NavigationMenuItem>
-										<Link
-											href="/stablecoins"
-											className="font-medium transition-colors"
-										>
-											Stablecoins
-										</Link>
+										<NavigationMenuTrigger className="font-medium text-[var(--text)] transition-colors">
+											Financial Intelligence
+										</NavigationMenuTrigger>
+										<NavigationMenuContent className="!w-[200px] bg-[var(--bg-block)] rounded-xl p-3">
+											<Link href="/stocks">
+												<div className={`flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors ${pathname === "/stocks"
+													? "bg-gradient-to-br from-[#DDF346] to-[#84EA07] text-black shadow-sm"
+													: "hover:bg-[var(--bg-hover-2)]"
+													}`}>
+													{/* <ChartCandlestick /> */}
+													Stocks
+												</div>
+											</Link>
+											<Link href="/commodities">
+												<div className={`flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors ${pathname === "/commodities"
+													? "bg-gradient-to-br from-[#DDF346] to-[#84EA07] text-black shadow-sm"
+													: "hover:bg-[var(--bg-hover-2)]"
+													}`}>
+													Commodities
+												</div>
+											</Link>
+											<Link href="/stablecoins">
+												<div className={`flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors ${pathname === "/stablecoins"
+													? "bg-gradient-to-br from-[#DDF346] to-[#84EA07] text-black shadow-sm"
+													: "hover:bg-[var(--bg-hover-2)]"
+													}`}>
+													{/* <Bitcoin /> */}
+													Stablecoins
+												</div>
+											</Link>
+										</NavigationMenuContent>
 									</NavigationMenuItem>
+									{/* About */}
 									<NavigationMenuItem>
 										<Link
 											href="/about"
-											className={`font-medium text-[var(--text)] transition-colors`}
+											className="font-medium text-[var(--text)] transition-colors"
 										>
 											About
 										</Link>
