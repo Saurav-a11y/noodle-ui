@@ -9,6 +9,11 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@/lib/useThemkMode";
 import { AssetHeader } from "@/components/common/AssetHeader";
+import AddToStockWatchlist from "@/features/stocks/AddToStockWatchlist";
+import ChatWithStockAssistant from "@/features/stocks/ChatWithStockAssistant";
+import StockMetrics from "@/features/stocks/StockMetrics";
+import StockFounderAndTeamAnalystChart from "@/features/stocks/StockFounderAndTeamAnalystChart";
+import StockCommunityContributions from "@/features/stocks/StockCommunityContributions";
 
 const StockDetailPage = () => {
     const [isChatVisible, setChatVisible] = useState(true);
@@ -75,7 +80,7 @@ const StockDetailPage = () => {
 
                     {isMobile && isChatVisible && (
                         <div className="fixed inset-0 z-90 bg-[var(--background)] p-4">
-                            Chat Component
+                            <ChatWithStockAssistant />
                         </div>
                     )}
 
@@ -87,7 +92,7 @@ const StockDetailPage = () => {
                             >
                                 {isChatVisible && (
                                     <div className="h-full p-4">
-                                        Chat Component
+                                        <ChatWithStockAssistant />
                                     </div>
                                 )}
                             </div>
@@ -112,20 +117,18 @@ const StockDetailPage = () => {
                             <div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
                                 <div className="flex items-center justify-between">
                                     <AssetHeader />
-                                    <p>
-                                        Add Watch List
-                                    </p>
+                                    <AddToStockWatchlist />
                                 </div>
                                 <div className="grid grid-cols-4 gap-8">
                                     <div className="col-span-4 md:col-span-1 space-y-6">
-                                        StockMetrics
+                                        <StockMetrics />
                                     </div>
                                     <div className="col-span-4 md:col-span-3 space-y-5">
                                         <SocialChart type="stock" />
                                         {/* <StockYieldsList /> */}
-                                        StockFounderAndTeamAnalystChart
+                                        <StockFounderAndTeamAnalystChart />
                                         <div className="mt-10">
-                                            StockCommunityContributions
+                                            <StockCommunityContributions />
                                         </div>
                                     </div>
                                 </div>

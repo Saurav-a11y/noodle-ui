@@ -1,0 +1,145 @@
+'use client';
+import { useEffect, useState } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useParams } from "next/navigation";
+import { useStockCommunityTeamActivityAnalysis } from "@/hooks/useStocks";
+
+const labels = [
+    { name: 'Twitter Posts', color: '#38E1FF' },
+    { name: 'YouTube', color: '#FF0000' },
+]
+
+const timeframeOptions: Record<string, { amount: number; unit: "day" | "month" }> = {
+    "7D": { amount: 7, unit: "day" },
+    "1M": { amount: 30, unit: "day" },
+    "3M": { amount: 3, unit: "month" },
+    "6M": { amount: 6, unit: "month" },
+    "1Y": { amount: 12, unit: "month" },
+};
+
+const StockFounderAndTeamAnalystChart = () => {
+    const params = useParams();
+    const communityId = params?.slug as string;
+    const [selectedTimeframe, setSelectedTimeframe] = useState<keyof typeof timeframeOptions>("1M");
+    const [visibleLabels, setVisibleLabels] = useState<string[]>(labels.map(l => l.name));
+
+    const timeOption = timeframeOptions[selectedTimeframe];
+
+    const toggleLabel = (labelName: string) => {
+        setVisibleLabels(prev =>
+            prev.includes(labelName)
+                ? prev.filter(l => l !== labelName)
+                : [...prev, labelName]
+        );
+    };
+    const { data, isFetching } = useStockCommunityTeamActivityAnalysis({
+        communityId,
+        amount: timeOption.amount,
+        unit: timeOption.unit,
+    })
+    const totals = data?.data?.totals || null
+    const dataChart = data?.data?.time_series
+
+    const activeLabels = labels.filter(label => {
+        if (label.name === "Twitter Posts") return totals?.twitter_posts > 0;
+        if (label.name === "YouTube") return totals?.youtube_videos > 0;
+        return false;
+    });
+
+    useEffect(() => {
+        if (totals) {
+            const newVisible: string[] = [];
+            if (totals?.twitter_posts > 0) newVisible.push("Twitter Posts");
+            if (totals?.youtube_videos > 0) newVisible.push("YouTube");
+            setVisibleLabels(newVisible);
+        }
+    }, [totals]);
+
+    return (
+        <div className="p-6 rounded-xl bg-[var(--bg-block)] text-[var(--text)]">
+            <div className="mb-4">
+                <p className="text-lg font-semibold font-reddit">
+                    Founder & Team Activity Analysis
+                </p>
+                <p className="text-sm font-reddit">Cross-Platform Activity Timeline</p>
+            </div>
+            <div className="border border-[var(--border)] rounded-xl p-6">
+                <div className="flex flex-col gap-3 xl:flex-row xl:items-center justify-end xl:justify-between mb-4 w-full">
+                    <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
+                        {labels.map((label) => {
+                            const isActive = activeLabels.some(l => l.name === label.name);
+                            const isSelected = visibleLabels.includes(label.name);
+                            return (
+                                <div
+                                    key={label.name}
+                                    className={
+                                        `px-3 py-1.5 rounded flex items-center gap-2 cursor-pointer ${isSelected && isActive ? "bg-[var(--bg-hover-2)]" : ""} ${!isActive ? "opacity-40 pointer-events-none" : ""}`
+                                    }
+                                    onClick={() => isActive && toggleLabel(label.name)}
+                                >
+                                    <span className="w-6 h-1 rounded-full" style={{ backgroundColor: label.color }}></span>
+                                    <p className="text-xs font-reddit">{label.name}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="flex items-center justify-end w-fit gap-1 bg-[var(--bg-list-btn)] p-1.5 rounded">
+                        {Object.keys(timeframeOptions).map((timeframe) => (
+                            <button
+                                key={timeframe}
+                                onClick={() => setSelectedTimeframe(timeframe as keyof typeof timeframeOptions)}
+                                className={`px-2 py-1 rounded cursor-pointer text-xs font-reddit font-medium ${selectedTimeframe === timeframe ? "bg-[#DDF346] rounded-md text-[#222]" : "hover:bg-[var(--bg-hover-2)]"
+                                    }`}
+                            >
+                                {timeframe}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                {/* Chart Block */}
+                <div className="relative min-h-[300px]">
+                    {isFetching ? (
+                        // Loading skeleton
+                        <div className="flex items-center justify-center h-[300px]">
+                            <div className="w-full h-full bg-[var(--bg-block)] rounded-xl animate-pulse flex items-center justify-center">
+                                <span className="text-gray-400 dark:text-gray-600 text-lg">Loading chart...</span>
+                            </div>
+                        </div>
+                    ) : data?.data?.time_series?.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={dataChart}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#E9E9E9" />
+                                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} />
+                                <Tooltip content={undefined} />
+                                {totals?.twitter_posts > 0 && visibleLabels.includes("Twitter Posts") && (
+                                    <Line type="monotone" dataKey="twitter_posts" stroke="#38E1FF" strokeWidth={2} dot={false} />
+                                )}
+                                {totals?.youtube_videos > 0 && visibleLabels.includes("YouTube") && (
+                                    <Line type="monotone" dataKey="youtube_videos" stroke="#FF0000" strokeWidth={2} dot={false} />
+                                )}
+                            </LineChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        // No data UI
+                        <div className="flex items-center justify-center h-[300px] bg-[var(--bg-block)] rounded-xl">
+                            <span className="text-gray-400 dark:text-gray-600 text-lg font-medium">No activity data available for this timeframe.</span>
+                        </div>
+                    )}
+                </div>
+                <div className="flex justify-center gap-5 mt-7.5">
+                    <div className="text-center flex flex-col items-center border border-[var(--border)] rounded-xl p-4 w-[220px]">
+                        <p className="text-sm font-reddit mb-2">Total Twitter Posts</p>
+                        {isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.twitter_posts || 0}</p>}
+                    </div>
+                    <div className="text-center flex flex-col items-center border border-[var(--border)] rounded-xl p-4 w-[220px]">
+                        <p className="text-sm font-reddit mb-2">Total YouTube Videos</p>
+                        {isFetching ? <div className="w-20 h-8 bg-gray-200 dark:bg-[#333] rounded animate-pulse" /> : <p className={`text-2xl font-bold font-noto`}>{totals?.youtube_videos || 0}</p>}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default StockFounderAndTeamAnalystChart;

@@ -1,73 +1,24 @@
-import { Loader, MessageCircle, Bookmark, Eye } from "lucide-react";
+import { MessageCircle, Bookmark, Eye } from "lucide-react";
 import XIcon from "@/icons/XIcon";
-import he from 'he'
 import { formatDistanceToNow } from 'date-fns';
-import GithubIcon from "@/icons/GithubIcon";
-import RedditIcon from "@/icons/RedditIcon";
-// import LightIcon from "@/icons/LightIcon";
 import YoutubeIcon from "@/icons/YoutubeIcon";
 import { useState, useEffect, useRef } from "react";
 import RotateIcon from "@/icons/RotateIcon";
 import ChatIcon from "@/icons/ChatIcon";
-import TooltipCommon from "../../../components/common/TooltipCommon";
 import { useParams } from "next/navigation";
 import { calculateEngagementRate, formatNumberShort, formatTimestamp } from "@/lib/format";
 import PostAvatar from "@/components/common/PostAvatar";
 import Image from "next/image";
 import Link from "next/link";
 import _map from 'lodash/map';
-import { fetchCommunityDataSources } from "@/apis";
+import { fetchCommodityCommunityDataSources, fetchStockCommunityDataSources } from "@/apis";
 import AuthenticIcon from "@/icons/AuthenticIcon";
-import UpVoteIcon from "@/icons/UpVoteIcon";
-import DownVoteIcon from "@/icons/DownVoteIcon";
-import RewardIcon from "@/icons/RewardIcon";
 import TwitterCommunityLoading from "@/components/common/loading/TwiiterCommunityLoading";
 import { YoutubeCommunityLoading } from "@/components/common/loading/YoutubeCommunityLoading";
-import RedditCommunityLoading from "@/components/common/loading/RedditCommunityLoading";
-import GithubCommunityLoading from "@/components/common/loading/GithubCommunityLoading";
+import TooltipCommon from "@/components/common/TooltipCommon";
+import { useCommodityOverview } from "@/hooks/useCommodities";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
-import { useCommunityOverview } from "../hooks/useCommunityOverview";
-import _isEmpty from "lodash/isEmpty";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-
-type CommitMessageViewerProps = {
-	message: string;
-};
-
-function getRepoNameFromCommitUrl(commitUrl: string): string | null {
-	try {
-		const url = new URL(commitUrl);
-		const segments = url.pathname.split('/').filter(Boolean);
-		const repoIndex = segments.indexOf('commit') - 1;
-		if (repoIndex >= 0) {
-			return segments[repoIndex];
-		}
-		return null;
-	} catch (error) {
-		return null;
-	}
-}
-
-const CommitMessageViewer = ({ message }: CommitMessageViewerProps) => {
-	return (
-		<div className="bg-[var(--block)] text-[var(--text)] font-mono text-sm p-4 rounded-md whitespace-pre-wrap border border-[var(--border)]">
-			<ReactMarkdown
-				remarkPlugins={[remarkGfm]}
-				components={{
-					a: ({ node, ...props }) => (
-						<a {...props} className="text-[#58a6ff] underline" target="_blank" rel="noopener noreferrer" />
-					),
-					h2: ({ node, ...props }) => <h2 className="text-base font-boll" {...props} />,
-					p: ({ node, ...props }) => <p {...props} />,
-				}}
-			>
-				{message}
-			</ReactMarkdown>
-		</div>
-	);
-};
 
 export const formatTweetText = (text: string): string => {
 	if (!text) return '';
@@ -102,15 +53,11 @@ export const formatTweetText = (text: string): string => {
 	return formatted;
 };
 
-const decodeHtmlEntities = (url?: string) =>
-	url?.replace(/&amp;/g, '&') || '';
-
-const CryptoCommunityContributions = () => {
+const CommodityCommunityContributions = () => {
 	const params = useParams();
-	const communityId = params?.slug as string;
-
+	const stockId = params?.slug as string;
 	// "All Activity", 
-	const tabs = ["Twitter", "Reddit", "GitHub", "YouTube"];
+	const tabs = ["Twitter", "YouTube"];
 	const [activeTab, setActiveTab] = useState("Twitter");
 	const [page, setPage] = useState(1);
 	const [data, setData] = useState<any[]>([]);
@@ -121,18 +68,18 @@ const CryptoCommunityContributions = () => {
 
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
-	const { data: cryptoOverviewData } = useCommunityOverview(communityId);
-	const cryptoOverview = cryptoOverviewData?.data || {};
+	const { data: commodityOverviewData } = useCommodityOverview(stockId);
+	const commodityOverview = commodityOverviewData?.data || {};
 
 	const fetchData = async (pageToFetch: number, replace = false) => {
-		const response = await fetchCommunityDataSources({
-			symbol: communityId,
+		const response = await fetchCommodityCommunityDataSources({
+			symbol: stockId,
 			platform: activeTab,
 			page: pageToFetch.toString(),
 		});
 
 		const items = response?.data?.items || [];
-		const total = response?.data?.summary?.total_posts || response?.data?.summary?.total_videos || response?.data?.summary?.total_commits || 0;
+		const total = response?.data?.summary?.total_posts || response?.data?.summary?.total_videos || 0;
 
 		if (replace) {
 			setData(items);
@@ -158,17 +105,18 @@ const CryptoCommunityContributions = () => {
 
 	// Fetch data khi đổi tab hoặc symbol
 	useEffect(() => {
-		if (!communityId) return;
+		if (!stockId) return;
 		setIsLoading(true);
 		setPage(1);
 		fetchData(1, true).finally(() => setIsLoading(false));
-	}, [communityId, activeTab]);
+	}, [stockId, activeTab]);
+
 
 	return (
 		<div className="text-[var(--text)]">
 			<div className="flex items-center gap-2 mb-3">
 				<h3 className="text-xl font-semibold font-noto">Live Community Data Sources</h3>
-				<TooltipCommon content="Real-time data pulled from Twitter, Reddit, GitHub, YouTube, and blockchain activity. Powers all insights shown on this dashboard." />
+				<TooltipCommon content="Real-time data pulled from Twitter, YouTube, and blockchain activity. Powers all insights shown on this dashboard." />
 			</div>
 
 			<div className="flex items-center gap-2 mb-4 border-b border-[#C5C5C5] overflow-scroll">
@@ -190,7 +138,7 @@ const CryptoCommunityContributions = () => {
 				ref={scrollRef}
 				onScroll={handleScroll}
 				className={`grid ${activeTab === "All Activity" ? "grid-cols-2" : "grid-cols-1"} gap-6 h-[800px] overflow-auto`}>
-				{["All Activity", "Twitter", "GitHub"].includes(activeTab) && (
+				{["All Activity", "Twitter"].includes(activeTab) && (
 					<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
 						{(activeTab === "All Activity" || activeTab === "Twitter") && (
 							<>
@@ -272,18 +220,18 @@ const CryptoCommunityContributions = () => {
 																<Link
 																	href={`https://x.com/${tweet?.username}/status/${tweet?.id}`}
 																	target="_blank"
-																	className="border border-[#E8E8E8] text-xs bg-[var(--card)] hover:bg-[var(--bg-popover)] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block transition-colors duration-200"
+																	className="border border-[#E8E8E8] text-xs bg-[var(--card)] hover:bg-[var(--bg-popover)] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200"
 																	onClick={() => {
 																		if (userData?.data?.id) {
 																			addLog({
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
-																				assetType: 'cryptocurrencies',
-																				assetSymbol: cryptoOverview.name,
-																				assetName: cryptoOverview.fullname,
-																				assetLogo: cryptoOverview.logo,
-																				content: `Viewed ${cryptoOverview.name} community insights`,
-																				activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on Twitter`,
+																				assetType: 'commodities',
+																				assetSymbol: commodityOverview.symbol,
+																				assetName: commodityOverview.name,
+																				assetLogo: '',
+																				content: `Viewed ${commodityOverview.name} community insights`,
+																				activity: `Viewed community activity about ${commodityOverview.name} on Twitter`,
 																			});
 																		}
 																	}}
@@ -334,279 +282,23 @@ const CryptoCommunityContributions = () => {
 								)}
 							</>
 						)}
-
-						{(activeTab === "All Activity" || activeTab === "GitHub") && (
-							<>
-								{isLoading && <div className="space-y-6">
-									{[...Array(5)].map((_, i) => (
-										<GithubCommunityLoading key={i} />
-									))}
-								</div>}
-								{!isLoading && data?.length === 0 && (
-									<div className="flex flex-col items-center justify-center space-y-4 text-center animate-fade-in py-20">
-										<Image
-											src="/images/github-notfound.png"
-											alt="GitHub activity not available"
-											width={220}
-											height={220}
-										/>
-										<p className="text-base text-[var(--text)] font-medium font-reddit">
-											GitHub activity isn’t available yet.
-										</p>
-										<p className="text-sm text-[var(--text)] max-w-sm">
-											We couldn't display GitHub contributions for this community at the moment.
-										</p>
-									</div>
-								)}
-								{!isLoading && data?.length > 0 && (
-									<div className="bg-[var(--bg-post)] p-4 rounded-xl">
-										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
-											<div className="flex items-center gap-2">
-												<GithubIcon width={24} height={24} />
-												<p className="font-semibold font-noto">GitHub Development Activity</p>
-												<div className="border-l h-4 border-l-[var(--bg-apply)] opacity-50 mx-2" />
-												<span className="text-xs text-[var(--text)] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> commits</span>
-											</div>
-										</div>
-										<div className="space-y-6">
-											{_map(data, (item, i) => (
-												<div key={i} className="bg-[var(--bg-card)] rounded-xl p-5">
-													<div className="space-y-4">
-														<div className="flex items-start gap-3 font-noto">
-															<div className="w-10 h-10 rounded-full flex items-center justify-center text-[var(--text)] font-bold">
-																<Image src="/images/github.png" alt='logo github' width={320} height={320} className="rounded-full" />
-															</div>
-															<div className="flex-1">
-																<div>
-																	<p className="text-sm font-semibold mb-1">{_isEmpty(item?.repo) ? getRepoNameFromCommitUrl(item?.html_url) : item?.repo}</p>
-																	<div className="flex items-center gap-2 text-[var(--text)]">
-																		<span className="text-xs opacity-50">
-																			{item?.commit?.committer?.date
-																				? formatDistanceToNow(new Date(item?.commit?.committer?.date), { addSuffix: true, })
-																				: 'Unknown'}
-																		</span>
-																	</div>
-																</div>
-															</div>
-															<div className="flex items-center gap-3">
-																{item?.commit?.verification?.verified && (
-																	<p className="border border-[#238636] rounded-full px-2 py-1 text-xs font-reddit text-[#238636] font-medium">Verified</p>
-																)}
-																<Link
-																	href={item?.html_url || ''}
-																	target="_blank"
-																	onClick={() => {
-																		if (userData?.data?.id) {
-																			addLog({
-																				userId: userData?.data?.id,
-																				type: 'view_asset',
-																				assetType: 'cryptocurrencies',
-																				assetSymbol: cryptoOverview.name,
-																				assetName: cryptoOverview.fullname,
-																				assetLogo: cryptoOverview.logo,
-																				content: `Viewed ${cryptoOverview.name} community insights`,
-																				activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on GitHub`,
-																			});
-																		}
-																	}}
-																	className="border border-[var(--border)] text-xs bg-[var(--bg-card)] hover:bg-[var(--bg-popover)] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200">
-																	View Repository
-																</Link>
-															</div>
-														</div>
-														<div className="font-reddit text-[#373737]">
-															<div>
-																<CommitMessageViewer message={item?.commit?.message} />
-																<div className="flex items-center text-xs opacity-80 space-x-1.5 mt-4 text-[var(--text)]">
-																	<Image src={item?.author?.avatar_url ?? "/images/github.png"} alt='logo github' width={16} height={16} className="rounded-full" />
-																	<p>
-																		<Link className="hover:underline" target="_blank" href={`https://github.com/circlefin/stablecoin-evm/commits?author=${item?.author?.login}`}>{item?.author?.login}</Link> commited {item?.commit?.committer?.date
-																			? formatDistanceToNow(new Date(item?.commit?.committer?.date), { addSuffix: true, })
-																			: 'Unknown'}</p>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											))}
-											{isLoadingMore && (
-												<div className="space-y-6">
-													{[...Array(5)].map((_, i) => (
-														<GithubCommunityLoading key={i} />
-													))}
-												</div>
-											)}
-										</div>
-									</div>
-								)}
-							</>
-						)}
 					</div>
 				)}
-				{["All Activity", "Reddit", "YouTube"].includes(activeTab) && (
+				{["All Activity", "YouTube"].includes(activeTab) && (
 					<div className={`${activeTab === "All Activity" ? "col-span-full md:col-span-1" : "col-span-full"} space-y-5`}>
-						{(activeTab === "All Activity" || activeTab === "Reddit") && (
-							<>
-								{isLoading && <RedditCommunityLoading />}
-								{!isLoading && data?.length === 0 && (
-									<div className="py-20 animate-fade-in">
-										<div className="flex flex-col items-center">
-											<Image
-												src="/images/reddit-notfound.png"
-												alt="Twitter activity not available"
-												width={180}
-												height={180}
-												className="mb-5"
-											/>
-											<h3 className="text-lg font-semibold text-[var(--text)] mb-2">
-												Reddit activity isn’t available yet.
-											</h3>
-											<p className="text-sm text-[var(--text)] max-w-sm text-center">
-												We couldn't display Reddit videos for this community at the moment.
-											</p>
-										</div>
-									</div>
-								)}
-								{!isLoading && data?.length > 0 && (
-									<div className="bg-[var(--bg-post)] p-4 rounded-xl">
-										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
-											<div className="flex items-center text-[var(--text)] gap-2">
-												<RedditIcon width={24} height={24} fill="#000" />
-												<p className="font-semibold font-noto">Latest Reddit Discussions</p>
-												<div className="border-l h-4 border-l-[var(--bg-apply)] opacity-50 mx-2" />
-												<span className="text-xs text-[var(--text)] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> posts</span>
-											</div>
-										</div>
-										<div className="space-y-6">
-											{_map(data, (post, i) => (
-												<div key={i} className="bg-[var(--bg-card)] rounded-xl p-5">
-													<div>
-														<div className="flex items-center gap-3">
-															<div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-[var(--text)] font-bold">
-																<PostAvatar username={post?.data?.subreddit_name_prefixed} src="/images/reddit-image.png" />
-															</div>
-															<div className="flex-1">
-																<div className="font-noto">
-																	<div>
-																		<p className="flex items-center space-x-2 text-[var(--text)]">
-																			<span className="text-sm font-semibold">{post?.data?.author}</span>
-																			<span className="opacity-50">•</span>
-																			<span className="text-xs opacity-50">{formatTimestamp(post?.data?.created)}</span>
-																		</p>
-																		<p className="text-xs opacity-50 text-[var(--text)]">{post?.data?.subreddit_name_prefixed}</p>
-																	</div>
-																</div>
-															</div>
-															<Link
-																href={`https://reddit.com/${post?.data?.permalink}`}
-																target="_blank" className="border border-[#E8E8E8] text-xs bg-[var(--card)] hover:bg-[var(--bg-popover)] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block transition-colors duration-200"
-																onClick={() => {
-																	if (userData?.data?.id) {
-																		addLog({
-																			userId: userData?.data?.id,
-																			type: 'view_asset',
-																			assetType: 'cryptocurrencies',
-																			assetSymbol: cryptoOverview.name,
-																			assetName: cryptoOverview.fullname,
-																			assetLogo: cryptoOverview.logo,
-																			content: `Viewed ${cryptoOverview.name} community insights`,
-																			activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on Reddit`,
-																		});
-																	}
-																}}
-															>
-																View on Reddit
-															</Link>
-														</div>
-														{post?.data?.title && (
-															<p className="font-space text-[var(--text)] font-medium text-xl mt-1">{post?.data?.title}</p>
-														)}
-														{post?.data?.crosspost_parent_list && (
-															<div className="border border-[var(--border)] rounded-xl p-4 mt-4">
-																<p className="flex items-center space-x-2 text-[var(--text)]">
-																	<span className="text-xs font-semibold">{post?.data?.crosspost_parent_list[0]?.subreddit_name_prefixed}</span>
-																	<span className="opacity-50">•</span>
-																	<span className="text-xs opacity-50">{formatTimestamp(post?.data?.crosspost_parent_list[0]?.created)}</span>
-																</p>
-																<p className="font-space text-[var(--text)] font-medium text-xl mt-1 mb-3">{post?.data?.crosspost_parent_list[0]?.title}</p>
-																<p
-																	className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[var(--text)] [&_a]:text-blue-500 [&_a]:underline opacity-50"
-																	dangerouslySetInnerHTML={{
-																		__html: he.decode(post?.data?.crosspost_parent_list[0]?.selftext_html || '')
-																	}}
-																/>
-																<p className="text-xs text-[var(--text)] opacity-50">{post?.data?.crosspost_parent_list[0]?.num_comments} comments</p>
-															</div>
-														)}
-														{post?.data?.selftext_html && (
-															<p
-																className="text-sm mt-1.5 mb-2.5 font-reddit line-clamp-6 overflow-hidden text-[var(--text)] [&_a]:text-blue-500 [&_a]:underline"
-																dangerouslySetInnerHTML={{
-																	__html: he.decode(post?.data?.selftext_html || '')
-																}}
-															/>
-														)}
-														{post?.data?.preview && (
-															<div className="border border-[#E9E9E9] rounded-xl my-4 text-[var(--text)]">
-																<Link href={post?.data?.url} target="_blank">
-																	<div className="relative h-[450px] cursor-pointer">
-																		<img
-																			src={decodeHtmlEntities(post?.data?.preview?.images[0].source.url)}
-																			alt="thumbnail"
-																			className="rounded-tl-lg rounded-tr-lg w-full h-full object-contain"
-																		/>
-																	</div>
-																</Link>
-																<div className="p-4 flex justify-between items-center">
-																	<Link href={post?.data?.url} target="_blank">
-																		<p className="text-sm hover:underline cursor-pointer text-[var(--text)]">
-																			{new URL(post?.data?.url).hostname.replace(/^www\./, '')}
-																		</p>
-																	</Link>
-																	<a
-																		href={post?.data?.url}
-																		target="_blank"
-																		rel="noopener noreferrer"
-																		className="text-sm font-medium px-4 py-1.5 border rounded-full border-gray-300 transition text-[var(--text)]"
-																	>
-																		Open
-																	</a>
-																</div>
-															</div>
-														)}
-														<div className="flex items-center gap-4 text-sm font-noto text-[var(--text)] mt-4">
-															<div className="flex items-center gap-2 font-medium text-xs text-[var(--text)]">
-																<UpVoteIcon />
-																{formatNumberShort(post?.data?.ups)}
-																<DownVoteIcon />
-															</div>
-															<div className="flex items-center gap-1 font-medium text-xs text-[var(--text)]">
-																<ChatIcon />
-																{formatNumberShort(post?.data?.num_comments)}
-															</div>
-															<div className="flex items-center gap-1 font-medium text-xs text-[var(--text)]">
-																<RewardIcon />
-																{formatNumberShort(post?.data?.total_awards_received)}
-															</div>
-															<span className="ml-auto font-reddit text-sm text-[var(--text)]"><span className="opacity-50 text-xs">Sentiment:</span> <b>Positive</b></span>
-														</div>
-													</div>
-												</div>
-											))}
-											{isLoadingMore && <RedditCommunityLoading />}
-										</div>
-									</div>
-								)}
-							</>
-						)}
-
 						{(activeTab === "All Activity" || activeTab === "YouTube") && (
 							<>
 								{isLoading && Array.from({ length: 5 }).map((_, i) => <YoutubeCommunityLoading key={i} />)}
 								{!isLoading && data?.length === 0 && (
 									<div className="py-20 animate-fade-in">
 										<div className="flex flex-col items-center">
-											<YoutubeIcon width={180} height={180} fill="currentColor" />
+											<Image
+												src="/images/youtube-notfound.png"
+												alt="YouTube activity not available"
+												width={180}
+												height={180}
+												className="opacity-90"
+											/>
 											<h3 className="text-lg font-semibold text-[var(--text)] mb-2">
 												YouTube activity isn’t available yet.
 											</h3>
@@ -620,7 +312,7 @@ const CryptoCommunityContributions = () => {
 									<div className="bg-[var(--bg-post)] p-4 rounded-xl">
 										<div className="flex items-center justify-between mb-2 md:mb-4 space-x-2">
 											<div className="flex items-center gap-2">
-												<YoutubeIcon width={24} height={24} fill="currentColor" />
+												<YoutubeIcon width={24} height={24} fill="#000" />
 												<p className="font-semibold font-noto">YouTube Community Content</p>
 												<div className="border-l h-4 border-l-[var(--bg-apply)] opacity-50 mx-2" />
 												<span className="text-xs text-[var(--text)] font-reddit hidden md:block"><b>{formatNumberShort(totalItems)}</b> videos</span>
@@ -673,18 +365,18 @@ const CryptoCommunityContributions = () => {
 															<Link
 																href={`https://www.youtube.com/watch?v=${video.videoId}`}
 																target="_blank"
-																className="border border-[#E8E8E8] text-xs bg-[var(--card)] hover:bg-[var(--bg-popover)] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200"
+																className="border border-[#E8E8E8] text-xsbg-[var(--card)] hover:bg-[var(--bg-popover)] px-2 py-1.5 rounded cursor-pointer font-reddit hidden md:block hover:bg-[#F0F0F0] transition-colors duration-200"
 																onClick={() => {
 																	if (userData?.data?.id) {
 																		addLog({
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
-																			assetType: 'cryptocurrencies',
-																			assetSymbol: cryptoOverview.name,
-																			assetName: cryptoOverview.fullname,
-																			assetLogo: cryptoOverview.logo,
-																			content: `Viewed ${cryptoOverview.name} community insights`,
-																			activity: `Viewed community activity about ${cryptoOverview.fullname} (${cryptoOverview.name}) on YouTube`,
+																			assetType: 'commodities',
+																			assetSymbol: commodityOverview.symbol,
+																			assetName: commodityOverview.name,
+																			assetLogo: '',
+																			content: `Viewed ${commodityOverview.name} community insights`,
+																			activity: `Viewed community activity about ${commodityOverview.name} on YouTube`,
 																		});
 																	}
 																}}
@@ -733,4 +425,4 @@ const CryptoCommunityContributions = () => {
 	);
 };
 
-export default CryptoCommunityContributions;
+export default CommodityCommunityContributions;
