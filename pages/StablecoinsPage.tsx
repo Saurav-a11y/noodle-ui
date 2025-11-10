@@ -1,11 +1,11 @@
 'use client'
+import MostTalkedAboutList from "@/components/common/MostTalkedAboutList";
+import NumberTrackedList from "@/components/common/NumberTrackedList";
 import TooltipCommon from "@/components/common/TooltipCommon";
+import TopGrowthList from "@/components/common/TopGrowthList";
+import TotalActiveUsersList from "@/components/common/TotalActiveUsersList";
 import Header from "@/components/Header";
-import MostTalkedAboutStablecoins from "@/features/stablecoins/MostTalkedAboutStablecoins";
-import NumberTrackedStablecoins from "@/features/stablecoins/NumberTrackedStablecoins";
 import StableCoinsTable from "@/features/stablecoins/StableCoinsTable";
-import TopGrowthStablecoins from "@/features/stablecoins/TopGrowthStablecoins";
-import TotalActiveUsersStablecoins from "@/features/stablecoins/TotalActiveUsersStablecoins";
 import BackgroundPage from "@/icons/BackgroundPage";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import { ThemeProvider } from "@/lib/useThemkMode";
@@ -30,11 +30,11 @@ const StablecoinsPage = () => {
 								<TooltipCommon content="A live leaderboard that ranks crypto projects based on their overall community health score. It helps you quickly identify which projects have strong, active, and authentic communities." />
 							</div>
 							<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-								<TopGrowthStablecoins />
-								<MostTalkedAboutStablecoins />
+								<TopGrowthList assetType="cryptocurrencies" />
+								<MostTalkedAboutList assetType="cryptocurrencies" />
 								<div className="flex gap-4 flex-col">
-									<NumberTrackedStablecoins />
-									<TotalActiveUsersStablecoins />
+									<NumberTrackedList assetType="cryptocurrencies" />
+									<TotalActiveUsersList assetType="cryptocurrencies" />
 								</div>
 							</div>
 						</div>

@@ -4,14 +4,17 @@ import { Input } from "./ui/Input";
 import NoodlesLogo from "@/icons/NoodlesLogo";
 import DarkNoodlesLogo from "@/icons/DarkNoodlesLogo";
 import useThemeMode from '@/lib/useThemkMode';
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "./ui/NavigationMenu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "./ui/NavigationMenu";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import SearchCryptoInput from "./SearchCryptoInput";
 import SocialWalletLogin from "./common/SocialWalletLogin";
 import { useTypeFromPath } from "@/lib/useTypeFromPath";
+import { Check } from 'lucide-react';
 
 const Header = () => {
 	const { isDark, toggleTheme } = useThemeMode();
+	const pathname = usePathname();
 	const type = useTypeFromPath();
 	return (
 		<header className={`bg-[var(--bg-header)] shadow-md sticky top-0 z-50`}>
@@ -25,18 +28,37 @@ const Header = () => {
 						<div className={`text-[var(--text)] flex items-center gap-10`}>
 							<NavigationMenu>
 								<NavigationMenuList className="flex space-x-8">
+									{/* 🔽 Dropdown: Financial Intelligence */}
 									<NavigationMenuItem>
-										<Link
-											href="/stablecoins"
-											className="font-medium transition-colors"
-										>
-											Stablecoins
-										</Link>
+										<NavigationMenuTrigger className="font-medium text-[var(--text)] transition-colors">
+											Financial Intelligence
+										</NavigationMenuTrigger>
+										<NavigationMenuContent className="!w-[200px] bg-[var(--bg-block)] rounded-xl p-3">
+											<Link href="/stocks">
+												<div className="flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-hover-2)]">
+													<span className="flex-1">Stocks</span>
+													{pathname === "/stocks" && <Check className="w-4 h-4" />}
+												</div>
+											</Link>
+											<Link href="/commodities">
+												<div className="flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-hover-2)]">
+													<span className="flex-1">Commodities</span>
+													{pathname === "/commodities" && <Check className="w-4 h-4" />}
+												</div>
+											</Link>
+											<Link href="/stablecoins">
+												<div className="flex items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-hover-2)]">
+													<span className="flex-1">Stablecoins</span>
+													{pathname === "/stablecoins" && <Check className="w-4 h-4" />}
+												</div>
+											</Link>
+										</NavigationMenuContent>
 									</NavigationMenuItem>
+									{/* About */}
 									<NavigationMenuItem>
 										<Link
 											href="/about"
-											className={`font-medium text-[var(--text)] transition-colors`}
+											className="font-medium text-[var(--text)] transition-colors"
 										>
 											About
 										</Link>
