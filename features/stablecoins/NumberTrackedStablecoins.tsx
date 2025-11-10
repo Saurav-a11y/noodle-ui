@@ -6,22 +6,6 @@ const NumberTrackedStablecoins = () => {
 	const { data, isLoading: isGettingNumberTrackedAboutStableCoins } = useGetNumberTrackedAboutStableCoins();
 	const numberTrackedAboutStableCoins = data?.data;
 
-	const isUp = numberTrackedAboutStableCoins?.change?.direction === 'up';
-	const isDown = numberTrackedAboutStableCoins?.change?.direction === 'down';
-
-	let icon = '';
-	let color = '';
-	if (isUp) {
-		icon = '▲';
-		color = 'text-[#00B552]';
-	} else if (isDown) {
-		icon = '▼';
-		color = 'text-[#FF0000]';
-	} else {
-		icon = '';
-		color = 'text-gray-400';
-	}
-
 	return (
 		<div className="p-4 bg-[var(--bg-card)] rounded-xl shadow-xl text-[var(--text)] flex-1">
 			<div className="flex items-center gap-2 mb-2">
