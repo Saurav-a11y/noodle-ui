@@ -9,7 +9,7 @@ import { ToastContainer } from "react-toastify";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Header from "@/components/Header";
 import BackgroundPage from "@/icons/BackgroundPage";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatWithCryptoAssistant from "@/features/cryptocurrency-detail/components/ChatWithCryptoAssistant";
 import CryptoCommunityContributions from "@/features/cryptocurrency-detail/components/CryptoCommunityContributions";
 import BasicInformation from "@/features/cryptocurrency-detail/components/BasicInformation";

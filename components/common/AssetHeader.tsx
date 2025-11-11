@@ -45,7 +45,7 @@ export const AssetHeader = () => {
 							<span>•</span>
 							<span className="opacity-50 dark:opacity-100 text-xs font-medium font-noto">${formatted.priceUsd}</span>
 							<span>•</span>
-							<span className="text-xs font-medium text-red-500 font-noto">{formatted.priceChange}</span>
+							<span className="text-xs font-medium font-noto">{formatted.priceChange}</span>
 						</>
 					)}
 				</div>
