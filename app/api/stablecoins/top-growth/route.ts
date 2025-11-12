@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
 	try {
-		const backendUrl = "https://data-api.agentos.cloud/noodle/top-growth-stablecoins";
+		const backendUrl = `${API_BASE_URL}/top-growth-stablecoins`;
 
 		const res = await fetch(backendUrl, {
 			method: "GET",

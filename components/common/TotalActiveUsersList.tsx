@@ -5,8 +5,8 @@ import { formatNumberWithCommas } from "@/lib/format";
 
 // 🧠 Hooks cho từng loại tài sản
 import { useGetTotalActiveUserStableCoins } from "@/hooks/stablecoins/useGetTotalActiveUserStableCoins";
-import { useStockActiveUsers } from "@/hooks/useStocks";
-import { useCommodityActiveUsers } from "@/hooks/useCommodities";
+import { useGetTotalActiveUserCommodities } from "@/hooks/commodities/useGetTotalActiveUserStableCoins";
+import { useGetTotalActiveUserStocks } from "@/hooks/stocks/useGetTotalActiveUserStocks";
 
 interface TotalActiveUsersListProps {
 	assetType: "cryptocurrencies" | "stocks" | "commodities";
@@ -19,13 +19,13 @@ const TotalActiveUsersList = ({ assetType }: TotalActiveUsersListProps) => {
 
 	switch (assetType) {
 		case "stocks": {
-			const { data: d, isLoading: loading } = useStockActiveUsers();
+			const { data: d, isLoading: loading } = useGetTotalActiveUserStocks();
 			data = d;
 			isLoading = loading;
 			break;
 		}
 		case "commodities": {
-			const { data: d, isLoading: loading } = useCommodityActiveUsers();
+			const { data: d, isLoading: loading } = useGetTotalActiveUserCommodities();
 			data = d;
 			isLoading = loading;
 			break;
