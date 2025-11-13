@@ -5,8 +5,8 @@ import { formatNumberWithCommas } from "@/lib/format";
 
 // 🧠 Hooks cho từng loại tài sản
 import { useGetNumberTrackedAboutStableCoins } from "@/hooks/stablecoins/useGetNumberTrackedAboutStableCoins";
-import { useStockNumberTracked } from "@/hooks/useStocks";
-import { useCommodityNumberTracked } from "@/hooks/useCommodities";
+import { useGetNumberTrackedAboutCommodities } from "@/hooks/commodities/useGetNumberTrackedAboutStableCoins";
+import { useGetNumberTrackedAboutStocks } from "@/hooks/stocks/useGetNumberTrackedAboutStocks";
 
 interface NumberTrackedListProps {
     assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
@@ -19,13 +19,13 @@ const NumberTrackedList = ({ assetType }: NumberTrackedListProps) => {
 
     switch (assetType) {
         case 'stocks': {
-            const { data: d, isLoading: loading } = useStockNumberTracked();
+            const { data: d, isLoading: loading } = useGetNumberTrackedAboutStocks();
             data = d;
             isLoading = loading;
             break;
         }
         case 'commodities': {
-            const { data: d, isLoading: loading } = useCommodityNumberTracked();
+            const { data: d, isLoading: loading } = useGetNumberTrackedAboutCommodities();
             data = d;
             isLoading = loading;
             break;

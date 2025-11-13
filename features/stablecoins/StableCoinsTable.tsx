@@ -9,7 +9,7 @@ import { formatCurrency, formatNumberWithCommas } from "@/lib/format"
 import { useDebounce } from "@/lib/useDebounce"
 import { ChevronLeft, ChevronRight, Search } from "lucide-react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 const LIMIT = 20;
@@ -89,7 +89,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 };
 
 const StableCoinsTable = () => {
-	const router = useRouter();
+	// const router = useRouter();
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState('');
 	const debouncedSearch = useDebounce(search, 300);
@@ -97,8 +97,8 @@ const StableCoinsTable = () => {
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
-	const items = data?.data?.items ?? [];
-	const total = data?.data?.total ?? 0;
+	const items = data?.items ?? [];
+	const total = data?.total ?? 0;
 	const totalPages = Math.ceil(total / LIMIT);
 
 	return (
@@ -184,7 +184,7 @@ const StableCoinsTable = () => {
 								key={asset.symbol}
 								className="hover:bg-[var(--bg-hover)] cursor-pointer transition-colors"
 								onClick={() => {
-									router.push(`/cryptocurrencies/${asset?.currency}`)
+									// router.push(`/cryptocurrencies/${asset?.currency}`)
 									if (userData?.data?.id) {
 										addLog({
 											userId: userData?.data?.id,

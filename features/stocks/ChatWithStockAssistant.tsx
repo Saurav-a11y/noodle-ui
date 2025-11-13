@@ -4,25 +4,27 @@ import Image from "next/image";
 import StarIcon from "@/icons/StarIcon";
 import SendIcon from "@/icons/SendIcon";
 import MiniMumIcon from "@/icons/MinimunIcon";
-import { formatPercent } from "@/lib/format";
+import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams } from "next/navigation";
-import { useCommunityOverview } from "../hooks/useCommunityOverview";
 import { useGetAISuggestions, useGetMessages, useSayHello, useSendChatMessage, type GetMessagesResponse } from "@/hooks/useChat";
 import { motion } from 'framer-motion';
+import { useStockOverview } from "@/hooks/useStocks";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import { InfiniteData } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { InfiniteData } from "@tanstack/react-query";
 
 function getCurrentTime(): string {
 	return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
 const ChatBubble = memo(({ chat }: { chat: any }) => {
+	const lines = chat.message.split('\n').filter(Boolean);
+
 	return (
 		<div className="space-y-2">
-			{chat.type === "assistant" && (
+			{chat.type === 'assistant' && (
 				<div className="w-full flex justify-start">
 					<div className="bg-[var(--bg-messages)] rounded-xl p-4 max-w-[90%] w-fit">
 						<motion.div
@@ -42,16 +44,11 @@ const ChatBubble = memo(({ chat }: { chat: any }) => {
 					</div>
 				</div>
 			)}
-
-			{chat.type === "user" && (
+			{chat.type === 'user' && (
 				<div className="w-full flex justify-end">
 					<div className="bg-[#FAFFD9] rounded-xl p-4 max-w-[90%] w-fit">
-						<p className="text-[#373737] whitespace-pre-wrap text-sm">
-							{chat.message}
-						</p>
-						<p className="text-xs text-gray-500 mt-1 text-right opacity-50 font-reddit">
-							{chat.timestamp}
-						</p>
+						<pre className="text-[#373737] text-right whitespace-pre-wrap text-sm">{chat.message}</pre>
+						<p className="text-xs text-gray-500 mt-1 text-right opacity-50 font-reddit">{chat.timestamp}</p>
 					</div>
 				</div>
 			)}
@@ -100,7 +97,7 @@ const ChatMessages = memo(({ chatHistory, isLoading, onLoadMore, hasMore, }: {
 			{isLoading && <TypingIndicator />}
 			<div ref={scrollRef} />
 		</div>
-	);
+	)
 });
 
 const ChatInput = ({
@@ -156,20 +153,19 @@ const ChatInput = ({
 	);
 };
 
-const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) => {
+const ChatWithStockAssistant = ({ handleCloseChat }: { handleCloseChat?: any }) => {
 	const params = useParams();
 	const communityId = params?.slug as string;
 
-	const [userInput, setUserInput] = useState("");
+	const [userInput, setUserInput] = useState('');
 	const [chatHistory, setChatHistory] = useState<any[]>([]);
 	const chatHistoryRef = useRef<any[]>([]);
-
-	const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+	const [_, forceUpdate] = useReducer((x) => x + 1, 0)
+	const scrollRef = useRef<HTMLDivElement>(null);
 
 	const { mutate: sendMessage, isPending } = useSendChatMessage();
-	const { data, isFetching: isGettingCommunity } = useCommunityOverview(communityId);
-	const { data: userData } = useMe();
-	const { mutate: addLog } = useAddUserActivityLog();
+	const { data, isFetching: isGettingCommunity } = useStockOverview(communityId);
+	const { data: userData } = useMe()
 	const {
 		data: rawMessagesData,
 		fetchNextPage,
@@ -181,24 +177,24 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		limit: 20,
 	});
 	const messagesData = rawMessagesData as InfiniteData<GetMessagesResponse> | undefined;
-	const hasNoUser = !userData?.data?.id;
-	const hasNoMessages = messagesData?.pages?.[0]?.messages?.length === 0;
 
-	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'cryptocurrencies', symbol: communityId, isCall: hasNoUser || (!hasNoUser && hasNoMessages) });
+	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'stocks', symbol: communityId, isCall: messagesData?.pages?.[0]?.messages?.length === 0 });
+
+	const { mutate: addLog } = useAddUserActivityLog();
+
 	const { data: aiSuggestions, isFetching: isFetchingSuggestions } = useGetAISuggestions({
-		assetType: 'cryptocurrencies',
+		assetType: 'stocks',
 		symbol: communityId,
 		recentMessages: chatHistoryRef.current.slice(-3).map((msg) => msg.message),
 	});
 
 	const communityOverview = {
-		projectName: data?.data?.fullname,
-		logo: data?.data?.logo,
-		base_currency: data?.data?.name,
+		projectName: data?.data?.name,
+		logo: data?.data?.logoid,
 		price_usd: data?.data?.price,
-		price_change_percent: data?.data?.change ?? 0,
+		price_change_percent: data?.data?.percent,
 		symbol: data?.data?.symbol,
-	};
+	}
 
 	const dbMessages =
 		messagesData?.pages?.flatMap((page) =>
@@ -230,7 +226,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		setUserInput("");
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }], assetType: "cryptocurrencies", userId: userData?.data?.id || "", symbol: communityId },
+			{ messages: [{ ai: false, text: trimmed }], assetType: "stocks", userId: userData?.data?.id || "", symbol: communityId },
 			{
 				onSuccess: (res) => {
 					const aiMsg = {
@@ -243,17 +239,19 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 					if (userData?.data?.id) {
 						addLog({
 							userId: userData?.data?.id,
-							type: "chat",
-							assetType: "cryptocurrencies",
-							assetSymbol: data?.data?.name,
-							assetName: data?.data?.fullname,
-							assetLogo: data?.data?.logo,
+							type: 'chat',
+							assetType: 'stocks',
+							assetSymbol: data?.data?.symbol,
+							assetName: data?.data?.name,
+							assetLogo: `https://s3-symbol-logo.tradingview.com/${data?.data?.logoid}.svg`,
 							content: `AI Chat: Asked about ${trimmed}`,
 						});
 					}
 					forceUpdate();
 				},
-				onError: (err) => console.error("Error sending message:", err),
+				onError: (err) => {
+					console.error('Error sending message:', err);
+				},
 			}
 		);
 	};
@@ -273,22 +271,23 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	return (
 		<div className="h-full flex flex-col bg-[var(--bg-chat)] drop-shadow-xl rounded-xl overflow-hidden">
 			{/* Header */}
-			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden">
+			<div className="bg-gradient-to-r from-[#DDF346] to-[#9FD609] p-4 rounded-t-xl relative overflow-hidden relative">
+				<div className="w-full h-[90px] absolute top-0 left-12">
+					{/* <BackgroundChat /> */}
+				</div>
 				<div className="flex items-center gap-3 relative">
 					<div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
 						<NoodlesMiniLogo />
 					</div>
-					<div className="text-[#1E1B39] relative z-20">
+					<div className="relative z-20">
 						<p className="text-lg font-bold font-noto">AI Community Analyst</p>
-						<p className="text-xs font-reddit">
-							Your intelligent crypto, stock & commodity companion
-						</p>
+						<p className="text-xs font-reddit">Your intelligent crypto research companion</p>
 					</div>
 				</div>
-				<span
-					className="absolute top-2 right-2 cursor-pointer z-20"
-					onClick={handleCloseChat}
-				>
+				<span className="absolute top-2 right-2 cursor-pointer z-20" onClick={() => {
+					handleCloseChat()
+					console.log("Close chat clicked");
+				}}>
 					<MiniMumIcon />
 				</span>
 			</div>
@@ -305,38 +304,32 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 					</div>
 				) : (
 					<div className="flex items-center gap-3">
-						{communityOverview.logo && (
-							<Image
-								src={communityOverview.logo}
-								alt="Logo"
-								width={40}
-								height={40}
-								className="rounded-full"
-							/>
-						)}
-						<div className="space-y-1">
-							<p className="text-xl font-semibold font-noto">
-								{communityOverview.projectName} Community
-							</p>
+						<div className="w-10 h-10 rounded-full flex items-center justify-center">
+							{communityOverview?.logo && (
+								<Image
+									src={`https://s3-symbol-logo.tradingview.com/${communityOverview?.logo}.svg` || ""}
+									alt="Avatar"
+									width={40}
+									height={40}
+									className="rounded-full"
+								/>
+							)}
+						</div>
+						<div className="space-y-1 flex-1">
+							<p className="text-xl font-semibold font-noto">{communityOverview?.projectName} Community</p>
 							<div className="flex items-center gap-2 text-xs">
-								<span className="font-medium font-noto">
-									{communityOverview.base_currency}
-								</span>
+								<span className="font-medium font-noto">${communityOverview?.symbol}</span>
 								<span>•</span>
-								<span className="font-medium font-noto">
-									${communityOverview.price_usd}
-								</span>
+								<span className="font-medium font-noto">{formatCurrency(communityOverview?.price_usd)}</span>
 								<span>•</span>
-								<span className="text-red-500 font-medium font-noto">
-									{formatPercent(communityOverview.price_change_percent)}
-								</span>
+								<span className="text-red-500 font-medium font-noto">{formatPercent(communityOverview?.price_change_percent)}</span>
 							</div>
 						</div>
 					</div>
 				)}
 			</div>
 
-			{/* Chat Section */}
+			{/* Chat Messages */}
 			<ChatMessages
 				chatHistory={allMessages}
 				isLoading={isFetchingNextPage || isPending || isFetching}
@@ -365,16 +358,17 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 					</div>
 				</div>
 			)}
-			{/* Input */}
+
+			{/* Input Area */}
 			<ChatInput
 				userInput={userInput}
 				setUserInput={setUserInput}
 				onSend={handleSendMessage}
-				placeholder={`Ask me anything about ${communityOverview.projectName}, or any token, stock, or commodity`}
+				placeholder={`Ask me anything about ${communityOverview.projectName}’s community data`}
 				loading={isPending}
 			/>
 		</div>
 	);
 };
 
-export default ChatWithCryptoAssistant;
+export default ChatWithStockAssistant;

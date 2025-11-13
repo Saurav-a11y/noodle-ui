@@ -10,8 +10,8 @@ import { formatNumberWithCommas } from '@/lib/format';
 
 // 🧠 Các hooks riêng cho từng loại asset
 import { useGetMostTalkedAboutStableCoins } from '@/hooks/stablecoins/useGetMostTalkedAboutStableCoins';
-import { useMostTalkedAboutStocks } from '@/hooks/useStocks';
-import { useMostTalkedAboutCommodities } from '@/hooks/useCommodities';
+import { useGetMostTalkedAboutCommodities } from '@/hooks/commodities/useGetMostTalkedAboutStableCoins';
+import { useGetMostTalkedAboutStocks } from '@/hooks/stocks/useGetMostTalkedAboutStocks';
 
 interface MostTalkedAboutListProps {
 	assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
@@ -28,20 +28,20 @@ const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
 
 	switch (assetType) {
 		case 'stocks': {
-			const { data, isLoading: loading } = useMostTalkedAboutStocks();
-			rawData = data?.data ?? [];
+			const { data, isLoading: loading } = useGetMostTalkedAboutStocks();
+			rawData = data ?? [];
 			isLoading = loading;
 			break;
 		}
 		case 'commodities': {
-			const { data, isLoading: loading } = useMostTalkedAboutCommodities();
-			rawData = data?.data ?? [];
+			const { data, isLoading: loading } = useGetMostTalkedAboutCommodities();
+			rawData = data ?? [];
 			isLoading = loading;
 			break;
 		}
 		default: {
 			const { data, isLoading: loading } = useGetMostTalkedAboutStableCoins();
-			rawData = data?.data ?? [];
+			rawData = data ?? [];
 			isLoading = loading;
 			break;
 		}
@@ -66,8 +66,8 @@ const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
 				name: item.name,
 				description: item.name,
 				symbol: item.symbol,
-				slug: item.name_slug,
-				logo: item.medium_logo_url ?? '/images/icon-section-6_2.png',
+				slug: item.nameSlug,
+				logo: item.mediumLogoUrl ?? '/images/icon-section-6_2.png',
 				mentions: item.mentions ?? 0,
 			};
 		}

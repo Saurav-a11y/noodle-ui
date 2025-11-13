@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-
-const BACKEND_URL = "https://data-api.agentos.cloud/noodle"
+import { API_BASE_URL } from "@/lib/config";
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
@@ -9,7 +8,7 @@ export async function GET(req: NextRequest) {
     const limit = searchParams.get("limit") || "20"
     const page = searchParams.get("page") || "1"
 
-    const url = `${BACKEND_URL}/stablecoins?q=${q}&limit=${limit}&page=${page}`
+    const url = `${API_BASE_URL}/stablecoins?q=${q}&limit=${limit}&page=${page}`
 
     const res = await fetch(url, {
         method: "GET",

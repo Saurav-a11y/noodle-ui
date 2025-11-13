@@ -7,9 +7,9 @@ import _get from "lodash/get";
 import _map from "lodash/map";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useState } from "react";
-import { useStocksHealthRanks } from "@/hooks/useStocks";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
+import { useGetStocksList } from "@/hooks/stocks/useStocksList";
 
 const TABS = [
     { key: "overview", label: "Overview" },
@@ -25,13 +25,13 @@ const TABS = [
 
 const TopCompaniesByMarketCap = () => {
     const [selectedTab, setSelectedTab] = useState("overview");
-    const { data: stocksHealthRanksData, isFetching: isGettingStocks } = useStocksHealthRanks({
+    const { data: stocksHealthRanksData, isFetching: isGettingStocks } = useGetStocksList({
         limit: 20,
         page: 1,
         search: "",
         groupFilter: selectedTab
     })
-    const stocks = stocksHealthRanksData?.data?.stock_health_rankings;
+    const stocks = stocksHealthRanksData?.items;
     // const router = useRouter();
     const { data: userData } = useMe()
     const { mutate: addLog } = useAddUserActivityLog();
@@ -157,13 +157,13 @@ const TopCompaniesByMarketCap = () => {
                                     <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto"><div>{formatCurrency(stock?.volume)}</div></TableCell>
                                     <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">
                                         <div className={`text-center font-noto`}>
-                                            {formatCurrency(stock?.market_cap_basic)}
+                                            {formatCurrency(stock?.marketCapBasic)}
                                         </div>
                                     </TableCell>
-                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{Number((stock?.price_earnings_ttm ?? 0).toFixed(2))}</TableCell>
-                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{Number((stock?.earnings_per_share_diluted_ttm ?? 0).toFixed(2))}</TableCell>
-                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{formatPercent(stock?.earnings_per_share_diluted_yoy_growth_ttm)}</TableCell>
-                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{Number((stock?.dividends_yield ?? 0).toFixed(2))}%</TableCell>
+                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{Number((stock?.priceEarningsTtm ?? 0).toFixed(2))}</TableCell>
+                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{Number((stock?.earningsPerShareDilutedTtm ?? 0).toFixed(2))}</TableCell>
+                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{formatPercent(stock?.earningsPerShareDilutedYoyGrowthTtm)}</TableCell>
+                                    <TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center font-noto">{Number((stock?.dividendsYield ?? 0).toFixed(2))}%</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
