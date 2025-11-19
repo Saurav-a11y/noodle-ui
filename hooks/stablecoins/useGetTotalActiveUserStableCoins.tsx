@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetTotalActiveUserStableCoins = () => {
+export const useGetTotalActiveUserStableCoins = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['active-users-stablecoins'],
         queryFn: async () => {
@@ -12,5 +12,6 @@ export const useGetTotalActiveUserStableCoins = () => {
         gcTime: 5 * 60_000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        enabled: options?.enabled ?? true,
     });
 };

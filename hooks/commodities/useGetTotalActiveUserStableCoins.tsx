@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetTotalActiveUserCommodities = () => {
+export const useGetTotalActiveUserCommodities = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['active-users-commodities'],
         queryFn: async () => {
@@ -12,5 +12,6 @@ export const useGetTotalActiveUserCommodities = () => {
         gcTime: 5 * 60_000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        enabled: options?.enabled ?? true,
     });
 };

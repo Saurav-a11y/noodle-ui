@@ -17,23 +17,32 @@ const TotalActiveUsersList = ({ assetType }: TotalActiveUsersListProps) => {
 	let data: any = null;
 	let isLoading = false;
 
+	const stocksQuery = useGetTotalActiveUserStocks({
+		enabled: assetType === 'stocks',
+	});
+
+	const commoditiesQuery = useGetTotalActiveUserCommodities({
+		enabled: assetType === 'commodities',
+	});
+
+	const stableCoinsQuery = useGetTotalActiveUserStableCoins({
+		enabled: assetType !== 'stocks' && assetType !== 'commodities',
+	});
+
 	switch (assetType) {
 		case "stocks": {
-			const { data: d, isLoading: loading } = useGetTotalActiveUserStocks();
-			data = d;
-			isLoading = loading;
+			data = stocksQuery.data ?? [];
+			isLoading = stocksQuery.isLoading;
 			break;
 		}
 		case "commodities": {
-			const { data: d, isLoading: loading } = useGetTotalActiveUserCommodities();
-			data = d;
-			isLoading = loading;
+			data = commoditiesQuery.data ?? [];
+			isLoading = commoditiesQuery.isLoading;
 			break;
 		}
 		default: {
-			const { data: d, isLoading: loading } = useGetTotalActiveUserStableCoins();
-			data = d;
-			isLoading = loading;
+			data = stableCoinsQuery.data ?? [];
+			isLoading = stableCoinsQuery.isLoading;
 			break;
 		}
 	}
