@@ -7,6 +7,8 @@ export interface CommodityItem {
     energyType?: string;
 }
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 export const useGetCommoditiesList = (params?: {
     limit?: number;
     page?: number;
@@ -21,8 +23,21 @@ export const useGetCommoditiesList = (params?: {
     return useQuery({
         queryKey: ["commodities", params],
         queryFn: async () => {
-            const res = await fetch(`/api/commodities/list?${queryString}`);
-            if (!res.ok) throw new Error("Failed to fetch commodities list");
+            if (!API) throw new Error("NEXT_PUBLIC_API_URL is missing");
+
+            const url = `${API}/commodities?${queryString}`;
+
+            const res = await fetch(url, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                cache: "no-store",
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                throw new Error(`Failed: ${res.status} - ${err}`);
+            }
+
             return res.json();
         },
     });

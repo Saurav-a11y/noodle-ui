@@ -1,11 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 export const useGetTotalActiveUserCommodities = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['active-users-commodities'],
         queryFn: async () => {
-            const res = await fetch('/api/commodities/active-users');
-            if (!res.ok) throw new Error('Failed to fetch active users commodities');
+            if (!API) throw new Error("NEXT_PUBLIC_API_URL is missing");
+
+            const url = `${API}/active-users-commodities`;
+
+            const res = await fetch(url, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                cache: "no-store",
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                throw new Error(`Failed: ${res.status} - ${err}`);
+            }
+
             return res.json();
         },
         staleTime: 30_000,

@@ -1,11 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 export const useGetNumberTrackedAboutCommodities = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['commodities-number-tracked'],
         queryFn: async () => {
-            const res = await fetch('/api/commodities/number-tracked');
-            if (!res.ok) throw new Error('Failed to fetch number tracked commodities');
+            if (!API) throw new Error("NEXT_PUBLIC_API_URL is missing");
+
+            const url = `${API}/commodities-number-tracked`;
+
+            const res = await fetch(url, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                cache: "no-store",
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                throw new Error(`Failed: ${res.status} - ${err}`);
+            }
+
             return res.json();
         },
         staleTime: 30_000,
