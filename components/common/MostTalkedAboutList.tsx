@@ -2,7 +2,7 @@
 
 import _map from 'lodash/map';
 import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import TooltipCommon from '@/components/common/TooltipCommon';
 import { useMe } from '@/hooks/useAuth';
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog';
@@ -18,7 +18,7 @@ interface MostTalkedAboutListProps {
 }
 
 const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
-	// const router = useRouter();
+	const router = useRouter();
 	const { data: userData } = useMe();
 	const { mutate: addLog } = useAddUserActivityLog();
 
@@ -129,7 +129,7 @@ const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[var(--bg-hover)] rounded-lg transition"
 							onClick={() => {
-								// router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
+								router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
 								if (userData?.data?.id) {
 									addLog({
 										userId: userData.data.id,
