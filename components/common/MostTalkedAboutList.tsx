@@ -2,47 +2,55 @@
 
 import _map from 'lodash/map';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import TooltipCommon from '@/components/common/TooltipCommon';
 import { useMe } from '@/hooks/useAuth';
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog';
 import { formatNumberWithCommas } from '@/lib/format';
+import { useGetMostTalkedAboutStocks } from '@/hooks/stocks/useGetMostTalkedAboutStocks';
+import { useGetMostTalkedAboutCommodities } from '@/hooks/commodities/useGetMostTalkedAboutStableCoins';
+import { useGetMostTalkedAboutStableCoins } from '@/hooks/stablecoins/useGetMostTalkedAboutStableCoins';
 
 // 🧠 Các hooks riêng cho từng loại asset
-import { useGetMostTalkedAboutStableCoins } from '@/hooks/stablecoins/useGetMostTalkedAboutStableCoins';
-import { useGetMostTalkedAboutCommodities } from '@/hooks/commodities/useGetMostTalkedAboutStableCoins';
-import { useGetMostTalkedAboutStocks } from '@/hooks/stocks/useGetMostTalkedAboutStocks';
 
 interface MostTalkedAboutListProps {
 	assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
 }
 
 const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
-	const router = useRouter();
+	// const router = useRouter();
 	const { data: userData } = useMe();
 	const { mutate: addLog } = useAddUserActivityLog();
 
+	const stocksQuery = useGetMostTalkedAboutStocks({
+		enabled: assetType === 'stocks',
+	});
+
+	const commoditiesQuery = useGetMostTalkedAboutCommodities({
+		enabled: assetType === 'commodities',
+	});
+
+	const stableCoinsQuery = useGetMostTalkedAboutStableCoins({
+		enabled: assetType !== 'stocks' && assetType !== 'commodities',
+	});
 	// 🪙 Chọn hook theo assetType
 	let rawData: any[] = [];
 	let isLoading = false;
 
 	switch (assetType) {
 		case 'stocks': {
-			const { data, isLoading: loading } = useGetMostTalkedAboutStocks();
-			rawData = data ?? [];
-			isLoading = loading;
+			rawData = stocksQuery.data ?? [];
+			isLoading = stocksQuery.isLoading;
 			break;
 		}
 		case 'commodities': {
-			const { data, isLoading: loading } = useGetMostTalkedAboutCommodities();
-			rawData = data ?? [];
-			isLoading = loading;
+			rawData = commoditiesQuery.data ?? [];
+			isLoading = commoditiesQuery.isLoading;
 			break;
 		}
 		default: {
-			const { data, isLoading: loading } = useGetMostTalkedAboutStableCoins();
-			rawData = data ?? [];
-			isLoading = loading;
+			rawData = stableCoinsQuery.data ?? [];
+			isLoading = stableCoinsQuery.isLoading;
 			break;
 		}
 	}
@@ -129,7 +137,7 @@ const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[var(--bg-hover)] rounded-lg transition"
 							onClick={() => {
-								router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
+								// router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
 								if (userData?.data?.id) {
 									addLog({
 										userId: userData.data.id,

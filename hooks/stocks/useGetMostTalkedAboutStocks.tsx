@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetMostTalkedAboutStocks = () => {
+export const useGetMostTalkedAboutStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['most-talked-about-stocks'],
         queryFn: async () => {
@@ -12,5 +12,6 @@ export const useGetMostTalkedAboutStocks = () => {
         gcTime: 5 * 60_000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        enabled: options?.enabled ?? true,
     });
 };

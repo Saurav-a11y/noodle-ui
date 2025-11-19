@@ -10,11 +10,12 @@ export const useTopGrowthStocks = () =>
 		staleTime: 1000 * 60 * 5,
 	});
 
-export const useMostTalkedAboutStocks = () =>
+export const useMostTalkedAboutStocks = (options?: { enabled?: boolean }) =>
 	useQuery({
 		queryKey: ['mostTalkedAboutStocks'],
 		queryFn: fetchMostTalkedAboutStocks,
 		staleTime: 1000 * 60 * 5,
+		enabled: options?.enabled ?? true,
 	});
 
 export const useStockNumberTracked = () =>

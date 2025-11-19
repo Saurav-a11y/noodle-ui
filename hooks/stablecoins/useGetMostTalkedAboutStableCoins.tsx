@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetMostTalkedAboutStableCoins = () => {
+export const useGetMostTalkedAboutStableCoins = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['most-talked-about-stablecoins'],
         queryFn: async () => {
@@ -12,5 +12,6 @@ export const useGetMostTalkedAboutStableCoins = () => {
         gcTime: 5 * 60_000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        enabled: options?.enabled ?? true,
     });
 };

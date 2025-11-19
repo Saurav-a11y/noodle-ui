@@ -17,23 +17,32 @@ const NumberTrackedList = ({ assetType }: NumberTrackedListProps) => {
     let data: any = null;
     let isLoading = false;
 
+    const stocksQuery = useGetNumberTrackedAboutStocks({
+        enabled: assetType === 'stocks',
+    });
+
+    const commoditiesQuery = useGetNumberTrackedAboutCommodities({
+        enabled: assetType === 'commodities',
+    });
+
+    const stableCoinsQuery = useGetNumberTrackedAboutStableCoins({
+        enabled: assetType !== 'stocks' && assetType !== 'commodities',
+    });
+
     switch (assetType) {
         case 'stocks': {
-            const { data: d, isLoading: loading } = useGetNumberTrackedAboutStocks();
-            data = d;
-            isLoading = loading;
+            data = stocksQuery.data ?? [];
+            isLoading = stocksQuery.isLoading;
             break;
         }
         case 'commodities': {
-            const { data: d, isLoading: loading } = useGetNumberTrackedAboutCommodities();
-            data = d;
-            isLoading = loading;
+            data = commoditiesQuery.data ?? [];
+            isLoading = commoditiesQuery.isLoading;
             break;
         }
         default: {
-            const { data: d, isLoading: loading } = useGetNumberTrackedAboutStableCoins();
-            data = d;
-            isLoading = loading;
+            data = stableCoinsQuery.data ?? [];
+            isLoading = stableCoinsQuery.isLoading;
             break;
         }
     }

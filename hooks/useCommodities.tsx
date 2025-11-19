@@ -26,11 +26,12 @@ export const useCommoditiesHealthRanks = (params: { limit?: number, page?: numbe
         staleTime: 1000 * 60 * 5,
     });
 
-export const useMostTalkedAboutCommodities = () =>
+export const useMostTalkedAboutCommodities = (options?: { enabled?: boolean }) =>
     useQuery({
         queryKey: ['mostTalkedAboutCommodities'],
         queryFn: fetchMostTalkedAboutCommodities,
         staleTime: 1000 * 60 * 5,
+        enabled: options?.enabled ?? true,
     });
 
 export const useCommodityNumberTracked = () =>

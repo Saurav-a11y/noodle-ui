@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import TooltipCommon from "@/components/common/TooltipCommon"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
 import Image from "next/image";
@@ -32,7 +32,7 @@ const TopCompaniesByMarketCap = () => {
         groupFilter: selectedTab
     })
     const stocks = stocksHealthRanksData?.items;
-    const router = useRouter();
+    // const router = useRouter();
     const { data: userData } = useMe()
     const { mutate: addLog } = useAddUserActivityLog();
     return (
@@ -126,7 +126,7 @@ const TopCompaniesByMarketCap = () => {
                                     key={index}
                                     className="hover:bg-[var(--bg-hover)] cursor-pointer transition-colors"
                                     onClick={() => {
-                                        router.push(`/stocks/${stock.symbol}`)
+                                        // router.push(`/stocks/${stock.symbol}`)
                                         if (userData?.data?.id) {
                                             addLog({
                                                 userId: userData?.data?.id,

@@ -19,9 +19,9 @@ const CommodityDetailPage = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [chatWidth, setChatWidth] = useState(26);
 
-    const handleCloseChat = () => {
-        setChatVisible(false);
-    };
+    // const handleCloseChat = () => {
+    //     setChatVisible(false);
+    // };
 
     const handleMouseDown = () => {
         let startX: number;

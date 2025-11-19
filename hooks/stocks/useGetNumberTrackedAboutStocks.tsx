@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetNumberTrackedAboutStocks = () => {
+export const useGetNumberTrackedAboutStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['stocks-number-tracked'],
         queryFn: async () => {
@@ -12,5 +12,6 @@ export const useGetNumberTrackedAboutStocks = () => {
         gcTime: 5 * 60_000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        enabled: options?.enabled ?? true,
     });
 };

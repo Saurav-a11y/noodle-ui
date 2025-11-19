@@ -2,7 +2,7 @@
 
 import _map from 'lodash/map';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import TooltipCommon from '@/components/common/TooltipCommon';
 import { useMe } from '@/hooks/useAuth';
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog';
@@ -17,7 +17,7 @@ interface TopGrowthListProps {
 }
 
 const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
-	const router = useRouter();
+	// const router = useRouter();
 	const { data: userData } = useMe();
 	const { mutate: addLog } = useAddUserActivityLog();
 
@@ -25,23 +25,32 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 	let rawData: any[] = [];
 	let isLoading = false;
 
+	const stocksQuery = useGetTopGrowthStocks({
+		enabled: assetType === 'stocks',
+	});
+
+	const commoditiesQuery = useGetTopGrowthCommodities({
+		enabled: assetType === 'commodities',
+	});
+
+	const stableCoinsQuery = useGetTopGrowthStableCoins({
+		enabled: assetType !== 'stocks' && assetType !== 'commodities',
+	});
+
 	switch (assetType) {
 		case 'stocks': {
-			const { data, isLoading: loading } = useGetTopGrowthStocks();
-			rawData = data ?? [];
-			isLoading = loading;
+			rawData = stocksQuery.data ?? [];
+			isLoading = stocksQuery.isLoading;
 			break;
 		}
 		case 'commodities': {
-			const { data, isLoading: loading } = useGetTopGrowthCommodities();
-			rawData = data ?? [];
-			isLoading = loading;
+			rawData = commoditiesQuery.data ?? [];
+			isLoading = commoditiesQuery.isLoading;
 			break;
 		}
 		default: {
-			const { data, isLoading: loading } = useGetTopGrowthStableCoins();
-			rawData = data ?? [];
-			isLoading = loading;
+			rawData = stableCoinsQuery.data ?? [];
+			isLoading = stableCoinsQuery.isLoading;
 			break;
 		}
 	}
@@ -128,7 +137,7 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[var(--bg-hover)] rounded-lg transition"
 							onClick={() => {
-								router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
+								// router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
 								if (userData?.data?.id) {
 									addLog({
 										userId: userData.data.id,

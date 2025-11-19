@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetTopGrowthStocks = () => {
+export const useGetTopGrowthStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ["top-growth-stocks"],
         queryFn: async () => {
@@ -12,5 +12,6 @@ export const useGetTopGrowthStocks = () => {
         gcTime: 5 * 60_000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        enabled: options?.enabled ?? true,
     });
 };
