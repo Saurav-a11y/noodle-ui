@@ -117,7 +117,7 @@ const CommunityInsightsPanel = ({ data, isFetching }) => {
 						{isFetching ? (
 							<div className="h-5 w-full bg-[var(--loading)] rounded animate-pulse" />
 						) : (
-							<div className="text-sm font-medium font-noto flex items-center gap-1 dark:text-white" style={{ color: metric?.color || '' }}>
+							<div className="text-sm font-medium font-noto flex items-center gap-1 text-[var(--text)]" style={{ color: metric?.color || '' }}>
 								{metric.value}
 							</div>
 						)}

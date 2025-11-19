@@ -3,14 +3,14 @@ import { useState } from "react";
 import _loweCase from 'lodash/lowerCase';
 import _map from 'lodash/map';
 
-import { useCommoditiesHealthRanks } from "@/hooks/useCommodities";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import TooltipCommon from "@/components/common/TooltipCommon";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { formatNumberShort } from "@/lib/format";
 import { useMe } from "@/hooks/useAuth";
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog";
 import Image from "next/image";
+import { useGetCommoditiesList } from "@/hooks/commodities/useCommoditiesList";
 
 const tabList = ["All", "Energy", "Metals", "Agricultural",];
 // "Industrial", "Livestock", "Index", "Electricity"
@@ -81,14 +81,15 @@ const CommoditiesTableHeader = ({ title }) => {
 	)
 }
 const CommoditiesTable = () => {
-	// const router = useRouter();
+	const router = useRouter();
 	const [activeTab, setActiveTab] = useState("All");
 
-	const { data: commoditiesData, isLoading: isGettingCommoditiesHealthRanks, } = useCommoditiesHealthRanks({
+	const { data: commoditiesData, isLoading: isGettingCommoditiesHealthRanks, } = useGetCommoditiesList({
 		limit: 10,
 		page: 1,
 		groupFilter: activeTab === 'All' ? '' : _loweCase(activeTab),
 	});
+
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
@@ -199,7 +200,7 @@ const CommoditiesTable = () => {
 												key={index}
 												className="hover:bg-[var(--bg-hover)] cursor-pointer transition-colors"
 												onClick={() => {
-													// router.push(`/commodities/${item.name_slug}`)
+													router.push(`/commodities/${item.nameSlug}`)
 													if (userData?.data?.id) {
 														addLog({
 															userId: userData?.data?.id,
@@ -207,7 +208,7 @@ const CommoditiesTable = () => {
 															assetType: 'commodity',
 															assetSymbol: item.symbol,
 															assetName: item.name,
-															assetLogo: item.medium_logo_url,
+															assetLogo: item.mediumLogoUrl,
 															content: `See details: '${item.name} (${item.exchange}:${item.symbol}) Community'`,
 														});
 													}
@@ -217,7 +218,7 @@ const CommoditiesTable = () => {
 												<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
 													<div className="flex items-center gap-3">
 														<div className="w-8 h-8 flex items-center justify-center font-noto text-black dark:text-white">
-															<Image src={item?.medium_logo_url ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
+															<Image src={item?.mediumLogoUrl ?? '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 														</div>
 														<div>
 															<p className="font-medium text-sm font-noto">{item?.name}</p>

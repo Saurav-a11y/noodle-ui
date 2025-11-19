@@ -1,7 +1,7 @@
 'use client'
 
-import CommunityHealthRankings from "@/features/cryptocurrencies/components/CommunityHealthRankings";
-import TopProjectsStats from "@/features/cryptocurrencies/components/TopProjectsStats";
+import CommunityHealthRankings from "@/features/currencies/components/CommunityHealthRankings";
+import TopProjectsStats from "@/features/currencies/components/TopProjectsStats";
 import Header from "@/components/Header";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import BackgroundPage from "@/icons/BackgroundPage";

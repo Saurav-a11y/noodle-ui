@@ -2,22 +2,22 @@
 
 import _map from 'lodash/map';
 import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import TooltipCommon from '@/components/common/TooltipCommon';
 import { useMe } from '@/hooks/useAuth';
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog';
 import { formatPercent } from '@/lib/format';
 
 import { useGetTopGrowthStableCoins } from '@/hooks/stablecoins/useGetTopGrowthStableCoins';
-import { useTopGrowthStocks } from '@/hooks/useStocks';
-import { useTopGrowthCommodities } from '@/hooks/useCommodities';
+import { useGetTopGrowthCommodities } from '@/hooks/commodities/useGetTopGrowthCommodities';
+import { useGetTopGrowthStocks } from '@/hooks/stocks/useGetTopGrowthStocks';
 
 interface TopGrowthListProps {
 	assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
 }
 
 const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
-	// const router = useRouter();
+	const router = useRouter();
 	const { data: userData } = useMe();
 	const { mutate: addLog } = useAddUserActivityLog();
 
@@ -27,20 +27,20 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 
 	switch (assetType) {
 		case 'stocks': {
-			const { data, isLoading: loading } = useTopGrowthStocks();
-			rawData = data?.data?.top_growth_stocks_7d ?? [];
+			const { data, isLoading: loading } = useGetTopGrowthStocks();
+			rawData = data ?? [];
 			isLoading = loading;
 			break;
 		}
 		case 'commodities': {
-			const { data, isLoading: loading } = useTopGrowthCommodities();
-			rawData = data?.data?.top_growth_commodities_7d ?? [];
+			const { data, isLoading: loading } = useGetTopGrowthCommodities();
+			rawData = data ?? [];
 			isLoading = loading;
 			break;
 		}
 		default: {
 			const { data, isLoading: loading } = useGetTopGrowthStableCoins();
-			rawData = data?.data ?? [];
+			rawData = data ?? [];
 			isLoading = loading;
 			break;
 		}
@@ -60,13 +60,14 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 		}
 
 		if (assetType === 'commodities') {
+			console.log('item', item)
 			return {
 				rank: item.rank ?? index + 1,
 				name: item.name,
 				description: item.name,
 				symbol: item.symbol,
-				slug: item.name_slug,
-				logo: item.medium_logo_url ?? '/images/icon-section-6_2.png',
+				slug: item.nameSlug,
+				logo: item.mediumLogoUrl ?? '/images/icon-section-6_2.png',
 				growthRate7d: item.growthRate ?? (parseFloat(item.weekly) || 0),
 			};
 		}
@@ -97,7 +98,6 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 		commodities:
 			'The list of commodities with the highest 7-day growth rate, based on price change.',
 	};
-
 	return (
 		<div className="bg-[var(--bg-card)] rounded-xl shadow-xl">
 			<div className="flex items-center gap-2 text-[var(--text)] px-5 pt-5 pb-3">
@@ -128,7 +128,7 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 							key={index}
 							className="flex items-center justify-between cursor-pointer px-5 py-2 hover:bg-[var(--bg-hover)] rounded-lg transition"
 							onClick={() => {
-								// router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
+								router.push(`/${assetType}/${assetType === 'stocks' ? item.symbol : assetType === 'commodities' ? item.slug : item.name}`);
 								if (userData?.data?.id) {
 									addLog({
 										userId: userData.data.id,

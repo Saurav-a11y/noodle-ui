@@ -1,10 +1,10 @@
-// app/api/stablecoins/most-talked/route.ts
 import { NextResponse } from 'next/server';
+import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
     try {
         const response = await fetch(
-            'https://data-api.agentos.cloud/noodle/most-talked-about-stablecoins',
+            `${API_BASE_URL}/most-talked-about-stablecoins`,
             { cache: 'no-store' }
         );
 

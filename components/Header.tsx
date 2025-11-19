@@ -30,7 +30,7 @@ const Header = () => {
 								<NavigationMenuList className="flex space-x-8">
 									{/* 🔽 Dropdown: Financial Intelligence */}
 									<NavigationMenuItem>
-										<NavigationMenuTrigger className="font-medium text-[var(--text)] transition-colors">
+										<NavigationMenuTrigger className="font-medium text-[var(--text)] !text-base transition-colors">
 											Financial Intelligence
 										</NavigationMenuTrigger>
 										<NavigationMenuContent className="!w-[200px] bg-[var(--bg-block)] rounded-xl p-3">

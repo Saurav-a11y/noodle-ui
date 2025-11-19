@@ -9,23 +9,21 @@ import HeartFullIcon from '@/icons/HeartFullIcon'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader } from 'lucide-react'
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog'
-import { useCommunityOverview } from '@/features/cryptocurrency-detail/hooks/useCommunityOverview'
+import { useStockOverview } from '@/hooks/useStocks'
 import LoginModal from '@/components/LoginModal'
 
-const AddToCryptoWatchlist = () => {
+const AddToStockWatchlist = () => {
 	const queryClient = useQueryClient();
 	const { data } = useMe()
 	const pathname = usePathname();
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';
 	const code = params?.slug as string;
-	const { data: cryptoOverviewData } = useCommunityOverview(code);
-	const cryptoOverview = cryptoOverviewData?.data || {};
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const { data: inWatchlist = false, isFetching: statusLoading } = useWatchlistStatus({
 		userId: data?.data?.id,
-		code: cryptoOverview?.symbol,
+		code,
 		assetType,
 		enabled: !!data?.data?.id,
 	});
@@ -33,6 +31,9 @@ const AddToCryptoWatchlist = () => {
 	const addMutation = useAddToWatchlist();
 	const removeMutation = useRemoveFromWatchlist();
 	const { mutate: addLog } = useAddUserActivityLog();
+
+	const { data: stockOverviewData } = useStockOverview(code);
+	const stockOverview = stockOverviewData?.data || {};
 
 	const loading = statusLoading || addMutation.isPending || removeMutation.isPending;
 
@@ -43,35 +44,35 @@ const AddToCryptoWatchlist = () => {
 		}
 		if (inWatchlist) {
 			removeMutation.mutate(
-				{ userId: data?.data?.id, code: cryptoOverview?.symbol },
+				{ userId: data?.data?.id, code },
 				{
 					onSuccess: () => {
 						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, cryptoOverview?.symbol, assetType],
+							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
 						});
 					},
 				}
 			);
 		} else {
 			addMutation.mutate(
-				{ userId: data?.data?.id, code: cryptoOverview?.symbol, assetType },
+				{ userId: data?.data?.id, code, assetType },
 				{
 					onSuccess: () => {
 						if (data?.data?.id) {
 							addLog({
 								userId: data?.data?.id,
 								type: 'add_to_watchlist',
-								assetType: 'cryptocurrencies',
-								assetSymbol: cryptoOverview.name,
-								assetName: cryptoOverview.fullname,
-								assetLogo: cryptoOverview.logo,
-								content: `Added ${cryptoOverview.fullname} (${cryptoOverview.name}) to watchlist`,
+								assetType: 'stocks',
+								assetSymbol: stockOverview.symbol,
+								assetName: stockOverview.name,
+								assetLogo: `https://s3-symbol-logo.tradingview.com/${stockOverview.logoid}.svg`,
+								content: `Added ${stockOverview.name} (${stockOverview.symbol}) to watchlist`,
 							});
 						}
 						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, cryptoOverview?.symbol, assetType],
+							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
 						});
 					},
 				}
@@ -111,4 +112,4 @@ const AddToCryptoWatchlist = () => {
 	)
 }
 
-export default AddToCryptoWatchlist
+export default AddToStockWatchlist

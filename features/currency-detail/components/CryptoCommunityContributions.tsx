@@ -231,7 +231,7 @@ const CryptoCommunityContributions = () => {
 											</div>
 										</div>
 										<div className="flex items-center block md:hidden justify-between mb-4">
-											<span className="text-xs text-[var(--text)] font-reddi"><b>{formatNumberShort(totalItems)}</b> mentions</span>
+											<span className="text-xs text-[var(--text)] font-reddit"><b>{formatNumberShort(totalItems)}</b> mentions</span>
 										</div>
 										<div className="space-y-5">
 											{_map(data, (tweet, index) => {
@@ -631,7 +631,7 @@ const CryptoCommunityContributions = () => {
 												<div key={i} className="bg-[var(--bg-card)] text-[var(--text)] rounded-xl p-5">
 													<div className="">
 														<div className="flex items-start gap-3">
-															<div className="flex items-center justify-center text-white font-bold">
+															<div className="flex items-center justify-center text-[var(--text)] font-bold">
 																<svg height="50" width="100" version="1.1" id="Layer_1" xmlns="http:www.w3.org/2000/svg" xmlnsXlink="http:www.w3.org/1999/xlink"
 																	viewBox="0 0 461.001 461.001" xmlSpace="preserve">
 																	<g>

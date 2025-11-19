@@ -1,6 +1,6 @@
 'use client';
 
-import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
+import SocialChart from "@/features/currency-detail/components/SocialChart";
 import { useEffect, useState } from "react";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import { ToastContainer } from "react-toastify";
@@ -9,6 +9,10 @@ import Header from "@/components/Header";
 import BackgroundPage from "@/icons/BackgroundPage";
 import { ThemeProvider } from "@/lib/useThemkMode";
 import { AssetHeader } from "@/components/common/AssetHeader";
+import AddToCommodityWatchlist from "@/features/commodities/AddToCommodityWatchlist";
+import CommodityMetrics from "@/features/commodities/CommodityMetrics";
+import CommodityCommunityContributions from "@/features/commodities/CommodityCommunityContributions";
+import ChatWithCommodityAssistant from "@/features/commodities/ChatWithCommodityAssistant";
 
 const CommodityDetailPage = () => {
     const [isChatVisible, setChatVisible] = useState(true);
@@ -58,7 +62,7 @@ const CommodityDetailPage = () => {
                     {(!isMobile && !isChatVisible) && (
                         <button
                             onClick={() => setChatVisible(true)}
-                            className="fixed bottom-4 left-4 bg-[#84EA07] text-white rounded-full shadow-lg z-90 cursor-pointer"
+                            className="fixed bottom-4 left-4 bg-[#84EA07] text-[var(--text)] rounded-full shadow-lg z-90 cursor-pointer"
                         >
                             <NoodlesMiniLogo size={50} />
                         </button>
@@ -67,27 +71,27 @@ const CommodityDetailPage = () => {
                     {isMobile && !isChatVisible && (
                         <button
                             onClick={() => setChatVisible(true)}
-                            className="fixed bottom-4 right-4 bg-[#84EA07] text-white rounded-full shadow-lg z-50 cursor-pointer"
+                            className="fixed bottom-4 right-4 bg-[#84EA07] text-[var(--text)] rounded-full shadow-lg z-50 cursor-pointer"
                         >
                             <NoodlesMiniLogo size={50} />
                         </button>
                     )}
 
                     {isMobile && isChatVisible && (
-                        <div className="fixed inset-0 z-90 bg-white p-4">
-                            ChatWithCommodityAssistant
+                        <div className="fixed inset-0 z-90 bg-[var(--background)] p-4">
+                            <ChatWithCommodityAssistant />
                         </div>
                     )}
 
                     {!isMobile && (
                         <>
                             <div
-                                className="h-screen border-r border-gray-200 bg-white dark:bg-[#0B0B0B] flex-shrink-0 transition-all duration-300 overflow-hidden"
+                                className="h-screen border-r border-gray-200 bg-[var(--bg-header)] flex-shrink-0 transition-all duration-300 overflow-hidden"
                                 style={{ flexBasis: isChatVisible ? `${chatWidth}%` : '0%' }}
                             >
                                 {isChatVisible && (
                                     <div className="h-full p-4">
-                                        ChatWithCommodityAssistant
+                                        <ChatWithCommodityAssistant />
                                     </div>
                                 )}
                             </div>
@@ -99,7 +103,7 @@ const CommodityDetailPage = () => {
                             )}
                         </>
                     )}
-                    <div className="h-full w-full overflow-auto relative bg-[#F9F9F9] dark:bg-[#0B0B0B]">
+                    <div className="h-full w-full overflow-auto relative bg-[var(--background)]">
                         <Header />
                         <div className="absolute top-27 md:top-3 w-full flex justify-center">
                             <div className='container w-full'>
@@ -110,16 +114,16 @@ const CommodityDetailPage = () => {
                             <div className={`${!isChatVisible ? 'container' : ''} mx-auto px-6 py-8 space-y-4 transition-all duration-300`}>
                                 <div className="flex items-center justify-between">
                                     <AssetHeader />
-                                    <p>AddToCommodityWatchlist</p>
+                                    <AddToCommodityWatchlist />
                                 </div>
                                 <div className="grid grid-cols-4 gap-8">
                                     <div className="col-span-4 md:col-span-1 space-y-6">
-                                        CommodityMetrics
+                                        <CommodityMetrics />
                                     </div>
                                     <div className="col-span-4 md:col-span-3 space-y-5">
                                         <SocialChart type="commodity" />
                                         <div className="mt-10">
-                                            CommodityCommunityContributions
+                                            <CommodityCommunityContributions />
                                         </div>
                                     </div>
                                 </div>
