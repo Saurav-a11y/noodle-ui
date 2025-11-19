@@ -1,6 +1,6 @@
 'use client';
 
-import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
+import SocialChart from "@/features/currency-detail/components/SocialChart";
 import { useEffect, useState } from "react";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import { ToastContainer } from "react-toastify";

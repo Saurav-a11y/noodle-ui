@@ -1,6 +1,6 @@
 'use client';
 import Header from "@/components/Header";
-import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
+import SocialChart from "@/features/currency-detail/components/SocialChart";
 // import StockYieldsList from "@/features/stock-detail/StockYieldsList";
 import BackgroundPage from "@/icons/BackgroundPage";
 import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";

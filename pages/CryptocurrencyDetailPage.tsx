@@ -1,6 +1,6 @@
 'use client';
-import CommunityMetrics from "@/features/cryptocurrency-detail/components/CommunityMetrics";
-import SocialChart from "@/features/cryptocurrency-detail/components/SocialChart";
+import CommunityMetrics from "@/features/currency-detail/components/CommunityMetrics";
+import SocialChart from "@/features/currency-detail/components/SocialChart";
 
 import YieldsList from "@/components/common/YieldsList";
 import { AssetHeader } from "@/components/common/AssetHeader";
@@ -10,13 +10,13 @@ import NoodlesMiniLogo from "@/icons/NoodlesMiniLogo";
 import Header from "@/components/Header";
 import BackgroundPage from "@/icons/BackgroundPage";
 import React, { useEffect, useState } from "react";
-import ChatWithCryptoAssistant from "@/features/cryptocurrency-detail/components/ChatWithCryptoAssistant";
-import CryptoCommunityContributions from "@/features/cryptocurrency-detail/components/CryptoCommunityContributions";
-import BasicInformation from "@/features/cryptocurrency-detail/components/BasicInformation";
-import CryptoFounderAndTeamAnalystChart from "@/features/cryptocurrency-detail/components/CryptoFounderAndTeamAnalystChart";
-import AddToCryptoWatchlist from "@/features/cryptocurrency-detail/components/AddToCryptoWatchlist";
+import ChatWithCryptoAssistant from "@/features/currency-detail/components/ChatWithCryptoAssistant";
+import CryptoCommunityContributions from "@/features/currency-detail/components/CryptoCommunityContributions";
+import BasicInformation from "@/features/currency-detail/components/BasicInformation";
+import CryptoFounderAndTeamAnalystChart from "@/features/currency-detail/components/CryptoFounderAndTeamAnalystChart";
+import AddToCryptoWatchlist from "@/features/currency-detail/components/AddToCryptoWatchlist";
 import { ThemeProvider } from "@/lib/useThemkMode";
-import MarketInfoCard from "@/features/cryptocurrency-detail/components/MarketInfoCard";
+import MarketInfoCard from "@/features/currency-detail/components/MarketInfoCard";
 
 const CryptocurrencyDetailPage = () => {
 	const [isChatVisible, setChatVisible] = useState(true);

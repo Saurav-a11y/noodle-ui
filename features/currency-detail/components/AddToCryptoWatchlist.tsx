@@ -9,7 +9,7 @@ import HeartFullIcon from '@/icons/HeartFullIcon'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader } from 'lucide-react'
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog'
-import { useCommunityOverview } from '@/features/cryptocurrency-detail/hooks/useCommunityOverview'
+import { useCommunityOverview } from '@/features/currency-detail/hooks/useCommunityOverview'
 import LoginModal from '@/components/LoginModal'
 
 const AddToCryptoWatchlist = () => {

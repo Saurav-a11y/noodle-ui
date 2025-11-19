@@ -1,4 +1,4 @@
-import { useCommunityOverview } from "@/features/cryptocurrency-detail/hooks/useCommunityOverview";
+import { useCommunityOverview } from "@/features/currency-detail/hooks/useCommunityOverview";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { useParams, usePathname } from "next/navigation";
 import { useCommodityOverview } from "./useCommodities";
