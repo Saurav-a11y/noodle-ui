@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   noodle-ui:
-    image: minhhuy2302/noodle-ui:v2-task-design
+    image: mvpstudionz/noodle_ui:latest
     container_name: noodle-ui
     ports:
       - "3000:3000"
