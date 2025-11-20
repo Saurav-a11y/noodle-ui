@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  noodle-api:
+    image: minhhuy2302/noodle-api:develop
+    container_name: noodle-api
+    ports:
+      - "5130:5130"
+    environment:
+    - ASPNETCORE_URLS=http://0.0.0.0:5130
+    - ASPNETCORE_ENVIRONMENT=Development
+    restart: unless-stopped
+
+  noodle-ui:
+    image: mvpstudionz/noodle_ui:latest
+    container_name: noodle-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://noodle-api:5130/noodle 
+    depends_on:
+      - noodle-api
+    restart: unless-stopped

@@ -1,0 +1,110 @@
+'use client';
+import { useState } from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/DropdownMenu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
+import LoginModal from "../LoginModal";
+import { useMe } from "@/hooks/useAuth";
+import LogoutIcon from "@/icons/LogoutIcon";
+import ShieldIcon from "@/icons/ShieldIcon";
+// import NotificationIcon from "@/icons/NotificationIcon";
+import FavouriteIcon from "@/icons/FavouriteIcon";
+import AnalystIcon from "@/icons/AnalystIcon";
+import Link from "next/link";
+import ProfileIcon from "@/icons/ProfileIcon";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from '@tanstack/react-query';
+
+const SocialWalletLogin = () => {
+	const router = useRouter();
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const queryClient = useQueryClient();
+	const { data } = useMe();
+	const user = data?.data;
+	const handleLogout = () => {
+		localStorage.removeItem("auth_token");
+		queryClient.removeQueries({ queryKey: ["me"] });
+		router.push("/");
+	};
+	if (user) {
+		return (
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
+						<Avatar className="h-10 w-10 cursor-pointer">
+							<AvatarImage src={user?.avatar} alt={user?.username} />
+							<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+						</Avatar>
+					</div>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align="center" className="bg-[var(--bg-block)] w-[240px] rounded-xl p-4">
+					<div className="flex items-center gap-2">
+						<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
+							<Avatar className="h-10 w-10 bg-[var(--card)]">
+								<AvatarImage src={user?.avatar} alt={user?.username} />
+								<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+							</Avatar>
+						</div>
+						<div className="space-y-1">
+							<p className="text-[var(--text)] fonr-space text-xs font-medium">{user?.name}</p>
+							<p className="text-[10px] font-medium text-[var(--text-chip)] bg-[#EBEBEB] rounded-full py-[2px] px-2 w-fit">Free Plan</p>
+						</div>
+					</div>
+					<hr className="my-3 text-[var(--border)]" />
+					<Link href='/settings/profile'>
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover-2)] rounded-lg p-2">
+							<ProfileIcon />
+							<span>My Profile</span>
+						</DropdownMenuItem>
+					</Link>
+					<Link href='/settings/security'>
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover-2)] rounded-lg p-2">
+							<ShieldIcon />
+							<span>Account Security</span>
+						</DropdownMenuItem>
+					</Link>
+					{/* <Link href='/settings/notifications'>
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover)] rounded-lg p-2">
+							<NotificationIcon />
+							<span>Notification Settings</span>
+						</DropdownMenuItem>
+					</Link> */}
+					<Link href='/settings/watchlist'>
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover-2)] rounded-lg p-2">
+							<FavouriteIcon />
+							<span>Watchlist & Portfolio</span>
+						</DropdownMenuItem>
+					</Link>
+					<Link href='/settings/analytics'>
+						<DropdownMenuItem className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover-2)] rounded-lg p-2">
+							<AnalystIcon />
+							<span>Account Analytics</span>
+						</DropdownMenuItem>
+					</Link>
+					<DropdownMenuItem onClick={handleLogout} className="cursor-pointer space-x-2 hover:bg-[var(--bg-hover-2)] rounded-lg p-2">
+						<LogoutIcon />
+						<span>Log Out</span>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+		);
+	}
+
+	return (
+		<>
+			<button
+				onClick={() => setIsModalOpen(true)}
+				className="px-4.5 py-2.5 rounded-full font-medium text-sm transition-colors bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer text-[#494949] font-space"
+			>
+				Log In
+			</button>
+
+			{/* Tách modal ra */}
+			<LoginModal
+				open={isModalOpen}
+				onOpenChange={setIsModalOpen}
+			/>
+		</>
+	);
+};
+
+export default SocialWalletLogin;

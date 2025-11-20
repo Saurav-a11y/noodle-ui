@@ -1,0 +1,8 @@
+const ShieldIcon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg xmlns="http://www.w3.org/2000/svg" width={props?.width || "20"} height={props?.height || "20"} viewBox="0 0 16 16" fill="none">
+		<path d="M7.99995 1.33337C5.99462 1.33337 4.69462 2.67937 3.15728 3.17004C2.53195 3.37004 2.21928 3.46937 2.09262 3.61004C1.96595 3.75004 1.92928 3.95604 1.85528 4.36671C1.06195 8.76404 2.79528 12.8294 6.92862 14.412C7.37195 14.582 7.59395 14.6667 8.00195 14.6667C8.40995 14.6667 8.63262 14.5814 9.07662 14.4114C13.2093 12.8294 14.9406 8.76404 14.1473 4.36671C14.0733 3.95604 14.0359 3.75004 13.9093 3.60937C13.7826 3.46871 13.4706 3.36937 12.8453 3.17004C11.3073 2.67937 10.0053 1.33337 7.99995 1.33337Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+		<path d="M6 8.66667C6 8.66667 6.66667 8.66667 7.33333 10C7.33333 10 9.45133 6.66667 11.3333 6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+	</svg>
+);
+
+export default ShieldIcon;
