@@ -97,8 +97,8 @@ const StableCoinsTable = () => {
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
-	const items = data?.items ?? [];
-	const total = data?.total ?? 0;
+	const items = data?.data?.items ?? [];
+	const total = data?.data?.total ?? 0;
 	const totalPages = Math.ceil(total / LIMIT);
 
 	return (

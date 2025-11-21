@@ -1,28 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
+import { CLIENT_API_URL } from "@/lib/config";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+export const useGetMostTalkedAboutStableCoins = (options?: {
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["most-talked-about-stablecoins"],
+    queryFn: async () => {
+      const url = `${CLIENT_API_URL}/most-talked-about-stablecoins`;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`Failed: ${res.status} - ${err}`);
+      }
 
-export const useGetMostTalkedAboutStableCoins = (options?: { enabled?: boolean }) => {
-    return useQuery({
-        queryKey: ['most-talked-about-stablecoins'],
-        queryFn: async () => {
-            const url = `${API}/most-talked-about-stablecoins`;
-            const res = await fetch(url, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-                cache: "no-store",
-            });
-            if (!res.ok) {
-                const err = await res.text();
-                throw new Error(`Failed: ${res.status} - ${err}`);
-            }
-
-            return res.json();
-        },
-        staleTime: 30_000,
-        gcTime: 5 * 60_000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        enabled: options?.enabled ?? true,
-    });
+      return res.json();
+    },
+    staleTime: 30_000,
+    gcTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    enabled: options?.enabled ?? true,
+  });
 };

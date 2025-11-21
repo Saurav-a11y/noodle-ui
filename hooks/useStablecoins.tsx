@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-
-const BASE_URL = 'https://data-api.agentos.cloud/noodle';
+import { CLIENT_API_URL } from '@/lib/config';
 
 export const useGetStableCoins = ({
 	q,
@@ -16,7 +15,7 @@ export const useGetStableCoins = ({
 			if (limit) params.append('limit', limit.toString());
 			if (page) params.append('page', page.toString());
 
-			const url = `${BASE_URL}/stablecoins?${params.toString()}`;
+			const url = `${CLIENT_API_URL}/stablecoins?${params.toString()}`;
 			const res = await fetch(url);
 			if (!res.ok) throw new Error('Failed to fetch stablecoins');
 			return res.json();
@@ -33,7 +32,7 @@ export const useGetTopGrowthStableCoins = () => {
 	return useQuery({
 		queryKey: ['top-growth-stablecoins'],
 		queryFn: async () => {
-			const url = `${BASE_URL}/top-growth-stablecoins`;
+			const url = `${CLIENT_API_URL}/top-growth-stablecoins`;
 			const res = await fetch(url);
 			if (!res.ok) throw new Error('Failed to fetch top growth stablecoins');
 			return res.json();
@@ -49,7 +48,7 @@ export const useGetMostTalkedAboutStableCoins = () => {
 	return useQuery({
 		queryKey: ['most-talked-about-stablecoins'],
 		queryFn: async () => {
-			const url = `${BASE_URL}/most-talked-about-stablecoins`;
+			const url = `${CLIENT_API_URL}/most-talked-about-stablecoins`;
 			const res = await fetch(url);
 			if (!res.ok) throw new Error('Failed to fetch most talked about stablecoins');
 			return res.json();
@@ -65,7 +64,7 @@ export const useGetNumberTrackedAboutStableCoins = () => {
 	return useQuery({
 		queryKey: ['stablecoins-number-tracked'],
 		queryFn: async () => {
-			const url = `${BASE_URL}/stablecoins-number-tracked`;
+			const url = `${CLIENT_API_URL}/stablecoins-number-tracked`;
 			const res = await fetch(url);
 			if (!res.ok) throw new Error('Failed to fetch number tracked of stablecoins');
 			return res.json();
@@ -81,7 +80,7 @@ export const useGetTotalActiveUserStableCoins = () => {
 	return useQuery({
 		queryKey: ['active-users-stablecoins'],
 		queryFn: async () => {
-			const url = `${BASE_URL}/active-users-stablecoins`;
+			const url = `${CLIENT_API_URL}/active-users-stablecoins`;
 			const res = await fetch(url);
 			if (!res.ok) throw new Error('Failed to fetch active users stablecoins');
 			return res.json();

@@ -1,14 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-
-const API = process.env.NEXT_PUBLIC_API_URL;
+import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetMostTalkedAboutStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['most-talked-about-stocks'],
         queryFn: async () => {
-            if (!API) throw new Error("NEXT_PUBLIC_API_URL is missing");
-
-            const url = `${API}/most-talked-about-stocks`;
+            const url = `${CLIENT_API_URL}/most-talked-about-stocks`;
 
             const res = await fetch(url, {
                 method: "GET",

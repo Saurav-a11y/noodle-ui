@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { CLIENT_API_URL } from "@/lib/config";
 
 export interface CommodityItem {
     name: string;
@@ -6,8 +7,6 @@ export interface CommodityItem {
     healthScore: number;
     energyType?: string;
 }
-
-const API = process.env.NEXT_PUBLIC_API_URL;
 
 export const useGetCommoditiesList = (params?: {
     limit?: number;
@@ -23,9 +22,7 @@ export const useGetCommoditiesList = (params?: {
     return useQuery({
         queryKey: ["commodities", params],
         queryFn: async () => {
-            if (!API) throw new Error("NEXT_PUBLIC_API_URL is missing");
-
-            const url = `${API}/commodities?${queryString}`;
+            const url = `${CLIENT_API_URL}/commodities?${queryString}`;
 
             const res = await fetch(url, {
                 method: "GET",

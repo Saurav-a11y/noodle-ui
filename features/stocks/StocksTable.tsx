@@ -31,7 +31,7 @@ const TopCompaniesByMarketCap = () => {
         search: "",
         groupFilter: selectedTab
     })
-    const stocks = stocksHealthRanksData?.items;
+    const stocks = stocksHealthRanksData?.data?.items ?? stocksHealthRanksData?.items;
     const router = useRouter();
     const { data: userData } = useMe()
     const { mutate: addLog } = useAddUserActivityLog();

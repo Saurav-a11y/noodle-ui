@@ -39,17 +39,23 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 
 	switch (assetType) {
 		case 'stocks': {
-			rawData = stocksQuery.data ?? [];
+			const data = stocksQuery.data;
+			// Handle both direct array and wrapped response
+			rawData = Array.isArray(data) ? data : (data?.data ?? []);
 			isLoading = stocksQuery.isLoading;
 			break;
 		}
 		case 'commodities': {
-			rawData = commoditiesQuery.data ?? [];
+			const data = commoditiesQuery.data;
+			// Handle both direct array and wrapped response
+			rawData = Array.isArray(data) ? data : (data?.data ?? []);
 			isLoading = commoditiesQuery.isLoading;
 			break;
 		}
 		default: {
-			rawData = stableCoinsQuery.data ?? [];
+			const data = stableCoinsQuery.data;
+			// Handle both direct array and wrapped response
+			rawData = Array.isArray(data) ? data : (data?.data ?? []);
 			isLoading = stableCoinsQuery.isLoading;
 			break;
 		}

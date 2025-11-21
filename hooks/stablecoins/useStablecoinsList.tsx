@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-
-const API = process.env.NEXT_PUBLIC_API_URL;
+import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetStableCoinsList = ({
     q,
@@ -11,7 +10,12 @@ export const useGetStableCoinsList = ({
     return useQuery({
         queryKey: ['stablecoins', q, limit, page],
         queryFn: async () => {
-            const url = `${API}/stablecoins?q=${q}&limit=${limit}&page=${page}`;
+            const params = new URLSearchParams();
+            if (q) params.append('q', q);
+            if (limit) params.append('limit', limit.toString());
+            if (page) params.append('page', page.toString());
+            
+            const url = `${CLIENT_API_URL}/stablecoins?${params.toString()}`;
             const res = await fetch(url);
             if (!res.ok) throw new Error('Failed to fetch stablecoins');
             return res.json();
