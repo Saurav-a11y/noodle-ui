@@ -7,7 +7,7 @@ import { useMe } from "@/hooks/useAuth"
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog"
 import { formatCurrency, formatNumberWithCommas } from "@/lib/format"
 import { useDebounce } from "@/lib/useDebounce"
-import { ChevronLeft, ChevronRight, Search } from "lucide-react"
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Search } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -92,8 +92,18 @@ const StableCoinsTable = () => {
 	const router = useRouter();
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState('');
+
+	const [sortBy, setSortBy] = useState<"default" | "market_cap" | "price" | "volume">("default");
+	const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+
 	const debouncedSearch = useDebounce(search, 300);
-	const { data, isLoading } = useGetStableCoinsList({ q: debouncedSearch, page, limit: LIMIT });
+	const { data, isLoading } = useGetStableCoinsList({
+		q: debouncedSearch,
+		page,
+		limit: LIMIT,
+		sortBy: sortBy === "default" ? null : "market_cap",
+		sortDir: sortBy === "default" ? null : sortDir,
+	});
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
@@ -101,13 +111,25 @@ const StableCoinsTable = () => {
 	const total = data?.total ?? 0;
 	const totalPages = Math.ceil(total / LIMIT);
 
+	const toggleSort = (field: "market_cap" | "price" | "volume") => {
+		if (sortBy !== field) {
+			// Nếu đổi qua cột mới → set default desc
+			setSortBy(field);
+			setSortDir("desc");
+		} else {
+			// Nếu click lại cùng cột → đảo asc/desc
+			setSortDir((prev) => (prev === "desc" ? "asc" : "desc"));
+		}
+		setPage(1);
+	};
+
 	return (
 		<div>
 			<div className="bg-gradient-to-r from-[#DDF346] to-[#84EA0700] p-[1px] rounded-full w-[320px] mb-4">
 				<div className="relative rounded-full bg-[var(--bg-hover)] text-[var(--text)]">
 					<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
 					<Input
-						placeholder={"Search by name or symbol..."}
+						placeholder={"Search stablecoins..."}
 						value={search}
 						onChange={(e) => {
 							setSearch(e.target.value);
@@ -115,6 +137,17 @@ const StableCoinsTable = () => {
 						}}
 						className="pl-10 py-2 max-w-xs w-full bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit text-[var(--text)"
 					/>
+					{search && (
+						<button
+							onClick={() => {
+								setSearch("");
+								setPage(1);
+							}}
+							className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text)] transition cursor-pointer"
+						>
+							✕
+						</button>
+					)}
 				</div>
 			</div>
 			<Table>
@@ -122,9 +155,34 @@ const StableCoinsTable = () => {
 					<TableRow className="border-b-[var(--border)]">
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Name</TableHead>
-						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center">Price</TableHead>
-						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center">Volume(24h)</TableHead>
-						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs w-[120px] text-center">Market Cap</TableHead>
+						<TableHead
+							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center"
+						>
+							<div className="flex items-center justify-center gap-1">
+								Price
+								{sortBy === "price" &&
+									(sortDir === "desc" ? <ChevronDown size={12} /> : <ChevronUp size={12} />)}
+							</div>
+						</TableHead>
+						<TableHead
+							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center"
+							onClick={() => toggleSort("volume")}
+						>
+							<div className="flex items-center justify-center gap-1">
+								Volume (24h)
+								{sortBy === "volume" &&
+									(sortDir === "desc" ? <ChevronDown size={12} /> : <ChevronUp size={12} />)}
+							</div>
+						</TableHead>
+						<TableHead
+							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs w-[120px] text-center cursor-pointer"
+							onClick={() => toggleSort("market_cap")}
+						>
+							<div className="flex items-center justify-center gap-1">
+								Market Cap
+								{sortBy === "market_cap" && (sortDir === "desc" ? <ChevronDown size={12} /> : <ChevronUp size={12} />)}
+							</div>
+						</TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs w-[140px] text-end">Circulating Supply</TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Brief Introduction</TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Backing Mechanism</TableHead>
