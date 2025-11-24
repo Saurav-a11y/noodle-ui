@@ -156,7 +156,8 @@ const StableCoinsTable = () => {
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Name</TableHead>
 						<TableHead
-							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center"
+							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center cursor-pointer"
+							onClick={() => toggleSort("price")}
 						>
 							<div className="flex items-center justify-center gap-1">
 								Price
@@ -165,7 +166,7 @@ const StableCoinsTable = () => {
 							</div>
 						</TableHead>
 						<TableHead
-							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center"
+							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center cursor-pointer"
 							onClick={() => toggleSort("volume")}
 						>
 							<div className="flex items-center justify-center gap-1">
