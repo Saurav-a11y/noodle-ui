@@ -5,6 +5,6 @@ export const API_BASE_URL =
     "http://localhost:5130/noodle";
 
 // Client-side API URL (for direct external API calls from browser)
-export const CLIENT_API_URL = 
+export const CLIENT_API_URL =
     process.env.NEXT_PUBLIC_API_URL ??
     "https://data-api.agentos.cloud/noodle";
