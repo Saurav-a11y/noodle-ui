@@ -97,7 +97,7 @@ const StableCoinsTable = () => {
 	const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
 	const debouncedSearch = useDebounce(search, 300);
-	const { data, isLoading } = useGetStableCoinsList({
+	const { data, isLoading, isError, refetch } = useGetStableCoinsList({
 		q: debouncedSearch,
 		page,
 		limit: LIMIT,
@@ -192,6 +192,21 @@ const StableCoinsTable = () => {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
+					{isError && (
+						<TableRow>
+							<TableCell colSpan={10} className="py-10 text-center text-red-500">
+								<div className="flex flex-col items-center gap-3">
+									<p className="font-medium">⚠️ Failed to load stablecoins</p>
+									<button
+										onClick={() => refetch()}
+										className="px-4 py-2 bg-yellow-400 text-black rounded-lg text-sm font-medium hover:bg-yellow-500 transition cursor-pointer"
+									>
+										Try Again
+									</button>
+								</div>
+							</TableCell>
+						</TableRow>
+					)}
 					{isLoading &&
 						Array.from({ length: 5 }).map((_, i) => (
 							<TableRow key={i} className="animate-pulse">
@@ -206,7 +221,7 @@ const StableCoinsTable = () => {
 							</TableRow>
 						))}
 					{/* 🟢 Empty state */}
-					{!isLoading && items.length === 0 && (
+					{!isLoading && !isError && items.length === 0 && (
 						<TableRow>
 							<TableCell
 								colSpan={10}
