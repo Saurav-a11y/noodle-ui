@@ -12,7 +12,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-const LIMIT = 20;
+const LIMIT = 10;
 
 type PaginationProps = {
 	currentPage: number;
@@ -107,13 +107,13 @@ const StableCoinsTable = () => {
 				<div className="relative rounded-full bg-[var(--bg-hover)] text-[var(--text)]">
 					<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
 					<Input
-						placeholder={"Search..."}
+						placeholder={"Search by name or symbol..."}
 						value={search}
 						onChange={(e) => {
 							setSearch(e.target.value);
 							setPage(1); // reset page khi search
 						}}
-						className="pl-10 py-2 max-w-xs w-fit bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit text-[var(--text)"
+						className="pl-10 py-2 max-w-xs w-full bg-transparent border-none rounded-full focus:outline-none focus:ring-0 font-reddit text-[var(--text)"
 					/>
 				</div>
 			</div>
@@ -170,8 +170,8 @@ const StableCoinsTable = () => {
 										<line x1="9" y1="9" x2="15" y2="15" />
 										<line x1="15" y1="9" x2="9" y2="15" />
 									</svg>
-									<p>No data found</p>
-									<p className="text-xs opacity-70">Try adjusting your search or filters</p>
+									<p>🔍 No stablecoins match your search</p>
+									<p className="text-xs opacity-70">Try a different keyword or clear the search</p>
 								</div>
 							</TableCell>
 						</TableRow>
