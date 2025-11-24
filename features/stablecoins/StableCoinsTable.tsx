@@ -97,8 +97,8 @@ const StableCoinsTable = () => {
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
-	const items = data?.data?.items ?? [];
-	const total = data?.data?.total ?? 0;
+	const items = data?.items ?? [];
+	const total = data?.total ?? 0;
 	const totalPages = Math.ceil(total / LIMIT);
 
 	return (
@@ -230,7 +230,7 @@ const StableCoinsTable = () => {
 									${formatNumberWithCommas(asset?.price)}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-end">
-									${formatNumberWithCommas(asset?.vol_24h)}
+									${formatNumberWithCommas(asset?.vol24h)}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center">
 									{asset?.marketCap
@@ -238,23 +238,23 @@ const StableCoinsTable = () => {
 										: '--'}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-end">
-									{asset?.circulating_supply
-										? `${formatCurrency(asset?.circulating_supply)} ${asset?.currency}`
+									{asset?.circulatingSupply
+										? `${formatCurrency(asset?.circulatingSupply)} ${asset?.currency}`
 										: `0 ${asset?.currency}`}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
-									{asset?.brief_info || '--'}
+									{asset?.briefInfo || '--'}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
 									{asset?.mechanism || '--'}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-end">
-									{asset?.best_yield
-										? `${asset?.best_yield?.apy.toFixed(2)}%`
+									{asset?.bestYield
+										? `${asset?.bestYield?.apy.toFixed(2)}%`
 										: '--'}
 								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)] text-center">
-									{asset?.depegging_history || 'Unknown'}
+									{asset?.depeggingHistory || 'Unknown'}
 								</TableCell>
 							</TableRow>
 						))}

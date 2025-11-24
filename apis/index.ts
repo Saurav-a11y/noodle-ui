@@ -1,6 +1,6 @@
-import { CLIENT_API_URL } from "@/lib/config";
+// import { CLIENT_API_URL } from "@/lib/config";
 
-export const BASE_URL = CLIENT_API_URL;
+export const BASE_URL = "https://data-api.agentos.cloud/noodle";
 
 export type CommunityHealthRankParams = {
   limit?: number;
