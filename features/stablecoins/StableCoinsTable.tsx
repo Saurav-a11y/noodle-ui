@@ -1,7 +1,9 @@
 'use client'
 
+import ComparisonModal from "@/components/common/ComparisonModal"
 import { Input } from "@/components/ui/Input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
+import { useCompareStablecoins } from "@/hooks/stablecoins/useCompareStablecoins"
 import { useGetStableCoinsList } from "@/hooks/stablecoins/useStablecoinsList"
 import { useMe } from "@/hooks/useAuth"
 import { useAddUserActivityLog } from "@/hooks/useUserActivityLog"
@@ -92,6 +94,8 @@ const StableCoinsTable = () => {
 	const router = useRouter();
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState('');
+	const [selectedAssets, setSelectedAssets] = useState<string[]>([]);
+	const [showModal, setShowModal] = useState(false);
 
 	const [sortBy, setSortBy] = useState<"default" | "market_cap" | "price" | "volume">("default");
 	const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
@@ -104,6 +108,13 @@ const StableCoinsTable = () => {
 		sortBy: sortBy === "default" ? null : "market_cap",
 		sortDir: sortBy === "default" ? null : sortDir,
 	});
+
+	const {
+		mutate: compare,
+		data: comparisonData,
+		isPending,
+	} = useCompareStablecoins();
+
 	const { data: userData } = useMe()
 	const { mutate: addLog } = useAddUserActivityLog();
 
@@ -121,6 +132,35 @@ const StableCoinsTable = () => {
 			setSortDir((prev) => (prev === "desc" ? "asc" : "desc"));
 		}
 		setPage(1);
+	};
+
+	const toggleSelection = (id: string, e: any) => {
+		e.stopPropagation();
+
+		setSelectedAssets((prev) => {
+			if (prev.includes(id)) return prev.filter((x) => x !== id);
+			if (prev.length < 3) return [...prev, id];
+			return prev; // max 3
+		});
+	};
+
+	const handleCompare = () => {
+		if (selectedAssets.length < 2) return;
+
+		compare(
+			{
+				assetIds: selectedAssets,
+				assetType: "stablecoin",
+			},
+			{
+				onSuccess: () => setShowModal(true),
+			}
+		);
+	};
+
+	const handleCloseModal = () => {
+		setShowModal(false);
+		setSelectedAssets([]);
 	};
 
 	return (
@@ -153,7 +193,8 @@ const StableCoinsTable = () => {
 			<Table>
 				<TableHeader className="bg-[var(--bg-hover)]">
 					<TableRow className="border-b-[var(--border)]">
-						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto rounded-tl-lg font-normal text-xs">#</TableHead>
+						<TableHead className="rounded-tl-lg w-[20px] text-center"></TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">#</TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Name</TableHead>
 						<TableHead
 							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center cursor-pointer"
@@ -208,7 +249,7 @@ const StableCoinsTable = () => {
 						</TableRow>
 					)}
 					{isLoading &&
-						Array.from({ length: 5 }).map((_, i) => (
+						Array.from({ length: 6 }).map((_, i) => (
 							<TableRow key={i} className="animate-pulse">
 								{Array.from({ length: 10 }).map((_, j) => (
 									<TableCell
@@ -272,6 +313,21 @@ const StableCoinsTable = () => {
 									}
 								}}
 							>
+								<TableCell
+									className="border-b border-b-[var(--border)] text-xs text-[var(--text)]"
+									onClick={(e) => e.stopPropagation()}
+								>
+									<input
+										type="checkbox"
+										checked={selectedAssets.includes(asset.currency)}
+										onChange={(e) => toggleSelection(asset.currency, e)}
+										disabled={
+											selectedAssets.length >= 3 &&
+											!selectedAssets.includes(asset.currency)
+										}
+										className="compare-checkbox"
+									/>
+								</TableCell>
 								<TableCell className="border-b border-b-[var(--border)] text-xs text-[var(--text)]">
 									{(page - 1) * LIMIT + index + 1}
 								</TableCell>
@@ -334,6 +390,17 @@ const StableCoinsTable = () => {
 						))}
 				</TableBody>
 			</Table>
+			{selectedAssets.length >= 2 && (
+				<div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+					<button
+						onClick={handleCompare}
+						disabled={isPending}
+						className="px-6 py-3 bg-gradient-to-r from-[#DDF346] to-[#84EA07] cursor-pointer text-black font-semibold rounded-full shadow-xl hover:opacity-90 disabled:opacity-50"
+					>
+						{isPending ? "Comparing..." : `🔍 Compare ${selectedAssets.length} Stablecoins`}
+					</button>
+				</div>
+			)}
 			{!isLoading && items.length > 0 && (
 				<Pagination
 					currentPage={page}
@@ -341,6 +408,11 @@ const StableCoinsTable = () => {
 					onPageChange={setPage}
 				/>
 			)}
+			<ComparisonModal
+				isOpen={showModal}
+				onClose={handleCloseModal}
+				data={comparisonData}
+			/>
 		</div>
 	)
 }

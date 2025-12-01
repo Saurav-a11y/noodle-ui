@@ -145,3 +145,34 @@ body {
   scrollbar-width: none;
   /* Firefox */
 }
+
+input[type="checkbox"].compare-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: white;
+  /* default */
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+/* Khi checked → gradient + dấu check đen */
+input[type="checkbox"].compare-checkbox:checked {
+  background: linear-gradient(to right, #DDF346, #84EA07);
+  border-color: transparent;
+}
+
+input[type="checkbox"].compare-checkbox:checked::after {
+  content: "✔";
+  position: absolute;
+  color: black;
+  /* dấu check màu đen */
+  font-size: 12px;
+  font-weight: bold;
+  left: 3px;
+  top: 0px;
+}
