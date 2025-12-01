@@ -1,6 +1,5 @@
 "use client";
 
-import { X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/Dialog";
 
 export default function ComparisonModal({ isOpen, onClose, data }) {

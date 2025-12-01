@@ -2,6 +2,9 @@ version: "3.9"
 
 services:
   noodle-api:
+  build:
+    context: .
+    dockerfile: Dockerfile.local
     image: mvpstudionz/noodle_api:latest
     container_name: noodle-api
     ports:
