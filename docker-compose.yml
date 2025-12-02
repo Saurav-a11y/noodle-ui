@@ -2,16 +2,13 @@ version: "3.9"
 
 services:
   noodle-api:
-  build:
-    context: .
-    dockerfile: Dockerfile.local
     image: mvpstudionz/noodle_api:latest
     container_name: noodle-api
     ports:
       - "5130:5130"
     environment:
-    - ASPNETCORE_URLS=http://0.0.0.0:5130
-    - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5130
+      - ASPNETCORE_ENVIRONMENT=Development
     restart: unless-stopped
 
   noodle-ui:
@@ -20,7 +17,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://noodle-api:5130/noodle 
+      - NEXT_PUBLIC_API_URL=http://noodle-api:5130/noodle
     depends_on:
       - noodle-api
     restart: unless-stopped
