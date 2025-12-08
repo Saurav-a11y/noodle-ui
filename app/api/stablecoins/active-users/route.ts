@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server';
-import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
     try {
-        console.log("API_BASE_URL =", API_BASE_URL);
-
-        const url = `${API_BASE_URL}/active-users-stablecoins`;
+        const url = `http://localhost:5130/noodle/active-users-stablecoins`;
         console.log("Requesting:", url);
 
         const response = await fetch(url, { cache: 'no-store' });

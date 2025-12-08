@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query"
-import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetStableCoinsList = ({
     q,
@@ -26,7 +25,7 @@ export const useGetStableCoinsList = ({
             if (sortBy) params.set("sortBy", sortBy);
             if (sortDir) params.set("sortDir", sortDir);
 
-            const url = `${CLIENT_API_URL}/stablecoins?${params.toString()}`;
+            const url = `/api/noodle/stablecoins/list?${params.toString()}`;
             const res = await fetch(url);
             if (!res.ok) throw new Error('Failed to fetch stablecoins');
             return res.json();

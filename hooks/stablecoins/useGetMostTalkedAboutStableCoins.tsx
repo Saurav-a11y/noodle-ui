@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetMostTalkedAboutStableCoins = (options?: {
   enabled?: boolean;
@@ -7,7 +6,7 @@ export const useGetMostTalkedAboutStableCoins = (options?: {
   return useQuery({
     queryKey: ["most-talked-about-stablecoins"],
     queryFn: async () => {
-      const url = `${CLIENT_API_URL}/most-talked-about-stablecoins`;
+      const url = `/api/stablecoins/most-talked-about-stablecoins`;
       const res = await fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },

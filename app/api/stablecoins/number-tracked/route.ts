@@ -5,7 +5,7 @@ import { API_BASE_URL } from "@/lib/config";
 export async function GET() {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/stablecoins-number-tracked`,
+            `http://localhost:5130/noodle/stablecoins-number-tracked`,
             { cache: 'no-store' }
         );
 

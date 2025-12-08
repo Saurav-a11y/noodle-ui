@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
 	try {
-		const backendUrl = `${API_BASE_URL}/top-growth-stablecoins`;
+		const backendUrl = `http://localhost:5130/noodle/stabecoins/top-growth-stablecoins`;
 
 		const res = await fetch(backendUrl, {
 			method: "GET",

@@ -9,7 +9,7 @@ interface CompareRequest {
 export const useCompareStablecoins = () => {
     return useMutation({
         mutationFn: async (payload: CompareRequest) => {
-            const res = await fetch(`${CLIENT_API_URL}/compare`, {
+            const res = await fetch(`/api/compare`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

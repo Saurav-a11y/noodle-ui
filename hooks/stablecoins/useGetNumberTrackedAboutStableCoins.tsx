@@ -5,7 +5,7 @@ export const useGetNumberTrackedAboutStableCoins = (options?: { enabled?: boolea
     return useQuery({
         queryKey: ['stablecoins-number-tracked'],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/stablecoins-number-tracked`;
+            const url = `/api/stablecoins/stablecoins-number-tracked`;
 
             const res = await fetch(url, {
                 method: "GET",
