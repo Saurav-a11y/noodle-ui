@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 interface CompareRequest {
     assetIds: string[];
