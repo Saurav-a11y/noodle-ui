@@ -1,6 +1,5 @@
 // app/api/stablecoins/number-tracked/route.ts
 import { NextResponse } from 'next/server';
-import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
     try {
