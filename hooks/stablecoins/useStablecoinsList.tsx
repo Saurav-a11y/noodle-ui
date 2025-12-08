@@ -25,7 +25,7 @@ export const useGetStableCoinsList = ({
             if (sortBy) params.set("sortBy", sortBy);
             if (sortDir) params.set("sortDir", sortDir);
 
-            const url = `/api/noodle/stablecoins/list?${params.toString()}`;
+            const url = `/api/stablecoins/list?${params.toString()}`;
             const res = await fetch(url);
             if (!res.ok) throw new Error('Failed to fetch stablecoins');
             return res.json();
