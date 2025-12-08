@@ -43,9 +43,16 @@ export const useGetWatchlist = (userId: string, assetType: string, page: number,
 	return useQuery({
 		queryKey: ['watchlist', userId, assetType, page],
 		queryFn: async () => {
-			const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist?userId=${userId}&assetType=${encodeURIComponent(assetType)}&page=${page}`);
-			if (!res.ok) throw new Error('Failed to fetch watchlist');
-			return res.json(); // { data: { items: [...] } | [...] } tuỳ bạn
+			const url = `/api/watchlist/list?userId=${userId}&assetType=${encodeURIComponent(
+				assetType
+			)}&page=${page}`;
+			const res = await fetch(url);
+
+			if (!res.ok) {
+				throw new Error("Failed to fetch watchlist");
+			}
+
+			return res.json();
 		},
 		enabled: !!userId && enabled,
 		staleTime: 30_000,             // tuỳ chọn
