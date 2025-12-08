@@ -182,7 +182,7 @@ const WatchlistPortfolio = () => {
 	return (
 		<div className="space-y-5 text-[var(--text)]">
 			<div>
-				<p className="text-[var(--text)] font-medium font-space mb-1">Watchlist & Portfolioooo</p>
+				<p className="text-[var(--text)] font-medium font-space mb-1">Watchlist & Portfolio</p>
 				<p className="text-[var(--text)] text-xs font-noto">Track your assets and portfolio performance</p>
 			</div>
 
