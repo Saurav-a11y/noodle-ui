@@ -4,7 +4,7 @@ export const useGetTopGrowthStableCoins = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ["top-growth-stablecoins"],
         queryFn: async () => {
-            const url = `/api/stablecoins/top-growth-stablecoins`;
+            const url = `/api/stablecoins/top-growth`;
 
             const res = await fetch(url, {
                 method: "GET",

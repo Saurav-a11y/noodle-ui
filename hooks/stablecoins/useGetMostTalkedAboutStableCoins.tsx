@@ -6,7 +6,7 @@ export const useGetMostTalkedAboutStableCoins = (options?: {
   return useQuery({
     queryKey: ["most-talked-about-stablecoins"],
     queryFn: async () => {
-      const url = `/api/stablecoins/most-talked-about-stablecoins`;
+      const url = `/api/stablecoins/most-talked`;
       const res = await fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
