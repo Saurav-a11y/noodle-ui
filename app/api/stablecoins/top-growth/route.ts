@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
 	try {
-		const backendUrl = `http://noodle-api:5130/noodle/stabecoins/top-growth-stablecoins`;
+		const backendUrl = `http://noodle-api:5130/noodle/top-growth-stablecoins`;
 
 		const res = await fetch(backendUrl, {
 			method: "GET",
