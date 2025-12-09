@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     try {
         const response = await fetch(
-            `http://localhost:5130/noodle/most-talked-about-stablecoins`,
+            `http://noodle-api:5130/noodle/most-talked-about-stablecoins`,
             { cache: 'no-store' }
         );
 

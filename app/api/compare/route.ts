@@ -4,7 +4,7 @@ export async function POST(req) {
     try {
         const payload = await req.json();
 
-        const res = await fetch(`http://localhost:5130/noodle/compare`, {
+        const res = await fetch(`http://noodle-api:5130/noodle/compare`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

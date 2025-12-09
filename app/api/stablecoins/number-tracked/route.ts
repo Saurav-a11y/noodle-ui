@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     try {
         const response = await fetch(
-            `http://localhost:5130/noodle/stablecoins-number-tracked`,
+            `http://noodle-api:5130/noodle/stablecoins-number-tracked`,
             { cache: 'no-store' }
         );
 

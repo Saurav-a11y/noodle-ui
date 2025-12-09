@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const url = `http://localhost:5130/noodle/active-users-stablecoins`;
+        const url = `http://noodle-api:5130/noodle/active-users-stablecoins`;
         console.log("Requesting:", url);
 
         const response = await fetch(url, { cache: 'no-store' });
