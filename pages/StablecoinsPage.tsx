@@ -30,11 +30,11 @@ const StablecoinsPage = () => {
 								<TooltipCommon content="A live leaderboard that ranks crypto projects based on their overall community health score. It helps you quickly identify which projects have strong, active, and authentic communities." />
 							</div>
 							<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-								<TopGrowthList assetType="cryptocurrencies" />
-								<MostTalkedAboutList assetType="cryptocurrencies" />
+								<TopGrowthList assetType="stablecoins" />
+								<MostTalkedAboutList assetType="stablecoins" />
 								<div className="flex gap-4 flex-col">
-									<NumberTrackedList assetType="cryptocurrencies" />
-									<TotalActiveUsersList assetType="cryptocurrencies" />
+									<NumberTrackedList assetType="stablecoins" />
+									<TotalActiveUsersList assetType="stablecoins" />
 								</div>
 							</div>
 						</div>

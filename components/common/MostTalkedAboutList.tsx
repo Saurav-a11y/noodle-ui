@@ -14,7 +14,7 @@ import { useGetMostTalkedAboutStableCoins } from '@/hooks/stablecoins/useGetMost
 // 🧠 Các hooks riêng cho từng loại asset
 
 interface MostTalkedAboutListProps {
-	assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
+	assetType: 'stablecoins' | 'stocks' | 'commodities';
 }
 
 const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
@@ -99,13 +99,13 @@ const MostTalkedAboutList = ({ assetType }: MostTalkedAboutListProps) => {
 
 	// 🧩 title và tooltip dynamic
 	const titleMap = {
-		cryptocurrencies: 'Most Talked About Stablecoins (7D)',
+		stablecoins: 'Most Talked About Stablecoins (7D)',
 		stocks: 'Most Talked About Stocks (7D)',
 		commodities: 'Most Talked About Commodities (7D)',
 	};
 
 	const tooltipMap = {
-		cryptocurrencies:
+		stablecoins:
 			'The list of stablecoins with the highest number of mentions over the past 7 days.',
 		stocks:
 			'The list of stocks most mentioned by investors over the past 7 days.',

@@ -9,7 +9,7 @@ import { useGetNumberTrackedAboutCommodities } from "@/hooks/commodities/useGetN
 import { useGetNumberTrackedAboutStocks } from "@/hooks/stocks/useGetNumberTrackedAboutStocks";
 
 interface NumberTrackedListProps {
-    assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
+    assetType: 'stablecoins' | 'stocks' | 'commodities';
 }
 
 const NumberTrackedList = ({ assetType }: NumberTrackedListProps) => {
@@ -51,13 +51,13 @@ const NumberTrackedList = ({ assetType }: NumberTrackedListProps) => {
 
     // 🧩 dynamic title + tooltip
     const titleMap = {
-        cryptocurrencies: 'Number of Tracked Stablecoins',
+        stablecoins: 'Number of Tracked Stablecoins',
         stocks: 'Number of Tracked Stocks',
         commodities: 'Number of Tracked Commodities',
     };
 
     const tooltipMap = {
-        cryptocurrencies:
+        stablecoins:
             'The total number of stablecoin projects being monitored for community signals and on-chain metrics. Only projects with enough consistent data are included.',
         stocks:
             'The total number of stocks being monitored for price movement, sentiment, and community discussions.',

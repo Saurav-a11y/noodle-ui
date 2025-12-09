@@ -9,7 +9,7 @@ import { useGetTotalActiveUserCommodities } from "@/hooks/commodities/useGetTota
 import { useGetTotalActiveUserStocks } from "@/hooks/stocks/useGetTotalActiveUserStocks";
 
 interface TotalActiveUsersListProps {
-	assetType: "cryptocurrencies" | "stocks" | "commodities";
+	assetType: "stablecoins" | "stocks" | "commodities";
 }
 
 const TotalActiveUsersList = ({ assetType }: TotalActiveUsersListProps) => {
@@ -63,13 +63,13 @@ const TotalActiveUsersList = ({ assetType }: TotalActiveUsersListProps) => {
 
 	// 🧩 Dynamic title & tooltip
 	const titleMap = {
-		cryptocurrencies: "Total Active Users (7D)",
+		stablecoins: "Total Active Users (7D)",
 		stocks: "Total Active Stock Users (7D)",
 		commodities: "Total Active Commodity Users (7D)",
 	};
 
 	const tooltipMap = {
-		cryptocurrencies:
+		stablecoins:
 			"The total number of crypto users actively engaging with stablecoin projects in the past 7 days.",
 		stocks:
 			"The total number of users actively trading or following stock projects in the past 7 days.",

@@ -13,7 +13,7 @@ import { useGetTopGrowthCommodities } from '@/hooks/commodities/useGetTopGrowthC
 import { useGetTopGrowthStocks } from '@/hooks/stocks/useGetTopGrowthStocks';
 
 interface TopGrowthListProps {
-	assetType: 'cryptocurrencies' | 'stocks' | 'commodities';
+	assetType: 'stablecoins' | 'stocks' | 'commodities';
 }
 
 const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
@@ -100,13 +100,13 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 
 	// --- dynamic title & tooltip ---
 	const titleMap = {
-		cryptocurrencies: 'Top Gaining Stablecoins (7d Growth)',
+		stablecoins: 'Top Gaining Stablecoins (7d Growth)',
 		stocks: 'Top Gaining Stocks (7d Growth)',
 		commodities: 'Top Gaining Commodities (7d Growth)',
 	};
 
 	const tooltipMap = {
-		cryptocurrencies:
+		stablecoins:
 			'The list of stablecoins with the highest 7-day growth rate, based on percentage change.',
 		stocks:
 			'The list of stocks with the highest 7-day price growth rate, based on percentage change.',
