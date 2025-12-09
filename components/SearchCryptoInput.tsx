@@ -160,7 +160,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 							<>
 								{flat.map((item: any) => (
 									<Link
-										href={`/cryptocurrencies/${item.code}`}
+										href={`/stablecoins/${item.code}`}
 										key={item.symbol}
 										className={clsx(
 											'block px-4 py-3 hover:bg-[var(--bg-hover-2)] transition-colors',

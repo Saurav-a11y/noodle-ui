@@ -299,12 +299,12 @@ const StableCoinsTable = () => {
 								key={asset.symbol}
 								className="hover:bg-[var(--bg-hover)] cursor-pointer transition-colors"
 								onClick={() => {
-									router.push(`/cryptocurrencies/${asset?.currency}`)
+									router.push(`/stablecoins/${asset?.currency}`)
 									if (userData?.data?.id) {
 										addLog({
 											userId: userData?.data?.id,
 											type: 'view_detail',
-											assetType: 'cryptocurrencies',
+											assetType: 'stablecoins',
 											assetSymbol: asset.currency,
 											assetName: asset.name,
 											assetLogo: asset.logo,
