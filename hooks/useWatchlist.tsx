@@ -1,4 +1,3 @@
-import { upsertHoldingsApi } from '@/apis';
 import { useQuery, useQueryClient, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
@@ -43,16 +42,9 @@ export const useGetWatchlist = (userId: string, assetType: string, page: number,
 	return useQuery({
 		queryKey: ['watchlist', userId, assetType, page],
 		queryFn: async () => {
-			const url = `/api/watchlist/list?userId=${userId}&assetType=${encodeURIComponent(
-				assetType
-			)}&page=${page}`;
-			const res = await fetch(url);
-
-			if (!res.ok) {
-				throw new Error("Failed to fetch watchlist");
-			}
-
-			return res.json();
+			const res = await fetch(`/api/watchlist/list?userId=${userId}&assetType=${encodeURIComponent(assetType)}&page=${page}`);
+			if (!res.ok) throw new Error('Failed to fetch watchlist');
+			return res.json(); // { data: { items: [...] } | [...] } tuỳ bạn
 		},
 		enabled: !!userId && enabled,
 		staleTime: 30_000,             // tuỳ chọn
@@ -79,17 +71,7 @@ export const useAddToWatchlist = () => {
 			return res.json();
 		},
 		onSuccess: (_, variables) => {
-			queryClient.invalidateQueries({
-				queryKey: ['watchlist', variables.userId, variables.assetType],
-			});
-			queryClient.invalidateQueries({
-				queryKey: [
-					'watchlist-status',
-					variables.userId,
-					variables.code,
-					variables.assetType,
-				],
-			});
+			queryClient.invalidateQueries({ queryKey: ['watchlist', variables.userId] });
 		},
 	});
 };
@@ -110,32 +92,51 @@ export const useRemoveFromWatchlist = () => {
 
 		// 1) Optimistic update
 		onMutate: async ({ userId, code }) => {
-			await queryClient.cancelQueries({ queryKey: ['watchlist', userId] });
+			await queryClient.cancelQueries({
+				queryKey: ['watchlist', userId],
+				exact: false,
+			});
 
-			const prev = queryClient.getQueryData<any>(['watchlist', userId]);
+			const queries = queryClient
+				.getQueryCache()
+				.findAll({
+					queryKey: ['watchlist', userId],
+					exact: false,
+				});
 
-			queryClient.setQueryData(['watchlist', userId], (old: any) => {
-				if (!old?.data?.items) return old;
-				return {
-					...old,
-					data: {
-						...old.data,
-						items: old.data.items.filter((x: any) => String(x.assetId ?? x.id) !== String(code)),
-					},
-				};
+			const prev = queries.map(q => ({
+				queryKey: q.queryKey,
+				data: q.state.data,
+			}));
+
+			queries.forEach(q => {
+				queryClient.setQueryData(q.queryKey, (old: any) => {
+					if (!old?.data?.items && !old?.items) return old;
+					const items = old.items || old.data.items;
+
+					const filtered = items.filter(
+						(x: any) => String(x.assetId ?? x.code ?? x.id) !== String(code)
+					);
+
+					return old.items
+						? { ...old, items: filtered }
+						: { ...old, data: { ...old.data, items: filtered } };
+				});
 			});
 
 			return { prev };
 		},
 
 		// 2) Rollback nếu lỗi
-		onError: (_err, { userId }, ctx) => {
-			if (ctx?.prev) queryClient.setQueryData(['watchlist', userId], ctx.prev);
+		onError: (_err, _vars, ctx) => {
+			ctx?.prev?.forEach(({ queryKey, data }) => {
+				queryClient.setQueryData(queryKey, data);
+			});
 		},
 
 		// 3) KHÔNG invalidate để tránh refetch lần nữa
 		onSettled: (_data, _err, variables, ctx) => {
-			queryClient.invalidateQueries({ queryKey: ['watchlist', variables.userId], refetchType: 'active' });
+			queryClient.invalidateQueries({ queryKey: ['watchlist-status', variables.userId, variables.code] });
 		},
 	});
 };
@@ -144,16 +145,13 @@ export const useCandidateTokens = (userId: string, search: string, activeTab: st
 	return useInfiniteQuery({
 		queryKey: ['watchlist-candidates', userId, search, activeTab],
 		queryFn: async ({ pageParam = 1 }) => {
-			const url = new URL('/api/watchlist/candidates');
-			url.searchParams.set('userId', userId);
-			if (search) url.searchParams.set('q', search);
-			// nếu BE nhận 'page'
-			url.searchParams.set('page', String(pageParam));
-			url.searchParams.set('type', String(activeTab));
-			// nếu BE nhận 'cursor' thì đổi dòng trên thành:
-			// url.searchParams.set('cursor', String(pageParam));
+			const params = new URLSearchParams();
+			params.set('userId', userId);
+			params.set('page', String(pageParam));
+			params.set('type', String(activeTab));
+			if (search) params.set('q', search);
 
-			const res = await fetch(url.toString());
+			const res = await fetch(`/api/watchlist/candidates?${params.toString()}`);
 			if (!res.ok) throw new Error('Failed to load candidates');
 			return res.json();
 		},

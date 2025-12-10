@@ -22,7 +22,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 
 	const [search, setSearch] = useState('')
 	const [selected, setSelected] = useState<Record<string, boolean>>({})
-	const [activeTab, setActiveTab] = useState("cryptocurrencies");
+	const [activeTab, setActiveTab] = useState("stablecoins");
 
 	const {
 		data,
@@ -107,7 +107,7 @@ const AddAssetModal = ({ open, onOpenChange, onSave, userId, assetType }: AddAss
 		}
 
 		try {
-			await addBulk.mutateAsync({ userId, codes: symbols, assetType: 'cryptocurrencies' })
+			await addBulk.mutateAsync({ userId, codes: symbols, assetType: 'stablecoins' })
 			// đóng modal + refresh list ngoài đã làm ở onSuccess()
 			onOpenChange(false)
 			// dọn state local

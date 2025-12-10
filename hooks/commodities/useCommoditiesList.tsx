@@ -22,7 +22,7 @@ export const useGetCommoditiesList = (params?: {
     return useQuery({
         queryKey: ["commodities", params],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/commodities?${queryString}`;
+            const url = `/api/commodities/list?${queryString}`;
 
             const res = await fetch(url, {
                 method: "GET",

@@ -1,4 +1,3 @@
-import { fetchListTweets } from '@/apis';
 import { useQuery } from '@tanstack/react-query';
 
 interface UseListTweetsParams {
@@ -12,9 +11,24 @@ export const useListTweets = ({
 }: UseListTweetsParams) => {
     return useQuery({
         queryKey: ['listTweet', symbol, timeRange],
-        queryFn: () =>
-            fetchListTweets({ symbol, timeRange }),
+        queryFn: async () => {
+            const params = new URLSearchParams({
+                symbol,
+                ...(timeRange && { timeRange: String(timeRange) }),
+            });
+
+            const res = await fetch(
+                `/api/tweets/by-symbol?${params.toString()}`
+            );
+
+            if (!res.ok) {
+                throw new Error('Failed to fetch list of tweets');
+            }
+
+            return res.json();
+        },
         enabled: !!symbol,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 60 * 5, // 5 phút – tweets không cần realtime từng giây
+        refetchOnWindowFocus: false,
     });
 };

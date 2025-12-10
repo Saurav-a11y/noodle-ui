@@ -19,7 +19,7 @@ export async function GET(req: Request) {
 
         const res = await fetch(backendUrl, {
             headers: { "Content-Type": "application/json" },
-            next: { revalidate: 10 },
+            cache: "no-store"
         });
 
         if (!res.ok) {

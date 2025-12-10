@@ -152,7 +152,7 @@ const TopGrowthList = ({ assetType }: TopGrowthListProps) => {
 										assetSymbol: item.symbol ?? item.name,
 										assetName: item.description,
 										assetLogo: item.logo,
-										content: `See details: '${item.description} (${item.name}) Community'`,
+										content: `See details: '${assetType === 'commodities' ? item.name : item.description} (${assetType === 'commodities' ? item.symbol : item.name}) Community'`,
 									});
 								}
 							}}

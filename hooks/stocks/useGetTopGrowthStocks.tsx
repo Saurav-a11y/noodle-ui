@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetTopGrowthStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ["top-growth-stocks"],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/top-growth-stocks`;
+            const url = `/api/stocks/top-growth`;
 
             const res = await fetch(url, {
                 method: "GET",

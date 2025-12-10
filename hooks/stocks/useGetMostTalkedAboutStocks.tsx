@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetMostTalkedAboutStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['most-talked-about-stocks'],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/most-talked-about-stocks`;
+            const url = `/api/stocks/most-talked`;
 
             const res = await fetch(url, {
                 method: "GET",

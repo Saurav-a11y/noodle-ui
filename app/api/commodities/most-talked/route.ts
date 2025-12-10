@@ -1,11 +1,10 @@
 // app/api/stablecoins/most-talked/route.ts
 import { NextResponse } from 'next/server';
-import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/most-talked-about-commodities`,
+            `http://noodle-api:5130/noodle/most-talked-about-commodities`,
             { cache: 'no-store' }
         );
 

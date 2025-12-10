@@ -1,9 +1,8 @@
-import { API_BASE_URL } from "@/lib/config";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const backendUrl = `${API_BASE_URL}/top-growth-commodities`;
+        const backendUrl = `http://noodle-api:5130/noodle/top-growth-commodities`;
 
         const res = await fetch(backendUrl, {
             method: "GET",

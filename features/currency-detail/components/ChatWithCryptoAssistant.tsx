@@ -184,9 +184,9 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 	const hasNoUser = !userData?.data?.id;
 	const hasNoMessages = messagesData?.pages?.[0]?.messages?.length === 0;
 
-	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'cryptocurrencies', symbol: communityId, isCall: hasNoUser || (!hasNoUser && hasNoMessages) });
+	const { data: initialGreeting, isFetching } = useSayHello({ userId: userData?.data?.id, username: userData?.data?.username, assetType: 'stablecoins', symbol: communityId, isCall: hasNoUser || (!hasNoUser && hasNoMessages) });
 	const { data: aiSuggestions, isFetching: isFetchingSuggestions } = useGetAISuggestions({
-		assetType: 'cryptocurrencies',
+		assetType: 'stablecoins',
 		symbol: communityId,
 		recentMessages: chatHistoryRef.current.slice(-3).map((msg) => msg.message),
 	});
@@ -230,7 +230,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 		setUserInput("");
 
 		sendMessage(
-			{ messages: [{ ai: false, text: trimmed }], assetType: "cryptocurrencies", userId: userData?.data?.id || "", symbol: communityId },
+			{ messages: [{ ai: false, text: trimmed }], assetType: "stablecoins", userId: userData?.data?.id || "", symbol: communityId },
 			{
 				onSuccess: (res) => {
 					const aiMsg = {
@@ -244,7 +244,7 @@ const ChatWithCryptoAssistant = ({ handleCloseChat }: { handleCloseChat?: any })
 						addLog({
 							userId: userData?.data?.id,
 							type: "chat",
-							assetType: "cryptocurrencies",
+							assetType: "stablecoins",
 							assetSymbol: data?.data?.name,
 							assetName: data?.data?.fullname,
 							assetLogo: data?.data?.logo,

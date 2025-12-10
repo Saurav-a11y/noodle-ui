@@ -172,7 +172,7 @@ const SearchCryptoInput = ({ inputClassname, popupClassname, placeholder }: { pl
 												addLog({
 													userId: userData?.data?.id,
 													type: 'search',
-													assetType: 'cryptocurrencies',
+													assetType: 'stablecoins',
 													assetSymbol: item.code,
 													assetName: item.name,
 													assetLogo: item.logo,

@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { API_BASE_URL } from "@/lib/config";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -9,7 +8,7 @@ export async function GET(request: Request) {
     const search = searchParams.get("search") || "";
 
     const res = await fetch(
-        `${API_BASE_URL}/stocks?limit=${limit}&page=${page}&groupFilter=${groupFilter}&search=${search}`,
+        `http://noodle-api:5130/noodle/stocks?limit=${limit}&page=${page}&groupFilter=${groupFilter}&search=${search}`,
         {
             headers: { "Content-Type": "application/json" },
             cache: "no-store",

@@ -150,29 +150,12 @@ const WatchlistPortfolio = () => {
 
 		setBusyById(s => ({ ...s, [assetId]: true }));
 
-		const qk = ['watchlist', userData?.data?.id];
-		const prev = queryClient.getQueryData(qk);
-
-		// Optimistic update
-		queryClient.setQueryData(qk, (old: any) => {
-			if (!old?.data?.items) return old;
-			return {
-				...old,
-				data: {
-					...old.data,
-					items: old.data.items.filter((x: any) => (x.assetId ?? x.id) !== assetId),
-				},
-			};
-		});
-
 		try {
-			await removeFromWatchlist.mutateAsync({ userId: userData?.data?.id, code: String(assetId) });
-		} catch (e) {
-			// rollback nếu lỗi
-			queryClient.setQueryData(qk, prev);
+			await removeFromWatchlist.mutateAsync({
+				userId: userData.data.id,
+				code: String(assetId),
+			});
 		} finally {
-			queryClient.invalidateQueries({ queryKey: qk });
-			// Delay spinner ít nhất 500ms để người dùng thấy loading
 			setTimeout(() => {
 				setBusyById(s => ({ ...s, [assetId]: false }));
 			}, 500);
@@ -279,8 +262,11 @@ const WatchlistPortfolio = () => {
 											<TableCell className="border-b border-b-[var(--border)] text-[var(--text)]">
 												<div className="flex items-center gap-3">
 													<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-[var(--text)] font-bold">
-														{asset?.assetType === 'cryptocurrencies' && (
+														{asset?.assetType === 'stablecoins' && (
 															<Image src={asset?.overview?.info?.base_currency_logoid ? `https://s3-symbol-logo.tradingview.com/${asset?.overview?.info.base_currency_logoid}.svg` : '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
+														)}
+														{asset?.assetType === 'stocks' && (
+															<Image src={asset?.overview?.info?.logoid ? `https://s3-symbol-logo.tradingview.com/${asset?.overview?.info?.logoid}.svg` : '/images/icon-section-6_2.png'} alt="Symbol" width={64} height={64} className="rounded-full" />
 														)}
 													</div>
 													<div className="flex-1 text-[var(--text)]">
@@ -296,7 +282,7 @@ const WatchlistPortfolio = () => {
 																<div className="text-xs text-muted-foreground">{asset?.overview?.info?.symbol}</div>
 															</>
 														)}
-														{asset?.assetType === 'cryptocurrencies' && (
+														{asset?.assetType === 'stablecoins' && (
 															<>
 																<div className="font-medium">{asset?.overview?.info?.base_currency_desc}</div>
 																<div className="text-xs text-muted-foreground">{asset?.overview?.info?.base_currency}</div>

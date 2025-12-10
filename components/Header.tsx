@@ -69,7 +69,7 @@ const Header = () => {
 					</div>
 					<div className="flex items-center gap-5">
 						{/* Search Bar */}
-						{type === 'cryptocurrencies' && (
+						{type === 'stablecoins' && (
 							<SearchCryptoInput />
 						)}
 						<button

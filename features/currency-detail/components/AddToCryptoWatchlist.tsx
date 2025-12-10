@@ -44,14 +44,6 @@ const AddToCryptoWatchlist = () => {
 		if (inWatchlist) {
 			removeMutation.mutate(
 				{ userId: data?.data?.id, code: cryptoOverview?.symbol },
-				{
-					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
-						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, cryptoOverview?.symbol, assetType],
-						});
-					},
-				}
 			);
 		} else {
 			addMutation.mutate(
@@ -62,7 +54,7 @@ const AddToCryptoWatchlist = () => {
 							addLog({
 								userId: data?.data?.id,
 								type: 'add_to_watchlist',
-								assetType: 'cryptocurrencies',
+								assetType: 'stablecoins',
 								assetSymbol: cryptoOverview.name,
 								assetName: cryptoOverview.fullname,
 								assetLogo: cryptoOverview.logo,

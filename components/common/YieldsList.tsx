@@ -71,8 +71,8 @@ export default function YieldsList({
 		minTvlUsd,
 	});
 
-	const total = data?.total ?? 0;
-	const items = data?.items ?? [];
+	const total = Array.isArray(data) ? 0 : data?.total ?? 0;
+	const items = Array.isArray(data) ? [] : data?.items ?? [];
 	const totalPages = Math.max(1, Math.ceil(total / limit));
 
 	const canPrev = page > 1;

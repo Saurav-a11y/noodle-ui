@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetTotalActiveUserStocks = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['active-users-stocks'],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/active-users-stock`;
+            const url = `/api/stocks/active-users`;
 
             const res = await fetch(url, {
                 method: "GET",

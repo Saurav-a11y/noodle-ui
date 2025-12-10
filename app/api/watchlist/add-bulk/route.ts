@@ -20,6 +20,7 @@ export async function POST(req: Request) {
             headers: {
                 "Content-Type": "application/json",
             },
+            cache: "no-store",
             body: JSON.stringify({ userId, codes, assetType }),
         });
 

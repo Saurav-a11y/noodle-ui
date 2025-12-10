@@ -51,11 +51,16 @@ export function useMe(opts?: { enabled?: boolean }) {
 		queryFn: async () => {
 			const token = localStorage.getItem('auth_token');
 			if (!token) return null;
-			const res = await fetch(`https://data-api.agentos.cloud/api/v2/auth/me`, {
-				headers: { Authorization: `Bearer ${token}` },
+
+			const res = await fetch('/api/me', {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
+
 			if (res.status === 401) return null;
 			if (!res.ok) throw new Error('Failed to fetch /me');
+
 			return res.json();
 		},
 	});

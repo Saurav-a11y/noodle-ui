@@ -278,7 +278,7 @@ const CryptoCommunityContributions = () => {
 																			addLog({
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
-																				assetType: 'cryptocurrencies',
+																				assetType: 'stablecoins',
 																				assetSymbol: cryptoOverview.name,
 																				assetName: cryptoOverview.fullname,
 																				assetLogo: cryptoOverview.logo,
@@ -400,7 +400,7 @@ const CryptoCommunityContributions = () => {
 																			addLog({
 																				userId: userData?.data?.id,
 																				type: 'view_asset',
-																				assetType: 'cryptocurrencies',
+																				assetType: 'stablecoins',
 																				assetSymbol: cryptoOverview.name,
 																				assetName: cryptoOverview.fullname,
 																				assetLogo: cryptoOverview.logo,
@@ -505,7 +505,7 @@ const CryptoCommunityContributions = () => {
 																		addLog({
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
-																			assetType: 'cryptocurrencies',
+																			assetType: 'stablecoins',
 																			assetSymbol: cryptoOverview.name,
 																			assetName: cryptoOverview.fullname,
 																			assetLogo: cryptoOverview.logo,
@@ -679,7 +679,7 @@ const CryptoCommunityContributions = () => {
 																		addLog({
 																			userId: userData?.data?.id,
 																			type: 'view_asset',
-																			assetType: 'cryptocurrencies',
+																			assetType: 'stablecoins',
 																			assetSymbol: cryptoOverview.name,
 																			assetName: cryptoOverview.fullname,
 																			assetLogo: cryptoOverview.logo,

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
@@ -17,8 +19,7 @@ export async function GET(req: Request) {
             headers: {
                 "Content-Type": "application/json",
             },
-            // Next.js caching
-            next: { revalidate: 10 },
+            cache: "no-store"
         });
 
         if (!res.ok) {

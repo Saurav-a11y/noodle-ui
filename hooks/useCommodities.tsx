@@ -1,14 +1,25 @@
 'use client';
 
-import { fetchCommoditiesHealthRanks, fetchCommodityActiveUsers, fetchCommodityNumberTracked, fetchCommodityOverview, fetchMostTalkedAboutCommodities, fetchTopGrowthCommodities } from "@/apis";
+import { fetchCommoditiesHealthRanks, fetchCommodityActiveUsers, fetchCommodityNumberTracked, fetchMostTalkedAboutCommodities, fetchTopGrowthCommodities } from "@/apis";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCommodityOverview = (name_slug: string) => {
     return useQuery({
         queryKey: ['commodityOverview', name_slug],
-        queryFn: () => fetchCommodityOverview({ name_slug }),
+        queryFn: async () => {
+            const res = await fetch(
+                `/api/commodities/detail?name_slug=${encodeURIComponent(
+                    name_slug
+                )}`
+            );
+            if (!res.ok) {
+                throw new Error('Failed to fetch commodity overview');
+            }
+            return res.json();
+        },
         enabled: !!name_slug,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 60 * 5, // 5 phút – overview không cần realtime
+        refetchOnWindowFocus: false,
     });
 };
 

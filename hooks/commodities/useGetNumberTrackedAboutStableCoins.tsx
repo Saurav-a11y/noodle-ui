@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 export const useGetNumberTrackedAboutCommodities = (options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ['commodities-number-tracked'],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/commodities-number-tracked`;
+            const url = `/api/commodities/number-tracked`;
 
             const res = await fetch(url, {
                 method: "GET",

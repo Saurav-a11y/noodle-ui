@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -20,6 +22,7 @@ export async function POST(req: Request) {
             headers: {
                 "Content-Type": "application/json",
             },
+            cache: 'no-store',
             body: JSON.stringify({ userId, code }),
         });
 

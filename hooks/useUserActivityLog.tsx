@@ -42,7 +42,10 @@ interface AddUserActivityLogInput {
 	activity?: string;
 }
 
-export const useGetUserActivityLogs = (params: GetUserActivityLogsParams, enabled = true) => {
+export const useGetUserActivityLogs = (
+	params: GetUserActivityLogsParams,
+	enabled = true
+) => {
 	return useQuery({
 		queryKey: ['user_activity_logs', params],
 		queryFn: async (): Promise<{
@@ -55,11 +58,18 @@ export const useGetUserActivityLogs = (params: GetUserActivityLogsParams, enable
 			};
 		}> => {
 			const query = qs.stringify(params);
-			const res = await fetch(`${BASE_URL}/user_activity_logs?${query}`);
-			if (!res.ok) throw new Error('Failed to fetch activity logs');
+
+			const res = await fetch(`/api/user/activity-list?${query}`);
+
+			if (!res.ok) {
+				throw new Error('Failed to fetch activity logs');
+			}
+
 			return res.json();
 		},
 		enabled,
+		staleTime: 30_000,          // logs không cần realtime
+		refetchOnWindowFocus: false,
 	});
 };
 
@@ -68,16 +78,24 @@ export const useAddUserActivityLog = () => {
 
 	return useMutation({
 		mutationFn: async (payload: AddUserActivityLogInput) => {
-			const res = await fetch(`${BASE_URL}/user_activity_logs`, {
+			const res = await fetch('/api/user/activity-logs', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload),
 			});
-			if (!res.ok) throw new Error('Failed to add activity log');
+
+			if (!res.ok) {
+				throw new Error('Failed to add activity log');
+			}
+
 			return res.json();
 		},
+
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['user_activity_logs'] });
+			// invalidate list logs nếu có UI hiển thị
+			queryClient.invalidateQueries({
+				queryKey: ['user_activity_logs'],
+			});
 		},
 	});
 };

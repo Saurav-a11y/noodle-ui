@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-import { API_BASE_URL } from "@/lib/config";
 
 export async function GET() {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/active-users-stock`,
+            `http://noodle-api:5130/noodle/active-users-stock`,
             { cache: 'no-store' }
         );
 

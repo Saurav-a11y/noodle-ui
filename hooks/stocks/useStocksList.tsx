@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { CLIENT_API_URL } from "@/lib/config";
 
 export interface StockItem {
     name: string;
@@ -24,7 +23,7 @@ export const useGetStocksList = (params?: {
     return useQuery({
         queryKey: ["stocks", params],
         queryFn: async () => {
-            const url = `${CLIENT_API_URL}/stocks?${queryString}`;
+            const url = `/api/stocks/list?${queryString}`;
 
             const res = await fetch(url, {
                 method: "GET",
