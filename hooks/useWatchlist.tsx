@@ -19,7 +19,7 @@ export const useWatchlistStatus = (params: {
 		queryFn: async () => {
 			// ✅ Ưu tiên dùng API check status
 			const res = await fetch(
-				`https://data-api.agentos.cloud/noodle/watchlist/status?userId=${userId}&code=${code}&assetType=${assetType}`,
+				`/api/watchlist/status?userId=${userId}&code=${code}&assetType=${assetType}`,
 			);
 			if (res.ok) {
 				const data = await res.json();
@@ -67,7 +67,7 @@ export const useAddToWatchlist = () => {
 
 	return useMutation({
 		mutationFn: async (payload: { userId: string; code: string; assetType: string }) => {
-			const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist/add`, {
+			const res = await fetch(`/api/watchlist/add`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -79,7 +79,17 @@ export const useAddToWatchlist = () => {
 			return res.json();
 		},
 		onSuccess: (_, variables) => {
-			queryClient.invalidateQueries({ queryKey: ['watchlist', variables.userId] });
+			queryClient.invalidateQueries({
+				queryKey: ['watchlist', variables.userId, variables.assetType],
+			});
+			queryClient.invalidateQueries({
+				queryKey: [
+					'watchlist-status',
+					variables.userId,
+					variables.code,
+					variables.assetType,
+				],
+			});
 		},
 	});
 };
@@ -89,7 +99,7 @@ export const useRemoveFromWatchlist = () => {
 
 	return useMutation({
 		mutationFn: async (payload: { userId: string; code: string }) => {
-			const res = await fetch(`https://data-api.agentos.cloud/noodle/watchlist/remove`, {
+			const res = await fetch(`/api/watchlist/remove`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload),
@@ -134,7 +144,7 @@ export const useCandidateTokens = (userId: string, search: string, activeTab: st
 	return useInfiniteQuery({
 		queryKey: ['watchlist-candidates', userId, search, activeTab],
 		queryFn: async ({ pageParam = 1 }) => {
-			const url = new URL('https://data-api.agentos.cloud/noodle/watchlist/candidates');
+			const url = new URL('/api/watchlist/candidates');
 			url.searchParams.set('userId', userId);
 			if (search) url.searchParams.set('q', search);
 			// nếu BE nhận 'page'
@@ -163,7 +173,7 @@ export const useAddBulkToWatchlist = () => {
 	const qc = useQueryClient()
 	return useMutation({
 		mutationFn: async (payload: { userId: string; codes: string[], assetType: string }) => {
-			const res = await fetch('https://data-api.agentos.cloud/noodle/watchlist/add-bulk', {
+			const res = await fetch('/api/watchlist/add-bulk', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload),
@@ -182,7 +192,19 @@ export function useUpsertHoldings(userId: string | undefined) {
 	const qc = useQueryClient();
 
 	return useMutation({
-		mutationFn: (vars: UpsertVars) => upsertHoldingsApi(vars),
+		mutationFn: async (vars: UpsertVars) => {
+			const res = await fetch('/api/watchlist/upsert-holdings', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(vars),
+			});
+
+			if (!res.ok) {
+				throw new Error('Failed to upsert holdings');
+			}
+
+			return res.json();
+		},
 		onMutate: async ({ assetId, holdings }) => {
 			if (!userId) return;
 			const qk = ['watchlist', userId];
