@@ -1,5 +1,4 @@
-// hooks/useCloudinaryUnsignedUpload.ts
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from "react";
 
 type UploadResult = {
     secure_url: string;
@@ -12,97 +11,81 @@ type UploadResult = {
 };
 
 type Options = {
-    cloudName?: string;     // mặc định đọc từ env
-    folder?: string;        // ví dụ: "avatar"
-    maxFileSizeMB?: number; // giới hạn size (optional)
-    accept?: string[];      // ví dụ: ['image/jpeg','image/png','image/webp']
+    folder?: string;
+    maxFileSizeMB?: number;
+    accept?: string[];
 };
 
-export function useCloudinaryUnsignedUpload(
-    preset = 'noodles',
-    {
-        cloudName = 'dnjtk8hsj',
-        folder,
-        maxFileSizeMB,
-        accept,
-    }: Options = {}
-) {
+export function useCloudinaryUpload({
+    folder,
+    maxFileSizeMB,
+    accept,
+}: Options = {}) {
     const [uploading, setUploading] = useState(false);
-    const [progress, setProgress] = useState(0); // 0..100
+    const [progress, setProgress] = useState(0);
     const [error, setError] = useState<string | null>(null);
-    const xhrRef = useRef<XMLHttpRequest | null>(null);
 
-    const reset = useCallback(() => {
+    const controllerRef = useRef<AbortController | null>(null);
+
+    const reset = () => {
         setUploading(false);
         setProgress(0);
         setError(null);
-    }, []);
+    };
 
-    const abort = useCallback(() => {
-        xhrRef.current?.abort();
+    const abort = () => {
+        controllerRef.current?.abort();
         setUploading(false);
-    }, []);
+    };
 
-    const upload = useCallback(async (file: File): Promise<UploadResult> => {
-        if (!cloudName) throw new Error('Missing NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME');
-        if (!preset) throw new Error('Missing NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET');
+    const upload = useCallback(
+        async (file: File): Promise<UploadResult> => {
+            if (maxFileSizeMB && file.size > maxFileSizeMB * 1024 * 1024) {
+                throw new Error(`File too large. Maximum ${maxFileSizeMB}MB`);
+            }
 
-        // validate optional
-        if (maxFileSizeMB && file.size > maxFileSizeMB * 1024 * 1024) {
-            throw new Error(`File too large. Maximum ${maxFileSizeMB}MB`);
-        }
-        if (accept && !accept.includes(file.type)) {
-            throw new Error(`Unsupported format: ${file.type}`);
-        }
+            if (accept && !accept.includes(file.type)) {
+                throw new Error(`Unsupported format: ${file.type}`);
+            }
 
-        setUploading(true);
-        setProgress(0);
-        setError(null);
+            setUploading(true);
+            setProgress(0);
+            setError(null);
 
-        const endpoint = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+            const form = new FormData();
+            form.append("file", file);
+            if (folder) form.append("folder", folder);
 
-        const form = new FormData();
-        form.append('file', file);
-        form.append('upload_preset', preset);
-        if (folder) form.append('folder', folder);
+            const controller = new AbortController();
+            controllerRef.current = controller;
 
-        const xhr = new XMLHttpRequest();
-        xhrRef.current = xhr;
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: form,
+                signal: controller.signal,
+            });
 
-        const p = new Promise<UploadResult>((resolve, reject) => {
-            xhr.upload.onprogress = (e) => {
-                if (e.lengthComputable) {
-                    setProgress(Math.round((e.loaded / e.total) * 100));
-                }
-            };
+            const text = await res.text();
+            let json: any;
 
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState !== XMLHttpRequest.DONE) return;
-                try {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        const json = JSON.parse(xhr.responseText);
-                        setUploading(false);
-                        resolve(json);
-                    } else {
-                        const message = xhr.responseText || `HTTP ${xhr.status}`;
-                        setError(message);
-                        setUploading(false);
-                        reject(new Error(message));
-                    }
-                } catch (err: any) {
-                    setError(err?.message || 'Upload failed');
-                    setUploading(false);
-                    reject(err);
-                }
-            };
+            try {
+                json = JSON.parse(text);
+            } catch {
+                throw new Error(text);
+            }
 
-            xhr.open('POST', endpoint);
-            xhr.send(form);
-        });
+            if (!res.ok) {
+                setUploading(false);
+                setError(json?.error || "Upload failed");
+                throw new Error(json?.error || "Upload failed");
+            }
 
-        const result = await p;
-        return result;
-    }, [cloudName, preset, folder, maxFileSizeMB, accept]);
+            setUploading(false);
+            setProgress(100);
+            return json as UploadResult;
+        },
+        [folder, maxFileSizeMB, accept]
+    );
 
     return { upload, uploading, progress, error, reset, abort };
 }

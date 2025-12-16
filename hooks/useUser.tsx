@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react';
 import { toast } from 'react-toastify'
+import { useProfile } from './auth/useProfile';
 
 const API_BASE = 'https://data-api.agentos.cloud/noodle';
 
@@ -38,30 +39,45 @@ export const useGetUser = ({ userId }) => {
 	});
 };
 
-export const useUpdateUser = ({ userId }) => {
-	const queryClient = useQueryClient();
-
+export const useUpdateUser = () => {
+	const { refetch } = useProfile();
 	return useMutation({
 		mutationFn: async (payload: UpdateUserPayload) => {
-			if (!userId) throw new Error("User ID not found in localStorage");
+			const token = localStorage.getItem("token");
+			if (!token) throw new Error("Unauthorized");
 
-			const res = await fetch(`${API_BASE}/user/update`, {
+			const res = await fetch("/api/user/update", {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ userId, ...payload }),
+				body: JSON.stringify(payload),
 			});
 
-			if (!res.ok) throw new Error("Failed to update user");
-			return res.json();
+			const text = await res.text();
+			let json: any;
+
+			try {
+				json = JSON.parse(text);
+			} catch {
+				throw new Error(text);
+			}
+
+			if (!res.ok) {
+				throw new Error(json?.error || "Failed to update user");
+			}
+
+			return json;
 		},
 		onSuccess: () => {
 			toast.success("Information updated successfully");
-			queryClient.invalidateQueries({ queryKey: ["user"] });
+
+			// 🔁 refresh profile
+			refetch();
 		},
-		onError: () => {
-			toast.error("Update failed");
+		onError: (err: any) => {
+			toast.error(err?.message || "Update failed");
 		},
 	});
 };

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/DropdownMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import LoginModal from "../LoginModal";
-import { useMe } from "@/hooks/useAuth";
 import LogoutIcon from "@/icons/LogoutIcon";
 import ShieldIcon from "@/icons/ShieldIcon";
 // import NotificationIcon from "@/icons/NotificationIcon";
@@ -12,27 +11,29 @@ import AnalystIcon from "@/icons/AnalystIcon";
 import Link from "next/link";
 import ProfileIcon from "@/icons/ProfileIcon";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from '@tanstack/react-query';
+import { useProfile } from "@/hooks/auth/useProfile";
 
 const SocialWalletLogin = () => {
 	const router = useRouter();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const queryClient = useQueryClient();
-	const { data } = useMe();
-	const user = data?.data;
+
+	const { profile, refetch } = useProfile();
+	const user = profile;
+
 	const handleLogout = () => {
-		localStorage.removeItem("auth_token");
-		queryClient.removeQueries({ queryKey: ["me"] });
+		localStorage.removeItem("token");
+		refetch();
 		router.push("/");
 	};
+
 	if (user) {
 		return (
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
 						<Avatar className="h-10 w-10 cursor-pointer">
-							<AvatarImage src={user?.avatar} alt={user?.username} />
-							<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+							<AvatarImage src={user.avatar || ""} alt={user.username} />
+							<AvatarFallback> {user.username?.charAt(0).toUpperCase()}</AvatarFallback>
 						</Avatar>
 					</div>
 				</DropdownMenuTrigger>
@@ -40,12 +41,14 @@ const SocialWalletLogin = () => {
 					<div className="flex items-center gap-2">
 						<div className="p-[2px] rounded-full bg-gradient-to-br from-[#DDF346] to-[#84EA07]">
 							<Avatar className="h-10 w-10 bg-[var(--card)]">
-								<AvatarImage src={user?.avatar} alt={user?.username} />
-								<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+								<AvatarImage src={user.avatar || ""} alt={user.username} />
+								<AvatarFallback>
+									{user.username?.charAt(0).toUpperCase()}
+								</AvatarFallback>
 							</Avatar>
 						</div>
 						<div className="space-y-1">
-							<p className="text-[var(--text)] fonr-space text-xs font-medium">{user?.name}</p>
+							<p className="text-[var(--text)] fonr-space text-xs font-medium">{user.username}</p>
 							<p className="text-[10px] font-medium text-[var(--text-chip)] bg-[#EBEBEB] rounded-full py-[2px] px-2 w-fit">Free Plan</p>
 						</div>
 					</div>
@@ -101,7 +104,12 @@ const SocialWalletLogin = () => {
 			{/* Tách modal ra */}
 			<LoginModal
 				open={isModalOpen}
-				onOpenChange={setIsModalOpen}
+				onOpenChange={(open) => {
+					setIsModalOpen(open);
+					if (!open) {
+						refetch();
+					}
+				}}
 			/>
 		</>
 	);

@@ -49,7 +49,7 @@ export function useMe(opts?: { enabled?: boolean }) {
 		enabled: opts?.enabled ?? true,
 		retry: false,
 		queryFn: async () => {
-			const token = localStorage.getItem('auth_token');
+			const token = localStorage.getItem('token');
 			if (!token) return null;
 
 			const res = await fetch('/api/me', {
