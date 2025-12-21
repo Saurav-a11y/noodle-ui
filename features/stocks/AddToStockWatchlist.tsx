@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useMe } from '@/hooks/useAuth'
 import HeartIcon from '@/icons/HeartIcon'
 import { useAddToWatchlist, useRemoveFromWatchlist, useWatchlistStatus } from '@/hooks/useWatchlist'
 import { useParams, usePathname } from 'next/navigation'
@@ -11,10 +10,12 @@ import { Loader } from 'lucide-react'
 import { useAddUserActivityLog } from '@/hooks/useUserActivityLog'
 import { useStockOverview } from '@/hooks/useStocks'
 import LoginModal from '@/components/LoginModal'
+import { useProfile } from '@/hooks/auth/useProfile'
 
 const AddToStockWatchlist = () => {
 	const queryClient = useQueryClient();
-	const { data } = useMe()
+	const { profile, refetch } = useProfile();
+	const user = profile;
 	const pathname = usePathname();
 	const params = useParams();
 	const assetType = pathname ? pathname.split('/')[1] : '';
@@ -22,10 +23,10 @@ const AddToStockWatchlist = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const { data: inWatchlist = false, isFetching: statusLoading } = useWatchlistStatus({
-		userId: data?.data?.id,
+		userId: user?.id,
 		code,
 		assetType,
-		enabled: !!data?.data?.id,
+		enabled: !!user?.id,
 	});
 
 	const addMutation = useAddToWatchlist();
@@ -38,30 +39,30 @@ const AddToStockWatchlist = () => {
 	const loading = statusLoading || addMutation.isPending || removeMutation.isPending;
 
 	const handleClick = () => {
-		if (!data?.data?.id) {
+		if (!user?.id) {
 			setIsModalOpen(true);
 			return;
 		}
 		if (inWatchlist) {
 			removeMutation.mutate(
-				{ userId: data?.data?.id, code },
+				{ userId: user?.id, code },
 				{
 					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
+						queryClient.invalidateQueries({ queryKey: ['watchlist', user?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
+							queryKey: ['watchlist-status', user?.id, code, assetType],
 						});
 					},
 				}
 			);
 		} else {
 			addMutation.mutate(
-				{ userId: data?.data?.id, code, assetType },
+				{ userId: user?.id, code, assetType },
 				{
 					onSuccess: () => {
-						if (data?.data?.id) {
+						if (user?.id) {
 							addLog({
-								userId: data?.data?.id,
+								userId: user?.id,
 								type: 'add_to_watchlist',
 								assetType: 'stocks',
 								assetSymbol: stockOverview.symbol,
@@ -70,9 +71,9 @@ const AddToStockWatchlist = () => {
 								content: `Added ${stockOverview.name} (${stockOverview.symbol}) to watchlist`,
 							});
 						}
-						queryClient.invalidateQueries({ queryKey: ['watchlist', data?.data?.id] });
+						queryClient.invalidateQueries({ queryKey: ['watchlist', user?.id] });
 						queryClient.invalidateQueries({
-							queryKey: ['watchlist-status', data?.data?.id, code, assetType],
+							queryKey: ['watchlist-status', user?.id, code, assetType],
 						});
 					},
 				}
@@ -107,7 +108,15 @@ const AddToStockWatchlist = () => {
 				</button>
 			</div>
 
-			<LoginModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+			<LoginModal
+				open={isModalOpen}
+				onOpenChange={(open) => {
+					setIsModalOpen(open);
+					if (!open) {
+						refetch();
+					}
+				}}
+			/>
 		</>
 	)
 }
