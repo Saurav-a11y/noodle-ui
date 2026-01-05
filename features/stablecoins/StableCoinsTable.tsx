@@ -195,7 +195,7 @@ const StableCoinsTable = () => {
 					<TableRow className="border-b-[var(--border)]">
 						<TableHead className="rounded-tl-lg w-[20px] text-center"></TableHead>
 						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">#</TableHead>
-						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Nameeeeeee</TableHead>
+						<TableHead className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs">Name</TableHead>
 						<TableHead
 							className="text-[var(--text-table)] border-b-[var(--border)] font-noto font-normal text-xs text-center cursor-pointer"
 							onClick={() => toggleSort("price")}

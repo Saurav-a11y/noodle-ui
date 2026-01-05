@@ -7,8 +7,11 @@ export async function GET(request: Request) {
     const groupFilter = searchParams.get("groupFilter") || "";
     const search = searchParams.get("search") || "";
 
+    const API_BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
+
     const res = await fetch(
-        `http://noodle-api:5130/noodle/stocks?limit=${limit}&page=${page}&groupFilter=${groupFilter}&search=${search}`,
+        `${API_BASE_URL}/noodle/stocks?limit=${limit}&page=${page}&groupFilter=${groupFilter}&search=${search}`,
         {
             headers: { "Content-Type": "application/json" },
             cache: "no-store",

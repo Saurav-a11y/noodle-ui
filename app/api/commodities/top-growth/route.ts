@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const backendUrl = `http://noodle-api:5130/noodle/top-growth-commodities`;
+        const API_BASE_URL =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
+        const backendUrl = `${API_BASE_URL}/noodle/top-growth-commodities`;
 
         const res = await fetch(backendUrl, {
             method: "GET",

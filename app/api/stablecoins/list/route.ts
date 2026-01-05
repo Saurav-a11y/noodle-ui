@@ -7,7 +7,10 @@ export async function GET(req: NextRequest) {
     const limit = searchParams.get("limit") || "20"
     const page = searchParams.get("page") || "1"
 
-    const url = `http://noodle-api:5130/noodle/stablecoins?q=${q}&limit=${limit}&page=${page}`
+    const API_BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
+
+    const url = `${API_BASE_URL}/noodle/stablecoins?q=${q}&limit=${limit}&page=${page}`
 
     const res = await fetch(url, {
         method: "GET",

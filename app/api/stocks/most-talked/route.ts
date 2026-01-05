@@ -3,8 +3,10 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
+        const API_BASE_URL =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
         const response = await fetch(
-            `http://noodle-api:5130/noodle/most-talked-about-stocks`,
+            `${API_BASE_URL}/noodle/most-talked-about-stocks`,
             { cache: 'no-store' }
         );
 

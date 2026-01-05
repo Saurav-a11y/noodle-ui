@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const url = `http://noodle-api:5130/noodle/active-users-stablecoins`;
+        const API_BASE_URL =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
+        const url = `${API_BASE_URL}/noodle/active-users-stablecoins`;
         console.log("Requesting:", url);
 
         const response = await fetch(url, { cache: 'no-store' });

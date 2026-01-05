@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
+        const API_BASE_URL =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
         const response = await fetch(
-            `http://noodle-api:5130/noodle/active-users-commodities`,
+            `${API_BASE_URL}/noodle/active-users-commodities`,
             { cache: 'no-store' }
         );
 
