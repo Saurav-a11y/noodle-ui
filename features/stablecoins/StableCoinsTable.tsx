@@ -14,7 +14,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 type PaginationProps = {
 	currentPage: number;
@@ -169,7 +169,7 @@ const StableCoinsTable = () => {
 				<div className="relative rounded-full bg-[var(--bg-hover)] text-[var(--text)]">
 					<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
 					<Input
-						placeholder={"Search stablecoins..."}
+						placeholder={"Search by name or symbol..."}
 						value={search}
 						onChange={(e) => {
 							setSearch(e.target.value);
@@ -286,7 +286,7 @@ const StableCoinsTable = () => {
 										<line x1="15" y1="9" x2="9" y2="15" />
 									</svg>
 									<p>🔍 No stablecoins match your search</p>
-									<p className="text-xs opacity-70">Try a different keyword or clear the search</p>
+									<p className="text-xs opacity-70">No matches found. Update your search to continue 🔍✨</p>
 								</div>
 							</TableCell>
 						</TableRow>
