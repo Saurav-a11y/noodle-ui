@@ -6,11 +6,14 @@ export async function GET(req: NextRequest) {
     const q = searchParams.get("q") || ""
     const limit = searchParams.get("limit") || "20"
     const page = searchParams.get("page") || "1"
+    const sortBy = searchParams.get("sortBy") || ""
+    const sortDir = searchParams.get("sortDir") || ""
+
 
     const API_BASE_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
 
-    const url = `${API_BASE_URL}/noodle/stablecoins?q=${q}&limit=${limit}&page=${page}`
+    const url = `${API_BASE_URL}/noodle/stablecoins?q=${q}&limit=${limit}&page=${page}&sortBy=${sortBy}&sortDir=${sortDir}`
 
     const res = await fetch(url, {
         method: "GET",

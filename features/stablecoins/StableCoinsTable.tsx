@@ -105,7 +105,7 @@ const StableCoinsTable = () => {
 		q: debouncedSearch,
 		page,
 		limit: LIMIT,
-		sortBy: sortBy === "default" ? null : "market_cap",
+		sortBy: sortBy === "default" ? null : sortBy,
 		sortDir: sortBy === "default" ? null : sortDir,
 	});
 
