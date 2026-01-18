@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const API_BASE_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:5130"
 
-    const url = `${API_BASE_URL}/noodle/stablecoins?q=${q}&limit=${limit}&page=${page}&sortBy=${sortBy}&sortDir=${sortDir}`
+    const url = `${API_BASE_URL}/noodle//BROKEN-stablecoins?q=${q}&limit=${limit}&page=${page}&sortBy=${sortBy}&sortDir=${sortDir}`
 
     const res = await fetch(url, {
         method: "GET",
